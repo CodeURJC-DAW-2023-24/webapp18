@@ -190,3 +190,15 @@ form {
 .containerPoolRight{
         grid-column: 2 / 3;
 }
+
+.poolIMG{
+        height: 70%;
+        width: 70%;
+        align-self: center;
+}
+.containerProfileLeft{
+        grid-column: 1 / 2;
+}
+.containerProfileRight{
+        grid-column: 2 / 3;
+}
