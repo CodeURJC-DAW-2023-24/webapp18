@@ -4,6 +4,7 @@
   - Pedro Cristino Moreno - PedroCristino2020 - p.cristino.2020@alumnos.urjc.es
   - Jorge Sánchez Díaz - RisiGT - j.sanchezdi.2020@alumnos.ujrc.es 
   - Marcos del Valle Hontanar - MarcoDelValleH - m.delvalle.2020@alumnos.urjc.es
+  - Cristian Kim - cristianvictorkim - cv.kim.2023@alumnos.urjc.es
 
 # Entidades
   - Usuarios (empleadores y socorristas)
