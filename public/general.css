@@ -178,3 +178,15 @@ form {
         text-align: center;
         
       }
+
+.containerPool1{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+}
+
+.containerPoolLeft{
+        grid-column: 1 / 2;
+}
+.containerPoolRight{
+        grid-column: 2 / 3;
+}
