@@ -18,7 +18,7 @@
 <body>
     <header>
         <div>
-            <a href="/" style="color: inherit; text-decoration: none">
+            <a href="main.html" style="color: inherit; text-decoration: none">
                 <h1>H20S</h1>
             </a>
         </div>
@@ -26,16 +26,8 @@
 
     <div class="container">
         <h2>Nuevo usuario</h2>
-
-        <!--{{^edit}}
-        <form role="form" action="crear" method="post">
-        {{/edit}}
-        {{#edit}}
-        <form role="form" action="fichaEditada" method="post">
-            <div class="form-group">
-                <input type="hidden" name="id" value="{{offer.id}}">
-            </div>
-        {{/edit}}-->
+        
+        <form role="form" action="main.html" method="post">
             <div class="row">
                 <div class="form-group col-md-6 col-sm-12" >
                     <label for="name">Nombre</label>
@@ -158,7 +150,7 @@
 
             <div class="btn-cont">
                 <button type="submit" class="btn"><i class="bi bi-download"></i> Guardar</button>
-                <a href="/" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
+                <a href="main.html" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
             </div>
         </form>
     </div>

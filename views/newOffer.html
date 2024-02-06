@@ -18,7 +18,7 @@
 <body>
     <header>
         <div>
-            <a href="/" style="color: inherit; text-decoration: none">
+            <a href="main.html" style="color: inherit; text-decoration: none">
                 <h1>H20S</h1>
             </a>
         </div>
@@ -26,33 +26,22 @@
 
     <div class="container">
         <h2>Nueva Oferta</h2>
-
-        {{^edit}}
-        <form role="form" action="crear" method="post">
-        {{/edit}}
-        {{#edit}}
-        <form role="form" action="fichaEditada" method="post">
-            <div class="form-group">
-                <input type="hidden" name="id" value="{{offer.id}}">
-            </div>
-        {{/edit}}
+        
+        <form role="form" action="main.html" method="post">
             <div class="form-group">
                 <label for="dir">Dirección</label>
-                <input type="text" class="form-control" name="dir" placeholder="Móstoles, C/Velázquez 2" value="{{offer.dir}}">
+                <input type="text" class="form-control" name="dir" placeholder="Móstoles, C/Velázquez 2">
             </div>
 
             <div class="form-group">
                 <label for="description">Descripción</label>
-                <textarea type="text" class="form-control" name="description" placeholder="Detalles relevantes de la oferta">{{offer.description}}</textarea>
+                <textarea type="text" class="form-control" name="description" placeholder="Detalles relevantes de la oferta"></textarea>
             </div>
 
             <div class="row">
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="type">Tipo de jornada</label>
                     <select class="form-select" name="type">
-                        {{#edit}}
-                        <option value="{{offer.type}}" selected hidden>{{offer.type}}</option>
-                        {{/edit}}
                         <option value="Puntual">Puntual</option>
                         <option value="Media jornada">Media jornada</option>
                         <option value="Jornada completa">Jornada completa</option>
@@ -62,25 +51,19 @@
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="start">Fecha de inicio</label>
-                    <input type="date" class="form-control text-uppercase" name="start" value="{{offer.start}}">
+                    <input type="date" class="form-control text-uppercase" name="start">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="salary">Salario</label>
-                {{#edit}}
-                <input type="range" class="form-range" name="salary" value="{{offer.salary}}" min="60" max="5000" step="60" oninput="this.nextElementSibling.value = this.value">
-                <output for="price" id="outrange">{{offer.salary}}</output>€
-                {{/edit}}
-                {{^edit}}
                 <input type="range" class="form-range" name="salary" value="1200" min="60" max="5000" step="60" oninput="this.nextElementSibling.value = this.value">
                 <output for="price" id="outrange">1200</output>€
-                {{/edit}}
             </div>
 
             <div class="btn-cont">
                 <button type="submit" class="btn"><i class="bi bi-download"></i> Guardar</button>
-                <a href="/" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
+                <a href="main.html" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
             </div>
         </form>
     </div>
