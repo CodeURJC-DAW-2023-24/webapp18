@@ -33,3 +33,10 @@
 
 # Algoritmo de consulta avanzada
   - Mostrara a cada socorrista ofertas personalizadas para él (basado en la distancia, aptitudes...)
+
+# Diagrama E-R
+
+
+
+![imagen](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/53cc30c7-72a6-4c19-95b8-3823bf6a607c)
+
