@@ -13,5 +13,19 @@ public class AppRouter {
         model.addAttribute("name","World");
         return "index";
     }
+
+    @GetMapping("/profile")
+    public String profile(Model model) {
+
+        model.addAttribute("name","World");
+        return "profile";
+    }
+
+    @GetMapping("/pool")
+    public String pool(Model model) {
+
+        model.addAttribute("name","World");
+        return "pool";
+    }
     
 }
