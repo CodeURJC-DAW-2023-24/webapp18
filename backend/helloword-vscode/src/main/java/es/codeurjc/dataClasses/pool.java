@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class pool {
     public String name;
-    public ArrayList<messege> messeges;
+    public ArrayList<Message> messages;
     public int scheduleStart;
     public int scheduleEnd;
     public int afor;
@@ -18,6 +18,9 @@ public class pool {
         this.scheduleEnd = end;
         this.pic = pic;
         this.description = desc;
-        this.messeges  = new ArrayList<messege>();
+        this.messages  = new ArrayList<Message>();
+    }
+    public void addMessage(Message m){
+        this.messages.add(m);
     }
 }

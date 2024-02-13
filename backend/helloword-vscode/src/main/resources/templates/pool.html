@@ -3,7 +3,7 @@
 
 <head>
     <title>Ficha de tu puta madre jorge</title>
-
+    <script src="/backend/helloword-vscode/src/main/resources/static/poolMesseges.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css?family=Vina+Sans|Kanit" rel="stylesheet" type="text/css">
 
-    <link type="text/css" rel="stylesheet" href="../public/general.css" />
-    <link type="text/css" rel="stylesheet" href="../public/pp.css" />
+    <link type="text/css" rel="stylesheet" href="/public/general.css" />
+    <link type="text/css" rel="stylesheet" href="/public/pp.css" />
 </head>
 
 <body>
@@ -26,14 +26,14 @@
 
     <div class="data">
         <div class="container">
-            <h2>Polideportivo de Arroyo</h2>
+            <h2>{{pool.name}}</h2>
 
             <div class="containerPool1">
                 <div class = "containerPoolLeft">
                     <p><strong>Dirección:</strong> Calle de los príncipes</p>
-                    <p><strong>Horario:</strong> 10:00-20:00</p>
-                    <p><strong>Aforo:</strong> 50</p>
-                    <p><strong>Descripción:</strong> Descripción genérica de lal piscina de un polideportivo. Con adjetivos genericos como "tranquila", "bulliciosa", etc.</p>
+                    <p><strong>Horario:</strong> {{pool.scheduleStart}}-{{pool.scheduleEnd}}</p>
+                    <p><strong>Aforo:</strong> {{pool.afor}}</p>
+                    <p><strong>Descripción:</strong> {{pool.description}}</p>
                 </div>
                 <div class = "containerPoolRight"> 
                     <img class = "poolIMG" src = "/public/piscinas-fibra-barcelona.jpg"> 
@@ -46,26 +46,9 @@
                 <a href="index.html" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
             </div>
         </div> 
-        <div class = "container">
-
-
-            <h3>Comentarios</h3>
-            <div class="comentContainer">
-               
-                    <div class = "msgAuthor">  <a href = "/profile">Paco Merla:</a> </div>
-                    <div class = "msgPool">
-                       Hasta las 11 no empiezan las clases y no suele haber nadie
-                    </div>
-                    <div class = "btnPool"> <button class = "btnMsg"><i class="bi bi-trash"></i> Eliminar</button></div>
-                </div>
-                <div class="comentContainer">
-               
-                    <div class = "msgAuthor">  <a href = "/profile">Kerry Kopo John:</a> </div>
-                    <div class = "msgPool">
-                       Mensaje generico
-                    </div>
-                    <div class = "btnPool"> <button class = "btnMsg"><i class="bi bi-trash"></i> Eliminar</button></div>
-                </div>
+        <div class = "container" id="messageContainer">
+            <button class = "btn" messages = "{{nMessages}}" id = "showButton"> Ver comentarios 
+                
         </div>
     </div>
 </body>
