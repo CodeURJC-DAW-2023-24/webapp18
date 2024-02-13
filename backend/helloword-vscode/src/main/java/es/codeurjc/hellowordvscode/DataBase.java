@@ -29,6 +29,9 @@ public class DataBase {
             p.addMessage(message);
             return p;
         }
+        public void deleteMsg(int id){
+           p.messages.remove(id);
+        }
 
 }
 
