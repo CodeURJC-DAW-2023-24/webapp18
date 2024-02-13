@@ -48,7 +48,8 @@ public class AppRouter {
     @ResponseBody
     public String newMsg(@RequestParam("msg") String input, Model model){
         Message m = new Message("null", input);
-        pool pool = db.addMessage(m);
+        db.addMessage(m);
+        System.out.println("Añadido: "+input);
         return db.getPool(0).messages.size()+"";
     }
     @PostMapping("/deleteMsg")
@@ -56,7 +57,6 @@ public class AppRouter {
     public String deletePoolMsg(@RequestParam("id") int id) {
         db.deleteMsg(id);
         pool p = db.getPool(0);
-        System.out.println("ENVIANDO: "+p.messages.size());
         return p.messages.size()+"";
     }
     

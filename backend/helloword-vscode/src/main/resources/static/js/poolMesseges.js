@@ -10,7 +10,10 @@ async function deleteMsg(id){
         method: 'POST'
     });
     let answer = await response.text();
-    const number = answer.size;
+    let number = parseInt(answer);
+    console.log("numero:")
+    console.log(number);
+    console.log("answer:")
     console.log(answer);
     loadMsgs(number);
 }
@@ -20,9 +23,11 @@ async function addComment(){
     const response = await fetch('/newMsg?msg='+s, {
         method: 'POST'
     });
-    let answer = await response.text;
+    let answer = await response.text();
     let number = parseInt(answer);
+    console.log("numero:")
     console.log(number);
+    console.log("answer:")
     console.log(answer);
     loadMsgs(number);
 }
@@ -38,11 +43,9 @@ async function loadMsgs(n){
         const pagePart = await response.text();
         content.innerHTML += pagePart;
     }
-    s = "<div class='newCommentContainer'>\n" +
-    "    <form id='newMsg'>\n" +
+    s = "<div class='newCommentContainer'>\n" +    
     "        <input type='text' id='commentInput' name='commentInput' placeholder='Escribe el comentario'><br><br>\n" +
     "        <button class='btn' onclick = 'addComment()'>Publicar</button>\n" +
-    "    </form>\n" +
     "</div>";
     content.innerHTML += s
 }
