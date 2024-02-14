@@ -13,7 +13,7 @@ public class DataBase {
         public pool getPool(int offerID){
             return new pool("Misco Jones", 10, 11, 20, "Una piscina chill para bajarte a jugar a las cartas", "No se como pasarle una foto por string");
         }
-        public person getPerson(int offerID){
+        public Person getPerson(int offerID){
             return null;
         }
         public Message getMessage(int id){

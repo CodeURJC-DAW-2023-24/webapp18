@@ -1,14 +1,25 @@
 package es.codeurjc.hellowordvscode;
 
 import org.springframework.ui.Model;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.codeurjc.dataClasses.*;
 import es.codeurjc.hellowordvscode.DataBase;
 @Controller
 public class AppRouter {
+
+    @Autowired
+	private UserService userService;
 
     @GetMapping("/")
     public String initial(Model model) {
@@ -32,7 +43,7 @@ public class AppRouter {
     @GetMapping("/profile")
     public String profile(Model model) {
         DataBase db = new DataBase();
-        person pers = db.getPerson(0);
+        Person pers = db.getPerson(0);
         model.addAttribute("person",pers);
         return "profile";
     }
@@ -45,4 +56,37 @@ public class AppRouter {
         return "poolMessege";
     }
     
+    @PostMapping("/newUser")
+	public String newPost(Model model, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability, boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership) throws IOException {
+        if ("employer".equals(typeUser)){
+			userService.saveEmployer(employer);
+            model.addAttribute("message", "Nuevo empleado creado correctamente");
+		}else if ("lifeguard".equals(typeUser)){
+			userService.saveLifeguard(lifeguard);
+			List<String> skills = new ArrayList<>();
+			if (reliability){
+				skills.add("Confianza");
+			}
+			if (effort){
+				skills.add("Esfuerzo");
+			}
+			if(communication){
+				skills.add("Comunicación");
+			}
+            if(attitude){
+                skills.add("Actitud positiva");
+            }
+            if(problemsResolution){
+                skills.add("Resolución de problemas");
+            }
+            if(leadership){
+                skills.add("Liderazgo");
+            }
+			lifeguard.setSkills(skills);
+			model.addAttribute("message", "Nuevo socorrista creado correctamente");
+		}
+		
+		return "savedUser";
+	}
+
 }
