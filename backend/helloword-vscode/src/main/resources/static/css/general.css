@@ -1,3 +1,13 @@
+:root {
+        --main-color: rgb(0, 130, 254);
+        --main-color-light: rgb(50, 180, 214);
+        --main-color-dark: rgb(0, 116, 240);
+        --second-color: white;
+        --red: rgb(214, 12, 12);
+        --red-light: rgb(254, 62, 62);
+        --red-dark: rgb(202, 0, 0);
+}
+
 * {
         font-family: 'Kanit';
 }
@@ -14,10 +24,12 @@ h2 {
         font-size: 35px;
         margin-bottom: 20px;
 }
+
 h3{
         font-size: 30px;
         margin-bottom: 20px;
 }
+
 body {
         background-color: #f0f0f0;
 }
@@ -33,10 +45,10 @@ header {
         height: 100px;
         padding: 20px;
 
-        background-color: rgb(0, 130, 254);
+        background: var(--main-color);
         align-items: center;
         gap: 20px;
-        color: white;
+        color: var(--second-color);
 
         position: sticky;
         top: 0;
@@ -70,7 +82,7 @@ form {
 .form-group label {
         margin-top: 15px;
         font-weight: bold;
-        color: rgb(0, 130, 254);
+        color: var(--main-color);
 }
 
 .btn-cont {
@@ -86,10 +98,10 @@ form {
         border: 4px solid;
         border-radius: 5px;
 
-        background-color: rgb(0, 130, 254);
-        border-color: rgb(0, 130, 254);
-        border-top-color: rgb(50, 180, 214);
-        border-left-color: rgb(50, 180, 214);
+        background-color: var(--main-color);
+        border-color: var(--main-color);
+        border-top-color: var(--main-color-light);
+        border-left-color: var(--main-color-light);
 
         transition: background-color 0.2s;
 
@@ -99,38 +111,38 @@ form {
 }
 
 .btn-cont > .btn:hover {
-        background-color: rgb(0, 116, 240);
-        border-top-color: rgb(50, 180, 214);
-        border-left-color: rgb(50, 180, 214);
+        background-color: var(--main-color-dark);
+        border-top-color: var(--main-color-light);
+        border-left-color: var(--main-color-light);
         color: white;
 }
 
 .btn-cont > .btn:active {
-        background-color: rgb(0, 130, 254);
-        border-color: rgb(0, 130, 254);
-        border-bottom-color: rgb(50, 180, 214);
-        border-right-color: rgb(50, 180, 214);
+        background-color: var(--main-color);
+        border-color: var(--main-color);
+        border-bottom-color: var(--main-color-light);
+        border-right-color: var(--main-color-light);
         color: white;
 }
 
 .btn-cont > .btn-red {
-        background-color: rgb(214, 12, 12);
-        border-color: rgb(214, 12, 12);
-        border-top-color: rgb(254, 62, 62);
-        border-left-color: rgb(254, 62, 62);
+        background-color: var(--red);
+        border-color: var(--red);
+        border-top-color: var(--red-light);
+        border-left-color: var(--red-light);
 }
 
 .btn-cont > .btn-red:hover {
-        background-color: rgb(202, 0, 0);
-        border-top-color: rgb(254, 62, 62);
-        border-left-color: rgb(254, 62, 62);
+        background-color: var(--red-dark);
+        border-top-color: var(--red-light);
+        border-left-color: var(--red-light);
 }
 
 .btn-cont > .btn-red:active {
-        background-color: rgb(214, 12, 12);
-        border-color: rgb(214, 12, 12);
-        border-bottom-color: rgb(254, 62, 62);
-        border-right-color: rgb(254, 62, 62);
+        background-color: var(--red);
+        border-color: var(--red);
+        border-bottom-color: var(--red-light);
+        border-right-color: var(--red-light);
 }
 
 .bi-person-fill-add {
