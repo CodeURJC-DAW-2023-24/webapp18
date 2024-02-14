@@ -1,5 +1,5 @@
 package es.codeurjc.model;
 
-public class offer {
+public class Offer {
     
 }

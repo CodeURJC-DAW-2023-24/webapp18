@@ -2,7 +2,7 @@ package es.codeurjc.model;
 
 import java.util.ArrayList;
 
-public class pool {
+public class Pool{
     public String name;
     public ArrayList<Message> messages;
     public int scheduleStart;
@@ -12,7 +12,7 @@ public class pool {
     public String pic;
     public String direction;
 
-    public pool(String n, int start, int end, int afor, String desc, String pic, String direction){
+    public Pool(String n, int start, int end, int afor, String desc, String pic, String direction){
         this.name = n;
         this.afor = afor;
         this.scheduleStart = start;
