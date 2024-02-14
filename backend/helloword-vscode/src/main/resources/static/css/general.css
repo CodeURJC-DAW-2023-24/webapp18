@@ -2,32 +2,41 @@
         --main-color: rgb(0, 130, 254);
         --main-color-light: rgb(50, 180, 214);
         --main-color-dark: rgb(0, 116, 240);
-        --second-color: white;
+        --gradient: linear-gradient(160deg, var(--main-color-light), var(--main-color));
+        --gradient-inverse: linear-gradient(340deg, var(--main-color-light), var(--main-color));
+
         --red: rgb(214, 12, 12);
         --red-light: rgb(254, 62, 62);
         --red-dark: rgb(202, 0, 0);
+        --gradient-red: linear-gradient(160deg, var(--red-light), var(--red-dark));
+        --gradient-red-inverse: linear-gradient(340deg, var(--red-light), var(--red-dark));
+
+        --second-color: white;
+        --logo-color: rgb(255,87,0);
 }
 
 * {
-        font-family: 'Kanit';
+        font-family: 'Fredoka';
 }
 
 h1, h2, h3 {
-        font-family: 'Vina Sans';
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: bold;
+
+        margin: 0;
 }
 
 h1 {
         font-size: 45px;
+        margin-top: 7px;  /*Para compensar el espacio vacío que tiene la fuente*/
 }
 
 h2 {
         font-size: 35px;
-        margin-bottom: 20px;
 }
 
 h3{
         font-size: 30px;
-        margin-bottom: 20px;
 }
 
 body {
@@ -42,10 +51,11 @@ p {
 
 header {
         display: flex;
-        height: 100px;
+        height: 75px;
         padding: 20px;
 
-        background: var(--main-color);
+        background: var(--gradient);
+        justify-content: space-between;
         align-items: center;
         gap: 20px;
         color: var(--second-color);
@@ -55,10 +65,15 @@ header {
         z-index: 1;
 }
 
+header a {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+}
+
 #header-img {
-        height: 75px;
-        border: 2px solid rgb(0, 130, 254);
-        border-radius: 5px;
+        height: 50px;
 }
 
 .container {
@@ -98,12 +113,12 @@ form {
         border: 4px solid;
         border-radius: 5px;
 
-        background-color: var(--main-color);
+        background-image: var(--gradient);
         border-color: var(--main-color);
         border-top-color: var(--main-color-light);
         border-left-color: var(--main-color-light);
 
-        transition: background-color 0.2s;
+        transition: background-image 0.2s;
 
         text-decoration: none;
         color: white;
@@ -111,14 +126,13 @@ form {
 }
 
 .btn-cont > .btn:hover {
-        background-color: var(--main-color-dark);
+        background-image: var(--gradient-inverse);
         border-top-color: var(--main-color-light);
         border-left-color: var(--main-color-light);
         color: white;
 }
 
 .btn-cont > .btn:active {
-        background-color: var(--main-color);
         border-color: var(--main-color);
         border-bottom-color: var(--main-color-light);
         border-right-color: var(--main-color-light);
@@ -126,25 +140,24 @@ form {
 }
 
 .btn-cont > .btn-red {
-        background-color: var(--red);
+        background-image: var(--gradient-red);
         border-color: var(--red);
         border-top-color: var(--red-light);
         border-left-color: var(--red-light);
 }
 
 .btn-cont > .btn-red:hover {
-        background-color: var(--red-dark);
+        background-image: var(--gradient-red-inverse);
         border-top-color: var(--red-light);
         border-left-color: var(--red-light);
 }
 
 .btn-cont > .btn-red:active {
-        background-color: var(--red);
         border-color: var(--red);
         border-bottom-color: var(--red-light);
         border-right-color: var(--red-light);
 }
 
-.bi-person-fill-add {
-        font-size: 1.1em;
+.bi-person-fill {
+        font-size: 2em;
 }

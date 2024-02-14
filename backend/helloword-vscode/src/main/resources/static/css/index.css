@@ -1,47 +1,12 @@
-.search {
-    margin-left: auto;
-}
-
-.search form {
-    display: flex;
-    margin: 0;
-}
-
-.search form .btn {
-    width: fit-content;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-color: transparent;
-    margin-left: 1px;
-}
-
-.form-control {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.form-control:focus {
-    box-shadow: 0 0 0 0;
-    border-color: rgba(214, 12, 12, .95);
-}
-
-input[type="search"]::-webkit-search-cancel-button {
-    -webkit-appearance: none;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    background: url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg) no-repeat 50% 50%;
-}
-
-.offers{
+.offers {
     display: grid;
-    padding: 20px;
+    margin: 20px;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 40px;
     justify-items: center;
 }
 
-.offers a{
+.offers a {
     width: 250px;
     text-align: center;
     border: 1px solid #ccc;
@@ -56,16 +21,31 @@ input[type="search"]::-webkit-search-cancel-button {
     transition: box-shadow 0.2s;
 }
 
-.offers img{
+.offers img {
     height: 250px;
     max-width: 246px;
 }
 
-.offers p{
+.offers p {
     text-align: center;
     margin: 10px;
 }
 
-.offers a:hover{
+.offers a:hover {
     box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.5);
+}
+
+.bottom-right-button {
+    position: fixed;
+    bottom: 1%;
+    right: 2%;
+}
+
+.bottom-right-button > .btn {
+    min-width: 50px;
+    border-radius: 10px;
+}
+
+.bi-plus-circle {
+    font-size: 1.25em;
 }
