@@ -41,7 +41,6 @@ public class AppRouter {
 
     @GetMapping("/pool")
     public String pool(Model model) {
-        DataBase db = new DataBase();
         pool pool = db.getPool(0);
         model.addAttribute("pool",pool);
         model.addAttribute("nMessages",pool.messages.size());
@@ -50,7 +49,6 @@ public class AppRouter {
 
     @GetMapping("/profile")
     public String profile(Model model) {
-        DataBase db = new DataBase();
         Person pers = db.getPerson(0);
         model.addAttribute("person",pers);
         return "profile";
@@ -58,7 +56,6 @@ public class AppRouter {
     @GetMapping("/pagePartPoolMsg")
     public String ppPoolMsg(@RequestParam("id") int id ,Model model) {
         System.out.println("PETICION DE PP POOL RECIBIDA");
-        DataBase db = new DataBase();
         Message m = db.getMessage(id);
         model.addAttribute("message",m);
         model.addAttribute("id",id);
