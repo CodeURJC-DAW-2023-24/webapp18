@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.codeurjc.model.Employer;
@@ -23,6 +24,7 @@ import es.codeurjc.service.UserService;
 @Controller
 public class AppRouter {
 
+    DataBase db;
     @Autowired
 	private UserService userService;
 
@@ -30,7 +32,7 @@ public class AppRouter {
     public String initial(Model model) {
 
         System.out.println("LOG DEL ROUTER INICIAL");  
-        DataBase db = new DataBase();
+        db = new DataBase();
         pool pool = db.getPool(0);
         model.addAttribute("pool",pool);
         model.addAttribute("nMessages",pool.messages.size());
@@ -42,6 +44,7 @@ public class AppRouter {
         DataBase db = new DataBase();
         pool pool = db.getPool(0);
         model.addAttribute("pool",pool);
+        model.addAttribute("nMessages",pool.messages.size());
         return "pool";
     }
 
@@ -96,5 +99,21 @@ public class AppRouter {
 		
 		return "savedUser";
 	}
+
+     @PostMapping("/newMsg")
+    @ResponseBody
+    public String newMsg(@RequestParam("msg") String input, Model model){
+        Message m = new Message("null", input);
+        db.addMessage(m);
+        System.out.println("Añadido: "+input);
+        return db.getPool(0).messages.size()+"";
+    }
+    @PostMapping("/deleteMsg")
+    @ResponseBody
+    public String deletePoolMsg(@RequestParam("id") int id) {
+        db.deleteMsg(id);
+        pool p = db.getPool(0);
+        return p.messages.size()+"";
+    }
 
 }
