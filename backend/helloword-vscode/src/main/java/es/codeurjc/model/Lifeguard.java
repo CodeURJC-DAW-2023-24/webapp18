@@ -1,4 +1,4 @@
-package es.codeurjc.dataClasses;
+package es.codeurjc.model;
 
 import java.util.List;
 

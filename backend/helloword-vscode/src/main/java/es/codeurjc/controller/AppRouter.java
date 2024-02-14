@@ -1,4 +1,4 @@
-package es.codeurjc.hellowordvscode;
+package es.codeurjc.controller;
 
 import org.springframework.ui.Model;
 
@@ -13,8 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import es.codeurjc.dataClasses.*;
-import es.codeurjc.hellowordvscode.DataBase;
+import es.codeurjc.model.Employer;
+import es.codeurjc.model.Lifeguard;
+import es.codeurjc.model.Message;
+import es.codeurjc.model.Person;
+import es.codeurjc.model.pool;
+import es.codeurjc.repository.DataBase;
+import es.codeurjc.service.UserService;
 @Controller
 public class AppRouter {
 
@@ -85,7 +90,9 @@ public class AppRouter {
             }
 			lifeguard.setSkills(skills);
 			model.addAttribute("message", "Nuevo socorrista creado correctamente");
-		}
+		}else{
+            model.addAttribute("message", "Tienes que seleccionar si eres un socorrista o un empleado");
+        }
 		
 		return "savedUser";
 	}

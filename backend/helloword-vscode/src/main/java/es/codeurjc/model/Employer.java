@@ -1,4 +1,4 @@
-package es.codeurjc.dataClasses;
+package es.codeurjc.model;
 
 public class Employer extends Person{
 

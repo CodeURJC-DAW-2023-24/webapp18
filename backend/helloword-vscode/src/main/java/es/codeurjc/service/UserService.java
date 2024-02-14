@@ -1,4 +1,4 @@
-package es.codeurjc.hellowordvscode;
+package es.codeurjc.service;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,8 +7,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
 
-import es.codeurjc.dataClasses.Employer;
-import es.codeurjc.dataClasses.Lifeguard;
+import es.codeurjc.model.Employer;
+import es.codeurjc.model.Lifeguard;
 
 @Service
 public class UserService {

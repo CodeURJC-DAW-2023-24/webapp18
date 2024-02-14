@@ -1,7 +1,9 @@
-package es.codeurjc.hellowordvscode;
+package es.codeurjc.repository;
 
 
-import es.codeurjc.dataClasses.*;
+import es.codeurjc.model.Message;
+import es.codeurjc.model.Person;
+import es.codeurjc.model.pool;
 
 public class DataBase {
     pool p;

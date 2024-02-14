@@ -1,4 +1,4 @@
-package es.codeurjc.dataClasses;
+package es.codeurjc.model;
 
 public class Message {
     String author;
