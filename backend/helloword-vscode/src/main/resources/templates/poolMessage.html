@@ -1,6 +1,9 @@
 <div class="comentContainer">
-               
-    <div class = "msgAuthor">  <a href = "/profile">{{message.author}}:</a> </div>
-    <div class = "msgPool">  {{message.body}} </div>
-    <div class = "btnPool"> <button class = "btnMsg" onclick = "deleteMsg('{{id}}')"><i class="bi bi-trash"></i> Eliminar</button></div>
+    <div class="msgAuthor"> <a href="/profile">{{message.author}}:</a> </div>
+    <div class="msgPool"> {{message.body}} </div>
+    <div class="btnPool">
+        <button class="btn" onclick="deleteMsg('{{id}}')">
+            <i class="bi bi-trash"></i> Eliminar
+        </button>
+    </div>
 </div>

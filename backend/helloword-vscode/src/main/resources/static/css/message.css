@@ -1,9 +1,9 @@
 .container {
-     width: fit-content;
+    width: fit-content;
 }
 
 p {
-     text-align: center;
-     font-size: 20px;
-     margin: 20px;
+    text-align: center;
+    font-size: 20px;
+    margin: 20px;
 }

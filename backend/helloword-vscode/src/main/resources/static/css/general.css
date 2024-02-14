@@ -1,163 +1,163 @@
 :root {
-        --main-color: rgb(0, 130, 254);
-        --main-color-light: rgb(50, 180, 214);
-        --main-color-dark: rgb(0, 116, 240);
-        --gradient: linear-gradient(160deg, var(--main-color-light), var(--main-color));
-        --gradient-inverse: linear-gradient(340deg, var(--main-color-light), var(--main-color));
+    --main-color: rgb(0, 130, 254);
+    --main-color-light: rgb(50, 180, 214);
+    --main-color-dark: rgb(0, 116, 240);
+    --gradient: linear-gradient(160deg, var(--main-color-light), var(--main-color));
+    --gradient-inverse: linear-gradient(340deg, var(--main-color-light), var(--main-color));
 
-        --red: rgb(214, 12, 12);
-        --red-light: rgb(254, 62, 62);
-        --red-dark: rgb(202, 0, 0);
-        --gradient-red: linear-gradient(160deg, var(--red-light), var(--red-dark));
-        --gradient-red-inverse: linear-gradient(340deg, var(--red-light), var(--red-dark));
+    --red: rgb(214, 12, 12);
+    --red-light: rgb(254, 62, 62);
+    --red-dark: rgb(202, 0, 0);
+    --gradient-red: linear-gradient(160deg, var(--red-light), var(--red-dark));
+    --gradient-red-inverse: linear-gradient(340deg, var(--red-light), var(--red-dark));
 
-        --second-color: white;
-        --logo-color: rgb(255,87,0);
+    --second-color: white;
+    --logo-color: rgb(255, 87, 0);
 }
 
 * {
-        font-family: 'Fredoka';
+    font-family: "Fredoka";
 }
 
 h1, h2, h3 {
-        font-family: 'Yanone Kaffeesatz';
-        font-weight: bold;
+    font-family: "Yanone Kaffeesatz";
+    font-weight: bold;
 
-        margin: 0;
+    margin: 0;
 }
 
 h1 {
-        font-size: 45px;
-        margin-top: 7px;  /*Para compensar el espacio vacío que tiene la fuente*/
+    font-size: 45px;
+    margin-top: 7px; /*Para compensar el espacio vacío que tiene la fuente*/
 }
 
 h2 {
-        font-size: 35px;
+    font-size: 35px;
 }
 
-h3{
-        font-size: 30px;
+h3 {
+    font-size: 30px;
 }
 
 body {
-        background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
 
 p {
-        text-align: justify;
-        margin-right: 20px;
-        margin-left: 20px;
+    text-align: justify;
+    margin-right: 20px;
+    margin-left: 20px;
 }
 
 header {
-        display: flex;
-        height: 75px;
-        padding: 20px;
+    display: flex;
+    height: 75px;
+    padding: 20px;
 
-        background: var(--gradient);
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-        color: var(--second-color);
+    background: var(--gradient);
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    color: var(--second-color);
 
-        position: sticky;
-        top: 0;
-        z-index: 1;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 header a {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        gap: 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 #header-img {
-        height: 50px;
+    height: 50px;
 }
 
 .container {
-        margin: 20px auto;
-        padding: 20px;
-        width: 80%;
-        max-width: none;
+    margin: 20px auto;
+    padding: 20px;
+    width: 80%;
+    max-width: none;
 
-        background-color: white;
-        border: 1px solid #ccc;
-        border-radius: 25px;
-        text-align: center;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    text-align: center;
 }
 
 form {
-        text-align: left;
-        margin: 20px;
-        margin-bottom: 0px;
+    text-align: left;
+    margin: 20px;
+    margin-bottom: 0px;
 }
 
 .form-group label {
-        margin-top: 15px;
-        font-weight: bold;
-        color: var(--main-color);
+    margin-top: 15px;
+    font-weight: bold;
+    color: var(--main-color);
 }
 
 .btn-cont {
-        display: flex;
-        justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .btn-cont > .btn {
-        margin: 20px;
-        padding: 5px;
-        min-width: 110px;
+    margin: 20px;
+    padding: 5px;
+    min-width: 110px;
 
-        border: 4px solid;
-        border-radius: 5px;
+    border: 4px solid;
+    border-radius: 5px;
 
-        background-image: var(--gradient);
-        border-color: var(--main-color);
-        border-top-color: var(--main-color-light);
-        border-left-color: var(--main-color-light);
+    background-image: var(--gradient);
+    border-color: var(--main-color);
+    border-top-color: var(--main-color-light);
+    border-left-color: var(--main-color-light);
 
-        transition: background-image 0.2s;
+    transition: background-image 0.2s;
 
-        text-decoration: none;
-        color: white;
-        font-size: 18px;
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
 }
 
 .btn-cont > .btn:hover {
-        background-image: var(--gradient-inverse);
-        border-top-color: var(--main-color-light);
-        border-left-color: var(--main-color-light);
-        color: white;
+    background-image: var(--gradient-inverse);
+    border-top-color: var(--main-color-light);
+    border-left-color: var(--main-color-light);
+    color: white;
 }
 
 .btn-cont > .btn:active {
-        border-color: var(--main-color);
-        border-bottom-color: var(--main-color-light);
-        border-right-color: var(--main-color-light);
-        color: white;
+    border-color: var(--main-color);
+    border-bottom-color: var(--main-color-light);
+    border-right-color: var(--main-color-light);
+    color: white;
 }
 
 .btn-cont > .btn-red {
-        background-image: var(--gradient-red);
-        border-color: var(--red);
-        border-top-color: var(--red-light);
-        border-left-color: var(--red-light);
+    background-image: var(--gradient-red);
+    border-color: var(--red);
+    border-top-color: var(--red-light);
+    border-left-color: var(--red-light);
 }
 
 .btn-cont > .btn-red:hover {
-        background-image: var(--gradient-red-inverse);
-        border-top-color: var(--red-light);
-        border-left-color: var(--red-light);
+    background-image: var(--gradient-red-inverse);
+    border-top-color: var(--red-light);
+    border-left-color: var(--red-light);
 }
 
 .btn-cont > .btn-red:active {
-        border-color: var(--red);
-        border-bottom-color: var(--red-light);
-        border-right-color: var(--red-light);
+    border-color: var(--red);
+    border-bottom-color: var(--red-light);
+    border-right-color: var(--red-light);
 }
 
 .bi-person-fill {
-        font-size: 2em;
+    font-size: 2em;
 }

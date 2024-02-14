@@ -26,14 +26,14 @@
 
     <div class="container">
         <h2>Nuevo usuario</h2>
-        
+
         <form role="form" action="/newUser" method="post">
             <div class="row">
-                <div class="form-group col-md-6 col-sm-12" >
+                <div class="form-group col-md-6 col-sm-12">
                     <label for="name">Nombre</label>
                     <input type="text" class="form-control" name="name" placeholder="Introduzca su nombre">
                 </div>
-                <div class="form-group col-md-6 col-sm-12" >
+                <div class="form-group col-md-6 col-sm-12">
                     <label for="surname">Apellidos</label>
                     <input type="text" class="form-control" name="surname" placeholder="Introduzca sus apellidos">
                 </div>
@@ -45,11 +45,11 @@
             </div>
 
             <div class="row">
-                <div class="form-group col-md-4" >
+                <div class="form-group col-md-4">
                     <label for="dni">DNI</label>
                     <input type="text" class="form-control" name="dni" placeholder="DNI/NIE">
                 </div>
-                <div class="form-group col-md-8" >
+                <div class="form-group col-md-8">
                     <label for="mail">Correo electrónico</label>
                     <input type="text" class="form-control" name="mail" placeholder="example@gmail.com">
                 </div>
@@ -61,34 +61,34 @@
             </div>
 
             <div class="row">
-                <div class="form-group col-md-6 col-sm-12" >
+                <div class="form-group col-md-6 col-sm-12">
                     <label for="phone">Teléfono de contacto</label>
                     <input type="text" class="form-control" name="phone" placeholder="Introduzca su número de teléfono">
                 </div>
-                <div class="form-group col-md-6 col-sm-12" >
+                <div class="form-group col-md-6 col-sm-12">
                     <label for="country">País</label>
                     <input type="text" class="form-control" name="country" placeholder="Introduzca su país">
                 </div>
             </div>
 
             <div class="row">
-                <div class="form-group col-md-6 col-sm-12" >
+                <div class="form-group col-md-6 col-sm-12">
                     <label for="locality">Localidad</label>
                     <input type="text" class="form-control" name="locality" placeholder="Introduzca su localidad">
                 </div>
-                <div class="form-group col-md-6 col-sm-12" >
+                <div class="form-group col-md-6 col-sm-12">
                     <label for="province">Provincia</label>
                     <input type="text" class="form-control" name="province" placeholder="Introduzca su provincia">
                 </div>
             </div>
 
             <div class="row">
-                <div class="form-group col-md-8" >
+                <div class="form-group col-md-8">
                     <label for="street">Calle</label>
                     <input type="text" class="form-control" name="street" placeholder="Introduzca su calle">
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="typeUser">Tipo de usuario</label>   <!-- FALTA ENLAZARLO CON EL SCRIPT DE AJAX-->
+                    <label for="typeUser">Tipo de usuario</label> <!-- FALTA ENLAZARLO CON EL SCRIPT DE AJAX-->
                     <select class="form-select" name="typeUser" id="typeUser" onchange="showForm()">
                         <!--{{#edit}}
                         <option value="{{offer.type}}" selected hidden>{{offer.type}}</option>
@@ -104,38 +104,38 @@
                 <label for="photoUser">Foto personal</label>
                 <input type="text" class="form-control" name="photoUser" id="photoUser" placeholder="Introduzca el link de su foto">
             </div>
-    
+
             <div class="form-group" id="lifeguard2" style="display:none">
                 <label for="document">Documentación profesional</label>
                 <input type="file" class="form-control" name="document" accept=".pdf .doc .docx">
             </div>
-    
+
             <div class="skills-container" id="lifeguard3" style="display: none">
                 <h2>Mis Aptitudes</h2>
                 <div class="row">
-                    <div class="form-group col-md-4" >
+                    <div class="form-group col-md-4">
                         <label for="reliability">Confianza</label>
                         <input type="checkbox" name="reliability" id="reliability">
                     </div>
-                    <div class="form-group col-md-4" >
+                    <div class="form-group col-md-4">
                         <label for="effort">Esfuerzo</label>
                         <input type="checkbox" name="effort" id="effort">
                     </div>
-                    <div class="form-group col-md-4" >
+                    <div class="form-group col-md-4">
                         <label for="communication">Comunicación</label>
                         <input type="checkbox" name="communication" id="communication">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-4" >
+                    <div class="form-group col-md-4">
                         <label for="attitude">Actitud positiva</label>
                         <input type="checkbox" name="attitude" id="attitude">
                     </div>
-                    <div class="form-group col-md-4" >
+                    <div class="form-group col-md-4">
                         <label for="problemsResolution">Resolución de problemas</label>
                         <input type="checkbox" name="problemsResolution" id="problemsResolution">
                     </div>
-                    <div class="form-group col-md-4" >
+                    <div class="form-group col-md-4">
                         <label for="leadership">Liderazgo</label>
                         <input type="checkbox" name="leadership" id="leadership">
                     </div>
@@ -146,7 +146,7 @@
                 <label for="photoCompany">Foto de la empresa</label>
                 <input type="text" class="form-control" name="photoCompany" id="photoCompany" placeholder="Introduzca el link de la foto de su empresa">
             </div>
-    
+
             <div class="form-group" id="employer2" style="display:none">
                 <label for="position">Posición en la empresa</label>
                 <input type="text" class="form-control" name="position" placeholder="Introduzca su posición en la empresa">
@@ -161,14 +161,14 @@
         <script>
             function showForm() {
                 var selectedType = document.getElementById("typeUser").value;
-        
+
                 // Oculta todos los formularios
                 document.getElementById("lifeguard1").style.display = "none";
                 document.getElementById("lifeguard2").style.display = "none";
                 document.getElementById("lifeguard3").style.display = "none";
                 document.getElementById("employer1").style.display = "none";
                 document.getElementById("employer2").style.display = "none";
-        
+
                 // Muestra el formulario correspondiente al tipo seleccionado
                 if (selectedType === "lifeguard") {
                     document.getElementById("lifeguard1").style.display = "block";

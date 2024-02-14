@@ -1,5 +1,4 @@
-
-.comentContainer{
+.comentContainer {
     margin: 20px auto;
     padding: 20px;
     width: 80%;
@@ -11,11 +10,12 @@
     text-align: left;
 
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* Divide la fila en dos columnas de igual ancho */
-    gap: 10%; /* Espacio entre las columnas */
-    align-items: center; /* Centra los elementos verticalmente */
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10%;
+    align-items: center;
 }
-.newCommentContainer{
+
+.newCommentContainer {
     margin: 20px auto;
     padding: 20px;
     width: 80%;
@@ -27,13 +27,12 @@
     text-align: left;
 
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* Divide la fila en dos columnas de igual ancho */
-    gap: 10%; /* Espacio entre las columnas */
-    align-items: center; /* Centra los elementos verticalmente */
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10%;
+    align-items: center;
 }
 
-
-.btnMsg{
+.btnMsg {
     background-color: rgb(214, 12, 12);
     border-color: rgb(214, 12, 12);
     border-bottom-color: rgb(254, 62, 62);
@@ -41,47 +40,47 @@
     color: white;
 }
 
-.msgPool{
+.msgPool {
     grid-column: 1 / 2;
 }
 
-.msgPool{
+.msgPool {
     grid-column: 2 / 3;
 }
 
 .btnPool {
     grid-column: 3 / 4; /* Coloca el elemento en la segunda columna */
     text-align: center;
-    
 }
 
-.containerPool1{
+.containerPool1 {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
-.containerPoolLeft{
+.containerPoolLeft {
     grid-column: 1 / 2;
 }
-.containerPoolRight{
+
+.containerPoolRight {
     grid-column: 2 / 3;
 }
 
-.poolIMG{
+.poolIMG {
     height: 70%;
     width: 70%;
     align-self: center;
 }
 
-.containerProfileLeft{
+.containerProfileLeft {
     grid-column: 1 / 2;
 }
 
-.containerProfileRight{
+.containerProfileRight {
     grid-column: 2 / 3;
 }
 
-.skillsContainer{
+.skillsContainer {
     margin: 20px auto;
     padding: 20px;
     width: 80%;
@@ -93,6 +92,6 @@
     text-align: left;
 
     display: grid;
-    gap: 10%; /* Espacio entre las columnas */
-    align-items: center; /* Centra los elementos verticalmente */
+    gap: 10%;
+    align-items: center;
 }
