@@ -18,7 +18,7 @@ import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Message;
 import es.codeurjc.model.Person;
-import es.codeurjc.model.pool;
+import es.codeurjc.model.Pool;
 import es.codeurjc.repository.DataBase;
 import es.codeurjc.service.UserService;
 @Controller
@@ -33,7 +33,7 @@ public class AppRouter {
 
         System.out.println("LOG DEL ROUTER INICIAL");  
         db = new DataBase();
-        pool pool = db.getPool(0);
+        Pool pool = db.getPool(0);
         model.addAttribute("pool",pool);
         model.addAttribute("nMessages",pool.messages.size());
         return "pool";
@@ -41,7 +41,7 @@ public class AppRouter {
 
     @GetMapping("/pool")
     public String pool(Model model) {
-        pool pool = db.getPool(0);
+        Pool pool = db.getPool(0);
         model.addAttribute("pool",pool);
         model.addAttribute("nMessages",pool.messages.size());
         return "pool";
@@ -109,7 +109,7 @@ public class AppRouter {
     @ResponseBody
     public String deletePoolMsg(@RequestParam("id") int id) {
         db.deleteMsg(id);
-        pool p = db.getPool(0);
+        Pool p = db.getPool(0);
         return p.messages.size()+"";
     }
 

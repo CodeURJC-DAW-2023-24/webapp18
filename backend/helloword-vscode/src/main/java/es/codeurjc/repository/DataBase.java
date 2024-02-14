@@ -3,21 +3,21 @@ package es.codeurjc.repository;
 
 import es.codeurjc.model.Message;
 import es.codeurjc.model.Person;
-import es.codeurjc.model.pool;
+import es.codeurjc.model.Pool;
 
 public class DataBase {
-    pool p;
+    Pool p;
     public DataBase(){
         startBD();
     }
         public void startBD(){
-            this.p =  new pool("Misco Jones", 10, 11, 20, "Una piscina chill para bajarte a jugar a las cartas", "No se como pasarle una foto por string","Calle Timanfaya");
+            this.p =  new Pool("Misco Jones", 10, 11, 20, "Una piscina chill para bajarte a jugar a las cartas", "No se como pasarle una foto por string","Calle Timanfaya");
             Message m = new Message("Paco", "Piscina bien");
             p.addMessage(m);
             m = new Message("Juan", "Piscina Mal");
             p.addMessage(m);
         }
-        public pool getPool(int offerID){
+        public Pool getPool(int offerID){
             
             return p;
         }
@@ -27,7 +27,7 @@ public class DataBase {
         public Message getMessage(int id){
             return p.messages.get(id);
         }
-        public pool addMessage(Message message){
+        public Pool addMessage(Message message){
             p.addMessage(message);
             return p;
         }
