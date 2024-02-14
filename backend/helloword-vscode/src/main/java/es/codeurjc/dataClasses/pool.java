@@ -10,8 +10,9 @@ public class pool {
     public int afor;
     public String description;
     public String pic;
+    public String direction;
 
-    public pool(String n, int start, int end, int afor, String desc, String pic){
+    public pool(String n, int start, int end, int afor, String desc, String pic, String direction){
         this.name = n;
         this.afor = afor;
         this.scheduleStart = start;
@@ -19,6 +20,7 @@ public class pool {
         this.pic = pic;
         this.description = desc;
         this.messages  = new ArrayList<Message>();
+        this.direction = direction;
     }
     public void addMessage(Message m){
         this.messages.add(m);

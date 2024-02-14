@@ -53,6 +53,7 @@ public class AppRouter {
         DataBase db = new DataBase();
         Message m = db.getMessage(id);
         model.addAttribute("message",m);
+        model.addAttribute("id",id);
         return "poolMessege";
     }
     
