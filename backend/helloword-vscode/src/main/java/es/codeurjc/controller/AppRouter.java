@@ -5,8 +5,10 @@ import org.springframework.ui.Model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Message;
+import es.codeurjc.model.Offer;
 import es.codeurjc.model.Person;
 import es.codeurjc.model.Pool;
 import es.codeurjc.repository.DataBase;
@@ -23,21 +26,38 @@ import es.codeurjc.service.UserService;
 
 @Controller
 public class AppRouter {
+    private DataBase db = new DataBase();
 
-    DataBase db;
     @Autowired
     private UserService userService;
 
     // -------------------------------------- MAIN --------------------------------------
     @GetMapping("/")
     public String initial(Model model) {
-
         System.out.println("LOG DEL ROUTER INICIAL");
-        db = new DataBase();
-        Pool pool = db.getPool(0);
-        model.addAttribute("pool", pool);
-        model.addAttribute("nMessages", pool.messages.size());
-        return "pool";
+        return "index";
+    }
+
+    // -------------------------------------- OFFERS --------------------------------------
+    @GetMapping("/loadOffers")
+    public String loadPlayers(@RequestParam("from") int from, @RequestParam("amount") int amount, Model model) {
+        Offer[] offers = DataBase.getOffers(from, amount);
+        model.addAttribute("offers", offers);
+        model.addAttribute("alternative", "No hay ofertas aún");
+        return "offers";
+    }
+
+    @GetMapping("/allOffersLoaded")
+    public ResponseEntity<?> allPlayersLoaded() {
+        boolean value = DataBase.allOffersLoaded();
+        return ResponseEntity.ok().body(Map.of("value", value));
+    }
+
+    @GetMapping("/offer")
+    public String offer(@RequestParam("id") int id, Model model) {
+        Offer offer = DataBase.getOffer(id);
+        model.addAttribute("offer", offer);
+        return "offer";
     }
 
     // -------------------------------------- PROFILE --------------------------------------

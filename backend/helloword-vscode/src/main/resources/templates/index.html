@@ -13,15 +13,17 @@
 
     <link type="text/css" rel="stylesheet" href="/css/general.css" />
     <link type="text/css" rel="stylesheet" href="/css/index.css" />
+
+    <script src="/js/offers.js"></script>
 </head>
 
 <body>
     <header>
-        <a href="index.html" style="color: inherit; text-decoration: none">
-            <img id="header-img" src="/images/h2oslogo.png" alt="Escudo del Triplano FC">
+        <a href="/" style="color: inherit; text-decoration: none">
+            <img id="header-img" src="/images/h2oslogo.png" alt="Logo H2OS">
             <h1>H20S</h1>
         </a>
-        <a href="newUser.html" style="color: inherit; text-decoration: none">
+        <a href="/sign" style="color: inherit; text-decoration: none">
             <i class="bi bi-person-fill"></i>
         </a>
     </header>
@@ -29,29 +31,18 @@
     <section class="container">
         <h2>Ofertas de trabajo</h2>
 
-        <div class="offers">
-            <a href="offer.html">
-                <img src="https://www.piscinadecor.com/wp-content/uploads/2023/07/piscinas-fibra-barcelona.jpg">
-                <p>Móstoles, C/Velázquez 2</p>
-                <p>1700€</p>
-            </a>
+        <div class="offers" id="offers">
+        </div>
 
-            <a href="offer.html">
-                <img src="https://www.piscinadecor.com/wp-content/uploads/2023/07/piscinas-fibra-barcelona.jpg">
-                <p>Loranca, C/Concepción Arenal 2</p>
-                <p>1700€</p>
-            </a>
-
-            <a href="offer.html">
-                <img src="https://www.piscinadecor.com/wp-content/uploads/2023/07/piscinas-fibra-barcelona.jpg">
-                <p>Alcorcón, C/Timanfaya 2</p>
-                <p>1100€</p>
-            </a>
+        <div class="btn-cont" id="loadOffers">
+            <button class="btn" onclick='loadOffers()'>
+                <i class="bi bi-chevron-double-down"></i> Cargar más
+            </button>
         </div>
     </section>
 
     <div class="btn-cont bottom-right-button">
-        <a href="newOffer.html" class="btn" role="btn"><i class="bi bi-plus-circle"></i></a>
+        <a href="/newOffer" class="btn" role="btn"><i class="bi bi-plus-circle"></i></a>
     </div>
 
 </body>

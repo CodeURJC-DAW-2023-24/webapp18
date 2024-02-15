@@ -1,0 +1,10 @@
+{{#offers}}
+<a href="/offer?id={{id}}">
+    <img src="{{photo}}" alt="{{direction}}">
+    <p>{{direction}}</p>
+    <p>{{salary}}€</p>
+</a>
+{{/offers}}
+{{^offers}}
+<p>{{alternative}}</p>
+{{/offers}}
