@@ -22,8 +22,8 @@
 }
 
 .offers img {
-    height: 250px;
-    max-width: 246px;
+    height: 200px;
+    max-width: 100%;
 }
 
 .offers p {

@@ -23,11 +23,13 @@ h1, h2, h3 {
     font-family: "Yanone Kaffeesatz";
     font-weight: bold;
 
-    margin: 0;
+    margin-bottom: 20px;
 }
 
 h1 {
     font-size: 45px;
+
+    margin: 0px;
     margin-top: 7px; /*Para compensar el espacio vacío que tiene la fuente*/
 }
 
@@ -102,11 +104,15 @@ form {
 
 .btn-cont {
     display: flex;
+    flex-flow: row wrap;
     justify-content: center;
+    margin: 15px;
 }
 
 .btn-cont > .btn {
-    margin: 20px;
+    margin: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
     padding: 5px;
     min-width: 110px;
 
