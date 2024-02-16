@@ -68,8 +68,13 @@ public class AppRouter {
         return "profile";
     }
 
+    @GetMapping("/newUser")
+    public String loadNewUser(Model model) {
+        return "newUser";
+    }
+
     @PostMapping("/newUser")
-    public String newPost(Model model, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
+    public String newUser(Model model, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
             boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership)
             throws IOException {
         if ("employer".equals(typeUser)) {

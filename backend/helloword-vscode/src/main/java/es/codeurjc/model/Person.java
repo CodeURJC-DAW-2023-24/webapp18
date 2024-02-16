@@ -14,14 +14,14 @@ public abstract class Person {
     private String province;
     private String street;
     
-    public Person(String name, String surname, String description, String dni, String mail, String pass, int phone, String country, String locality, String province, String street){
+    public Person(String name, String surname, String description, String dni, String mail, String pass, String phone, String country, String locality, String province, String street){
         this.name = name;
         this.surname = surname;
         this.description = description;
         this.dni = dni;
         this.mail = mail;
         this.pass = pass;
-        this.phone = phone;
+        this.phone = Integer.parseInt(phone);
         this.country = country;
         this.locality = locality;
         this.province = province;
