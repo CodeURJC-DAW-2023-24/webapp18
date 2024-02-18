@@ -86,13 +86,31 @@ public class AppRouter {
         return "profile";
     }
 
-    @GetMapping("/newUser")
-    public String loadNewUser(Model model) {
-        return "newUser";
+    @GetMapping("/login")
+    public String sign(Model model) {
+        return "login";
     }
 
-    @PostMapping("/newUser")
-    public String newUser(Model model, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
+    @PostMapping("/login")
+    public String login(Model model) {
+        return "redirect:/loged";
+    }
+
+    @GetMapping("/loged")
+    public String loged(Model model) {
+        model.addAttribute("title", "Sesión iniciada");
+        model.addAttribute("message", "Has iniciado sesión correctamente");
+        model.addAttribute("back", "/profile");
+        return "message";
+    }
+
+    @GetMapping("/user/form")
+    public String loadNewUser(Model model) {
+        return "new_user";
+    }
+
+    @PostMapping("/user/register")
+    public String newUser(Model model) { /*, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
             boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership)
             throws IOException {
         if ("employer".equals(typeUser)) {
@@ -122,10 +140,23 @@ public class AppRouter {
             lifeguard.setSkills(skills);
             model.addAttribute("message", "Nuevo socorrista creado correctamente");
         } else {
+            model.addAttribute("title", "Error");
             model.addAttribute("message", "Tienes que seleccionar si eres un socorrista o un empleado");
-        }
+            model.addAttribute("back", "javascript:history.back()");
 
-        return "savedUser";
+            return "message";
+        }
+        */
+
+        return "redirect:/user/registered";
+    }
+
+    @GetMapping("/user/registered")
+    public String registeredUser(Model model) {
+        model.addAttribute("title", "Usuario registrado");
+        model.addAttribute("message", "Usuario registrado correctamente");
+        model.addAttribute("back", "/profile");
+        return "message";
     }
 
     // -------------------------------------- POOL --------------------------------------
