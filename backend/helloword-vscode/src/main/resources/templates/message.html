@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Título del mensaje</title> <!--cambiar-->
+    <title>{{title}}</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,26 +11,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css?family=Fredoka|Yanone+Kaffeesatz" rel="stylesheet" type="text/css">
 
-    <link type="text/css" rel="stylesheet" href="../public/general.css" />
-    <link type="text/css" rel="stylesheet" href="../public/newOffer.css" />
+    <link type="text/css" rel="stylesheet" href="/css/general.css" />
+    <link type="text/css" rel="stylesheet" href="/css/message.css" />
 </head>
 
 <body>
     <header>
         <div>
-            <a href="index.html" style="color: inherit; text-decoration: none">
+            <a href="/" style="color: inherit; text-decoration: none">
                 <h1>H20S</h1>
             </a>
         </div>
     </header>
 
     <div class="container">
-        <p>Cuerpo del mensaje</p> <!--cambiar-->
+        <p>{{message}}</p>
         <div class="btn-cont">
-            <a href="index.html" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+            <a href="{{back}}" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
         </div>
-        <!--mensajes original tenía: "../ficha.html?id={{id}}"-->
-        <!--player edited tenía: href="../ficha?id={{id}}"-->
     </div>
 </body>
 
