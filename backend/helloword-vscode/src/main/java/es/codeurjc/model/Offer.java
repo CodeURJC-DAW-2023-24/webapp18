@@ -1,29 +1,86 @@
 package es.codeurjc.model;
 
 public class Offer {
-    private String direction;
-    private String business;
-    private String time;
-    private String start;
+    private Pool pool;
     private int salary;
-    private String photo;
+    private String start;
     private String description;
     private int id;
     private static int idCounter = 0;
 
-    public Offer(String[] offer) {
-        this.direction = offer[0];
-        this.business = offer[1];
-        this.time = offer[2];
-        this.start = offer[3];
-        this.salary = Integer.parseInt(offer[4]);
-        this.photo = offer[5];
-        this.description = offer[6];
-        this.id = idCounter;
-        idCounter++;
+    private Offer(Builder builder) {
+        this.pool = builder.pool;
+        this.salary = builder.salary;
+        this.start = builder.start;
+        this.description = builder.description;
+        this.id = idCounter++;
     }
 
+    // Getters
     public Integer getId() {
         return id;
+    }
+
+    public Pool getPool() {
+        return pool;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    // Método para actualizar los datos de la oferta
+    public void update(Builder builder) {
+        if (builder.pool != null) {
+            this.pool = builder.pool;
+        }
+        if (builder.salary != null) {
+            this.salary = builder.salary;
+        }
+        if (builder.start != null) {
+            this.start = builder.start;
+        }
+        if (builder.description != null) {
+            this.description = builder.description;
+        }
+    }
+
+    // Clase Builder para construir objetos de tipo Offer
+    public static class Builder {
+        private Pool pool;
+        private Integer salary;
+        private String start;
+        private String description;
+
+        public Builder(Pool pool) {
+            this.pool = pool;
+        }
+
+        public Builder salary(int salary) {
+            this.salary = salary;
+            return this;
+        }
+
+        public Builder start(String start) {
+            this.start = start;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Offer build() {
+            return new Offer(this);
+        }
     }
 }

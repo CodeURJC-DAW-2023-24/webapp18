@@ -18,7 +18,7 @@
 <body>
     <header>
         <div>
-            <a href="index.html" style="color: inherit; text-decoration: none">
+            <a href="/" style="color: inherit; text-decoration: none">
                 <h1>H20S</h1>
             </a>
         </div>
@@ -26,17 +26,17 @@
 
     <div class="data">
         <div class="container">
-            <h2>Datos de la oferta</h2>
-
             {{#offer}}
+            <h2>Oferta en <a href="/pool?id={{pool.id}}">{{pool.name}}</a></h2>
+
             <div class="row">
-                <a class="col-md-6 col-xs-4" href="pool">
-                    <img id="img-pool" src="{{photo}}" alt="{{direction}}">
+                <a class="col-md-6" href="/pool?id={{pool.id}}">
+                    <img id="img-pool" src="{{pool.photo}}" alt="{{pool.direction}}">
                 </a>
                 <div class="col-md-6">
-                    <p><strong>Dirección:</strong> {{direction}}</p>
-                    <p><strong>Empresa:</strong> {{business}}</p>
-                    <p><strong>Horario:</strong> {{time}}</p>
+                    <p><strong>Dirección:</strong> {{pool.direction}}</p>
+                    <p><strong>Empresa:</strong> {{pool.company}}</p>
+                    <p><strong>Horario:</strong> {{pool.scheduleStart}}-{{pool.scheduleEnd}}</p>
                     <p><strong>Fecha de inicio:</strong> {{start}}</p>
                     <p><strong>Salario:</strong> {{salary}}€</p>
                     <p><strong>Descripción:</strong> {{description}}</p>

@@ -1,7 +1,6 @@
 package es.codeurjc.model;
 
-public abstract class Person {
-    private Long id;
+public class Person {  // Pedro la tenía como abstract
     private String name;
     private String surname;
     private String description;
@@ -12,116 +11,177 @@ public abstract class Person {
     private String country;
     private String locality;
     private String province;
-    private String street;
-    
-    public Person(String name, String surname, String description, String dni, String mail, String pass, String phone, String country, String locality, String province, String street){
-        this.name = name;
-        this.surname = surname;
-        this.description = description;
-        this.dni = dni;
-        this.mail = mail;
-        this.pass = pass;
-        this.phone = Integer.parseInt(phone);
-        this.country = country;
-        this.locality = locality;
-        this.province = province;
-        this.street = street;
+    private String direction;
+    private int id;
+    private static int idCounter = 0;
+
+    public Person(Builder builder) {
+        this.name = builder.name;
+        this.surname = builder.surname;
+        this.description = builder.description;
+        this.dni = builder.dni;
+        this.mail = builder.mail;
+        this.pass = builder.pass;
+        this.phone = builder.phone;
+        this.country = builder.country;
+        this.locality = builder.locality;
+        this.province = builder.province;
+        this.direction = builder.direction;
+        this.id = idCounter++;
     }
 
-    public Long getId() {
+    // Getters
+    public int getId() {
 		return id;
-	}
-	
-	public void setId(long id) {
-		this.id = id;
 	}
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getSurname() {
         return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getDni() {
         return dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
     }
 
     public String getMail() {
         return mail;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
     public String getPass() {
         return pass;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
     }
 
     public int getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
-        this.phone = phone;
-    }
-
     public String getCountry() {
         return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public String getLocality() {
         return locality;
     }
 
-    public void setLocality(String locality) {
-        this.locality = locality;
-    }
-
     public String getProvince() {
         return province;
     }
 
-    public void setProvince(String province) {
-        this.province = province;
+    public String getDirection() {
+        return direction;
     }
 
-    public String getStreet() {
-        return street;
+    // Método para actualizar los datos de la persona
+    public void update(Builder builder) {
+        if (builder.name != null) {
+            this.name = builder.name;
+        }
+        if (builder.surname != null) {
+            this.surname = builder.surname;
+        }
+        if (builder.description != null) {
+            this.description = builder.description;
+        }
+        if (builder.dni != null) {
+            this.dni = builder.dni;
+        }
+        if (builder.mail != null) {
+            this.mail = builder.mail;
+        }
+        if (builder.pass != null) {
+            this.pass = builder.pass;
+        }
+        if (builder.phone != 0) {
+            this.phone = builder.phone;
+        }
+        if (builder.country != null) {
+            this.country = builder.country;
+        }
+        if (builder.locality != null) {
+            this.locality = builder.locality;
+        }
+        if (builder.province != null) {
+            this.province = builder.province;
+        }
+        if (builder.direction != null) {
+            this.direction = builder.direction;
+        }
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    // Clase Builder para construir objetos de tipo Person
+    public static class Builder {
+        private String name;
+        private String surname;
+        private String description;
+        private String dni;
+        private String mail;
+        private String pass;
+        private int phone;
+        private String country;
+        private String locality;
+        private String province;
+        private String direction;
+
+        public Builder(String name, String surname) {
+            this.name = name;
+            this.surname = surname;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder dni(String dni) {
+            this.dni = dni;
+            return this;
+        }
+
+        public Builder mail(String mail) {
+            this.mail = mail;
+            return this;
+        }
+
+        public Builder pass(String pass) {
+            this.pass = pass;
+            return this;
+        }
+
+        public Builder phone(int phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder country(String country) {
+            this.country = country;
+            return this;
+        }
+
+        public Builder locality(String locality) {
+            this.locality = locality;
+            return this;
+        }
+
+        public Builder province(String province) {
+            this.province = province;
+            return this;
+        }
+
+        public Builder direction(String direction) {
+            this.direction = direction;
+            return this;
+        }
+
+        public Person build() {
+            return new Person(this);
+        }
     }
-    
 }
