@@ -60,6 +60,24 @@ public class AppRouter {
         return "offer";
     }
 
+    @GetMapping("/offer/form")
+    public String newOffer(Model model) {
+        return "new_offer";
+    }
+
+    @PostMapping("/offer/add")
+    public String addOffer(Model model) {
+        return "redirect:/offer/added";
+    }
+
+    @GetMapping("/offer/added")
+    public String addedOffer(Model model) {
+        model.addAttribute("title", "Oferta añadida");
+        model.addAttribute("message", "Oferta añadida correctamente. ¡Gracias por confiar en nosotros!");
+        model.addAttribute("back", "/");
+        return "message";
+    }
+
     // -------------------------------------- PROFILE --------------------------------------
     @GetMapping("/profile")
     public String profile(Model model) {
