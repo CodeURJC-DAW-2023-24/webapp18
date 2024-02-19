@@ -1,53 +1,40 @@
-async function showMessages(n) {
+async function showMessages(id, n) {
     const button = document.getElementById("showButton");
     button.style.display = "none";
-    console.log("SHOWMESSAGE ACTIVADO");
-    console.log(n);
-    loadMsgs(n)
+
+    loadMsgs(id, n);
 }
 
-async function deleteMsg(id) {
-    const response = await fetch('/deleteMsg?id=' + id, {
+async function deleteMsg(idP, idM) {
+    const response = await fetch('/pool/message/delete?idP=' + idP + '&idM=' + idM, {
         method: 'POST'
     });
     let answer = await response.text();
     let number = parseInt(answer);
-    console.log("numero:")
-    console.log(number);
-    console.log("answer:")
-    console.log(answer);
-    loadMsgs(number);
+
+    showMessages(idP, number);
 }
 
-async function addComment() {
-    const s = document.getElementById("commentInput").value;
-    const response = await fetch('/newMsg?msg=' + s, {
+async function addComment(id) {
+    const message = document.getElementById("commentInput").value;
+    const response = await fetch('/pool/message/add?msg=' + message + '&id=' + id, {
         method: 'POST'
     });
     let answer = await response.text();
     let number = parseInt(answer);
-    console.log("numero:")
-    console.log(number);
-    console.log("answer:")
-    console.log(answer);
-    loadMsgs(number);
+
+    showMessages(id, number);
 }
 
-async function loadMsgs(n) {
-    const content = document.getElementById("messageContainer");
-    let s = "<h3>Comentarios</h3>"
-    content.innerHTML = s
-    console.log(n)
+async function loadMsgs(id, n) {
+    let pagePart = "";
+
     for (let i = 0; i < n; i++) {
-        console.log("relalizando rutina de pagepart")
-        let fetchpar = '/pagePartPoolMsg?id=' + i;
+        let fetchpar = '/pool/message/load?idP=' + id + '&idM=' + i;
         const response = await fetch(fetchpar);
-        const pagePart = await response.text();
-        content.innerHTML += pagePart;
+        pagePart += await response.text();
     }
-    s = "<div class='newCommentContainer'>\n" +
-        "        <input type='text' id='commentInput' name='commentInput' placeholder='Escribe el comentario'><br><br>\n" +
-        "        <button class='btn' onclick = 'addComment()'>Publicar</button>\n" +
-        "</div>";
-    content.innerHTML += s
+
+    const content = document.getElementById("messageContainer");
+    content.innerHTML = pagePart;
 }

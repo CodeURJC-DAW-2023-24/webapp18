@@ -161,36 +161,41 @@ public class AppRouter {
 
     // -------------------------------------- POOL --------------------------------------
     @GetMapping("/pool")
-    public String pool(Model model) {
-        Pool pool = db.getPool(0);
+    public String pool(@RequestParam("id") int id, Model model) {
+        Pool pool = DataBase.getPool(id);
+
         model.addAttribute("pool", pool);
-        model.addAttribute("nMessages", pool.messages.size());
+        model.addAttribute("nMessages", pool.getMessages().length);
         return "pool";
     }
 
-    @GetMapping("/pagePartPoolMsg")
-    public String ppPoolMsg(@RequestParam("id") int id, Model model) {
-        System.out.println("PETICION DE PP POOL RECIBIDA");
-        Message m = db.getMessage(id);
-        model.addAttribute("message", m);
-        model.addAttribute("id", id);
+    @GetMapping("/pool/message/load")
+    public String ppPoolMsg(@RequestParam("idP") int idP, @RequestParam("idM") int idM, Model model) {
+        Pool pool = DataBase.getPool(idP);
+        Message message = pool.getMessage(idM);
+
+        model.addAttribute("messages", message);
+        model.addAttribute("messageId", idM);
+        model.addAttribute("poolId", idP);
         return "poolMessage";
     }
 
-    @PostMapping("/newMsg")
+    @PostMapping("/pool/message/add")
     @ResponseBody
-    public String newMsg(@RequestParam("msg") String input, Model model) {
-        Message m = new Message("null", input);
-        db.addMessage(m);
-        System.out.println("Añadido: " + input);
-        return db.getPool(0).messages.size() + "";
+    public String newMsg(@RequestParam("msg") String input, @RequestParam("id") int id, Model model) {
+        Message message = new Message("null", input);
+        Pool pool = DataBase.getPool(id);
+
+        pool.addMessage(message);
+        return pool.getMessages().length + "";
     }
 
-    @PostMapping("/deleteMsg")
+    @PostMapping("/pool/message/delete")
     @ResponseBody
-    public String deletePoolMsg(@RequestParam("id") int id) {
-        db.deleteMsg(id);
-        Pool p = db.getPool(0);
-        return p.messages.size() + "";
+    public String deletePoolMsg(@RequestParam("idP") int idP, @RequestParam("idM") int idM, Model model) {
+        Pool pool = DataBase.getPool(idP);
+
+        pool.deleteMessage(idM);
+        return pool.getMessages().length + "";
     }
 }

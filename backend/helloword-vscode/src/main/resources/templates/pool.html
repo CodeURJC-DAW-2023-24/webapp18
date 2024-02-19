@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Oferta en {{pool.name}}</title>
+    <title>{{pool.name}}</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css?family=Fredoka|Yanone+Kaffeesatz" rel="stylesheet" type="text/css">
 
     <link type="text/css" rel="stylesheet" href="/css/general.css" />
+    <link type="text/css" rel="stylesheet" href="/css/data.css" />
     <link type="text/css" rel="stylesheet" href="/css/pp.css" />
 
     <script src="/js/poolMessages.js"></script>
@@ -20,36 +21,50 @@
 <body>
     <header>
         <div>
-            <a href="index.html" style="color: inherit; text-decoration: none">
+            <a href="/" style="color: inherit; text-decoration: none">
                 <h1>H20S</h1>
             </a>
         </div>
     </header>
 
     <div class="data">
+        {{#pool}}
         <div class="container">
-            <h2>{{pool.name}}</h2>
+            <h2>{{name}}</h2>
 
-            <div class="containerPool1">
-                <div class="containerPoolLeft">
-                    <p><strong>Dirección:</strong> {{pool.direction}}</p>
-                    <p><strong>Horario:</strong> {{pool.scheduleStart}}-{{pool.scheduleEnd}}</p>
-                    <p><strong>Aforo:</strong> {{pool.afor}}</p>
-                    <p><strong>Descripción:</strong> {{pool.description}}</p>
-                </div>
-                <div class="containerPoolRight">
-                    <img class="poolIMG" src="/images/default-image.jpg">
+            <div class="row">
+                <a class="col-md-6 col-xs-4">
+                    <img id="img-pool" src="{{photo}}" alt="{{direction}}">
+                </a>
+                <div class="col-md-6">
+                    <p><strong>Dirección:</strong> {{direction}}</p>
+                    <p><strong>Horario:</strong> {{scheduleStart}}-{{scheduleEnd}}</p>
+                    <p><strong>Aforo:</strong> {{capacity}} personas</p>
+                    <p><strong>Descripción:</strong> {{description}}</p>
                 </div>
             </div>
 
             <div class="btn-cont">
-                <a href="newOffer.html" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-                <a href="index.html" class="btn btn-red" role="button"><i class="bi bi-trash"></i> Eliminar</a>
-                <a href="index.html" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+                <a href="/pool/edit?id={{id}}" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+                <a href="/pool/delete?id={{id}}" class="btn btn-red" role="button"><i class="bi bi-trash"></i> Eliminar</a>
+                <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
             </div>
         </div>
-        <div class="container" id="messageContainer">
-            <button class="btn" onclick="showMessages('{{nMessages}}')" id="showButton">Ver comentarios</button>
+        {{/pool}}
+        <div class="container">
+            <h3>Comentarios</h3>
+            <div class="commentContainer newCommentContainer">
+                <input type="text" id="commentInput" name="commentInput" placeholder="Escribe el comentario"/><br><br>
+                <div class="btn-cont">
+                    <button class="btn" onclick="addComment('{{pool.id}}')">
+                        <i class="bi bi-send-fill"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="messageContainer"></div>
+            <div class="btn-cont">
+                <button class="btn" onclick="showMessages('{{pool.id}}', '{{nMessages}}')" id="showButton">Ver comentarios</button>
+            </div>
         </div>
     </div>
 </body>
