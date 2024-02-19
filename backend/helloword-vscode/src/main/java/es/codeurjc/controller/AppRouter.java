@@ -81,8 +81,8 @@ public class AppRouter {
     // -------------------------------------- PROFILE --------------------------------------
     @GetMapping("/profile")
     public String profile(Model model) {
-        Person pers = db.getPerson(0);
-        model.addAttribute("person", pers);
+        Person person = DataBase.getPerson(0);
+        model.addAttribute("user", person);
         return "profile";
     }
 

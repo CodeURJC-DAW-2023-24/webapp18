@@ -1,5 +1,7 @@
 package es.codeurjc.model;
 
+import java.util.ArrayList;
+
 public class Person {  // Pedro la tenía como abstract
     private String name;
     private String surname;
@@ -15,6 +17,9 @@ public class Person {  // Pedro la tenía como abstract
     private int id;
     private static int idCounter = 0;
 
+    //user
+    private ArrayList<String> skills;
+
     public Person(Builder builder) {
         this.name = builder.name;
         this.surname = builder.surname;
@@ -28,6 +33,13 @@ public class Person {  // Pedro la tenía como abstract
         this.province = builder.province;
         this.direction = builder.direction;
         this.id = idCounter++;
+
+        //user
+        this.skills = new ArrayList<>();
+    }
+
+    public void addSkill(String skill) {
+        this.skills.add(skill);
     }
 
     // Getters

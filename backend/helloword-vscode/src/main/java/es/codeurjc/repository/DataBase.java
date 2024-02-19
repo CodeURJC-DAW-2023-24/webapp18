@@ -139,6 +139,10 @@ public class DataBase {
         for (Person person : defaultPeopleData) {
             DataBase.people.put(person.getId(), person);
         }
+
+        Person person = DataBase.getPerson(0);
+        person.addSkill("Natación");
+        person.addSkill("Primeros auxilios");
     }
 
     public static Offer getOffer(int id) {
