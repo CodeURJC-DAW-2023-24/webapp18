@@ -23,6 +23,8 @@ import es.codeurjc.model.Person;
 import es.codeurjc.model.Pool;
 import es.codeurjc.repository.DataBase;
 import es.codeurjc.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AppRouter {
@@ -34,13 +36,15 @@ public class AppRouter {
     // -------------------------------------- MAIN --------------------------------------
     @GetMapping("/")
     public String initial(Model model) {
-        System.out.println("LOG DEL ROUTER INICIAL");
         return "index";
     }
 
     // -------------------------------------- OFFERS --------------------------------------
     @GetMapping("/loadOffers")
-    public String loadPlayers(@RequestParam("from") int from, @RequestParam("amount") int amount, Model model) {
+    public String loadOffers(HttpServletRequest request, Model model) {
+        int from = Integer.parseInt(request.getParameter("from"));
+        int amount = Integer.parseInt(request.getParameter("amount"));
+
         Offer[] offers = DataBase.getOffers(from, amount);
         model.addAttribute("offers", offers);
         model.addAttribute("alternative", "No hay ofertas aún");
@@ -48,7 +52,7 @@ public class AppRouter {
     }
 
     @GetMapping("/allOffersLoaded")
-    public ResponseEntity<?> allPlayersLoaded() {
+    public ResponseEntity<?> allOffersLoaded() {
         boolean value = DataBase.allOffersLoaded();
         return ResponseEntity.ok().body(Map.of("value", value));
     }
@@ -110,12 +114,12 @@ public class AppRouter {
     }
 
     @PostMapping("/user/register")
-    public String newUser(Model model) { /*, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
-            boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership)
-            throws IOException {
+    public String newUser(HttpSession session, Model model) {
+            /*, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
+            boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership) {
         if ("employer".equals(typeUser)) {
             userService.saveEmployer(employer);
-            model.addAttribute("message", "Nuevo empleado creado correctamente");
+            session.setAttribute("message", "Nuevo empleado creado correctamente");
         } else if ("lifeguard".equals(typeUser)) {
             userService.saveLifeguard(lifeguard);
             List<String> skills = new ArrayList<>();
@@ -138,7 +142,7 @@ public class AppRouter {
                 skills.add("Liderazgo");
             }
             lifeguard.setSkills(skills);
-            model.addAttribute("message", "Nuevo socorrista creado correctamente");
+            session.setAttribute("message", "Nuevo socorrista creado correctamente");
         } else {
             model.addAttribute("title", "Error");
             model.addAttribute("message", "Tienes que seleccionar si eres un socorrista o un empleado");
@@ -147,14 +151,17 @@ public class AppRouter {
             return "message";
         }
         */
+        session.setAttribute("message", "Usuario registrado correctamente");
 
         return "redirect:/user/registered";
     }
 
     @GetMapping("/user/registered")
-    public String registeredUser(Model model) {
+    public String registeredUser(HttpSession session, Model model) {
+        String message = (String) session.getAttribute("message");
+
         model.addAttribute("title", "Usuario registrado");
-        model.addAttribute("message", "Usuario registrado correctamente");
+        model.addAttribute("message", message);
         model.addAttribute("back", "/profile");
         return "message";
     }
