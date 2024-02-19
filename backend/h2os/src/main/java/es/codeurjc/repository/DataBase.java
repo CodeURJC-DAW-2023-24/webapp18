@@ -9,13 +9,13 @@ import java.util.Map;
 
 import es.codeurjc.model.Message;
 import es.codeurjc.model.Offer;
-import es.codeurjc.model.Person;
+import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Pool;
 
 public class DataBase {
     private static Map<Integer, Pool> pools = new HashMap<>();
     private static Map<Integer, Offer> offers = new HashMap<>();
-    private static Map<Integer, Person> people = new HashMap<>();
+    private static Map<Integer, Lifeguard> people = new HashMap<>();
     private static int loadedUntil = 0;
 
     public DataBase() {
@@ -100,8 +100,8 @@ public class DataBase {
 
     public void initializeDefaultPeople() {
         String description = "Descripción genérica que se puede poner en el perfil un tio que quiere ser socorrista en verano.";
-        Person[] defaultPeopleData = {
-            new Person.Builder("Paco", "Merla")
+        Lifeguard[] defaultPeopleData = {
+            new Lifeguard.Builder("Paco", "Merla")
                 .description(description)
                 .dni("12345678A")
                 .mail("pacomerla@gmail.com")
@@ -112,7 +112,7 @@ public class DataBase {
                 .province("Madrid")
                 .direction("Calle de los príncipes")
                 .build(),
-            new Person.Builder("Juan", "Pérez")
+            new Lifeguard.Builder("Juan", "Pérez")
                 .description(description)
                 .dni("12345678B")
                 .mail("klkmanin@gmail.com")
@@ -123,7 +123,7 @@ public class DataBase {
                 .province("Madrid")
                 .direction("Calle de los príncipes")
                 .build(),
-            new Person.Builder("Pedro", "García")
+            new Lifeguard.Builder("Pedro", "García")
                 .description(description)
                 .dni("12345678C")
                 .mail("pedro@gmail.com")
