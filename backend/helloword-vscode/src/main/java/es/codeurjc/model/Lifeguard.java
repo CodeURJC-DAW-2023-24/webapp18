@@ -1,17 +1,27 @@
 package es.codeurjc.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.web.multipart.MultipartFile;
 
 public class Lifeguard extends Person{
     private String photoUser;
     private String document;
-    private List<String> skills;
+    private ArrayList<String> skills;
 
-    public Lifeguard(String name, String surname, String description, String dni, String mail, String pass, String phone, String country, String locality, String province, String street, String photoUser){
-        super(name, surname, description, dni, mail, pass, phone, country, locality, province, street);
-        this.photoUser = photoUser;
+    public Lifeguard(Builder builder){
+        super(builder);
+        this.photoUser = builder.photoUser;
+        this.skills = new ArrayList<>();
+    }
+
+    public void addSkill(String skill) {
+        this.skills.add(skill);
+    }
+
+    @Override
+    public String getType() {
+        return "Lifeguard";
     }
 
     /*public MultipartFile getDocument() {
@@ -22,19 +32,33 @@ public class Lifeguard extends Person{
         this.document = document;
     }
 */
-    public String photoUser(){
+    public String getPhotoUser(){
         return photoUser;
     }
 
-    public void setPhotoUser(String photoUser){
-        this.photoUser = photoUser;
-    }
-
-       public List<String> getSkills() {
+    public ArrayList<String> getSkills() {
         return skills;
     }
 
-    public void setSkills(List<String> skills) {
-        this.skills = skills;
+    // Método para actualizar los datos de la persona
+    public void update(Builder builder) {
+        super.update(builder);
+        if (builder.photoUser != null) {
+            this.photoUser = builder.photoUser;
+        }
+    }
+
+    public static class Builder extends Person.Builder {
+        private String photoUser;
+
+        public Builder photoUser(String photoUser) {
+            this.photoUser = photoUser;
+            return this;
+        }
+
+        @Override
+        public Lifeguard build() {
+            return new Lifeguard(this);
+        }
     }
 }

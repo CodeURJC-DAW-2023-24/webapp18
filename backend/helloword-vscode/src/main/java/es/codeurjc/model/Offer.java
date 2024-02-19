@@ -60,8 +60,9 @@ public class Offer {
         private String start;
         private String description;
 
-        public Builder(Pool pool) {
+        public Builder pool (Pool pool) {
             this.pool = pool;
+            return this;
         }
 
         public Builder salary(int salary) {

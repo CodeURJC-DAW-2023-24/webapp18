@@ -22,7 +22,7 @@ public class UserService {
 
 		long id = nextId1.getAndIncrement();
 
-		lifeguard.setId(id);
+		//lifeguard.setId(id);
 
 		this.lifeguards.put(id, lifeguard);
 	}
@@ -43,7 +43,7 @@ public class UserService {
 
 		long id = nextId2.getAndIncrement();
 
-		employer.setId(id);
+		//employer.setId(id);
 
 		this.employers.put(id, employer);
 	}

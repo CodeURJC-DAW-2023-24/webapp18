@@ -10,12 +10,15 @@ import java.util.Map;
 import es.codeurjc.model.Message;
 import es.codeurjc.model.Offer;
 import es.codeurjc.model.Person;
+import es.codeurjc.model.Employer;
+import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Pool;
 
 public class DataBase {
     private static Map<Integer, Pool> pools = new HashMap<>();
     private static Map<Integer, Offer> offers = new HashMap<>();
     private static Map<Integer, Person> people = new HashMap<>();
+    private static Map<Integer, String> types = new HashMap<>();
     private static int loadedUntil = 0;
 
     public DataBase() {
@@ -24,6 +27,7 @@ public class DataBase {
         initializeDefaultPeople();
     }
 
+    // Initializers
     private void initializeDefaultPools() {
         Pool[] defaultPoolsData = {
             new Pool.Builder()
@@ -49,7 +53,7 @@ public class DataBase {
         };
 
         for (Pool pool : defaultPoolsData) {
-            pools.put(pool.getId(), pool);
+            addPool(pool);
         }
 
         Pool pool = DataBase.getPool(0);
@@ -62,27 +66,32 @@ public class DataBase {
     private void initializeDefaultOffers() {
         Pool pool = DataBase.getPool(0);
         Offer[] defaultOffersData = {
-            new Offer.Builder(pool)
+            new Offer.Builder()
+                .pool(pool)
                 .salary(1100)
                 .start("01/03/2024")
                 .description("¡Únete a nuestro equipo como socorrista de piscina! Estamos buscando a un profesional comprometido y capacitado para garantizar la seguridad de nuestros clientes en el área de la piscina. Responsabilidades incluyen la supervisión constante, la capacidad de respuesta rápida ante emergencias y la aplicación de protocolos de salvamento. Si posees certificación de socorrista, habilidades de comunicación efectivas y un enfoque proactivo para mantener un entorno acuático seguro, ¡esperamos recibir tu solicitud!")
                 .build(),
-            new Offer.Builder(pool)
+            new Offer.Builder()
+                .pool(pool)
                 .salary(1500)
                 .start("Inicio 2")
                 .description("Descripción 2")
                 .build(),
-            new Offer.Builder(pool)
+            new Offer.Builder()
+                .pool(pool)
                 .salary(1200)
                 .start("Inicio 3")
                 .description("Descripción 3")
                 .build(),
-            new Offer.Builder(pool)
+            new Offer.Builder()
+                .pool(pool)
                 .salary(2000)
                 .start("Inicio 4")
                 .description("Descripción 4")
                 .build(),
-            new Offer.Builder(pool)
+            new Offer.Builder()
+                .pool(pool)
                 .salary(1800)
                 .start("Inicio 5")
                 .description("Descripción 5")
@@ -90,18 +99,20 @@ public class DataBase {
         };
 
         for (Offer offer : defaultOffersData) {
-            DataBase.offers.put(offer.getId(), offer);
+            addOffer(offer);
         }
 
         Offer offer = DataBase.getOffer(1);
         Pool pool2 = DataBase.getPool(1);
-        offer.update(new Offer.Builder(pool2));
+        offer.update(new Offer.Builder().pool(pool2));
     }
 
-    public void initializeDefaultPeople() {
+    private void initializeDefaultPeople() {
         String description = "Descripción genérica que se puede poner en el perfil un tio que quiere ser socorrista en verano.";
         Person[] defaultPeopleData = {
-            new Person.Builder("Paco", "Merla")
+            new Lifeguard.Builder()
+                .name("Paco")
+                .surname("Merla")
                 .description(description)
                 .dni("12345678A")
                 .mail("pacomerla@gmail.com")
@@ -112,7 +123,9 @@ public class DataBase {
                 .province("Madrid")
                 .direction("Calle de los príncipes")
                 .build(),
-            new Person.Builder("Juan", "Pérez")
+            new Lifeguard.Builder()
+                .name("Juan")
+                .surname("Pérez")
                 .description(description)
                 .dni("12345678B")
                 .mail("klkmanin@gmail.com")
@@ -123,7 +136,9 @@ public class DataBase {
                 .province("Madrid")
                 .direction("Calle de los príncipes")
                 .build(),
-            new Person.Builder("Pedro", "García")
+            new Employer.Builder()
+                .name("Pedro")
+                .surname("García")
                 .description(description)
                 .dni("12345678C")
                 .mail("pedro@gmail.com")
@@ -137,14 +152,53 @@ public class DataBase {
         };
 
         for (Person person : defaultPeopleData) {
-            DataBase.people.put(person.getId(), person);
+            addPerson(person);
+
+            if (person instanceof Lifeguard) {
+                Lifeguard lifeguard = (Lifeguard) person;
+                lifeguard.addSkill("Natación");
+                lifeguard.addSkill("Primeros auxilios");
+            }
+            else if (person instanceof Employer) {
+                Employer employer = (Employer) person;
+                Employer.Builder builder = new Employer.Builder().photoCompany("logo.png");
+                employer.update(builder);
+            }
         }
 
-        Person person = DataBase.getPerson(0);
-        person.addSkill("Natación");
-        person.addSkill("Primeros auxilios");
     }
 
+    // Settes (adders)
+    public void addPool(Pool pool) {
+        pools.put(pool.getId(), pool);
+    }
+
+    public void addOffer(Offer offer) {
+        offers.put(offer.getId(), offer);
+    }
+
+    public void addPerson(Person person) {
+        String type = person.getType();
+
+        switch (type) {
+            case "Lifeguard":
+                Lifeguard lifeguard = (Lifeguard) person;
+                people.put(lifeguard.getId(), lifeguard);
+                types.put(lifeguard.getId(), "Lifeguard");
+                break;
+
+            case "Employer":
+                Employer employer = (Employer) person;
+                people.put(employer.getId(), employer);
+                types.put(employer.getId(), "Employer");
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    // Getters
     public static Offer getOffer(int id) {
         return offers.get(id);
     }
@@ -163,15 +217,20 @@ public class DataBase {
         return sublist.toArray(new Offer[0]); // la convierto en array para poder aplicar moustache
     }
 
-    public static boolean allOffersLoaded() {
-        return (loadedUntil == offers.size());
-    }
-
     public static Pool getPool(int id) {
         return pools.get(id);
     }
 
     public static Person getPerson(int id) {
         return people.get(id);
+    }
+
+    public static String getType(int id) {
+        return types.get(id);
+    }
+
+    // Checkers
+    public static boolean allOffersLoaded() {
+        return (loadedUntil == offers.size());
     }
 }
