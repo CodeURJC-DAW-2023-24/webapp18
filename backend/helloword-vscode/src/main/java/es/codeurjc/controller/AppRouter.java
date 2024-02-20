@@ -172,37 +172,33 @@ public class AppRouter {
         Pool pool = DataBase.getPool(id);
 
         model.addAttribute("pool", pool);
-        model.addAttribute("nMessages", pool.getMessages().length);
         return "pool";
     }
 
     @GetMapping("/pool/message/load")
-    public String ppPoolMsg(@RequestParam("idP") int idP, @RequestParam("idM") int idM, Model model) {
-        Pool pool = DataBase.getPool(idP);
-        Message message = pool.getMessage(idM);
+    public String loadMessages(@RequestParam("id") int id, Model model) {
+        Pool pool = DataBase.getPool(id);
+        Message[] messages = pool.getMessages();
 
-        model.addAttribute("messages", message);
-        model.addAttribute("messageId", idM);
-        model.addAttribute("poolId", idP);
+        model.addAttribute("messages", messages);
+        model.addAttribute("poolId", id);
         return "poolMessage";
     }
 
     @PostMapping("/pool/message/add")
     @ResponseBody
-    public String newMsg(@RequestParam("msg") String input, @RequestParam("id") int id, Model model) {
+    public void newMessage(@RequestParam("msg") String input, @RequestParam("id") int id, Model model) {
         Message message = new Message("null", input);
         Pool pool = DataBase.getPool(id);
 
         pool.addMessage(message);
-        return pool.getMessages().length + "";
     }
 
     @PostMapping("/pool/message/delete")
     @ResponseBody
-    public String deletePoolMsg(@RequestParam("idP") int idP, @RequestParam("idM") int idM, Model model) {
+    public void deletePoolMessage(@RequestParam("idP") int idP, @RequestParam("idM") int idM, Model model) {
         Pool pool = DataBase.getPool(idP);
 
         pool.deleteMessage(idM);
-        return pool.getMessages().length + "";
     }
 }

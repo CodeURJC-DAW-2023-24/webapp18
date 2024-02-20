@@ -3,9 +3,14 @@
     <div class="msgAuthor"> <a href="/profile">{{author}}:</a> </div>
     <div class="msgPool"> {{body}} </div>
     <div class="btn-cont">
-        <button class="btn btn-red" onclick="deleteMsg('{{poolId}}', '{{messageId}}')">
+        <button class="btn btn-red" onclick="deleteMsg('{{poolId}}', '{{-index}}'-1)">
             <i class="bi bi-trash"></i>
         </button>
     </div>
+</div>
+{{/messages}}
+{{^messages}}
+<div class="commentContainer">
+    <div class="msgPool"> No hay comentarios </div>
 </div>
 {{/messages}}
