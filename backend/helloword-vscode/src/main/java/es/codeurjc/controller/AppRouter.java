@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,15 +28,20 @@ import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import es.codeurjc.service.MessageService;
+import es.codeurjc.service.PoolService;
 
 @Controller
 public class AppRouter {
     private DataBase db = new DataBase();
 
     private static final String MESSAGES_FOLDER = "messages";
+    private static final String POOLS_FOLDER = "pools";
 
 	@Autowired
 	private MessageService messageService;
+
+    @Autowired
+    private PoolService poolService;
 
     @Autowired
     private UserService userService;
@@ -176,17 +182,22 @@ public class AppRouter {
     // -------------------------------------- POOL --------------------------------------
     @GetMapping("/pool")
     public String pool(@RequestParam("id") int id, Model model) {
-        Pool pool = DataBase.getPool(id);
+        //Pool pool = DataBase.getPool(id);
 
-        model.addAttribute("pool", pool);
+        Optional<Pool> pool = poolService.findById(id);
+        if(pool.isPresent()){
+        model.addAttribute("pool", pool.get());
+    }
         return "pool";
     }
 
     @GetMapping("/pool/message/load")
     public String loadMessages(@RequestParam("id") int id, Model model) {
-        Pool pool = DataBase.getPool(id);
+        //Pool pool = DataBase.getPool(id);
+        Pool pool = poolService.findById(id).get();
+        List<Message> messages = pool.getMessages();
         // Hay que hacer que los mensajes sean referentes a pool
-        Collection<Message> messages = messageService.findAll();
+        Collection<Message> messagesBD = messageService.findAll();
 
         model.addAttribute("messages", messages);
         model.addAttribute("poolId", id);
@@ -197,18 +208,20 @@ public class AppRouter {
     @ResponseBody
     public void newMessage(@RequestParam("msg") String input, @RequestParam("id") int id, Model model) {
         Message message = new Message("null", input);
-        Pool pool = DataBase.getPool(id);
-
+     //   Pool pool = DataBase.getPool(id);
+        Pool pool = poolService.findById(id).get();
         pool.addMessage(message);
         messageService.save(message);
+        poolService.save(pool);
     }
 
     @PostMapping("/pool/message/delete")
     @ResponseBody
     public void deletePoolMessage(@RequestParam("idP") int idP, @RequestParam("idM") int idM, Model model) {
-        Pool pool = DataBase.getPool(idP);
-
+        // Pool pool = DataBase.getPool(idP);
+        Pool pool = poolService.findById(idP).get();
         pool.deleteMessage(idM);
         messageService.deleteById(idM);
+        poolService.save(pool);
     }
 }

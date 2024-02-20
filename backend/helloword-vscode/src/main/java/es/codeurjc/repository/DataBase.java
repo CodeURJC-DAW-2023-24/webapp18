@@ -168,10 +168,10 @@ public class DataBase {
 
     }
 
-    // Settes (adders)
-    public void addPool(Pool pool) {
-        pools.put(pool.getId(), pool);
-    }
+     //Settes(adders)
+     public void addPool(Pool pool) {
+         pools.put((int) pool.getId(), pool);
+     }
 
     public void addOffer(Offer offer) {
         offers.put(offer.getId(), offer);
