@@ -4,6 +4,7 @@ import org.springframework.ui.Model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -25,10 +26,16 @@ import es.codeurjc.repository.DataBase;
 import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import es.codeurjc.service.MessageService;
 
 @Controller
 public class AppRouter {
     private DataBase db = new DataBase();
+
+    private static final String MESSAGES_FOLDER = "messages";
+
+	@Autowired
+	private MessageService messageService;
 
     @Autowired
     private UserService userService;
@@ -178,7 +185,8 @@ public class AppRouter {
     @GetMapping("/pool/message/load")
     public String loadMessages(@RequestParam("id") int id, Model model) {
         Pool pool = DataBase.getPool(id);
-        Message[] messages = pool.getMessages();
+        // Hay que hacer que los mensajes sean referentes a pool
+        Collection<Message> messages = messageService.findAll();
 
         model.addAttribute("messages", messages);
         model.addAttribute("poolId", id);
@@ -192,6 +200,7 @@ public class AppRouter {
         Pool pool = DataBase.getPool(id);
 
         pool.addMessage(message);
+        messageService.save(message);
     }
 
     @PostMapping("/pool/message/delete")
@@ -200,5 +209,6 @@ public class AppRouter {
         Pool pool = DataBase.getPool(idP);
 
         pool.deleteMessage(idM);
+        messageService.deleteById(idM);
     }
 }
