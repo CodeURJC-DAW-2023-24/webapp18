@@ -62,18 +62,7 @@ async function checkMail(){
 
     const response = await fetch(`/availableMail?mail=${mail}`);
     const responseObj = await response.json();
-    /*let message = "";
-    let color = "";
-    let available = responseObj;
-    if (available === true){
-        message = "Email disponible"
-        color = "green"
-    }
-    if (available === false){
-        message = "Email no disponible"
-        color = "red"
-    }
-*/  
+    
     let message = responseObj.available ? "Email disponible" : "Email no disponible";
     let color = responseObj.available ? "green" : "red";
 

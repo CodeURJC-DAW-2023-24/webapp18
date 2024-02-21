@@ -135,49 +135,59 @@ public class AppRouter {
     }
 
     //FALTARIA METER LA COMPROBACION DE QUE NO ESTE REPETIDO EL MAIL
-    public String checkForm(String age, String phone){
+    public String checkForm(String mail, String age, String phone){
         int phoneNum = 0;
         int ageNum = 0;
         String message1 = "";
         String message2 = "";
+        String message3 = "";
 
         try {
             phoneNum = Integer.parseInt(phone);
         } catch (NumberFormatException e) {
-            message1 = "El teléfono debe ser un número";
+            message1 = "El teléfono debe ser un número.";
         }
 
         if (phoneNum < 0) {
-            message1 = "El teléfono debe ser un número positivo";
+            message1 = "El teléfono debe ser un número positivo.";
         }
 
         if (String.valueOf(phoneNum).length() != 9) {
-            message1 = "El teléfono debe tener 9 cifras";
+            message1 = "El teléfono debe tener 9 cifras.";
         }
 
         try {
             ageNum = Integer.parseInt(age);
         } catch (NumberFormatException e) {
-            message2 = "La edad debe ser un número";
+            message2 = "La edad debe ser un número.";
         }
 
         if (ageNum < 0) {
-            message2 = "La edad debe ser un número positivo";
+            message2 = "La edad debe ser un número positivo.";
         }
 
         if (ageNum % 1 != 0) {
-            message2 = "La edad debe ser un número entero";
+            message2 = "La edad debe ser un número entero.";
         }
 
-    return message1 + " " + message2;
+        Optional<Employer> employer = employerRepository.findByMail(mail);
+        if (employer.isPresent()){
+            message3 = "Correo ya en uso por otro empleado.";
+        }
+        Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
+        if (lifeguard.isPresent()){
+            message3 = "Correo ya en uso por otro socorrista.";
+        }
+
+    return message1 + " " + message2 + " " + message3;
     }
 
     @PostMapping("/user/register")
     public String newUser(HttpServletRequest request, HttpSession session, Model model, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
             boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership, MultipartFile photoUserField, MultipartFile photoCompanyField) throws IOException {
         model.addAttribute("title", "Exito");
-       String messageForm = checkForm(request.getParameter("age"),request.getParameter("phone"));
-    //    if (messageForm.equals(" ")){ DESACTIVADO POR AHORA PARA NO TARDAR AL LOGEARTE
+       String messageForm = checkForm(request.getParameter("mail"),request.getParameter("age"),request.getParameter("phone"));
+    //    if (messageForm.equals("  ")){ DESACTIVADO POR AHORA PARA NO TARDAR AL LOGEARTE
             if ("employer".equals(typeUser)) {
                 if (!photoCompanyField.isEmpty()) {
 			    employer.setPhotoCompany(BlobProxy.generateProxy(photoCompanyField.getInputStream(), photoCompanyField.getSize()));
@@ -258,7 +268,7 @@ public class AppRouter {
 
     //PREGUNTAR AL PROFE POR QUE NO FUNCIONA SI EL TRUE Y EL FALSE LO HACE BIEN
     @GetMapping("/availableMail")
-    public Map<String, Boolean> checkMailAvailability(@RequestParam String mail) {
+    public ResponseEntity<?> checkMailAvailability(@RequestParam String mail) {
         boolean available = true;
         Optional<Employer> employer = employerRepository.findByMail(mail);
         if (employer.isPresent()){
@@ -268,11 +278,7 @@ public class AppRouter {
         if (lifeguard.isPresent()){
             available = false;
         }  
-        System.out.println(mail);
-        System.out.println(available);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("available", available);
-        return response;
+        return ResponseEntity.ok().body(Map.of("available", available));
     }
     
     
