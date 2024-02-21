@@ -1,58 +1,36 @@
 package es.codeurjc.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "employer")
 public class Employer extends Person{
 
     private String photoCompany;
     private String position;
 
-    public Employer(Builder builder) {
-        super(builder);
-        this.photoCompany = builder.photoCompany;
-        this.position = builder.position;
+    public Employer(){
+        
     }
 
-    // Getters
-    @Override
-    public String getType() {
-        return "Employer";
+    public Employer(String name, String surname, String description, String dni, String mail, String pass, String phone, String country, String locality, String province, String street, String photoCompany, String position){
+        super(name, surname, description, dni, mail, pass, phone, country, locality, province, street);
+        this.photoCompany = photoCompany;
+        this.position = position;
     }
 
+    public void setPhotoCompany(String photoCompany){
+        this.photoCompany = photoCompany;
+    }
     public String getPhotoCompany(){
         return photoCompany;
     }
-
     public String getPosition(){
         return position;
     }
 
-    // Método para actualizar los datos de la persona
-    public void update(Builder builder) {
-        super.update(builder);
-        if (builder.photoCompany != null) {
-            this.photoCompany = builder.photoCompany;
-        }
-        if (builder.position != null) {
-            this.position = builder.position;
-        }
-    }
-
-    public static class Builder extends Person.Builder {
-        private String photoCompany;
-        private String position;
-
-        public Builder photoCompany(String photoCompany) {
-            this.photoCompany = photoCompany;
-            return this;
-        }
-
-        public Builder position(String position) {
-            this.position = position;
-            return this;
-        }
-
-        @Override
-        public Employer build() {
-            return new Employer(this);
-        }
+    public void setPosition(String position){
+        this.position = position;
     }
 }

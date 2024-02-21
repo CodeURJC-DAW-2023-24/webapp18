@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,14 @@ import es.codeurjc.model.Offer;
 import es.codeurjc.model.Person;
 import es.codeurjc.model.Pool;
 import es.codeurjc.repository.DataBase;
+import es.codeurjc.repository.EmployerRepository;
+import es.codeurjc.repository.LifeguardRepository;
 import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import es.codeurjc.service.MessageService;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 public class AppRouter {
@@ -39,6 +44,12 @@ public class AppRouter {
 
     @Autowired
     private UserService userService;
+
+	@Autowired 
+	private EmployerRepository employerRepository;
+
+	@Autowired
+	private LifeguardRepository lifeguardRepository;
 
     // -------------------------------------- MAIN --------------------------------------
     @GetMapping("/")
@@ -90,23 +101,23 @@ public class AppRouter {
     }
 
     // -------------------------------------- PROFILE --------------------------------------
-    @GetMapping("/profile")
+    /*@GetMapping("/profile")
     public String profile(Model model) {
         Person person = DataBase.getPerson(0);
         model.addAttribute("user", person);
         return "profile";
     }
-
+*/
     @GetMapping("/login")
     public String sign(Model model) {
         return "login";
     }
 
-    @PostMapping("/login")
+   /*  @PostMapping("/login")
     public String login(Model model) {
         return "redirect:/loged";
     }
-
+*/
     @GetMapping("/loged")
     public String loged(Model model) {
         model.addAttribute("title", "Sesión iniciada");
@@ -121,35 +132,33 @@ public class AppRouter {
     }
 
     @PostMapping("/user/register")
-    public String newUser(HttpSession session, Model model) {
-            /*, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
+    public String newUser(HttpSession session, Model model, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
             boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership) {
+        model.addAttribute("title", "Exito");
         if ("employer".equals(typeUser)) {
-            userService.saveEmployer(employer);
-            session.setAttribute("message", "Nuevo empleado creado correctamente");
+            employerRepository.save(employer);
+            model.addAttribute("message", "Nuevo empleado creado correctamente");
         } else if ("lifeguard".equals(typeUser)) {
-            userService.saveLifeguard(lifeguard);
-            List<String> skills = new ArrayList<>();
             if (reliability) {
-                skills.add("Confianza");
+                lifeguard.addSkill("Confianza");
             }
             if (effort) {
-                skills.add("Esfuerzo");
+                lifeguard.addSkill("Esfuerzo");
             }
             if (communication) {
-                skills.add("Comunicación");
+                lifeguard.addSkill("Comunicación");
             }
             if (attitude) {
-                skills.add("Actitud positiva");
+                lifeguard.addSkill("Actitud positiva");
             }
             if (problemsResolution) {
-                skills.add("Resolución de problemas");
+                lifeguard.addSkill("Resolución de problemas");
             }
             if (leadership) {
-                skills.add("Liderazgo");
+                lifeguard.addSkill("Liderazgo");
             }
-            lifeguard.setSkills(skills);
-            session.setAttribute("message", "Nuevo socorrista creado correctamente");
+            lifeguardRepository.save(lifeguard);
+            model.addAttribute("message", "Nuevo socorrista creado correctamente");
         } else {
             model.addAttribute("title", "Error");
             model.addAttribute("message", "Tienes que seleccionar si eres un socorrista o un empleado");
@@ -157,22 +166,53 @@ public class AppRouter {
 
             return "message";
         }
-        */
-        session.setAttribute("message", "Usuario registrado correctamente");
+        model.addAttribute("back", "javascript:history.back()");
 
-        return "redirect:/user/registered";
+        return "message";
     }
 
-    @GetMapping("/user/registered")
+    @PostMapping("/login")
+    public String loginUser(Model model,@RequestParam String mail, @RequestParam String password) {
+        model.addAttribute("title", "Error");
+        model.addAttribute("back", "javascript:history.back()");
+        Optional<Employer> employer = employerRepository.findByMail(mail);
+        if (employer.isPresent()){
+            Employer employerCast = employer.get();
+            if (password.equals(employerCast.getPass())){
+                model.addAttribute("message", "Empleado logeado correctamente");
+            }else{
+                model.addAttribute("message", "E-mail y contraseña incorrectos");
+            }
+
+        }else{     
+            Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
+            if (lifeguard.isPresent()){
+                Lifeguard lifeguardCast = lifeguard.get();
+            if (password.equals(lifeguardCast.getPass())){
+                model.addAttribute("message", "Socorrista logeado correctamente");
+            }else{
+                model.addAttribute("message", "E-mail y contraseña incorrectos");
+            }
+                
+            }else{
+                model.addAttribute("message","El correo introducido no está registrado");
+            }
+        }
+        
+        return "message";
+    }
+    
+    
+ /*    @GetMapping("/user/registered")
     public String registeredUser(HttpSession session, Model model) {
         String message = (String) session.getAttribute("message");
 
         model.addAttribute("title", "Usuario registrado");
         model.addAttribute("message", message);
-        model.addAttribute("back", "/profile");
+        model.addAttribute("back", "/");
         return "message";
     }
-
+*/
     // -------------------------------------- POOL --------------------------------------
     @GetMapping("/pool")
     public String pool(@RequestParam("id") int id, Model model) {

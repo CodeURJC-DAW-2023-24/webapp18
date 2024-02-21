@@ -24,7 +24,7 @@ public class DataBase {
     public DataBase() {
         initializeDefaultPools();
         initializeDefaultOffers();
-        initializeDefaultPeople();
+      //  initializeDefaultPeople();
     }
 
     // Initializers
@@ -107,7 +107,7 @@ public class DataBase {
         offer.update(new Offer.Builder().pool(pool2));
     }
 
-    private void initializeDefaultPeople() {
+    /*private void initializeDefaultPeople() {
         String description = "Descripción genérica que se puede poner en el perfil un tio que quiere ser socorrista en verano.";
         Person[] defaultPeopleData = {
             new Lifeguard.Builder()
@@ -166,7 +166,7 @@ public class DataBase {
             }
         }
 
-    }
+    }*/
 
     // Settes (adders)
     public void addPool(Pool pool) {
@@ -177,7 +177,7 @@ public class DataBase {
         offers.put(offer.getId(), offer);
     }
 
-    public void addPerson(Person person) {
+ /*   public void addPerson(Person person) {
         String type = person.getType();
 
         switch (type) {
@@ -197,7 +197,7 @@ public class DataBase {
                 break;
         }
     }
-
+*/
     // Getters
     public static Offer getOffer(int id) {
         return offers.get(id);

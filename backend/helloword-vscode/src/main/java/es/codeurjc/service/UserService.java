@@ -1,18 +1,44 @@
 package es.codeurjc.service;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
+import es.codeurjc.repository.EmployerRepository;
+import es.codeurjc.repository.LifeguardRepository;
 
 @Service
 public class UserService {
-    private final ConcurrentMap<Long, Lifeguard> lifeguards = new ConcurrentHashMap<>();
+
+	@Autowired 
+	private EmployerRepository employerRepository;
+
+	@Autowired
+	private LifeguardRepository lifeguardRepository;
+
+	public void saveEmployer(Employer employer){
+		employerRepository.save(employer);
+	}
+
+	public void saveLifeguard(Lifeguard lifeguard){
+		lifeguardRepository.save(lifeguard);
+	}
+
+	public Optional<Employer> findEmployerByEmail(String mail){
+		return employerRepository.findByMail(mail);
+	}
+
+	public Optional<Lifeguard> findLifeguardByEmail(String mail){
+		return lifeguardRepository.findByMail(mail);
+	}
+/*    private final ConcurrentMap<Long, Lifeguard> lifeguards = new ConcurrentHashMap<>();
 	private final AtomicLong nextId1 = new AtomicLong();
 
     private final ConcurrentMap<Long, Employer> employers = new ConcurrentHashMap<>();
@@ -59,5 +85,6 @@ public class UserService {
     public void deleteEmployerById(long id) {
 		this.employers.remove(id);
 	}
+*/
 
 }
