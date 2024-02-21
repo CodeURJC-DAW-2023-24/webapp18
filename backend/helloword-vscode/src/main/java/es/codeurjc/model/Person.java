@@ -20,8 +20,9 @@ public abstract class Person {
     private String description;
     private String dni;
     private String mail;
+    private String age;
     private String pass;
-    private int phone;
+    private String phone;
     private String country;
     private String locality;
     private String province;
@@ -30,7 +31,7 @@ public abstract class Person {
     public Person(){
         super();
     }
-    public Person(String name, String surname, String description, String dni, String mail, String pass, String phone, String country, String locality, String province, String street){
+    public Person(String name, String surname, String description, String dni, String mail, String age, String pass, String phone, String country, String locality, String province, String street){
         super();
         this.name = name;
         this.surname = surname;
@@ -38,7 +39,7 @@ public abstract class Person {
         this.dni = dni;
         this.mail = mail;
         this.pass = pass;
-        this.phone = Integer.parseInt(phone);
+        this.phone = phone;
         this.country = country;
         this.locality = locality;
         this.province = province;
@@ -93,6 +94,14 @@ public abstract class Person {
         this.mail = mail;
     }
 
+    public String getAge(){
+        return age;
+    }
+
+    public void setAge(String age){
+        this.age = age;
+    }
+    
     public String getPass() {
         return pass;
     }
@@ -101,11 +110,11 @@ public abstract class Person {
         this.pass = pass;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

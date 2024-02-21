@@ -13,6 +13,7 @@
 
     <link type="text/css" rel="stylesheet" href="/css/general.css" />
     <link type="text/css" rel="stylesheet" href="/css/newUser.css" />
+    <script src="/js/newUser.js"></script>
 </head>
 
 <body>
@@ -27,7 +28,7 @@
     <div class="container">
         <h2>Nuevo usuario</h2>
 
-        <form role="form" action="/user/register" method="post">
+        <form role="form" action="/user/register" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="name">Nombre</label>
@@ -51,19 +52,30 @@
                 </div>
                 <div class="form-group col-md-8">
                     <label for="mail">Correo electrónico</label>
-                    <input type="text" class="form-control" name="mail" placeholder="example@gmail.com">
+                    <input type="text" class="form-control" name="mail" id="mail" oninput="checkMail()" placeholder="example@gmail.com" required>
+                    <div id="mailContent"></div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="pass">Constraseña</label>
-                <input type="password" class="form-control" name="pass" id="pass" placeholder="Introduzca su contraseña">
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="age">Edad</label>
+                    <input type="text" class="form-control" name="age" id="age" oninput="checkAge()" placeholder="Introduzca su edad">
+                    <div id="ageContent" style="color:red"></div>
+                </div>
+                <div class="form-group col-md-8">
+                    <label for="pass">Constraseña</label>
+                    <input type="password" class="form-control" name="pass" id="pass" oninput="checkPassword()" placeholder="Introduzca su contraseña" required>
+                    <div id="passContent"></div>
+                </div>
             </div>
 
             <div class="row">
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="phone">Teléfono de contacto</label>
-                    <input type="text" class="form-control" name="phone" placeholder="Introduzca su número de teléfono">
+                    <input type="text" class="form-control" name="phone" oninput="checkPhone()" id="phone" placeholder="Introduzca su número de teléfono">
+                    <div id="phoneContent" style="color:red"></div>
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="country">País</label>
@@ -101,8 +113,8 @@
             </div>
 
             <div class="form-group" id="lifeguard1" style="display:none">
-                <label for="photoUser">Foto personal</label>
-                <input type="text" class="form-control" name="photoUser" id="photoUser" placeholder="Introduzca el link de su foto">
+                <label for="photoUserField">Foto personal</label>
+                <input type="file" class="form-control" name="photoUserField" id="photoUserField" accept=".jpg, .jpeg">
             </div>
 
             <div class="form-group" id="lifeguard2" style="display:none">
@@ -143,8 +155,8 @@
             </div>
 
             <div class="form-group" id="employer1" style="display:none">
-                <label for="photoCompany">Foto de la empresa</label>
-                <input type="text" class="form-control" name="photoCompany" id="photoCompany" placeholder="Introduzca el link de la foto de su empresa">
+                <label for="photoCompanyField">Foto de la empresa</label>
+                <input type="file" class="form-control" name="photoCompanyField" id="photoCompanyField" accept=".jpg, .jpeg">
             </div>
 
             <div class="form-group" id="employer2" style="display:none">

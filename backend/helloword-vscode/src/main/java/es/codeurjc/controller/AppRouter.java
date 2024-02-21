@@ -5,10 +5,12 @@ import org.springframework.ui.Model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
@@ -131,41 +134,91 @@ public class AppRouter {
         return "new_user";
     }
 
-    @PostMapping("/user/register")
-    public String newUser(HttpSession session, Model model, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
-            boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership) {
-        model.addAttribute("title", "Exito");
-        if ("employer".equals(typeUser)) {
-            employerRepository.save(employer);
-            model.addAttribute("message", "Nuevo empleado creado correctamente");
-        } else if ("lifeguard".equals(typeUser)) {
-            if (reliability) {
-                lifeguard.addSkill("Confianza");
-            }
-            if (effort) {
-                lifeguard.addSkill("Esfuerzo");
-            }
-            if (communication) {
-                lifeguard.addSkill("Comunicación");
-            }
-            if (attitude) {
-                lifeguard.addSkill("Actitud positiva");
-            }
-            if (problemsResolution) {
-                lifeguard.addSkill("Resolución de problemas");
-            }
-            if (leadership) {
-                lifeguard.addSkill("Liderazgo");
-            }
-            lifeguardRepository.save(lifeguard);
-            model.addAttribute("message", "Nuevo socorrista creado correctamente");
-        } else {
-            model.addAttribute("title", "Error");
-            model.addAttribute("message", "Tienes que seleccionar si eres un socorrista o un empleado");
-            model.addAttribute("back", "javascript:history.back()");
+    //FALTARIA METER LA COMPROBACION DE QUE NO ESTE REPETIDO EL MAIL
+    public String checkForm(String age, String phone){
+        int phoneNum = 0;
+        int ageNum = 0;
+        String message1 = "";
+        String message2 = "";
 
-            return "message";
+        try {
+            phoneNum = Integer.parseInt(phone);
+        } catch (NumberFormatException e) {
+            message1 = "El teléfono debe ser un número";
         }
+
+        if (phoneNum < 0) {
+            message1 = "El teléfono debe ser un número positivo";
+        }
+
+        if (String.valueOf(phoneNum).length() != 9) {
+            message1 = "El teléfono debe tener 9 cifras";
+        }
+
+        try {
+            ageNum = Integer.parseInt(age);
+        } catch (NumberFormatException e) {
+            message2 = "La edad debe ser un número";
+        }
+
+        if (ageNum < 0) {
+            message2 = "La edad debe ser un número positivo";
+        }
+
+        if (ageNum % 1 != 0) {
+            message2 = "La edad debe ser un número entero";
+        }
+
+    return message1 + " " + message2;
+    }
+
+    @PostMapping("/user/register")
+    public String newUser(HttpServletRequest request, HttpSession session, Model model, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
+            boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership, MultipartFile photoUserField, MultipartFile photoCompanyField) throws IOException {
+        model.addAttribute("title", "Exito");
+        String messageForm = checkForm(request.getParameter("age"),request.getParameter("phone"));
+    //    if (messageForm.equals(" ")){ DESACTIVADO POR AHORA PARA NO TARDAR AL LOGEARTE
+            if ("employer".equals(typeUser)) {
+                if (!photoCompanyField.isEmpty()) {
+			    employer.setPhotoCompany(BlobProxy.generateProxy(photoCompanyField.getInputStream(), photoCompanyField.getSize()));
+			    employer.setImageCompany(true);
+		        }
+                employerRepository.save(employer);
+                model.addAttribute("message", "Nuevo empleado creado correctamente");
+            } else if ("lifeguard".equals(typeUser)) {
+                if (!photoUserField.isEmpty()) {
+                    lifeguard.setPhotoUser(BlobProxy.generateProxy(photoUserField.getInputStream(), photoUserField.getSize()));
+                    lifeguard.setImageUser(true);
+                    }
+                if (reliability) {
+                    lifeguard.addSkill("Confianza");
+                }
+                if (effort) {
+                    lifeguard.addSkill("Esfuerzo");
+                }
+                if (communication) {
+                    lifeguard.addSkill("Comunicación");
+                }
+                if (attitude) {
+                    lifeguard.addSkill("Actitud positiva");
+                }
+                if (problemsResolution) {
+                    lifeguard.addSkill("Resolución de problemas");
+                }
+                if (leadership) {
+                    lifeguard.addSkill("Liderazgo");
+                }
+                lifeguardRepository.save(lifeguard);
+                model.addAttribute("message", "Nuevo socorrista creado correctamente");
+            } else {
+                model.addAttribute("title", "Error");
+                model.addAttribute("message", "Tienes que seleccionar si eres un socorrista o un empleado");
+                model.addAttribute("back", "javascript:history.back()");
+
+                return "message";
+            }
+        //}
+        model.addAttribute("message", messageForm);
         model.addAttribute("back", "javascript:history.back()");
 
         return "message";
@@ -200,6 +253,26 @@ public class AppRouter {
         }
         
         return "message";
+    }
+    
+
+    //PREGUNTAR AL PROFE POR QUE NO FUNCIONA SI EL TRUE Y EL FALSE LO HACE BIEN
+    @GetMapping("/availableMail")
+    public Map<String, Boolean> checkMailAvailability(@RequestParam String mail) {
+        boolean available = true;
+        Optional<Employer> employer = employerRepository.findByMail(mail);
+        if (employer.isPresent()){
+            available = false;
+        }
+        Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
+        if (lifeguard.isPresent()){
+            available = false;
+        }  
+        System.out.println(mail);
+        System.out.println(available);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("available", available);
+        return response;
     }
     
     
