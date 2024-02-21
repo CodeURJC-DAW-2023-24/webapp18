@@ -176,7 +176,7 @@ public class AppRouter {
     public String newUser(HttpServletRequest request, HttpSession session, Model model, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
             boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership, MultipartFile photoUserField, MultipartFile photoCompanyField) throws IOException {
         model.addAttribute("title", "Exito");
-        String messageForm = checkForm(request.getParameter("age"),request.getParameter("phone"));
+       String messageForm = checkForm(request.getParameter("age"),request.getParameter("phone"));
     //    if (messageForm.equals(" ")){ DESACTIVADO POR AHORA PARA NO TARDAR AL LOGEARTE
             if ("employer".equals(typeUser)) {
                 if (!photoCompanyField.isEmpty()) {
@@ -218,7 +218,7 @@ public class AppRouter {
                 return "message";
             }
         //}
-        model.addAttribute("message", messageForm);
+        //model.addAttribute("message", messageForm);
         model.addAttribute("back", "javascript:history.back()");
 
         return "message";
