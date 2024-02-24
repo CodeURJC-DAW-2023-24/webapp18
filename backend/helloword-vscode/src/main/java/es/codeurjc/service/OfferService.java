@@ -1,4 +1,5 @@
 package es.codeurjc.service;
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -8,10 +9,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import es.codeurjc.model.Message;
 import es.codeurjc.model.Offer;
 import es.codeurjc.model.Pool;
-import es.codeurjc.repository.DataBase;
+import es.codeurjc.repository.MessageRepository;
 import es.codeurjc.repository.OfferRepository;
+import es.codeurjc.repository.PoolRepository;
 import jakarta.annotation.PostConstruct;
 
 @Service
@@ -20,15 +23,64 @@ public class OfferService {
 	@Autowired
 	private OfferRepository offers;
 
+    @Autowired
+	private PoolRepository pools;
+
+    @Autowired
+    private MessageRepository messages;
+
 	@PostConstruct
 	public void init() {
-		Pool pool = DataBase.getPool(0);
+        System.out.println("");
+        System.out.println("INIT STARTED");
+        System.out.println();
+        Pool pool = new Pool.Builder()
+                .name("Misco Jones")
+                .photo("/images/default-image.jpg")
+                .direction("Calle Timanfaya (Alcorcón)")
+                .capacity(10)
+                .scheduleStart(LocalTime.of(12, 30))
+                .scheduleEnd(LocalTime.of(21, 30))
+                .company("Marcos Friki")
+                .description("Una piscina chill para bajarte a jugar a las cartas")
+                .build();
+
+        Message m1 = new Message("Paco", "Mensaje 1.1");
+        Message m2 = new Message("Juan", "Mensaje 1.2");
+        messages.save(m1);
+        messages.save(m2);
+        pool.addMessage(m1);
+        pool.addMessage(m2);
+		pools.save(pool);
+
+        Pool pool2 = new Pool.Builder()
+        .name("Piscina municipal Las Cumbres")
+        .photo("https://lh3.googleusercontent.com/p/AF1QipMXXW-IjqZkpx8EfwA_Nw_ALJQZfMAWdjhnT4Xh=s1360-w1360-h1020-rw")
+        .direction("C/Rio Duero, 1 (Móstoles)")
+        .capacity(18)
+        .scheduleStart(LocalTime.of(11, 0))
+        .scheduleEnd(LocalTime.of(20, 0))
+        .company("Ayuntamiento de Móstoles")
+        .description("La piscina municipal de Móstoles con instalaciones tanto para los más mayores como para los más pequeños")
+        .build();
+
+        Message m3 = new Message("Antonio", "Mensaje 2.1");
+        Message m4 = new Message("Jose", "Mensaje 2.2");
+        messages.save(m3);
+        messages.save(m4);
+        pool2.addMessage(m3);
+        pool2.addMessage(m4);
+		pools.save(pool2);
+
+        System.out.println("");
+        System.out.println("POOLS SAVED");
+        System.out.println();
         Offer[] defaultOffersData = {
             new Offer.Builder()
                 .pool(pool)
                 .salary(1100)
                 .start("01/03/2024")
-                .description("¡Únete a nuestro equipo como socorrista de piscina! Estamos buscando a un profesional comprometido y capacitado para garantizar la seguridad de nuestros clientes en el área de la piscina. Responsabilidades incluyen la supervisión constante, la capacidad de respuesta rápida ante emergencias y la aplicación de protocolos de salvamento. Si posees certificación de socorrista, habilidades de comunicación efectivas y un enfoque proactivo para mantener un entorno acuático seguro, ¡esperamos recibir tu solicitud!")
+                .description("Descripcion 1")
                 .build(),
             new Offer.Builder()
                 .pool(pool)
@@ -61,10 +113,13 @@ public class OfferService {
         }
 
         Optional<Offer> offer = findById(1);
-        Pool pool2 = DataBase.getPool(1);
         if (offer.isPresent()) {
             offer.get().update(new Offer.Builder().pool(pool2));
         }
+
+        System.out.println("");
+        System.out.println("INIT ENDED");
+        System.out.println();
 	}
 
 	public Collection<Offer> findAll() {

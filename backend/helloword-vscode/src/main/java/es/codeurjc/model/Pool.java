@@ -2,7 +2,17 @@ package es.codeurjc.model;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "pool")
 public class Pool{
     private String name;
     private String photo;
@@ -12,11 +22,21 @@ public class Pool{
     private LocalTime scheduleEnd;
     private String company;
     private String description;
-    private ArrayList<Message> messages;
-    private int id;
-    private static int idCounter = 0;
+
+    @OneToMany
+    private List<Message> messages;
+
+
+    @Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+   // private static int idCounter = 0;
+
+
+    public Pool(){}
 
     public Pool(Builder builder){
+        super();
         this.name = builder.name;
         this.photo = builder.photo;
         this.direction = builder.direction;
@@ -26,7 +46,6 @@ public class Pool{
         this.company = builder.company;
         this.description = builder.description;
         this.messages = builder.messages;
-        this.id = idCounter++;
     }
 
     public void addMessage(Message m){
@@ -62,13 +81,13 @@ public class Pool{
     public String getDescription(){
         return this.description;
     }
-    public Message[] getMessages(){
-        return messages.toArray(new Message[messages.size()]);
+    public List<Message> getMessages(){
+        return this.messages;
     }
     public Message getMessage(int index){
         return messages.get(index);
     }
-    public int getId(){
+    public long getId(){
         return this.id;
     }
 
@@ -101,9 +120,7 @@ public class Pool{
         if (builder.messages != null) {
             this.messages = builder.messages;
         }
-        if (builder.id != null) {
-            this.id = builder.id;
-        }
+
     }
 
     // Clase Builder para construir objetos de tipo Pool
@@ -117,7 +134,6 @@ public class Pool{
         private String company;
         private String description;
         private ArrayList<Message> messages;
-        private Integer id;
 
         public Builder name(String name) {
             this.name = name;
@@ -161,11 +177,6 @@ public class Pool{
 
         public Builder messages(ArrayList<Message> messages) {
             this.messages = messages;
-            return this;
-        }
-
-        public Builder id(int id) {
-            this.id = id;
             return this;
         }
 

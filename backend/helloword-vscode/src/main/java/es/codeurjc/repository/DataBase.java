@@ -22,7 +22,7 @@ public class DataBase {
     private static int loadedUntil = 0;
 
     public DataBase() {
-        initializeDefaultPools();
+       // initializeDefaultPools();
       //  initializeDefaultOffers();
       //  initializeDefaultPeople();
     }
@@ -170,7 +170,7 @@ public class DataBase {
 
     // Settes (adders)
     public void addPool(Pool pool) {
-        pools.put(pool.getId(), pool);
+     //   pools.put(pool.getId(), pool);
     }
 
     public void addOffer(Offer offer) {
