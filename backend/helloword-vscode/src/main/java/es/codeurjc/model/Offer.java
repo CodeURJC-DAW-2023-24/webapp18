@@ -1,23 +1,32 @@
 package es.codeurjc.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "offers")
 public class Offer {
+    @Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     private Pool pool;
     private int salary;
     private String start;
     private String description;
-    private int id;
-    private static int idCounter = 0;
 
     private Offer(Builder builder) {
         this.pool = builder.pool;
         this.salary = builder.salary;
         this.start = builder.start;
         this.description = builder.description;
-        this.id = idCounter++;
     }
 
     // Getters
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

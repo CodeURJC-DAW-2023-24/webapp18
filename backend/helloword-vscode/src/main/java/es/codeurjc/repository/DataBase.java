@@ -23,7 +23,7 @@ public class DataBase {
 
     public DataBase() {
         initializeDefaultPools();
-        initializeDefaultOffers();
+      //  initializeDefaultOffers();
       //  initializeDefaultPeople();
     }
 
@@ -174,7 +174,7 @@ public class DataBase {
     }
 
     public void addOffer(Offer offer) {
-        offers.put(offer.getId(), offer);
+        //offers.put(offer.getId(), offer);
     }
 
  /*   public void addPerson(Person person) {
