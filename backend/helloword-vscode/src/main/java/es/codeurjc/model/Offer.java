@@ -21,7 +21,12 @@ public class Offer {
     private String start;
     private String description;
 
+    public Offer(){
+        
+    }
+
     private Offer(Builder builder) {
+        super();
         this.pool = builder.pool;
         this.salary = builder.salary;
         this.start = builder.start;

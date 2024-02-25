@@ -122,10 +122,10 @@ public class AppRouter {
         model.addAttribute("user", person);
         return "profile";
     }
-    @GetMapping("/login")
+    /*@GetMapping("/login")
     public String sign(Model model) {
         return "login";
-    }
+    }*/
 
    /*  @PostMapping("/login")
     public String login(Model model) {
@@ -245,7 +245,7 @@ public class AppRouter {
         return "message";
     }
 
-    @PostMapping("/login")
+   /* @PostMapping("/login")
     public String loginUser(Model model,@RequestParam String mail, @RequestParam String password) {
         model.addAttribute("title", "Error");
         model.addAttribute("back", "javascript:history.back()");
@@ -275,7 +275,7 @@ public class AppRouter {
         
         return "message";
     }
-    
+    */
 
     //PREGUNTAR AL PROFE POR QUE NO FUNCIONA SI EL TRUE Y EL FALSE LO HACE BIEN
     @GetMapping("/availableMail")

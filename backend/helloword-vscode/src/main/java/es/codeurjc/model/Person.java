@@ -1,5 +1,9 @@
 package es.codeurjc.model;
 
+import java.util.List;
+
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,6 +31,10 @@ public abstract class Person {
     private String locality;
     private String province;
     private String street;
+    
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles;
+
 
     public Person(){
         super();
@@ -149,4 +157,12 @@ public abstract class Person {
     public void setStreet(String street) {
         this.street = street;
     }
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+    public void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
 }
