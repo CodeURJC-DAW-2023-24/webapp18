@@ -33,6 +33,7 @@ import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import es.codeurjc.service.MessageService;
+import es.codeurjc.service.OfferService;
 import es.codeurjc.service.PoolService;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,6 +50,9 @@ public class AppRouter {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OfferService offerService;
 
     @Autowired
     private PoolService poolService;
@@ -70,9 +74,11 @@ public class AppRouter {
     public String loadOffers(HttpServletRequest request, Model model) {
         int from = Integer.parseInt(request.getParameter("from"));
         int amount = Integer.parseInt(request.getParameter("amount"));
-
+        Collection<Offer> offers2 = offerService.findAll();
+        List<Offer> offersL = new ArrayList(offers2);
+        List<Offer> offerSubL = offersL.subList(from, amount);
         Offer[] offers = DataBase.getOffers(from, amount);
-        model.addAttribute("offers", offers);
+        model.addAttribute("offers", offerSubL);
         model.addAttribute("alternative", "No hay ofertas aún");
         return "offers";
     }
@@ -85,7 +91,7 @@ public class AppRouter {
 
     @GetMapping("/offer")
     public String offer(@RequestParam("id") int id, Model model) {
-        Offer offer = DataBase.getOffer(id);
+        Offer offer = offerService.findById(id).get();
         model.addAttribute("offer", offer);
         return "offer";
     }
@@ -109,13 +115,13 @@ public class AppRouter {
     }
 
     // -------------------------------------- PROFILE --------------------------------------
-    /*@GetMapping("/profile")
+    @GetMapping("/profile")
     public String profile(Model model) {
+        //Aqui se le debe pasar el id de la pesona con sesion iniciada al publicar el mensaje refereniado
         Person person = DataBase.getPerson(0);
         model.addAttribute("user", person);
         return "profile";
     }
-*/
     @GetMapping("/login")
     public String sign(Model model) {
         return "login";
@@ -324,7 +330,12 @@ public class AppRouter {
 
     @PostMapping("/pool/message/add")
     @ResponseBody
+
+    
     public void newMessage(@RequestParam("msg") String input, @RequestParam("id") int id, Model model) {
+
+
+
         Message message = new Message("null", input);
      //   Pool pool = DataBase.getPool(id);
         Pool pool = poolService.findById(id).get();
@@ -337,10 +348,17 @@ public class AppRouter {
     @ResponseBody
     public void deletePoolMessage(@RequestParam("idP") int idP, @RequestParam("idM") int idM, Model model) {
         // Pool pool = DataBase.getPool(idP);
+
+        System.out.println("Estamos en la piscina"+idP);
+        System.out.println("Se va a borrar el mensaje "+idM+" de la piscina");
+
         Pool pool = poolService.findById(idP).get();
+        System.out.println("ID:"+idM);
+        Message msg = pool.getMessage(idM);
+        System.out.println("Correspondiente al id de mensaje: "+msg.getID());
         pool.deleteMessage(idM);
-        messageService.deleteById(idM);
+        messageService.deleteById(msg.getID()); //Esto puede ser que sobre su ponemos el borrado en cascada 
         poolService.save(pool);
-    }
+    } 
 
 }

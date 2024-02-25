@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Message {
@@ -11,7 +12,9 @@ public class Message {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+    //@ManyToOne Aqui el mensaje debera apuntar a la person asociada al autor
     String author;
+    
     String body;
 
     public Message(){
@@ -21,5 +24,8 @@ public class Message {
         super();
         author = a;
         body = b;
+    }
+    public long getID(){
+        return this.id;
     }
 }
