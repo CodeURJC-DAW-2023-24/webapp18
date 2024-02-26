@@ -44,8 +44,22 @@ public class SecurityConfiguration {
 					.requestMatchers("/").permitAll()
 					.requestMatchers("/index").permitAll()
 					.requestMatchers("/login").permitAll()
+					.requestMatchers("/pool").permitAll()
+					.requestMatchers("/loadOffers").permitAll()
+					.requestMatchers("/allOffersLoaded").permitAll()
+					.requestMatchers("/loginerror").permitAll()
+					.requestMatchers("/error").permitAll()
+					.requestMatchers("/user/form").permitAll()
+					.requestMatchers("/message").permitAll()
+					.requestMatchers("/pool/message/add").permitAll()
+					.requestMatchers("/profile").permitAll()
+					.requestMatchers("/pool/message/load").permitAll()
+					.requestMatchers("/user/register").permitAll()
+
+
 					// PRIVATE PAGES
 					.anyRequest().authenticated()
+					
 			)
 			.formLogin(formLogin -> formLogin
 					.loginPage("/login")

@@ -43,8 +43,9 @@ public class RepositoryUserDetailsService implements UserDetailsService {
     	}
 
 		Optional<Lifeguard> lifeguardOptional = lifeguardRepository.findByMail(mail);
-    	if (lifeguardOptional.isPresent()) {
+    	if (lifeguardOptional.isPresent()) {			
         	Lifeguard lifeguard = lifeguardOptional.get();
+
 			for (String role : lifeguard.getRoles()) {
 				roles.add(new SimpleGrantedAuthority("ROLE_" + role));
 			}
