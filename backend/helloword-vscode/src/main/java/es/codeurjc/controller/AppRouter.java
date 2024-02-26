@@ -3,6 +3,7 @@ package es.codeurjc.controller;
 import org.springframework.ui.Model;
 
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -110,6 +111,8 @@ public class AppRouter {
     public String addOffer(Model model) {
         return "redirect:/offer/added";
     }
+    
+
 
     @GetMapping("/offer/added")
     public String addedOffer(Model model) {
@@ -395,5 +398,31 @@ public class AppRouter {
         messageService.deleteById(msg.getID()); //Esto puede ser que sobre su ponemos el borrado en cascada 
         poolService.save(pool);
     } 
-
+    @PostMapping("/pool/add")
+    public String addPool(HttpServletRequest request, HttpSession session, Model model,
+                    @RequestParam("name") String name,
+                    @RequestParam("dir") String dir,
+                    @RequestParam("description") String description,
+                    @RequestParam("aforo") int aforo,
+                    @RequestParam("start") LocalTime start,
+                    @RequestParam("close") LocalTime close,
+                    MultipartFile photoPool) {
+        Pool pool = new Pool.Builder()
+                        .name(name)
+                        .photo("/images/default-image.jpg")
+                        .direction(dir)
+                        .capacity(10)
+                        .scheduleStart(start)
+                        .scheduleEnd(close)
+                        .company("Null")
+                        .description(description)
+                        .build();
+        //poner la foto en la pool
+        poolService.save(pool);
+        return "index";
+    } 
+    @GetMapping("/pool/form")
+    public String newPool(Model model,HttpServletRequest request){
+        return "new_pool";
+    }
 }
