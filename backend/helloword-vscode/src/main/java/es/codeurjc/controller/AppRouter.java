@@ -121,9 +121,10 @@ public class AppRouter {
 
     // -------------------------------------- PROFILE --------------------------------------
     @GetMapping("/profile")
-    public String profile(Model model, HttpServletRequest request) {
+    public String profile(Model model, HttpServletRequest request, @RequestParam("type") int type, @RequestParam("mail") String m) {
         //Aqui se le debe pasar el id de la pesona con sesion iniciada al publicar el mensaje refereniado
-        String mail = request.getUserPrincipal().getName();
+        if(type==1){
+            String mail = request.getUserPrincipal().getName();
 
         Optional<Employer> employer = employerRepository.findByMail(mail);
         Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
@@ -135,6 +136,20 @@ public class AppRouter {
             Lifeguard lifeguardCast = lifeguard.get();  
             model.addAttribute("user", lifeguardCast);           
         }
+        }
+        else if(type==0){
+            Optional<Employer> employer = employerRepository.findByMail(m);
+        Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(m);
+        if (employer.isPresent()){
+            Employer employerCast = employer.get();
+            model.addAttribute("user", employerCast);
+
+        }else if(lifeguard.isPresent()){   
+            Lifeguard lifeguardCast = lifeguard.get();  
+            model.addAttribute("user", lifeguardCast);           
+        }
+        }
+        
 
         return "profile";
     }
@@ -351,11 +366,11 @@ public class AppRouter {
     @ResponseBody
 
     
-    public void newMessage(@RequestParam("msg") String input, @RequestParam("id") int id, Model model) {
+    public void newMessage(@RequestParam("msg") String input, @RequestParam("id") int id, Model model, HttpServletRequest request) {
 
 
-
-        Message message = new Message("null", input);
+        String mail = request.getUserPrincipal().getName();
+        Message message = new Message(mail, input);
      //   Pool pool = DataBase.getPool(id);
         Pool pool = poolService.findById(id).get();
         pool.addMessage(message);
