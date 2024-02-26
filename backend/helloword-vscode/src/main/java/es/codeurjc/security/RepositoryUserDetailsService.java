@@ -32,7 +32,7 @@ public class RepositoryUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
 		
 		List<GrantedAuthority> roles = new ArrayList<>();
-
+		System.out.println("LOG DE LOGIN");
 		Optional<Employer> employerOptional = employerRepository.findByMail(mail);
     	if (employerOptional.isPresent()) {
         	Employer employer = employerOptional.get();
@@ -43,15 +43,17 @@ public class RepositoryUserDetailsService implements UserDetailsService {
     	}
 
 		Optional<Lifeguard> lifeguardOptional = lifeguardRepository.findByMail(mail);
+		System.out.println("LOG DE LOGIN de SOCORRISTA 1****************"+lifeguardOptional);
+
     	if (lifeguardOptional.isPresent()) {			
         	Lifeguard lifeguard = lifeguardOptional.get();
-
+			System.out.println("LOG DE LOGIN de SOCORRISTA");
 			for (String role : lifeguard.getRoles()) {
 				roles.add(new SimpleGrantedAuthority("ROLE_" + role));
 			}
         	return new org.springframework.security.core.userdetails.User(lifeguard.getMail(),lifeguard.getPass(),roles);
     	}
+		else 		throw new UsernameNotFoundException("User not found");
 
-		throw new UsernameNotFoundException("User not found");
 	}
 }
