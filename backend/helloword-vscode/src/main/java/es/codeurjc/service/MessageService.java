@@ -1,7 +1,7 @@
 package es.codeurjc.service;
+
 import java.util.Collection;
 import java.util.Optional;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,7 +41,7 @@ public class MessageService {
 	public Collection<Message> findAll() {
 		return messages.findAll();
 	}
-	
+
 	public Page<Message> findAll(Pageable pageable) {
 		return messages.findAll(pageable);
 	}
@@ -50,9 +50,8 @@ public class MessageService {
 		return messages.findById(id);
 	}
 
-	public void save(Message msg) {
-
-		messages.save(msg);
+	public void save(Message message) {
+		messages.save(message);
 	}
 
 	public void deleteById(long id) {

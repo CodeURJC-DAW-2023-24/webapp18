@@ -3,7 +3,6 @@ package es.codeurjc.service;
 import java.util.Collection;
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,26 +63,26 @@ public class OfferService {
         for (Offer offer : defaultOffersData) {
             save(offer);
         }
-	}
+    }
 
-	public Collection<Offer> findAll() {
-		return offers.findAll();
-	}
-	
-	public Page<Offer> findAll(Pageable pageable) {
-		return offers.findAll(pageable);
-	}
+    public Collection<Offer> findAll() {
+        return offers.findAll();
+    }
 
-	public Optional<Offer> findById(long id) {
-		return offers.findById(id);
-	}
+    public Page<Offer> findAll(Pageable pageable) {
+        return offers.findAll(pageable);
+    }
 
-	public void save(Offer offer) {
-		offers.save(offer);
-	}
+    public Optional<Offer> findById(long id) {
+        return offers.findById(id);
+    }
 
-	public void deleteById(long id) {
-		this.offers.deleteById(id);
-	}
+    public void save(Offer offer) {
+        offers.save(offer);
+    }
+
+    public void deleteById(long id) {
+        this.offers.deleteById(id);
+    }
 
 }
