@@ -20,20 +20,21 @@ public class Employer extends Person{
 
     }
 
-    public Employer(String name, String surname, String description, String dni, String mail, String age, String pass, String phone, String country, String locality, String province, String street, String position){
-        super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, street);
-        this.position = position;
+    public Employer(EmployerBuilder builder) {
+        super(builder);
+        this.photoCompany = builder.photoCompany;
+        this.imageCompany = builder.imageCompany;
+        this.position = builder.position;
     }
 
-    public void setPhotoCompany(Blob photoCompany){
-        this.photoCompany = photoCompany;
+    // Getters
+    @Override
+    public String getType() {
+        return "Employer";
     }
+
     public Blob getPhotoCompany(){
         return photoCompany;
-    }
-
-    public void setImageCompany(boolean imageCompany){
-        this.imageCompany = imageCompany;
     }
 
     public boolean getImageCompany(){
@@ -44,7 +45,41 @@ public class Employer extends Person{
         return position;
     }
 
-    public void setPosition(String position){
-        this.position = position;
+    // Método para actualizar los datos de la persona
+    public void update(EmployerBuilder builder) {
+        super.update(builder);
+        if (builder.photoCompany != null) {
+            this.photoCompany = builder.photoCompany;
+        }
+        if (builder.position != null) {
+            this.position = builder.position;
+        }
+    }
+
+    public static class EmployerBuilder extends Person.Builder {
+        @Lob
+        private Blob photoCompany;
+        private boolean imageCompany;
+        private String position;
+
+        public EmployerBuilder photoCompany(Blob photoCompany) {
+            this.photoCompany = photoCompany;
+            return this;
+        }
+
+        public EmployerBuilder imageCompany(boolean imageCompany) {
+            this.imageCompany = imageCompany;
+            return this;
+        }
+
+        public EmployerBuilder position(String position) {
+            this.position = position;
+            return this;
+        }
+
+        @Override
+        public Employer build() {
+            return new Employer(this);
+        }
     }
 }

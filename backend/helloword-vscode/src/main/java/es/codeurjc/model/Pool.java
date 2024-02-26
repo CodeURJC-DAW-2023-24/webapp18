@@ -89,8 +89,8 @@ public class Pool{
     public Message getMessage(int index){
         return messages.get(index);
     }
-    public long getId(){
-        return this.id;
+    public Long getId(){
+        return id;
     }
 
     // Método para actualizar los datos de la piscina
@@ -122,7 +122,6 @@ public class Pool{
         if (builder.messages != null) {
             this.messages = builder.messages;
         }
-
     }
 
     // Clase Builder para construir objetos de tipo Pool

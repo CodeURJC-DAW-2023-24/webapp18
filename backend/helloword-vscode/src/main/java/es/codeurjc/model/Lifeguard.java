@@ -19,15 +19,24 @@ public class Lifeguard extends Person{
 	private Blob photoUser;
 	private boolean imageUser;
     private String document;
-    private List<String> skills;
+    private ArrayList<String> skills;
 
-    public Lifeguard(){
-        
+    public Lifeguard(){}
+
+    public Lifeguard(LifeguardBuilder builder){
+        super(builder);
+        this.photoUser = builder.photoUser;
+        this.imageUser = builder.imageUser;
+        this.skills = new ArrayList<>();
     }
 
-    public Lifeguard(String name, String surname, String description, String dni, String mail, String age,String pass, String phone, String country, String locality, String province, String street){
-        super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, street);
-        this.skills = new ArrayList<>();
+    public void addSkill(String skill) {
+        this.skills.add(skill);
+    }
+
+    @Override
+    public String getType() {
+        return "Lifeguard";
     }
 
     /*public MultipartFile getDocument() {
@@ -38,32 +47,43 @@ public class Lifeguard extends Person{
         this.document = document;
     }
 */
-
-       public List<String> getSkills() {
-        return skills;
+    public Blob getPhotoUser(){
+        return photoUser;
     }
-
-    public void setSkills(ArrayList<String> skills) {
-        this.skills = skills;
-    }
-
-    public void addSkill(String skill) {
-        this.skills.add(skill);
-    }
-
-	public Blob getPhotoUser() {
-		return photoUser;
-	}
-
-	public void setPhotoUser(Blob photoUser) {
-		this.photoUser = photoUser;
-	}
 
     public boolean getImageUser(){
 		return this.imageUser;
 	}
 
-	public void setImageUser(boolean imageUser){
-		this.imageUser = imageUser;
-	}
+    public ArrayList<String> getSkills() {
+        return skills;
+    }
+
+    // Método para actualizar los datos de la persona
+    public void update(LifeguardBuilder builder) {
+        super.update(builder);
+        if (builder.photoUser != null) {
+            this.photoUser = builder.photoUser;
+        }
+    }
+
+    public static class LifeguardBuilder extends Person.Builder {
+        private Blob photoUser;
+        private boolean imageUser;
+
+        public LifeguardBuilder photoUser(Blob photoUser) {
+            this.photoUser = photoUser;
+            return this;
+        }
+
+        public LifeguardBuilder imageUser(boolean imageUser) {
+            this.imageUser = imageUser;
+            return this;
+        }
+
+        @Override
+        public Lifeguard build() {
+            return new Lifeguard(this);
+        }
+    }
 }

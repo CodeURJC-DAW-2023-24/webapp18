@@ -8,5 +8,4 @@ import es.codeurjc.model.Lifeguard;
 
 public interface LifeguardRepository extends JpaRepository<Lifeguard, Long> {
     Optional<Lifeguard> findByMail(String mail);
-    
 }

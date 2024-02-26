@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.codeurjc.model.Employer;
+import es.codeurjc.model.Employer.EmployerBuilder;
 import es.codeurjc.model.Lifeguard;
+import es.codeurjc.model.Lifeguard.LifeguardBuilder;
 import es.codeurjc.model.Message;
 import es.codeurjc.model.Offer;
 import es.codeurjc.model.Person;
@@ -194,23 +196,71 @@ public class AppRouter {
     }
 
     @PostMapping("/user/register")
-    public String newUser(HttpServletRequest request, HttpSession session, Model model, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
-            boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership, MultipartFile photoUserField, MultipartFile photoCompanyField) throws IOException {
+    public String newUser(HttpServletRequest request, HttpSession session, Model model) throws IOException {
+        String typeUser = request.getParameter("typeUser");
+        boolean reliability = Boolean.parseBoolean(request.getParameter("reliability"));
+        boolean effort = Boolean.parseBoolean(request.getParameter("effort"));
+        boolean communication = Boolean.parseBoolean(request.getParameter("communication"));
+        boolean attitude = Boolean.parseBoolean(request.getParameter("attitude"));
+        boolean problemsResolution = Boolean.parseBoolean(request.getParameter("problemsResolution"));
+        boolean leadership = Boolean.parseBoolean(request.getParameter("leadership"));
+        MultipartFile photoUserField = (MultipartFile) request.getAttribute("photoUserField");
+        MultipartFile photoCompanyField = (MultipartFile) request.getAttribute("photoCompanyField");
+        String mail = request.getParameter("mail");
+        String pass = request.getParameter("pass");
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+        String dni = request.getParameter("dni");
+        String age = request.getParameter("age");
+        String phone = request.getParameter("phone");
+        String country = request.getParameter("country");
+        String locality = request.getParameter("locality");
+        String province = request.getParameter("province");
+
         model.addAttribute("title", "Exito");
-       String messageForm = checkForm(request.getParameter("mail"),request.getParameter("age"),request.getParameter("phone"));
+        String messageForm = checkForm(mail, age, phone);
+
     //    if (messageForm.equals("  ")){ DESACTIVADO POR AHORA PARA NO TARDAR AL LOGEARTE
             if ("employer".equals(typeUser)) {
+                EmployerBuilder employerBuilder = new Employer.EmployerBuilder();
                 if (!photoCompanyField.isEmpty()) {
-			    employer.setPhotoCompany(BlobProxy.generateProxy(photoCompanyField.getInputStream(), photoCompanyField.getSize()));
-			    employer.setImageCompany(true);
+                    employerBuilder
+                        .photoCompany(BlobProxy.generateProxy(photoCompanyField.getInputStream(), photoCompanyField.getSize()))
+                        .imageCompany(true);
 		        }
+                Employer employer = (Employer) employerBuilder
+                    .mail(mail)
+                    .pass(pass)
+                    .name(name)
+                    .surname(surname)
+                    .dni(dni)
+                    .age(Integer.parseInt(age))
+                    .phone(Integer.parseInt(phone))
+                    .country(country)
+                    .locality(locality)
+                    .province(province)
+                    .build();
                 employerRepository.save(employer);
                 model.addAttribute("message", "Nuevo empleado creado correctamente");
             } else if ("lifeguard".equals(typeUser)) {
+                LifeguardBuilder lifeguardBuilder = new Lifeguard.LifeguardBuilder();
                 if (!photoUserField.isEmpty()) {
-                    lifeguard.setPhotoUser(BlobProxy.generateProxy(photoUserField.getInputStream(), photoUserField.getSize()));
-                    lifeguard.setImageUser(true);
-                    }
+                    lifeguardBuilder
+                        .photoUser(BlobProxy.generateProxy(photoUserField.getInputStream(), photoUserField.getSize()))
+                        .imageUser(true);
+                }
+                Lifeguard lifeguard = (Lifeguard) lifeguardBuilder
+                    .mail(mail)
+                    .pass(pass)
+                    .name(name)
+                    .surname(surname)
+                    .dni(dni)
+                    .age(Integer.parseInt(age))
+                    .phone(Integer.parseInt(phone))
+                    .country(country)
+                    .locality(locality)
+                    .province(province)
+                    .build();
                 if (reliability) {
                     lifeguard.addSkill("Confianza");
                 }
