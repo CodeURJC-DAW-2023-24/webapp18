@@ -3,6 +3,7 @@ package es.codeurjc.controller;
 import org.springframework.ui.Model;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,10 +13,14 @@ import java.util.Optional;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -131,10 +136,12 @@ public class AppRouter {
         if (employer.isPresent()){
             Employer employerCast = employer.get();
             model.addAttribute("user", employerCast);
+            model.addAttribute("employer", request.isUserInRole("USER"));
 
         }else if(lifeguard.isPresent()){   
             Lifeguard lifeguardCast = lifeguard.get();  
-            model.addAttribute("user", lifeguardCast);           
+            model.addAttribute("user", lifeguardCast);     
+            model.addAttribute("lifeguard", request.isUserInRole("USER"));      
         }
         }
         else if(type==0){
@@ -234,8 +241,9 @@ public class AppRouter {
                 if (!photoCompanyField.isEmpty()) {
 			    employer.setPhotoCompany(BlobProxy.generateProxy(photoCompanyField.getInputStream(), photoCompanyField.getSize()));
 			    employer.setImageCompany(true);
-                employer.setPass(passwordEncoder.encode(request.getParameter("pass")));
 		        }
+                employer.setPass(passwordEncoder.encode(request.getParameter("pass")));
+                employer.setRoles("USER");
                 employerRepository.save(employer);
                 model.addAttribute("message", "Nuevo empleado creado correctamente");
             } else if ("lifeguard".equals(typeUser)) {
@@ -263,6 +271,7 @@ public class AppRouter {
                 if (leadership) {
                     lifeguard.addSkill("Liderazgo");
                 }
+                lifeguard.setRoles("USER");
                 lifeguardRepository.save(lifeguard);
                 model.addAttribute("message", "Nuevo socorrista creado correctamente");
             } else {
@@ -278,6 +287,29 @@ public class AppRouter {
 
         return "message";
     }
+
+    @GetMapping("/user/{id}/image")
+	public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
+		Optional<Employer> employer = employerRepository.findById(id);
+        Optional<Lifeguard> lifeguard = lifeguardRepository.findById(id);
+		if (employer.isPresent() && employer.get().getPhotoCompany() != null) {
+
+			Resource file = new InputStreamResource(employer.get().getPhotoCompany().getBinaryStream());
+
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+					.contentLength(employer.get().getPhotoCompany().length()).body(file);
+
+		}else if(lifeguard.isPresent() && lifeguard.get().getPhotoUser() != null) {
+
+			Resource file = new InputStreamResource(lifeguard.get().getPhotoUser().getBinaryStream());
+
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+					.contentLength(lifeguard.get().getPhotoUser().length()).body(file);
+		} 
+        else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
    /* @PostMapping("/login")
     public String loginUser(Model model,@RequestParam String mail, @RequestParam String password) {

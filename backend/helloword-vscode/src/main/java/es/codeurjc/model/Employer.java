@@ -20,8 +20,8 @@ public class Employer extends Person{
 
     }
 
-    public Employer(String name, String surname, String description, String dni, String mail, String age, String pass, String phone, String country, String locality, String province, String street, String position, String... roles){
-        super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, street, roles);
+    public Employer(String name, String surname, String description, String dni, String mail, String age, String pass, String phone, String country, String locality, String province, String direction, String position, String... roles){
+        super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, direction, roles);
         this.position = position;
     }
 

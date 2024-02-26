@@ -25,21 +25,20 @@ public class Lifeguard extends Person{
         
     }
 
-    public Lifeguard(String name, String surname, String description, String dni, String mail, String age,String pass, String phone, String country, String locality, String province, String street, String... roles){
-        super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, street, roles);
-        this.skills = new ArrayList<>();
+    public Lifeguard(String name, String surname, String description, String dni, String mail, String age,String pass, String phone, String country, String locality, String province, String direction, String... roles){
+        super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, direction, roles);
     }
 
-    /*public MultipartFile getDocument() {
+    public String getDocument() {
         return document;
     }
 
-    public void setDocument(MultipartFile document) {
+    public void setDocument(String document) {
         this.document = document;
     }
-*/
 
-       public List<String> getSkills() {
+
+    public List<String> getSkills() {
         return skills;
     }
 
@@ -48,6 +47,9 @@ public class Lifeguard extends Person{
     }
 
     public void addSkill(String skill) {
+        if (this.skills == null) {
+            this.skills = new ArrayList<>();
+        }
         this.skills.add(skill);
     }
 

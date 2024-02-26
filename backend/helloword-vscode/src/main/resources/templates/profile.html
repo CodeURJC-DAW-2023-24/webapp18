@@ -22,15 +22,48 @@
         <div class="container">
             {{#user}}
             <h2>{{name}} {{surname}}</h2>
+            <div class="row">
+                <div class="col-md-6 col-xs-4">
+                    {{#employer}}
+                    {{#employer.image}}
+                    <img src="/user/{{employer.id}}/image">
+                    {{/employer.image}}
+              
+                    {{^employer.image}}
+                    <img src="/images/noPhotoCompany.png">
+                    {{/employer.image}}
+                    {{/employer}}
 
-            <div class="containerPool1">
-                <div class="containerProfileLeft">
-                    <img class="poolIMG" src="">
+                    {{#lifeguard}}
+                    {{#lifeguard.image}}
+                    <img src="/user/{{lifeguard.id}}/image">
+                    {{/lifeguard.image}}
+              
+                    {{^lifeguard.image}}
+                    <img src="/images/noPhotoUser.jpg">
+                    {{/lifeguard.image}}
+                    {{/lifeguard}}
                 </div>
-                <div class="containerProfileRight">
-                    <p><strong>Dirección:</strong> {{street}}</p>
-                    <!--<p><strong>Edad:</strong> 18</p>-->
+
+                <div class="col-md-6">
+                    <p><strong>E-Mail:</strong> {{mail}}</p>
+                    <p><strong>DNI:</strong> {{dni}}</p>
+                    <p><strong>Edad:</strong> {{age}}</p>
+                    <p><strong>Teléfono:</strong> {{phone}}</p>
+                    <p><strong>País:</strong> {{country}}</p>
+                    <p><strong>Localidad:</strong> {{locality}}</p>
+                    <p><strong>Provincia:</strong> {{province}}</p>
+                    <p><strong>Dirección:</strong> {{direction}}</p>
+
+                    {{#lifeguard}}
+                    <p><strong>Posición en la empresa:</strong> {{document}}</p>
+                    {{/lifeguard}}
+                    {{#employer}}
+                    <p><strong>Posición en la empresa:</strong> {{position}}</p>
+                    {{/employer}}
+
                     <p><strong>Descripción:</strong> {{description}}</p>
+
                     <!--<p><strong>Titulación:</strong> Técnico superior por la UPM</p>-->
                 </div>
             </div>
@@ -41,6 +74,7 @@
                 <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
             </div>
         </div>
+        {{#lifeguard}}
         <div class="container">
             <h3>Aptitudes</h3>
             <div class="skillsContainer">
@@ -50,9 +84,9 @@
                     {{/skills}}
                 </ul>
             </div>
-            {{/user}}
-
         </div>
+        {{/lifeguard}}
+        {{/user}}
     </div>
 </body>
 

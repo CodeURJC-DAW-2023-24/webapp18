@@ -35,7 +35,7 @@ public abstract class Person {
     private String country;
     private String locality;
     private String province;
-    private String street;
+    private String direction;
     
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
@@ -44,19 +44,20 @@ public abstract class Person {
     public Person(){
         super();
     }
-    public Person(String name, String surname, String description, String dni, String mail, String age, String pass, String phone, String country, String locality, String province, String street, String... roles){
+    public Person(String name, String surname, String description, String dni, String mail, String age, String pass, String phone, String country, String locality, String province, String direction, String... roles){
         super();
         this.name = name;
         this.surname = surname;
         this.description = description;
         this.dni = dni;
         this.mail = mail;
+        this.age = age;
         this.pass = pass;
         this.phone = phone;
         this.country = country;
         this.locality = locality;
         this.province = province;
-        this.street = street;
+        this.direction = direction;
         this.roles = List.of(roles);
     }
 
@@ -156,19 +157,19 @@ public abstract class Person {
         this.province = province;
     }
 
-    public String getStreet() {
-        return street;
+    public String getDirection() {
+        return direction;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
 	public List<String> getRoles() {
 		return roles;
 	}
 
-    public void setRoles(List<String> roles) {
-		this.roles = roles;
+    public void setRoles(String... roles) {
+		this.roles = List.of(roles);
 	}
 }
