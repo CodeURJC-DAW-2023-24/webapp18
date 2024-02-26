@@ -40,11 +40,12 @@ public class SecurityConfiguration {
 		http
 			.authorizeHttpRequests(authorize -> authorize
 					// PUBLIC PAGES
+					.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 					.requestMatchers("/").permitAll()
 					.requestMatchers("/index").permitAll()
 					.requestMatchers("/login").permitAll()
 					// PRIVATE PAGES
-
+					.anyRequest().authenticated()
 			)
 			.formLogin(formLogin -> formLogin
 					.loginPage("/login")
