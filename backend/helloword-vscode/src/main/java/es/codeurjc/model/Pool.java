@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +15,16 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "pool")
 public class Pool{
+    @Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+    @OneToMany(mappedBy = "pool", cascade = CascadeType.ALL)
+    private List<Offer> offers;
+
+    @OneToMany(mappedBy = "pool", cascade = CascadeType.ALL)
+    private List<Message> messages;
+
     private String name;
     private String photo;
     private String direction;
@@ -22,16 +33,6 @@ public class Pool{
     private LocalTime scheduleEnd;
     private String company;
     private String description;
-
-    @OneToMany
-    private List<Message> messages;
-
-
-    @Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-   // private static int idCounter = 0;
-
 
     public Pool(){}
 
@@ -48,8 +49,9 @@ public class Pool{
         this.messages = builder.messages;
     }
 
-    public void addMessage(Message m){
-        this.messages.add(m);
+    public void addMessage(Message message){
+        this.messages.add(message);
+        message.setPool(this);
     }
 
     public void deleteMessage(int index){

@@ -16,10 +16,12 @@ public class Offer {
 
     @ManyToOne
     private Pool pool;
-    
+
     private int salary;
     private String start;
     private String description;
+
+    public Offer(){}
 
     private Offer(Builder builder) {
         this.pool = builder.pool;

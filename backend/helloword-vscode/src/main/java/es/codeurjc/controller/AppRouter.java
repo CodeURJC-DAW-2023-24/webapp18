@@ -52,10 +52,10 @@ public class AppRouter {
     private UserService userService;
 
     @Autowired
-    private OfferService offerService;
+    private PoolService poolService;
 
     @Autowired
-    private PoolService poolService;
+    private OfferService offerService;
 
 	@Autowired 
 	private EmployerRepository employerRepository;

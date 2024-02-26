@@ -12,9 +12,12 @@ public class Message {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+    @ManyToOne
+    private Pool pool;
+
     //@ManyToOne Aqui el mensaje debera apuntar a la person asociada al autor
     String author;
-    
+
     String body;
 
     public Message(){
@@ -27,5 +30,9 @@ public class Message {
     }
     public long getID(){
         return this.id;
+    }
+
+    public void setPool(Pool pool){
+        this.pool = pool;
     }
 }
