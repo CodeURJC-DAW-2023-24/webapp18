@@ -25,8 +25,8 @@ public class Lifeguard extends Person{
         
     }
 
-    public Lifeguard(String name, String surname, String description, String dni, String mail, String age,String pass, String phone, String country, String locality, String province, String street){
-        super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, street);
+    public Lifeguard(String name, String surname, String description, String dni, String mail, String age,String pass, String phone, String country, String locality, String province, String street, String... roles){
+        super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, street, roles);
         this.skills = new ArrayList<>();
     }
 

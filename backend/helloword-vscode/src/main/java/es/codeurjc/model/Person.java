@@ -44,7 +44,7 @@ public abstract class Person {
     public Person(){
         super();
     }
-    public Person(String name, String surname, String description, String dni, String mail, String age, String pass, String phone, String country, String locality, String province, String street){
+    public Person(String name, String surname, String description, String dni, String mail, String age, String pass, String phone, String country, String locality, String province, String street, String... roles){
         super();
         this.name = name;
         this.surname = surname;
@@ -57,6 +57,7 @@ public abstract class Person {
         this.locality = locality;
         this.province = province;
         this.street = street;
+        this.roles = List.of(roles);
     }
 
     public Long getId() {

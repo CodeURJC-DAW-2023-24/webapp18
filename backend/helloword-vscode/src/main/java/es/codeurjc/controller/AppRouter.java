@@ -350,7 +350,7 @@ public class AppRouter {
     }
 
     @GetMapping("/pool/message/load")
-    public String loadMessages(@RequestParam("id") int id, Model model) {
+    public String loadMessages(@RequestParam("id") int id, Model model,HttpServletRequest request) {
         //Pool pool = DataBase.getPool(id);
         Pool pool = poolService.findById(id).get();
         List<Message> messages = pool.getMessages();
@@ -359,6 +359,7 @@ public class AppRouter {
 
         model.addAttribute("messages", messages);
         model.addAttribute("poolId", id);
+        model.addAttribute("admin", request.isUserInRole("ADMIN"));
         return "poolMessage";
     }
 
