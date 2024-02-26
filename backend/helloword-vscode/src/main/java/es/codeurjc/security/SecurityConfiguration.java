@@ -48,14 +48,14 @@ public class SecurityConfiguration {
 					.requestMatchers("/loadOffers").permitAll()
 					.requestMatchers("/allOffersLoaded").permitAll()
 					.requestMatchers("/loginerror").permitAll()
-					.requestMatchers("/error").permitAll()
 					.requestMatchers("/user/form").permitAll()
 					.requestMatchers("/message").permitAll()
 					.requestMatchers("/pool/message/add").permitAll()
 					.requestMatchers("/profile").permitAll()
 					.requestMatchers("/pool/message/load").permitAll()
 					.requestMatchers("/user/register").permitAll()
-
+					.requestMatchers("/user/register").permitAll()
+					.requestMatchers("/availableMail").permitAll()
 
 					// PRIVATE PAGES
 					.anyRequest().authenticated()
@@ -64,7 +64,7 @@ public class SecurityConfiguration {
 			.formLogin(formLogin -> formLogin
 					.loginPage("/login")
 					.failureUrl("/loginerror")
-					.defaultSuccessUrl("/profile")
+					.defaultSuccessUrl("/")
 					.permitAll()
 			)
 			.logout(logout -> logout

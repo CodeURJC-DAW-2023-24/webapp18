@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,6 +63,10 @@ public class AppRouter {
 
 	@Autowired
 	private LifeguardRepository lifeguardRepository;
+
+        
+    @Autowired
+	private PasswordEncoder passwordEncoder;
 
     // -------------------------------------- MAIN --------------------------------------
     @GetMapping("/")
@@ -116,10 +121,21 @@ public class AppRouter {
 
     // -------------------------------------- PROFILE --------------------------------------
     @GetMapping("/profile")
-    public String profile(Model model) {
+    public String profile(Model model, HttpServletRequest request) {
         //Aqui se le debe pasar el id de la pesona con sesion iniciada al publicar el mensaje refereniado
-        Person person = DataBase.getPerson(0);
-        model.addAttribute("user", person);
+        String mail = request.getUserPrincipal().getName();
+
+        Optional<Employer> employer = employerRepository.findByMail(mail);
+        Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
+        if (employer.isPresent()){
+            Employer employerCast = employer.get();
+            model.addAttribute("user", employerCast);
+
+        }else if(lifeguard.isPresent()){   
+            Lifeguard lifeguardCast = lifeguard.get();  
+            model.addAttribute("user", lifeguardCast);           
+        }
+
         return "profile";
     }
     /*@GetMapping("/login")
@@ -203,6 +219,7 @@ public class AppRouter {
                 if (!photoCompanyField.isEmpty()) {
 			    employer.setPhotoCompany(BlobProxy.generateProxy(photoCompanyField.getInputStream(), photoCompanyField.getSize()));
 			    employer.setImageCompany(true);
+                employer.setPass(passwordEncoder.encode(request.getParameter("pass")));
 		        }
                 employerRepository.save(employer);
                 model.addAttribute("message", "Nuevo empleado creado correctamente");
@@ -211,6 +228,8 @@ public class AppRouter {
                     lifeguard.setPhotoUser(BlobProxy.generateProxy(photoUserField.getInputStream(), photoUserField.getSize()));
                     lifeguard.setImageUser(true);
                     }
+                lifeguard.setPass(passwordEncoder.encode(request.getParameter("pass")));
+                System.out.println("LOG PASS" + passwordEncoder.encode(request.getParameter("pass")));
                 if (reliability) {
                     lifeguard.addSkill("Confianza");
                 }

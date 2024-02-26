@@ -2,6 +2,8 @@ package es.codeurjc.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +27,10 @@ public abstract class Person {
     private String dni;
     private String mail;
     private String age;
+
+    @JsonIgnore
     private String pass;
+
     private String phone;
     private String country;
     private String locality;

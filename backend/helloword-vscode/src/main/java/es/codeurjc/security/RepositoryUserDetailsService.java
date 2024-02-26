@@ -47,7 +47,7 @@ public class RepositoryUserDetailsService implements UserDetailsService {
 
     	if (lifeguardOptional.isPresent()) {			
         	Lifeguard lifeguard = lifeguardOptional.get();
-			System.out.println("LOG DE LOGIN de SOCORRISTA");
+			System.out.println("LOG DE LOGIN de SOCORRISTA"+lifeguard.getPass());
 			for (String role : lifeguard.getRoles()) {
 				roles.add(new SimpleGrantedAuthority("ROLE_" + role));
 			}
