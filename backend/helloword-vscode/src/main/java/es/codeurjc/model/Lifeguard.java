@@ -25,8 +25,9 @@ public class Lifeguard extends Person{
         
     }
 
-    public Lifeguard(String name, String surname, String description, String dni, String mail, String age,String pass, String phone, String country, String locality, String province, String direction, String... roles){
+    public Lifeguard(String name, String surname, String description, String dni, String mail, String age,String pass, String phone, String country, String locality, String province, String direction, String document, String... roles){
         super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, direction, roles);
+        this.document = document;
     }
 
     public String getDocument() {
