@@ -13,7 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "pool")
+@Table(name = "pools")
 public class Pool{
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
