@@ -1,9 +1,9 @@
 package es.codeurjc.controller;
 
+import org.springframework.ui.Model;
+
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class loginController {
@@ -14,8 +14,11 @@ public class loginController {
 	}
 
 	@RequestMapping("/loginerror")
-	public String loginerror() {
-		return "loginerror";
+	public String loginerror(Model model) {
+        model.addAttribute("title", "Error");
+        model.addAttribute("message", "Credenciales inválidas");
+        model.addAttribute("back", "/login");
+
+        return "message";
 	}
-    
 }
