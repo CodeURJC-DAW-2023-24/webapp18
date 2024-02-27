@@ -37,4 +37,7 @@ public class Message {
     public void setPool(Pool pool){
         this.pool = pool;
     }
+    public Pool getPool(){
+        return this.pool;
+    }
 }

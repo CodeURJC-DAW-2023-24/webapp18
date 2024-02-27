@@ -44,24 +44,27 @@
                 <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
             </div>
         </div>
-        {{/pool}}
         <div class="container">
             <h3>Comentarios</h3>
             <div class="commentContainer newCommentContainer">
-                <input type="text" id="commentInput" name="commentInput" placeholder="Escribe el comentario"/><br><br>
-                <input type ="hidden" name="_csrf" value="{{token}}"/>
-
-                <div class="btn-cont">
-                    <button class="btn" onclick="addComment('{{pool.id}}')">
-                        <i class="bi bi-send-fill"></i>
-                    </button>
-                </div>
+                <form role="form" action='/pool/message/add' method="post">
+                    <input type="text" id="commentInput" name="commentInput" placeholder="Escribe el comentario"/>
+                    <div class="btn-cont">
+                        <button type = "submit" class="btn" >
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </div>
+                    <input type ="hidden" name="id" value="{{id}}"/>
+                    <input type ="hidden" name="_csrf" value="{{token}}"/>
+                </form>
+                
             </div>
             <div id="messageContainer"></div>
             <div class="btn-cont">
-                <button class="btn" onclick="showMessages('{{pool.id}}')" id="showButton">Ver comentarios</button>
+                <button class="btn" onclick="showMessages('{{id}}')" id="showButton">Ver comentarios</button>
             </div>
         </div>
+        {{/pool}}
     </div>
 </body>
 

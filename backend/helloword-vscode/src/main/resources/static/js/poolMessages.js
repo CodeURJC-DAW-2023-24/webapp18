@@ -5,12 +5,15 @@ async function showMessages(id) {
     loadMsgs(id);
 }
 
-async function deleteMsg(idP, idM) {
-    const response = await fetch('/pool/message/delete?idP=' + idP + '&idM=' + idM, {
+async function deleteMsg(id) {
+
+    const message = document.getElementById("message-"+id)
+
+    const response = await fetch('/pool/message/delete?id=' + id, {
         method: 'POST'
     });
 
-    showMessages(idP);
+    message.innerHTML = "";
 }
 
 async function addComment(id) {

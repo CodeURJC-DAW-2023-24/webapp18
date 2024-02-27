@@ -1,15 +1,23 @@
 {{#messages}}
-<div class="commentContainer">
+<div class="commentContainer" id="message-{{id}}">
     <div class="msgAuthor"> <a href="/profile?type=0&mail={{author}}">{{author}}:</a> </div>
     <div class="msgPool"> {{body}} </div>
-    {{#admin}}
+    <!--{{#admin}}
     <div class="btn-cont">
-        <button class="btn btn-red" onclick="deleteMsg('{{poolId}}', '{{-index}}'-1)">
+        <button class="btn btn-red" onclick="deleteMsg('{{id}}')">
             <i class="bi bi-trash"></i>
         </button>
     </div>
+    {{/admin}}-->
+
+    {{#admin}}
+    <form role="form" action='/pool/message/delete?id={{id}}' method="post">
+        <div class="btn-cont">
+            <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
+        </div>
+        <input type ="hidden" name="_csrf" value="{{token}}"/>
+    </form>
     {{/admin}}
-    <input type ="hidden" name="_csrf" value="{{token}}"/>
 
 </div>
 {{/messages}}

@@ -400,12 +400,7 @@ public class AppRouter {
     }
 
     @PostMapping("/pool/message/add")
-    @ResponseBody
-
-    
-    public void newMessage(@RequestParam("msg") String input, @RequestParam("id") int id, Model model, HttpServletRequest request) {
-
-
+    public String newMessage(@RequestParam("commentInput") String input, @RequestParam("id") int id, Model model, HttpServletRequest request) {
         String mail = request.getUserPrincipal().getName();
         Message message = new Message(mail, input);
      //   Pool pool = DataBase.getPool(id);
@@ -413,23 +408,22 @@ public class AppRouter {
         pool.addMessage(message);
         messageService.save(message);
         poolService.save(pool);
+        model.addAttribute("pool", pool);
+        return "pool";
     }
 
     @PostMapping("/pool/message/delete")
-    @ResponseBody
-    public void deletePoolMessage(@RequestParam("idP") int idP, @RequestParam("idM") int idM, Model model, HttpServletRequest request) {
+    public String deletePoolMessage(@RequestParam("id") int id, Model model, HttpServletRequest request) {
         // Pool pool = DataBase.getPool(idP);
+        System.out.println("Se va a borrar el mensaje "+id+" de la piscina");
+        Message msg = messageService.findById(id).get();
+        Pool pool = msg.getPool();
+        System.out.println("ID:"+id);
+        System.out.println("Correspondiente al id de mensaje: "+id);
+        messageService.deleteById(id); //Esto puede ser que sobre su ponemos el borrado en cascada
+        model.addAttribute("pool", pool);
+        return "pool";
 
-        System.out.println("Estamos en la piscina"+idP);
-        System.out.println("Se va a borrar el mensaje "+idM+" de la piscina");
-
-        Pool pool = poolService.findById(idP).get();
-        System.out.println("ID:"+idM);
-        Message msg = pool.getMessage(idM);
-        System.out.println("Correspondiente al id de mensaje: "+msg.getID());
-        pool.deleteMessage(idM);
-        messageService.deleteById(msg.getID()); //Esto puede ser que sobre su ponemos el borrado en cascada 
-        poolService.save(pool);
     } 
     @PostMapping("/pool/add")
     public String addPool(HttpServletRequest request, HttpSession session, Model model,
