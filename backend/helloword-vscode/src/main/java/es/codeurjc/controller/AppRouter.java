@@ -77,7 +77,14 @@ public class AppRouter {
 
     // -------------------------------------- MAIN --------------------------------------
     @GetMapping("/")
-    public String initial(Model model) {
+    public String initial(Model model,HttpServletRequest request) {
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
         return "index";
     }
 
@@ -102,26 +109,58 @@ public class AppRouter {
     }
 
     @GetMapping("/offer")
-    public String offer(@RequestParam("id") int id, Model model) {
+    public String offer(@RequestParam("id") int id, Model model, HttpServletRequest request) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
         Offer offer = offerService.findById(id).get();
         model.addAttribute("offer", offer);
         return "offer";
     }
 
     @GetMapping("/offer/form")
-    public String newOffer(Model model) {
+    public String newOffer(Model model, HttpServletRequest request) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }        
+
         return "new_offer";
     }
 
     @PostMapping("/offer/add")
-    public String addOffer(Model model) {
+    public String addOffer(Model model, HttpServletRequest request) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }        
+
         return "redirect:/offer/added";
     }
     
 
 
     @GetMapping("/offer/added")
-    public String addedOffer(Model model) {
+    public String addedOffer(Model model, HttpServletRequest request) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
         model.addAttribute("title", "Oferta añadida");
         model.addAttribute("message", "Oferta añadida correctamente. ¡Gracias por confiar en nosotros!");
         model.addAttribute("back", "/");
@@ -131,9 +170,19 @@ public class AppRouter {
     // -------------------------------------- PROFILE --------------------------------------
     @GetMapping("/profile")
     public String profile(Model model, HttpServletRequest request, @RequestParam("type") int type, @RequestParam("mail") String m) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
         //Aqui se le debe pasar el id de la pesona con sesion iniciada al publicar el mensaje refereniado
         if(type==1){
             String mail = request.getUserPrincipal().getName();
+            
+            model.addAttribute("me",true);
 
         Optional<Employer> employer = employerRepository.findByMail(mail);
         Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
@@ -151,6 +200,7 @@ public class AppRouter {
         else if(type==0){
             Optional<Employer> employer = employerRepository.findByMail(m);
         Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(m);
+        model.addAttribute("me",false);
         if (employer.isPresent()){
             Employer employerCast = employer.get();
             model.addAttribute("user", employerCast);
@@ -175,7 +225,15 @@ public class AppRouter {
     }
 */
     @GetMapping("/loged")
-    public String loged(Model model) {
+    public String loged(Model model, HttpServletRequest request) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }        
+
         model.addAttribute("title", "Sesión iniciada");
         model.addAttribute("message", "Has iniciado sesión correctamente");
         model.addAttribute("back", "/profile");
@@ -183,7 +241,15 @@ public class AppRouter {
     }
 
     @GetMapping("/user/form")
-    public String loadNewUser(Model model) {
+    public String loadNewUser(Model model, HttpServletRequest request) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+        
         return "new_user";
     }
 
@@ -238,8 +304,16 @@ public class AppRouter {
     @PostMapping("/user/register")
     public String newUser(HttpServletRequest request, HttpSession session, Model model, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
             boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership, MultipartFile photoUserField, MultipartFile photoCompanyField) throws IOException {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+    
         model.addAttribute("title", "Exito");
-       String messageForm = checkForm(request.getParameter("mail"),request.getParameter("age"),request.getParameter("phone"));
+        String messageForm = checkForm(request.getParameter("mail"),request.getParameter("age"),request.getParameter("phone"));
     //    if (messageForm.equals("  ")){ DESACTIVADO POR AHORA PARA NO TARDAR AL LOGEARTE
             if ("employer".equals(typeUser)) {
                 if (!photoCompanyField.isEmpty()) {
@@ -250,6 +324,7 @@ public class AppRouter {
                 employer.setRoles("USER");
                 employerRepository.save(employer);
                 model.addAttribute("message", "Nuevo empleado creado correctamente");
+                model.addAttribute("back", "/");
             } else if ("lifeguard".equals(typeUser)) {
                 if (!photoUserField.isEmpty()) {
                     lifeguard.setPhotoUser(BlobProxy.generateProxy(photoUserField.getInputStream(), photoUserField.getSize()));
@@ -278,6 +353,7 @@ public class AppRouter {
                 lifeguard.setRoles("USER");
                 lifeguardRepository.save(lifeguard);
                 model.addAttribute("message", "Nuevo socorrista creado correctamente");
+                model.addAttribute("back", "/");
             } else {
                 model.addAttribute("title", "Error");
                 model.addAttribute("message", "Tienes que seleccionar si eres un socorrista o un empleado");
@@ -287,7 +363,6 @@ public class AppRouter {
             }
         //}
         //model.addAttribute("message", messageForm);
-        model.addAttribute("back", "javascript:history.back()");
 
         return "message";
     }
@@ -314,6 +389,7 @@ public class AppRouter {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
 
    /* @PostMapping("/login")
     public String loginUser(Model model,@RequestParam String mail, @RequestParam String password) {
@@ -375,7 +451,15 @@ public class AppRouter {
 */
     // -------------------------------------- POOL --------------------------------------
     @GetMapping("/pool")
-    public String pool(@RequestParam("id") int id, Model model) {
+    public String pool(@RequestParam("id") int id, Model model, HttpServletRequest request) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
         //Pool pool = DataBase.getPool(id);
 
         Optional<Pool> pool = poolService.findById(id);
@@ -387,6 +471,14 @@ public class AppRouter {
 
     @GetMapping("/pool/message/load")
     public String loadMessages(@RequestParam("id") int id, Model model,HttpServletRequest request) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
         //Pool pool = DataBase.getPool(id);
         Pool pool = poolService.findById(id).get();
         List<Message> messages = pool.getMessages();
@@ -401,6 +493,14 @@ public class AppRouter {
 
     @PostMapping("/pool/message/add")
     public String newMessage(@RequestParam("commentInput") String input, @RequestParam("id") int id, Model model, HttpServletRequest request) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
         String mail = request.getUserPrincipal().getName();
         Message message = new Message(mail, input);
      //   Pool pool = DataBase.getPool(id);
@@ -414,6 +514,14 @@ public class AppRouter {
 
     @PostMapping("/pool/message/delete")
     public String deletePoolMessage(@RequestParam("id") int id, Model model, HttpServletRequest request) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
         // Pool pool = DataBase.getPool(idP);
         System.out.println("Se va a borrar el mensaje "+id+" de la piscina");
         Message msg = messageService.findById(id).get();
@@ -434,6 +542,15 @@ public class AppRouter {
                     @RequestParam("start") LocalTime start,
                     @RequestParam("close") LocalTime close,
                     MultipartFile photoPool) {
+
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
         Pool pool = new Pool.Builder()
                         .name(name)
                         .photo("/images/default-image.jpg")
@@ -448,14 +565,31 @@ public class AppRouter {
         poolService.save(pool);
         return "index";
     } 
+
     @GetMapping("/pool/form")
     public String newPool(Model model,HttpServletRequest request){
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
         return "new_pool";
     }
 
     // -------------------------------------- MAPS --------------------------------------
     @GetMapping("/maps")
-    public String maps(Model model) {
+    public String maps(Model model, HttpServletRequest request) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
         return "maps";
     }
 }

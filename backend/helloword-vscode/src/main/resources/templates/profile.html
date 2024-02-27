@@ -69,9 +69,19 @@
             </div>
 
             <div class="btn-cont">
+                {{#me}}
                 <a href="/user/edit?id={{id}}" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-                <a href="/user/delete?id={{id}}" class="btn btn-red" role="button"><i class="bi bi-trash"></i> Eliminar</a>
+                <form action="/logout" method="post">
+                    <input type="hidden" name="_csrf" value="{{token}}"/>
+                    <input type="submit" value="Cerrar sesión"/>
+                </form>
+                {{/me}}
+
                 <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+
+                {{#admin}}
+                <a href="/user/delete?id={{id}}" class="btn btn-red" role="button"><i class="bi bi-trash"></i> Eliminar</a>
+                {{/admin}}
             </div>
         </div>
         {{#lifeguard}}

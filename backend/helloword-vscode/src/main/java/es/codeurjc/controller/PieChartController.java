@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import es.codeurjc.model.Lifeguard;
 import es.codeurjc.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 @Controller
 public class PieChartController {
 
@@ -22,7 +23,14 @@ public class PieChartController {
 
 
     @GetMapping("/pieChart")
-    public String showPieChart(Model model) {
+    public String showPieChart(Model model, HttpServletRequest request) {
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
 
         //encontrar los socorristas, recorrer sus listas de aptitudes y meterlas en un mapa. Rellenar el model con el mapa
 
