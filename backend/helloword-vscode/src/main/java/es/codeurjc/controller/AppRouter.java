@@ -120,8 +120,9 @@ public class AppRouter {
 
         Offer offer = offerService.findById(id).get();
         model.addAttribute("offer", offer);
+        model.addAttribute("id", offer.getId());
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
-        model.addAttribute("lifeguard", request.isUserInRole("LIFE"));
+        model.addAttribute("lifeguard", request.isUserInRole("LIFE") && !offer.isOffered(request.getUserPrincipal().getName()) && ! request.getUserPrincipal().getName().equals("admin"));
         model.addAttribute("employer", request.isUserInRole("EMP"));
         return "offer";
     }
@@ -169,6 +170,36 @@ public class AppRouter {
         model.addAttribute("back", "/");
         return "message";
     }
+
+
+    @GetMapping("/offer/offered/load")
+    public String loadOffered(@RequestParam("id") int id, Model model,HttpServletRequest request) {
+        Offer offer = offerService.findById(id).get();
+        List<Lifeguard> lifeguards = offer.getLifeguards();
+        // Hay que hacer que los mensajes sean referentes a pool
+        //Collection<Message> messagesBD = messageService.findAll();
+
+        model.addAttribute("lifeguards",lifeguards);
+        model.addAttribute("id", id);
+        model.addAttribute("admin", request.isUserInRole("ADMIN"));
+        return "offered";
+    }
+
+    @PostMapping("/offer/offered/new")
+    public String newOffered(@RequestParam("id") int id, Model model, HttpServletRequest request) {
+     //   Pool pool = DataBase.getPool(id);
+     Offer offer = offerService.findById(id).get();
+     Lifeguard lifeguard = userService.findLifeguardByEmail(request.getUserPrincipal().getName()).get();
+     offer.addOffered(lifeguard);
+     offerService.save(offer);
+     model.addAttribute("offer", offer);
+     model.addAttribute("id", offer.getId());
+     model.addAttribute("admin", request.isUserInRole("ADMIN"));
+     model.addAttribute("lifeguard", false);
+     model.addAttribute("employer", request.isUserInRole("EMP"));
+        return "offer";
+    }
+
 
     // -------------------------------------- PROFILE --------------------------------------
     @GetMapping("/profile")
@@ -468,8 +499,16 @@ public class AppRouter {
         Optional<Pool> pool = poolService.findById(id);
         if(pool.isPresent()){
         model.addAttribute("pool", pool.get());
+        
     }
+        model.addAttribute("admin", request.isUserInRole("ADMIN"));
         return "pool";
+    }
+
+    @PostMapping("pool/delete")
+    public String deletePool(@RequestParam("id") int id, Model model,HttpServletRequest request) {
+        poolService.deleteById(id);
+        return "index";
     }
 
     @GetMapping("/pool/message/load")

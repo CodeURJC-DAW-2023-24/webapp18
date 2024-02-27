@@ -13,6 +13,8 @@
 
     <link type="text/css" rel="stylesheet" href="/css/general.css" />
     <link type="text/css" rel="stylesheet" href="/css/data.css" />
+    <link type="text/css" rel="stylesheet" href="/css/pp.css" />
+    <script src="/js/poolMessages.js"></script>
 </head>
 
 <body>
@@ -40,16 +42,30 @@
 
             <div class="btn-cont">
                 {{#lifeguard}}
-                <a href="newOffer.html" class="btn" role="button"><i class="bi bi-pencil"></i> Proponerse</a>
+                <form role="form" action='/offer/offered/new' method="post">
+                    <div class="btn-cont">
+                        <button type = "submit" class="btn" >
+                            <i class="btn">Proponerse</i>
+                        </button>
+                    </div>
+                    <input type ="hidden" name="id" value="{{id}}"/>
+                    <input type ="hidden" name="_csrf" value="{{token}}"/>
+                </form>
                 {{/lifeguard}}
                 {{#employer}}
-                <a href="newOffer.html" class="btn" role="button"><i class="bi bi-pencil"></i> Ver Propuestas</a>
+                <div class="btn-cont">
+                    <button class="btn" onclick="showOffered('{{id}}')" id="showButton">Ver propuestas</button>
+                </div>
                 {{/employer}}
                 {{#admin}}
                 <a href="/" class="btn btn-red" role="button"><i class="bi bi-trash"></i> Eliminar</a>
                 {{/admin}}
                 <a href="/" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
             </div>
+
+            <div id="messageContainer"></div>
+            
+
         </div>
     </div>
 </body>

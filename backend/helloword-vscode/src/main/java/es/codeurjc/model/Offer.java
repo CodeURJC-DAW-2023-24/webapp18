@@ -1,10 +1,16 @@
 package es.codeurjc.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,6 +23,10 @@ public class Offer {
     @ManyToOne
     private Pool pool;
 
+    @ManyToMany
+    private List<Lifeguard> lifeguards;
+
+
     private int salary;
     private String start;
     private String description;
@@ -28,8 +38,9 @@ public class Offer {
         this.salary = builder.salary;
         this.start = builder.start;
         this.description = builder.description;
+        this.lifeguards = new ArrayList<>();
     }
-
+    
     // Getters
     public Long getId() {
         return id;
@@ -47,10 +58,23 @@ public class Offer {
         return start;
     }
 
+    public void addOffered(Lifeguard lifeguard) {
+        this.lifeguards.add(lifeguard);
+    }
+
     public String getDescription() {
         return description;
     }
+    public List<Lifeguard> getLifeguards(){
+        return this.lifeguards;
+    }
 
+    public boolean isOffered(String mail){
+        for (Lifeguard lifeguard : lifeguards) {
+            if (lifeguard.getMail().equals(mail)) return true;
+        }
+        return false;
+    }
     // Método para actualizar los datos de la oferta
     public void update(Builder builder) {
         if (builder.pool != null) {
@@ -98,4 +122,5 @@ public class Offer {
             return new Offer(this);
         }
     }
+
 }

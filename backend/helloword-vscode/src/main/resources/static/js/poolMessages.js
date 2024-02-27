@@ -5,6 +5,14 @@ async function showMessages(id) {
     loadMsgs(id);
 }
 
+async function showOffered(id) {
+    let fetchpar = '/offer/offered/load?id=' + id;
+    const response = await fetch(fetchpar);
+    pagePart = await response.text();
+
+    const content = document.getElementById("messageContainer");
+    content.innerHTML = pagePart;
+}
 async function deleteMsg(id) {
 
     const message = document.getElementById("message-"+id)
