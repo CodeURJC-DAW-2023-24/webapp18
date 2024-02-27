@@ -102,9 +102,12 @@ public class AppRouter {
     }
 
     @GetMapping("/offer")
-    public String offer(@RequestParam("id") int id, Model model) {
+    public String offer(@RequestParam("id") int id, Model model, HttpServletRequest request) {
         Offer offer = offerService.findById(id).get();
         model.addAttribute("offer", offer);
+        model.addAttribute("admin", request.isUserInRole("ADMIN"));
+        model.addAttribute("lifeguard", request.isUserInRole("LIFE"));
+        model.addAttribute("employer", request.isUserInRole("EMP"));
         return "offer";
     }
 
