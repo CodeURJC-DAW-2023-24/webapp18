@@ -48,15 +48,18 @@ public class SecurityConfiguration {
 					.requestMatchers("/loadOffers").permitAll()
 					.requestMatchers("/allOffersLoaded").permitAll()
 					.requestMatchers("/loginerror").permitAll()
+					.requestMatchers("/error").permitAll()
 					.requestMatchers("/user/form").permitAll()
 					.requestMatchers("/message").permitAll()
 					.requestMatchers("/pool/message/add").permitAll()
 					.requestMatchers("/profile").permitAll()
 					.requestMatchers("/pool/message/load").permitAll()
+					.requestMatchers("/pool/message/new").permitAll()
 					.requestMatchers("/user/register").permitAll()
 					.requestMatchers("/user/register").permitAll()
 					.requestMatchers("/availableMail").permitAll()
 					.requestMatchers("/maps").permitAll()
+					.requestMatchers("/offer").permitAll()
 
 					// PRIVATE PAGES
 					.anyRequest().authenticated()

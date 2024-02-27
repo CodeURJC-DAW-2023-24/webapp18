@@ -417,7 +417,7 @@ public class AppRouter {
 
     @PostMapping("/pool/message/delete")
     @ResponseBody
-    public void deletePoolMessage(@RequestParam("idP") int idP, @RequestParam("idM") int idM, Model model) {
+    public void deletePoolMessage(@RequestParam("idP") int idP, @RequestParam("idM") int idM, Model model, HttpServletRequest request) {
         // Pool pool = DataBase.getPool(idP);
 
         System.out.println("Estamos en la piscina"+idP);

@@ -49,6 +49,8 @@
             <h3>Comentarios</h3>
             <div class="commentContainer newCommentContainer">
                 <input type="text" id="commentInput" name="commentInput" placeholder="Escribe el comentario"/><br><br>
+                <input type ="hidden" name="_csrf" value="{{token}}"/>
+
                 <div class="btn-cont">
                     <button class="btn" onclick="addComment('{{pool.id}}')">
                         <i class="bi bi-send-fill"></i>
