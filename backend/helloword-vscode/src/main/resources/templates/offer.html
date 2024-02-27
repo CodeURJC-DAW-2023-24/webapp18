@@ -39,8 +39,15 @@
             {{/offer}}
 
             <div class="btn-cont">
-                <a href="newOffer.html" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+                {{#lifeguard}}
+                <a href="newOffer.html" class="btn" role="button"><i class="bi bi-pencil"></i> Proponerse</a>
+                {{/lifeguard}}
+                {{#employer}}
+                <a href="newOffer.html" class="btn" role="button"><i class="bi bi-pencil"></i> Ver Propuestas</a>
+                {{/employer}}
+                {{#admin}}
                 <a href="/" class="btn btn-red" role="button"><i class="bi bi-trash"></i> Eliminar</a>
+                {{/admin}}
                 <a href="/" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
             </div>
         </div>
