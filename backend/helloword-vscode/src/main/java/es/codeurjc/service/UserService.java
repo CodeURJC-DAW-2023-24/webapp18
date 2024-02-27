@@ -1,6 +1,7 @@
 package es.codeurjc.service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -29,6 +30,10 @@ public class UserService {
 
 	public void saveLifeguard(Lifeguard lifeguard){
 		lifeguardRepository.save(lifeguard);
+	}
+
+	public List<Lifeguard> findAllLifeguard(){
+		return lifeguardRepository.findAll();
 	}
 
 	public Optional<Employer> findEmployerByEmail(String mail){

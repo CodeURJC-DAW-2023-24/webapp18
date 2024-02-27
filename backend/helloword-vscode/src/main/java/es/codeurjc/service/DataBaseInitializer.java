@@ -24,8 +24,10 @@ public class DataBaseInitializer {
 
     @PostConstruct
     private void initDatabase() {
-
-    	lifeguardRepository.save(new Lifeguard("socorrista", "1", "Socorrista inicializado", "54152452L","s1","20",passwordEncoder.encode("s1"),"624578423","Spain","Madrid","Madrid","Calle Amargura","Título de socorrismo A1","USER"));
+        Lifeguard l = new Lifeguard("socorrista", "1", "Socorrista inicializado", "54152452L","s1","20",passwordEncoder.encode("s1"),"624578423","Spain","Madrid","Madrid","Calle Amargura","Título de socorrismo A1","USER");
+        l.addSkill("Confianza");
+        l.addSkill("Esfuerzo");
+    	lifeguardRepository.save(l);
 		employerRepository.save(new Employer("Admin", "Jorge", "ADMIN inicializado", "99150252L","admin","20",passwordEncoder.encode("admin"),"614206895","Spain","Madrid","Madrid","Calle Amargura","admin","USER", "ADMIN"));
     }
 }
