@@ -56,6 +56,7 @@ public class SecurityConfiguration {
 					.requestMatchers("/user/register").permitAll()
 					.requestMatchers("/user/register").permitAll()
 					.requestMatchers("/availableMail").permitAll()
+					.requestMatchers("/maps").permitAll()
 
 					// PRIVATE PAGES
 					.anyRequest().authenticated()

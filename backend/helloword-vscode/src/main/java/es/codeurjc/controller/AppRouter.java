@@ -458,4 +458,10 @@ public class AppRouter {
     public String newPool(Model model,HttpServletRequest request){
         return "new_pool";
     }
+
+    // -------------------------------------- MAPS --------------------------------------
+    @GetMapping("/maps")
+    public String maps(Model model) {
+        return "maps";
+    }
 }
