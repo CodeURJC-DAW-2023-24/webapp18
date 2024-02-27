@@ -12,7 +12,11 @@
     --gradient-red-inverse: linear-gradient(340deg, var(--red-light), var(--red-dark));
 
     --second-color: white;
+    --third-color: #212529;
     --logo-color: rgb(255, 87, 0);
+
+    --border-color: #ccc;
+    --background-color: #f0f0f0;
 }
 
 * {
@@ -43,7 +47,7 @@ h3 {
 }
 
 body {
-    background-color: #f0f0f0;
+    background-color: var(--background-color);
 }
 
 p {
@@ -85,8 +89,8 @@ header a {
     width: 80%;
     max-width: none;
 
-    background-color: white;
-    border: 1px solid #ccc;
+    background-color: var(--second-color);
+    border: 1px solid var(--border-color);
     border-radius: 25px;
     text-align: center;
 }
@@ -167,4 +171,37 @@ form {
 
 .bi-person-fill {
     font-size: 2em;
+}
+
+.top-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.top-container .btn {
+    background-color: var(--second-color);
+    color: var(--third-color);
+    border: transparent;
+}
+
+.top-container .btn:hover{
+    background-color: var(--main-color);
+    color: var(--second-color);
+}
+
+.top-container .btn:active{
+    background-color: var(--main-color);
+    color: var(--third-color);
+}
+
+.top-container .bi {
+    font-size: 1.25em;  /* width = 49px */
+}
+
+.top-container h2 {
+    text-align: center;
+    flex-grow: 1;
+    margin: 0 10px;
+    margin-left: 59px;  /* (10 + 49) */
 }

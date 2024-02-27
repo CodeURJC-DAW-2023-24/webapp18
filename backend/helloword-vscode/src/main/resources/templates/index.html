@@ -20,18 +20,23 @@
 <body>
     {{> header}}
 
-    <section class="container">
-        <h2>Ofertas de trabajo</h2>
+    <main class="container">
+        <div class="top-container">
+            <h2>Ofertas de trabajo</h2>
 
-        <div class="offers" id="offers">
+            <a class="btn" href="/maps">
+                <i class="bi bi-map-fill"></i>
+            </a>
         </div>
+
+        <section class="offers" id="offers"></section>
 
         <div class="btn-cont" id="loadOffers">
             <button class="btn" onclick='loadOffers()'>
                 <i class="bi bi-chevron-double-down"></i> Cargar más
             </button>
         </div>
-    </section>
+    </main>
 
     <div class="btn-cont bottom-right-button">
         <a href="/offer/form" class="btn" role="btn"><i class="bi bi-plus-circle"></i></a>
