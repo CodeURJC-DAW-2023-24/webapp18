@@ -182,6 +182,7 @@ public class AppRouter {
         model.addAttribute("lifeguards",lifeguards);
         model.addAttribute("id", id);
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
+        model.addAttribute("employer", request.isUserInRole("EMP"));
         return "offered";
     }
 
@@ -191,6 +192,20 @@ public class AppRouter {
      Offer offer = offerService.findById(id).get();
      Lifeguard lifeguard = userService.findLifeguardByEmail(request.getUserPrincipal().getName()).get();
      offer.addOffered(lifeguard);
+     offerService.save(offer);
+     model.addAttribute("offer", offer);
+     model.addAttribute("id", offer.getId());
+     model.addAttribute("admin", request.isUserInRole("ADMIN"));
+     model.addAttribute("lifeguard", false);
+     model.addAttribute("employer", request.isUserInRole("EMP"));
+        return "offer";
+    }
+    @PostMapping("/offer/offered/set")
+    public String LifeguardSetted(@RequestParam("id") int id,@RequestParam("lg") String lg, Model model, HttpServletRequest request) {
+     //   Pool pool = DataBase.getPool(id);
+     Offer offer = offerService.findById(id).get();
+     Lifeguard lifeguard = userService.findLifeguardByEmail(lg).get();
+     offer.setLifeguard(lifeguard);
      offerService.save(offer);
      model.addAttribute("offer", offer);
      model.addAttribute("id", offer.getId());

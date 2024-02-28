@@ -26,6 +26,9 @@ public class Offer {
     @ManyToMany
     private List<Lifeguard> lifeguards;
 
+    @ManyToOne
+    private Lifeguard lifeguard;
+
 
     private int salary;
     private String start;
@@ -74,6 +77,10 @@ public class Offer {
             if (lifeguard.getMail().equals(mail)) return true;
         }
         return false;
+    }
+
+    public void setLifeguard(Lifeguard l){
+        this.lifeguard = l;
     }
     // Método para actualizar los datos de la oferta
     public void update(Builder builder) {
