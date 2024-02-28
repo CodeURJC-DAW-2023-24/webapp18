@@ -48,9 +48,9 @@
                     {{#document}}
                     <p><strong>Título de socorrismo</strong> {{document}}</p>
                     {{/document}}
-                    {{#position}}
-                    <p><strong>Posición en la empresa:</strong> {{position}}</p>
-                    {{/position}}
+                    {{#company}}
+                    <p><strong>Empresa:</strong> {{company}}</p>
+                    {{/company}}
 
                     <p><strong>Descripción:</strong> {{description}}</p>
 
@@ -88,6 +88,18 @@
             </div>
         </div>
         {{/lifeguard}}
+        {{#employer}}
+        <div class="container">
+            <h3>Ofertas</h3>
+            <div class="skillsContainer">
+                <ul>
+                    {{#offers}}
+                    <li><a href="offer?id={{id}}">Piscina: {{pool.name}} - Salario: {{salary}} - Inicio:{{start}}</a></li>
+                    {{/offers}}
+                </ul>
+            </div>
+        </div>
+        {{/employer}}
         {{/user}}
     </div>
 </body>

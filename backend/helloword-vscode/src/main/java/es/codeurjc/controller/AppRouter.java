@@ -222,6 +222,14 @@ public class AppRouter {
         Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
         if (employer.isPresent()){
             Employer employerCast = employer.get();
+            Collection<Offer> offers = offerService.findAll();
+            employerCast.setOffersEmpty();
+            for (Offer offer : offers) {
+                if (offer.getPool().getCompany().equals(employerCast.getCompany())) {
+                    employerCast.addOffer(offer);
+                }
+            }
+            employerRepository.save(employerCast);
             model.addAttribute("user", employerCast);
             model.addAttribute("employer", request.isUserInRole("USER"));
 
@@ -355,7 +363,7 @@ public class AppRouter {
 			    employer.setImageCompany(true);
 		        }
                 employer.setPass(passwordEncoder.encode(request.getParameter("pass")));
-                employer.setRoles("USER");
+                employer.setRoles("USER","EMP");
                 employerRepository.save(employer);
                 model.addAttribute("message", "Nuevo empleado creado correctamente");
                 model.addAttribute("back", "/");
@@ -384,7 +392,7 @@ public class AppRouter {
                 if (leadership) {
                     lifeguard.addSkill("Liderazgo");
                 }
-                lifeguard.setRoles("USER");
+                lifeguard.setRoles("USER","LIFE");
                 lifeguardRepository.save(lifeguard);
                 model.addAttribute("message", "Nuevo socorrista creado correctamente");
                 model.addAttribute("back", "/");

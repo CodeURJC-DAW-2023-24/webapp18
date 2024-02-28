@@ -30,7 +30,7 @@ public class DataBaseInitializer {
         Employer e = new Employer("empleador", "1", " empleador inicializado","56327548K","e1","42",passwordEncoder.encode("e1"),"123456788","España","Madrid","Madrid","Calle Parque Bujaruelo","Empresaurio","USER","EMP");
     	lifeguardRepository.save(l);
         employerRepository.save(e);
-		employerRepository.save(new Employer("Admin", "Jorge", "ADMIN inicializado", "99150252L","admin","20",passwordEncoder.encode("admin"),"614206895","Spain","Madrid","Madrid","Calle Amargura","admin","USER", "ADMIN", "EMP", "LIFE"));
+		employerRepository.save(new Employer("Admin", "Jorge", "ADMIN inicializado", "99150252L","admin","20",passwordEncoder.encode("admin"),"614206895","Spain","Madrid","Madrid","Calle Amargura","Marcos Friki","USER", "ADMIN", "EMP", "LIFE"));
     }
 }
 

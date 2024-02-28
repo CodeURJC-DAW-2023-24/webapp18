@@ -1,9 +1,12 @@
 package es.codeurjc.model;
 
 import java.sql.Blob;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,15 +17,19 @@ public class Employer extends Person{
 	private Blob photoCompany;
 	private boolean imageCompany;
 
-    private String position;
+    private String company;
+
+    @ManyToMany
+    private List<Offer> offers;
 
     public Employer(){
 
     }
 
-    public Employer(String name, String surname, String description, String dni, String mail, String age, String pass, String phone, String country, String locality, String province, String direction, String position, String... roles){
+    public Employer(String name, String surname, String description, String dni, String mail, String age, String pass, String phone, String country, String locality, String province, String direction, String company, String... roles){
         super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, direction, roles);
-        this.position = position;
+        this.company = company;
+        this.offers = new ArrayList<Offer>();
     }
 
     public void setPhotoCompany(Blob photoCompany){
@@ -40,11 +47,29 @@ public class Employer extends Person{
         return imageCompany;
     }
 
-    public String getPosition(){
-        return position;
+    public String getCompany(){
+        return company;
     }
 
-    public void setPosition(String position){
-        this.position = position;
+    public void setCompany(String company){
+        this.company = company;
+    }
+
+        public List<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(ArrayList<Offer> offers) {
+        this.offers = offers;
+    }
+
+    public void addOffer(Offer offer) {
+        if (this.offers == null) {
+            this.offers = new ArrayList<>();
+        }
+        this.offers.add(offer);
+    }
+    public void setOffersEmpty() {
+        this.offers = new ArrayList<Offer>();
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,6 +21,8 @@ public class Lifeguard extends Person{
 	private boolean imageUser;
     private String document;
     private List<String> skills;
+    @ManyToMany
+    private List<Pool> pools;
 
     public Lifeguard(){
         
@@ -29,6 +32,7 @@ public class Lifeguard extends Person{
         super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, direction, roles);
         this.document = document;
         this.skills = new ArrayList<String>();
+        this.pools = new ArrayList<Pool>();
     }
 
     public String getDocument() {
@@ -53,6 +57,21 @@ public class Lifeguard extends Person{
             this.skills = new ArrayList<>();
         }
         this.skills.add(skill);
+    }
+
+    public List<Pool> getPools() {
+        return pools;
+    }
+
+    public void setPools(ArrayList<Pool> pools) {
+        this.pools = pools;
+    }
+
+    public void addPool(Pool pool) {
+        if (this.pools == null) {
+            this.pools = new ArrayList<>();
+        }
+        this.pools.add(pool);
     }
 
 	public Blob getPhotoUser() {
