@@ -69,12 +69,20 @@
 
 
                         <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
-
-                        {{#admin}}
-                        <a href="/user/delete?id={{id}}" class="btn btn-red" role="button"><i class="bi bi-trash"></i> Eliminar</a>
-                        {{/admin}}
                         </div>
                 </form>
+
+                {{#admin}}
+                <form role="form" action='/profile/delete?id={{id}}' method="post">
+                    <div class="btn-cont">
+                        <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
+                    </div>
+                    <input type ="hidden" name="_csrf" value="{{token}}"/>
+                    <input type ="hidden" name="id" value="{{id}}"/>
+                    <input type ="hidden" name="mail" value="{{mail}}"/>
+                </form>
+                {{/admin}}
+                
         </div>
         {{#lifeguard}}
         <div class="container">

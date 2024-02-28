@@ -206,7 +206,9 @@ public class AppRouter {
      Offer offer = offerService.findById(id).get();
      Lifeguard lifeguard = userService.findLifeguardByEmail(lg).get();
      offer.setLifeguard(lifeguard);
+     lifeguard.addOffer(offer);
      offerService.save(offer);
+     userService.saveLifeguard(lifeguard);
      model.addAttribute("offer", offer);
      model.addAttribute("id", offer.getId());
      model.addAttribute("admin", request.isUserInRole("ADMIN"));
@@ -255,21 +257,29 @@ public class AppRouter {
         }
         }
         else if(type==0){
+            model.addAttribute("admin", request.isUserInRole("ADMIN"));
             Optional<Employer> employer = employerRepository.findByMail(m);
-        Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(m);
-        model.addAttribute("me",false);
-        if (employer.isPresent()){
-            Employer employerCast = employer.get();
-            model.addAttribute("user", employerCast);
+            Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(m);
+            model.addAttribute("me",false);
+            if (employer.isPresent()){
+                Employer employerCast = employer.get();
+                model.addAttribute("user", employerCast);
 
-        }else if(lifeguard.isPresent()){   
-            Lifeguard lifeguardCast = lifeguard.get();  
-            model.addAttribute("user", lifeguardCast);           
-        }
+            }else if(lifeguard.isPresent()){   
+                Lifeguard lifeguardCast = lifeguard.get();  
+                model.addAttribute("user", lifeguardCast);           
+            }
         }
         
-
         return "profile";
+    }
+
+    @PostMapping("/profile/delete")
+    public String deleteAccount(Model model, HttpServletRequest request, @RequestParam("mail") String mail) {
+
+        userService.deleteUserByEmail(mail);
+
+        return "index";
     }
     /*@GetMapping("/login")
     public String sign(Model model) {

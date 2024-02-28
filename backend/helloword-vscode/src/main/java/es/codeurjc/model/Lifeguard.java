@@ -8,9 +8,11 @@ import java.sql.Blob;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,6 +26,9 @@ public class Lifeguard extends Person{
     @ManyToMany
     private List<Pool> pools;
 
+    @OneToMany(mappedBy = "lifeguard", cascade = CascadeType.ALL)
+    private List<Offer> offers;
+
     public Lifeguard(){
         
     }
@@ -33,6 +38,7 @@ public class Lifeguard extends Person{
         this.document = document;
         this.skills = new ArrayList<String>();
         this.pools = new ArrayList<Pool>();
+        this.offers = new ArrayList<Offer>();
     }
 
     public String getDocument() {
@@ -72,6 +78,12 @@ public class Lifeguard extends Person{
             this.pools = new ArrayList<>();
         }
         this.pools.add(pool);
+    }
+    public void addOffer(Offer offer) {
+        if (this.offers == null) {
+            this.offers = new ArrayList<>();
+        }
+        this.offers.add(offer);
     }
 
 	public Blob getPhotoUser() {

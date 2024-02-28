@@ -43,6 +43,13 @@ public class UserService {
 	public Optional<Lifeguard> findLifeguardByEmail(String mail){
 		return lifeguardRepository.findByMail(mail);
 	}
+	public void deleteUserByEmail(String mail){
+		Optional<Lifeguard> l = lifeguardRepository.findByMail(mail);
+		if(l.isPresent()) lifeguardRepository.deleteById(l.get().getId());
+		Optional<Employer> e = employerRepository.findByMail(mail);
+		if(e.isPresent()) employerRepository.deleteById(e.get().getId());
+
+	}
 /*    private final ConcurrentMap<Long, Lifeguard> lifeguards = new ConcurrentHashMap<>();
 	private final AtomicLong nextId1 = new AtomicLong();
 
