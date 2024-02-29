@@ -428,6 +428,7 @@ public class AppRouter {
                 model.addAttribute("back", "/");
             } else if ("lifeguard".equals(typeUser)) {
                 if (!photoUserField.isEmpty()) {
+                    System.out.println("LOG DE FOTOOOOOO********************* ----"+photoUserField);
                     lifeguard.setPhotoUser(BlobProxy.generateProxy(photoUserField.getInputStream(), photoUserField.getSize()));
                     lifeguard.setImageUser(true);
                     }

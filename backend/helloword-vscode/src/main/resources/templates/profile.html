@@ -24,15 +24,25 @@
             <h2>{{name}} {{surname}}</h2>
             <div class="row">
                 <div class="col-md-6 col-xs-4">
+                    {{#lifeguard}}
+                    {{#photoUser}}
+                    <img style="width: 25em; height: 25em;" src="/user/{{id}}/image">
+                    {{/photoUser}}
+                    
+                    {{^photoUser}}
+                    <img style="width: 25em; height: 25em;" src="/images/noPhotoUser.jpg">
+                    {{/photoUser}}
+                    {{/lifeguard}}
 
-                    {{#image}}
-                    <img src="/user/{{id}}/image">
-                    {{/image}}
+                    {{#employer}}
+                    {{#photoCompany}}
+                    <img style="width: 25em; height: 25em;" src="/user/{{id}}/image">
+                    {{/photoCompany}}
               
-                    {{^image}}
-                    <img src="/images/noPhotoUser.jpg">
-                    {{/image}}
-        
+                    {{^photoCompany}}
+                    <img style="width: 25em; height: 25em;" src="/images/noPhotoUser.jpg">
+                    {{/photoCompany}}
+                    {{/employer}}
                 </div>
 
                 <div class="col-md-6">
