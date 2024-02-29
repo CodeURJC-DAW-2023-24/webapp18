@@ -315,16 +315,7 @@ public class AppRouter {
 
         return "index";
     }
-    /*@GetMapping("/login")
-    public String sign(Model model) {
-        return "login";
-    }*/
-
-   /*  @PostMapping("/login")
-    public String login(Model model) {
-        return "redirect:/loged";
-    }
-*/
+    
     @GetMapping("/loged")
     public String loged(Model model, HttpServletRequest request) {
 
@@ -354,7 +345,6 @@ public class AppRouter {
         return "new_user";
     }
 
-    //FALTARIA METER LA COMPROBACION DE QUE NO ESTE REPETIDO EL MAIL
     public String checkForm(String mail, String age, String phone){
         int phoneNum = 0;
         int ageNum = 0;
@@ -415,7 +405,7 @@ public class AppRouter {
     
         model.addAttribute("title", "Exito");
         String messageForm = checkForm(request.getParameter("mail"),request.getParameter("age"),request.getParameter("phone"));
-    //    if (messageForm.equals("  ")){ DESACTIVADO POR AHORA PARA NO TARDAR AL LOGEARTE
+    //    if (messageForm.equals("  ")){ 
             if ("employer".equals(typeUser)) {
                 if (!photoCompanyField.isEmpty()) {
 			    employer.setPhotoCompany(BlobProxy.generateProxy(photoCompanyField.getInputStream(), photoCompanyField.getSize()));
@@ -493,39 +483,6 @@ public class AppRouter {
 	}
 
 
-   /* @PostMapping("/login")
-    public String loginUser(Model model,@RequestParam String mail, @RequestParam String password) {
-        model.addAttribute("title", "Error");
-        model.addAttribute("back", "javascript:history.back()");
-        Optional<Employer> employer = employerRepository.findByMail(mail);
-        if (employer.isPresent()){
-            Employer employerCast = employer.get();
-            if (password.equals(employerCast.getPass())){
-                model.addAttribute("message", "Empleado logeado correctamente");
-            }else{
-                model.addAttribute("message", "E-mail y contraseña incorrectos");
-            }
-
-        }else{     
-            Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
-            if (lifeguard.isPresent()){
-                Lifeguard lifeguardCast = lifeguard.get();
-            if (password.equals(lifeguardCast.getPass())){
-                model.addAttribute("message", "Socorrista logeado correctamente");
-            }else{
-                model.addAttribute("message", "E-mail y contraseña incorrectos");
-            }
-                
-            }else{
-                model.addAttribute("message","El correo introducido no está registrado");
-            }
-        }
-        
-        return "message";
-    }
-    */
-
-    //PREGUNTAR AL PROFE POR QUE NO FUNCIONA SI EL TRUE Y EL FALSE LO HACE BIEN
     @GetMapping("/availableMail")
     public ResponseEntity<?> checkMailAvailability(@RequestParam String mail) {
         boolean available = true;
