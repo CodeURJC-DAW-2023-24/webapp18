@@ -179,8 +179,15 @@ public class AppRouter {
         // Hay que hacer que los mensajes sean referentes a pool
         //Collection<Message> messagesBD = messageService.findAll();
 
+        if(offer.getLifeguard()!=null){
+            for (Lifeguard lifeguard: lifeguards){
+                if(offer.getLifeguard().getMail().equals(lifeguard.getMail())){
+                    lifeguard.setofferAssigned(true);
+                    break;
+                }
+            }
+        }
         System.out.println("load "+id);
-
 
         model.addAttribute("offer", offer);
         model.addAttribute("lifeguards",lifeguards);
@@ -224,6 +231,19 @@ public class AppRouter {
         return "redirect:/offer?id="+id;
     }
 
+    @PostMapping("/offer/offered/delete")
+    public String LifeguardDeleted(@RequestParam("ido") int id,@RequestParam("lg") String lg, Model model, HttpServletRequest request) {
+        //   Pool pool = DataBase.getPool(id);
+        Offer offer = offerService.findById(id).get();
+        Lifeguard lifeguard = userService.findLifeguardByEmail(lg).get();
+        offer.setLifeguard(null);
+        offerService.save(offer);
+        lifeguard.deleteOfferAccepted(offer);
+        userService.saveLifeguard(lifeguard);
+        
+        return "redirect:/offer?id="+id;
+    }
+
 
     // -------------------------------------- PROFILE --------------------------------------
     @GetMapping("/profile")
@@ -244,9 +264,9 @@ public class AppRouter {
 
         Optional<Employer> employer = employerRepository.findByMail(mail);
         Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
+        Collection<Offer> offers = offerService.findAll();
         if (employer.isPresent()){
             Employer employerCast = employer.get();
-            Collection<Offer> offers = offerService.findAll();
             employerCast.setOffersEmpty();
             for (Offer offer : offers) {
                 if (offer.getPool().getCompany().equals(employerCast.getCompany())) {
@@ -261,6 +281,13 @@ public class AppRouter {
             Lifeguard lifeguardCast = lifeguard.get();  
             model.addAttribute("user", lifeguardCast);     
             model.addAttribute("lifeguard", request.isUserInRole("USER"));      
+            List<Offer> offersLifeguard = new ArrayList<Offer>();
+            for (Offer offer : offers) {
+                if (offer.getLifeguard() != null && offer.getLifeguard().getMail().equals(lifeguardCast.getMail())) {
+                    offersLifeguard.add(offer);
+                }
+            }
+            model.addAttribute("offersLifeguard",offersLifeguard);
         }
         }
         else if(type==0){

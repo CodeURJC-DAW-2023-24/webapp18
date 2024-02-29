@@ -32,6 +32,8 @@ public class Lifeguard extends Person{
     @ManyToMany(mappedBy = "lifeguards", cascade = CascadeType.ALL) //muchos problemas
     private List<Offer> offers;
 
+    private Boolean offerAssigned;
+
     public Lifeguard(){
         
     }
@@ -42,6 +44,7 @@ public class Lifeguard extends Person{
         this.skills = new ArrayList<String>();
         this.pools = new ArrayList<Pool>();
         this.offers = new ArrayList<Offer>();
+        this.offerAssigned = false;
     }
 
     public String getDocument() {
@@ -96,6 +99,10 @@ public class Lifeguard extends Person{
         this.offers_accepted.add(offer);
     }
 
+    public void deleteOfferAccepted(Offer offer) {
+        this.offers_accepted.remove(offer);
+    }
+
 	public Blob getPhotoUser() {
 		return photoUser;
 	}
@@ -110,5 +117,13 @@ public class Lifeguard extends Person{
 
 	public void setImageUser(boolean imageUser){
 		this.imageUser = imageUser;
+	}
+
+    public boolean getofferAssigned(){
+		return this.offerAssigned;
+	}
+
+	public void setofferAssigned(boolean offerAssigned){
+		this.offerAssigned = offerAssigned;
 	}
 }

@@ -95,6 +95,16 @@
                 </ul>
             </div>
         </div>
+        <div class="container">
+            <h3>Mis ofertas de trabajo</h3>
+            <div class="skillsContainer">
+                <ul>
+                    {{#offersLifeguard}}
+                    <li><a href="offer?id={{id}}">Piscina: {{pool.name}} - Salario: {{salary}} - Inicio:{{start}}</a></li>
+                    {{/offersLifeguard}}
+                </ul>
+            </div>
+        </div>
         {{/lifeguard}}
         {{#employer}}
         <div class="container">

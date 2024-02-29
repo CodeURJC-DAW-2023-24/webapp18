@@ -82,6 +82,11 @@ public class Offer {
     public void setLifeguard(Lifeguard l){
         this.lifeguard = l;
     }
+
+    public Lifeguard getLifeguard(){
+        return lifeguard;
+    }
+
     // Método para actualizar los datos de la oferta
     public void update(Builder builder) {
         if (builder.pool != null) {
