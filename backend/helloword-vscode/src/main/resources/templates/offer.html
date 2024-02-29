@@ -40,22 +40,20 @@
             <p><strong>Descripción:</strong> {{description}}</p>
             {{/offer}}
 
-            <div class="btn-cont">
-                {{#lifeguard}}
-                <form role="form" action='/offer/offered/new' method="post">
-                    <div class="btn-cont">
-                        <button type = "submit" class="btn" >
-                            <i class="btn">Proponerse</i>
-                        </button>
-                    </div>
-                    <input type ="hidden" name="id" value="{{id}}"/>
-                    <input type ="hidden" name="_csrf" value="{{token}}"/>
-                </form>
-                {{/lifeguard}}
-                {{#employer}}
+            {{#lifeguard}}
+            <form role="form" action='/offer/offered/new' method="post">
                 <div class="btn-cont">
-                    <button class="btn" onclick="showOffered('{{id}}')" id="showButton">Ver propuestas</button>
+                    <button type = "submit" class="btn" >
+                        <i class="btn">Proponerse</i>
+                    </button>
                 </div>
+                <input type ="hidden" name="id" value="{{offer.id}}"/>
+                <input type ="hidden" name="_csrf" value="{{token}}"/>
+            </form>
+            {{/lifeguard}}
+            <div class="btn-cont">
+                {{#employer}}
+                <button class="btn" onclick="showOffered('{{offer.id}}')" id="showButton">Ver propuestas</button>
                 {{/employer}}
                 {{#admin}}
                 <a href="/" class="btn btn-red" role="button"><i class="bi bi-trash"></i> Eliminar</a>

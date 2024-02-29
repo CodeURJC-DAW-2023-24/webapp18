@@ -179,6 +179,10 @@ public class AppRouter {
         // Hay que hacer que los mensajes sean referentes a pool
         //Collection<Message> messagesBD = messageService.findAll();
 
+        System.out.println("load "+id);
+
+
+        model.addAttribute("offer", offer);
         model.addAttribute("lifeguards",lifeguards);
         model.addAttribute("id", id);
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
@@ -188,33 +192,35 @@ public class AppRouter {
 
     @PostMapping("/offer/offered/new")
     public String newOffered(@RequestParam("id") int id, Model model, HttpServletRequest request) {
-     //   Pool pool = DataBase.getPool(id);
-     Offer offer = offerService.findById(id).get();
-     Lifeguard lifeguard = userService.findLifeguardByEmail(request.getUserPrincipal().getName()).get();
-     offer.addOffered(lifeguard);
-     offerService.save(offer);
-     model.addAttribute("offer", offer);
-     model.addAttribute("id", offer.getId());
-     model.addAttribute("admin", request.isUserInRole("ADMIN"));
-     model.addAttribute("lifeguard", false);
-     model.addAttribute("employer", request.isUserInRole("EMP"));
+        //   Pool pool = DataBase.getPool(id);
+        Offer offer = offerService.findById(id).get();
+        Lifeguard lifeguard = userService.findLifeguardByEmail(request.getUserPrincipal().getName()).get();
+        offer.addOffered(lifeguard);
+        offerService.save(offer);
+
+        System.out.println("new "+id);
+
+        
+        model.addAttribute("offer", offer);
+        model.addAttribute("id", offer.getId());
+        model.addAttribute("admin", request.isUserInRole("ADMIN"));
+        model.addAttribute("lifeguard", false);
+        model.addAttribute("employer", request.isUserInRole("EMP"));
         return "offer";
     }
     @PostMapping("/offer/offered/set")
-    public String LifeguardSetted(@RequestParam("id") int id,@RequestParam("lg") String lg, Model model, HttpServletRequest request) {
-     //   Pool pool = DataBase.getPool(id);
-     Offer offer = offerService.findById(id).get();
-     Lifeguard lifeguard = userService.findLifeguardByEmail(lg).get();
-     offer.setLifeguard(lifeguard);
-     lifeguard.addOffer(offer);
-     offerService.save(offer);
-     userService.saveLifeguard(lifeguard);
-     model.addAttribute("offer", offer);
-     model.addAttribute("id", offer.getId());
-     model.addAttribute("admin", request.isUserInRole("ADMIN"));
-     model.addAttribute("lifeguard", false);
-     model.addAttribute("employer", request.isUserInRole("EMP"));
-        return "offer";
+    public String LifeguardSetted(@RequestParam("ido") int id,@RequestParam("lg") String lg, Model model, HttpServletRequest request) {
+        //   Pool pool = DataBase.getPool(id);
+        Offer offer = offerService.findById(id).get();
+        Lifeguard lifeguard = userService.findLifeguardByEmail(lg).get();
+        offer.setLifeguard(lifeguard);
+        lifeguard.addOffer(offer);
+        offerService.save(offer);
+        userService.saveLifeguard(lifeguard);
+
+        System.out.println("set "+id);
+        
+        return "redirect:/offer?id="+id;
     }
 
 

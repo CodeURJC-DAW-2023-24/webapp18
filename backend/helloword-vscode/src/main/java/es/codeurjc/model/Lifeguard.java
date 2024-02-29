@@ -26,7 +26,10 @@ public class Lifeguard extends Person{
     @ManyToMany
     private List<Pool> pools;
 
-    @OneToMany(mappedBy = "lifeguard", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "lifeguard", cascade = CascadeType.ALL) //muchos problemas
+    private List<Offer> offers_accepted;
+
+    @ManyToMany(mappedBy = "lifeguards", cascade = CascadeType.ALL) //muchos problemas
     private List<Offer> offers;
 
     public Lifeguard(){

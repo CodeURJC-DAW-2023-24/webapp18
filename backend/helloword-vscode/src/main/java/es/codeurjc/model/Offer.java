@@ -22,12 +22,12 @@ public class Offer {
 
     @ManyToOne
     private Pool pool;
-
-    @ManyToMany
-    private List<Lifeguard> lifeguards;
-
+    
     @ManyToOne
     private Lifeguard lifeguard;
+    
+    @ManyToMany
+    private List<Lifeguard> lifeguards;
 
 
     private int salary;
