@@ -89,6 +89,13 @@ public class Lifeguard extends Person{
         this.offers.add(offer);
     }
 
+    public void addOfferAccepted(Offer offer) {
+        if (this.offers_accepted == null) {
+            this.offers_accepted = new ArrayList<>();
+        }
+        this.offers_accepted.add(offer);
+    }
+
 	public Blob getPhotoUser() {
 		return photoUser;
 	}

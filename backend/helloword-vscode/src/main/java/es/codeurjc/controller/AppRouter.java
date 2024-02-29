@@ -196,7 +196,9 @@ public class AppRouter {
         Offer offer = offerService.findById(id).get();
         Lifeguard lifeguard = userService.findLifeguardByEmail(request.getUserPrincipal().getName()).get();
         offer.addOffered(lifeguard);
+        lifeguard.addOffer(offer);
         offerService.save(offer);
+        userService.saveLifeguard(lifeguard);
 
         System.out.println("new "+id);
 
@@ -214,10 +216,9 @@ public class AppRouter {
         Offer offer = offerService.findById(id).get();
         Lifeguard lifeguard = userService.findLifeguardByEmail(lg).get();
         offer.setLifeguard(lifeguard);
-        lifeguard.addOffer(offer);
+        lifeguard.addOfferAccepted(offer);
         offerService.save(offer);
         userService.saveLifeguard(lifeguard);
-
         System.out.println("set "+id);
         
         return "redirect:/offer?id="+id;
