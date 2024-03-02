@@ -67,19 +67,19 @@ Marcos:
      - Offer
      
 Pedro:
-   Tareas:
+   Tareas: Implementar lo relacionado a usuarios (employers y lifeguards), inicio de sesión, registrarse, perfil y seguridad.
    Commits: 
-     -
-     -
-     -
-     -
-     -
+     - Added emplyers and lifeguard databases
+     - works login and view your profile
+     - initialize database and management of added roles
+     - logout implementation and header improvement
+     - Added list of lifeguards and employers can remove them from accepted offers
   Ficheros: 
-     -
-     -
-     -
-     -
-     -
+     - UserController
+     - Person
+     - Lifeguard
+     - Employer
+     - profile
 
 Cristian:
    Tareas:
