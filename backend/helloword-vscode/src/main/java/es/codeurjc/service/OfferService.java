@@ -12,7 +12,6 @@ import es.codeurjc.model.Offer;
 import es.codeurjc.model.Pool;
 import es.codeurjc.repository.OfferRepository;
 import jakarta.annotation.PostConstruct;
-
 @Service
 public class OfferService {
 
