@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 @Table(name = "lifeguard")
 public class Lifeguard extends Person{
     @Lob
-	private Blob photoUser;
+	private Blob photo;
 	private boolean imageUser;
     private String document;
     private List<String> skills;
@@ -32,9 +32,7 @@ public class Lifeguard extends Person{
 
     private Boolean offerAssigned;
 
-    public Lifeguard(){
-        
-    }
+    public Lifeguard(){}
 
     public Lifeguard(String name, String surname, String description, String dni, String mail, String age,String pass, String phone, String country, String locality, String province, String direction, String document, String... roles){
         super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, direction, roles);
@@ -52,7 +50,6 @@ public class Lifeguard extends Person{
     public void setDocument(String document) {
         this.document = document;
     }
-
 
     public List<String> getSkills() {
         return skills;
@@ -102,11 +99,11 @@ public class Lifeguard extends Person{
     }
 
 	public Blob getPhotoUser() {
-		return photoUser;
+		return photo;
 	}
 
-	public void setPhotoUser(Blob photoUser) {
-		this.photoUser = photoUser;
+	public void setPhotoUser(Blob photo) {
+		this.photo = photo;
 	}
 
     public boolean getImageUser(){

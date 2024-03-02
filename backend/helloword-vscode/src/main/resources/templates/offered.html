@@ -1,8 +1,8 @@
 {{#lifeguards}}
-<div class="commentContainer" id="{{offer.id}}">
-    <div class="lifeguard"> <a href="/profile?type=0&mail={{mail}}">{{mail}}:</a></div>
+<div class="subcontainer" id="{{offer.id}}">
     {{#employer}}
     <form role="form" action='/offer/offered/set' method="post">
+        <div class="lifeguard"> <a href="/profile?type=0&mail={{mail}}">{{mail}}:</a></div>
         <div class="btn-cont">
             <button type="submit" class="btn btn-blue "><i class="bi bi-person-add"></i></button> {{#offerAssigned}}<div class="btn-cont"><a class="btn btn-blue"><i class="bi bi-check2"></i></a></div>{{/offerAssigned}}
         </div>
@@ -12,6 +12,7 @@
     </form>
     {{#offerAssigned}}
     <form role="form" action='/offer/offered/delete' method="post">
+        <div class="lifeguard"> <a href="/profile?type=0&mail={{mail}}">{{mail}}:</a></div>
         <div class="btn-cont">
             <button type="submit" class="btn btn-red "><i class="bi bi-person-dash"></i></button>
         </div>
@@ -25,7 +26,7 @@
 </div>
 {{/lifeguards}}
 {{^lifeguards}}
-<div class="commentContainer">
+<div class="subcontainer">
     <div class="msgPool"> No hay ofertas </div>
 </div>
 {{/lifeguards}}

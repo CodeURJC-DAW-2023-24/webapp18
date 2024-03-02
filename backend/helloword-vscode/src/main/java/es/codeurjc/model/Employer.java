@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class Employer extends Person{
 
     @Lob
-	private Blob photoCompany;
+	private Blob photo;
 	private boolean imageCompany;
 
     private String company;
@@ -22,9 +22,7 @@ public class Employer extends Person{
     @ManyToMany
     private List<Offer> offers;
 
-    public Employer(){
-
-    }
+    public Employer(){}
 
     public Employer(String name, String surname, String description, String dni, String mail, String age, String pass, String phone, String country, String locality, String province, String direction, String company, String... roles){
         super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, direction, roles);
@@ -32,11 +30,12 @@ public class Employer extends Person{
         this.offers = new ArrayList<Offer>();
     }
 
-    public void setPhotoCompany(Blob photoCompany){
-        this.photoCompany = photoCompany;
+    public void setPhotoCompany(Blob photo){
+        this.photo = photo;
     }
+
     public Blob getPhotoCompany(){
-        return photoCompany;
+        return photo;
     }
 
     public void setImageCompany(boolean imageCompany){

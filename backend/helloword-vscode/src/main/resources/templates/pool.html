@@ -13,7 +13,7 @@
 
     <link type="text/css" rel="stylesheet" href="/css/general.css" />
     <link type="text/css" rel="stylesheet" href="/css/data.css" />
-    <link type="text/css" rel="stylesheet" href="/css/pp.css" />
+    <link type="text/css" rel="stylesheet" href="/css/comment.css" />
 
     <script src="/js/poolMessages.js"></script>
 </head>
@@ -23,7 +23,7 @@
 
     <div class="data">
         {{#pool}}
-        <div class="container">
+        <div class="container container-main">
             <h2>{{name}}</h2>
 
             <div class="row">
@@ -51,7 +51,7 @@
                 <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
             </div>
         </div>
-        <div class="container">
+        <div class="container container-additional">
             <h3>Comentarios</h3>
             <div class="commentContainer newCommentContainer">
                 <form role="form" action='/pool/message/add' method="post">
@@ -64,7 +64,6 @@
                     <input type ="hidden" name="id" value="{{id}}"/>
                     <input type ="hidden" name="_csrf" value="{{token}}"/>
                 </form>
-                
             </div>
             <div id="messageContainer"></div>
             <div class="btn-cont">

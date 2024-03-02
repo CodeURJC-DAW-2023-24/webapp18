@@ -36,34 +36,15 @@
 .msgAuthor a {
     text-decoration: none;
     margin-right: 5px;
-    color: var(--main-color);
+    color: var(--main-color-dark);
+    font-weight: bold;
+}
+
+.msgAuthor a:hover{
+    color: white;
 }
 
 .msgPool {
     flex: 1; /* The message takes up all the available space in the media */
     text-align: left;
-}
-
-.containerProfileLeft {
-    grid-column: 1 / 2;
-}
-
-.containerProfileRight {
-    grid-column: 2 / 3;
-}
-
-.skillsContainer {
-    margin: 20px auto;
-    padding: 20px;
-    width: 80%;
-    max-width: none;
-
-    background-color: rgb(197, 197, 197);
-    border: 1px solid #ffffff;
-    border-radius: 5px;
-    text-align: left;
-
-    display: grid;
-    gap: 10%;
-    align-items: center;
 }

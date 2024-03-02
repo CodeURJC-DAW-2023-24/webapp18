@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Offer;
+import es.codeurjc.model.Person;
 import es.codeurjc.repository.EmployerRepository;
 import es.codeurjc.repository.LifeguardRepository;
 import es.codeurjc.service.OfferService;
@@ -51,8 +52,7 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // -------------------------------------- MAIN
-    // --------------------------------------
+    // -------------------------------------- MAIN --------------------------------------
     @GetMapping("/")
     public String initial(Model model, HttpServletRequest request) {
         // CHECK USER LOGED OR NOT
@@ -65,8 +65,7 @@ public class UserController {
         return "index";
     }
 
-    // -------------------------------------- PROFILE
-    // ------------------------------------------
+    // -------------------------------------- PROFILE ------------------------------------------
     @GetMapping("/profile")
     public String profile(Model model, HttpServletRequest request, @RequestParam("type") int type,
             @RequestParam("mail") String m) {
@@ -221,7 +220,7 @@ public class UserController {
     public String newUser(HttpServletRequest request, HttpSession session, Model model, Lifeguard lifeguard,
             Employer employer, String typeUser, boolean reliability,
             boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership,
-            MultipartFile photoUserField, MultipartFile photoCompanyField) throws IOException {
+            MultipartFile photoField) throws IOException {
 
         // CHECK USER LOGED OR NOT
         if (request.getUserPrincipal() != null) {
@@ -232,11 +231,11 @@ public class UserController {
 
         model.addAttribute("title", "Exito");
         String messageForm = checkForm(request.getParameter("mail"), request.getParameter("age"),request.getParameter("phone"));
+
         if (messageForm.equals("  ")) {
             if ("employer".equals(typeUser)) {
-                if (!photoCompanyField.isEmpty()) {
-                    employer.setPhotoCompany(
-                            BlobProxy.generateProxy(photoCompanyField.getInputStream(), photoCompanyField.getSize()));
+                if (!photoField.isEmpty()) {
+                    employer.setPhotoCompany(BlobProxy.generateProxy(photoField.getInputStream(), photoField.getSize()));
                     employer.setImageCompany(true);
                 }
                 employer.setPass(passwordEncoder.encode(request.getParameter("pass")));
@@ -245,9 +244,8 @@ public class UserController {
                 model.addAttribute("message", "Nuevo empleado creado correctamente");
                 model.addAttribute("back", "/");
             } else if ("lifeguard".equals(typeUser)) {
-                if (!photoUserField.isEmpty()) {
-                    lifeguard.setPhotoUser(
-                            BlobProxy.generateProxy(photoUserField.getInputStream(), photoUserField.getSize()));
+                if (!photoField.isEmpty()) {
+                    lifeguard.setPhotoUser(BlobProxy.generateProxy(photoField.getInputStream(), photoField.getSize()));
                     lifeguard.setImageUser(true);
                 }
                 lifeguard.setPass(passwordEncoder.encode(request.getParameter("pass")));
@@ -325,8 +323,7 @@ public class UserController {
         return ResponseEntity.ok().body(Map.of("available", available));
     }
 
-    //// -------------------------------------- LOGIN
-    //// --------------------------------------
+    // -------------------------------------- LOGIN --------------------------------------
     @RequestMapping("/login")
     public String login() {
         return "login";

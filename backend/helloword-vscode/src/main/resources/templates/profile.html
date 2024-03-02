@@ -12,48 +12,34 @@
     <link href="https://fonts.googleapis.com/css?family=Fredoka|Yanone+Kaffeesatz" rel="stylesheet" type="text/css">
 
     <link type="text/css" rel="stylesheet" href="/css/general.css" />
-    <link type="text/css" rel="stylesheet" href="/css/pp.css" />
+    <link type="text/css" rel="stylesheet" href="/css/comment.css" />
+    <link type="text/css" rel="stylesheet" href="/css/data.css" />
 </head>
 
 <body>
     {{> header}}
 
     <div class="data">
-        <div class="container">
+        <main class="container container-main">
             {{#user}}
             <h2>{{name}} {{surname}}</h2>
             <div class="row">
-                <div class="col-md-6 col-xs-4">
-                    {{#lifeguard}}
-                    {{#photoUser}}
-                    <img style="width: 25em; height: 25em;" src="/user/{{id}}/image">
-                    {{/photoUser}}
-                    
-                    {{^photoUser}}
-                    <img style="width: 25em; height: 25em;" src="/images/noPhotoUser.jpg">
-                    {{/photoUser}}
-                    {{/lifeguard}}
-
-                    {{#employer}}
-                    {{#photoCompany}}
-                    <img style="width: 25em; height: 25em;" src="/user/{{id}}/image">
-                    {{/photoCompany}}
-              
-                    {{^photoCompany}}
-                    <img style="width: 25em; height: 25em;" src="/images/noPhotoUser.jpg">
-                    {{/photoCompany}}
-                    {{/employer}}
+                <div class="col-md-4">
+                    {{#photo}}
+                    <img id="img-user" src="/user/{{id}}/image">
+                    {{/photo}}
+                    {{^photo}}
+                    <img id="img-user" src="/images/noPhotoUser.jpg">
+                    {{/photo}}
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <p><strong>E-Mail:</strong> {{mail}}</p>
                     <p><strong>DNI:</strong> {{dni}}</p>
                     <p><strong>Edad:</strong> {{age}}</p>
                     <p><strong>Teléfono:</strong> {{phone}}</p>
-                    <p><strong>País:</strong> {{country}}</p>
-                    <p><strong>Localidad:</strong> {{locality}}</p>
-                    <p><strong>Provincia:</strong> {{province}}</p>
                     <p><strong>Dirección:</strong> {{direction}}</p>
+                    <p><strong>Localidad:</strong> {{locality}} ({{province}}, {{country}})</p>
 
                     {{#document}}
                     <p><strong>Título de socorrismo</strong> {{document}}</p>
@@ -65,63 +51,67 @@
                     <p><strong>Descripción:</strong> {{description}}</p>
 
                 </div>
+                <div class="subcontainer">
+                    <h3>Aptitudes</h3>
+                    <ul>
+                        {{#skills}}
+                        <li>{{.}}</li>
+                        {{/skills}}
+                        {{^skills}}
+                        <li>No hay aptitudes</li>
+                        {{/skills}}
+                    </ul>
+                </div>
             </div>
+            <form action="/logout" method="post">
+                <input type="hidden" name="_csrf" value="{{token}}"/>
+                <div class="btn-cont">
+                    {{#me}}
+                    <a href="/user/edit?id={{id}}" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
 
-                <form action="/logout" method="post">
-                    <input type="hidden" name="_csrf" value="{{token}}"/>
-                    <div class="btn-cont">
-                        {{#me}}
-                        <a href="/user/edit?id={{id}}" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+                    <input type="submit" class="btn btn-red" value="Cerrar sesión"/>
+                    {{/me}}
 
-                        <input type="submit" class="btn btn-red" value="Cerrar sesión"/>
-                        {{/me}}
+                    <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+                </div>
+            </form>
 
-
-                        <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
-                    </div>
-                </form>
-
-                {{#admin}}
-                <form role="form" action='/profile/delete?id={{id}}' method="post">
-                    <div class="btn-cont">
-                        <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
-                    </div>
-                    <input type ="hidden" name="_csrf" value="{{token}}"/>
-                    <input type ="hidden" name="id" value="{{id}}"/>
-                    <input type ="hidden" name="mail" value="{{mail}}"/>
-                </form>
-                {{/admin}}
-                
-        </div>
+            {{#admin}}
+            <form role="form" action='/profile/delete?id={{id}}' method="post">
+                <div class="btn-cont">
+                    <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
+                </div>
+                <input type ="hidden" name="_csrf" value="{{token}}"/>
+                <input type ="hidden" name="id" value="{{id}}"/>
+                <input type ="hidden" name="mail" value="{{mail}}"/>
+            </form>
+            {{/admin}}
+        </main>
         {{#lifeguard}}
-        <div class="container">
-            <h3>Aptitudes</h3>
-            <div class="skillsContainer">
-                <ul>
-                    {{#skills}}
-                    <li>{{.}}</li>
-                    {{/skills}}
-                </ul>
-            </div>
-        </div>
-        <div class="container">
-            <h3>Mis ofertas de trabajo</h3>
-            <div class="skillsContainer">
+        <div class="container container-additional">
+            <h3>Ofertas aplicadas</h3>
+            <div class="subcontainer">
                 <ul>
                     {{#offersLifeguard}}
                     <li><a href="offer?id={{id}}">Piscina: {{pool.name}} - Salario: {{salary}} - Inicio:{{start}}</a></li>
+                    {{/offersLifeguard}}
+                    {{^offersLifeguard}}
+                    <li>No hay candidaturas</li>
                     {{/offersLifeguard}}
                 </ul>
             </div>
         </div>
         {{/lifeguard}}
         {{#employer}}
-        <div class="container">
-            <h3>Ofertas</h3>
-            <div class="skillsContainer">
+        <div class="container container-additional">
+            <h3>Ofertas publicadas</h3>
+            <div class="subcontainer">
                 <ul>
                     {{#offers}}
                     <li><a href="offer?id={{id}}">Piscina: {{pool.name}} - Salario: {{salary}} - Inicio:{{start}}</a></li>
+                    {{/offers}}
+                    {{^offers}}
+                    <li>No has creado ninguna oferta</li>
                     {{/offers}}
                 </ul>
             </div>

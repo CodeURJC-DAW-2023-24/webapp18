@@ -41,26 +41,26 @@
             </div>
 
             <div class="row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label for="dni">DNI</label>
                     <input type="text" class="form-control" name="dni" placeholder="DNI/NIE">
                 </div>
-                <div class="form-group col-md-8">
-                    <label for="mail">Correo electrónico</label>
-                    <input type="text" class="form-control" name="mail" id="mail" oninput="checkMail()" placeholder="example@gmail.com" required>
-                    <div id="mailContent"></div>
+                <div class="form-group col-md-6">
+                    <label for="age">Edad</label>
+                    <input type="number" class="form-control" name="age" id="age" oninput="checkAge()" placeholder="Introduzca su edad" value="{{#user}}{{user.age}}{{/user}}">
+                    <div id="ageContent" style="color:red"></div>
                 </div>
             </div>
 
 
             <div class="row">
-                <div class="form-group col-md-4">
-                    <label for="age">Edad</label>
-                    <input type="text" class="form-control" name="age" id="age" oninput="checkAge()" placeholder="Introduzca su edad">
-                    <div id="ageContent" style="color:red"></div>
+                <div class="form-group col-md-6">
+                    <label for="mail">Correo electrónico*</label>
+                    <input type="text" class="form-control" name="mail" id="mail" oninput="checkMail()" placeholder="example@gmail.com" required>
+                    <div id="mailContent"></div>
                 </div>
-                <div class="form-group col-md-8">
-                    <label for="pass">Constraseña</label>
+                <div class="form-group col-md-6">
+                    <label for="pass">Constraseña*</label>
                     <input type="password" class="form-control" name="pass" id="pass" oninput="checkPassword()" placeholder="Introduzca su contraseña" required>
                     <div id="passContent"></div>
                 </div>
@@ -95,7 +95,7 @@
                     <input type="text" class="form-control" name="direction" id="direction" placeholder="Introduzca su calle">
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="typeUser">Tipo de usuario</label>
+                    <label for="typeUser">Tipo de usuario*</label>
                     <select class="form-select" name="typeUser" id="typeUser" onchange="showForm()">
                         <option value="" disabled selected>Elegir tipo de usuario</option>
                         <option value="lifeguard">Socorrista</option>
@@ -104,17 +104,18 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="photoField">Foto de perfil</label>
+                <input type="file" class="form-control" name="photoField" id="photoField" accept=".jpg, .jpeg, .png">
+            </div>
+
+            <!-- Lifeguard -->
             <div class="form-group" id="lifeguard1" style="display:none">
-                <label for="photoUserField">Foto personal</label>
-                <input type="file" class="form-control" name="photoUserField" id="photoUserField" accept=".jpg, .jpeg, .png">
+                <label for="document">Títulación/es</label>
+                <input type="text" class="form-control" name="document" id="document" placeholder="Se requerirá el día de la firma del contrato">
             </div>
 
-            <div class="form-group" id="lifeguard2" style="display:none">
-                <label for="document">Título profesional</label>
-                <input type="text" class="form-control" name="document" id="document">
-            </div>
-
-            <div class="skills-container" id="lifeguard3" style="display: none">
+            <div class="skills-container" id="lifeguard2" style="display:none">
                 <h2>Mis Aptitudes</h2>
                 <div class="row">
                     <div class="form-group col-md-4">
@@ -146,16 +147,13 @@
                 </div>
             </div>
 
+            <!-- Employer -->
             <div class="form-group" id="employer1" style="display:none">
-                <label for="photoCompanyField">Foto de la empresa</label>
-                <input type="file" class="form-control" name="photoCompanyField" id="photoCompanyField" accept=".jpg, .jpeg">
-            </div>
-
-            <div class="form-group" id="employer2" style="display:none">
                 <label for="company">Empresa</label>
                 <input type="text" class="form-control" name="company" placeholder="Introduzca su posición en la empresa">
             </div>
 
+            <!-- Buttons -->
             <div class="btn-cont">
                 <button type="submit" class="btn"><i class="bi bi-download"></i> Guardar</button>
                 <a href="/" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
@@ -170,18 +168,14 @@
                 // Hide all forms
                 document.getElementById("lifeguard1").style.display = "none";
                 document.getElementById("lifeguard2").style.display = "none";
-                document.getElementById("lifeguard3").style.display = "none";
                 document.getElementById("employer1").style.display = "none";
-                document.getElementById("employer2").style.display = "none";
 
                 // Shows the form corresponding to the selected type
                 if (selectedType === "lifeguard") {
                     document.getElementById("lifeguard1").style.display = "block";
                     document.getElementById("lifeguard2").style.display = "block";
-                    document.getElementById("lifeguard3").style.display = "block";
                 } else if (selectedType === "employer") {
                     document.getElementById("employer1").style.display = "block";
-                    document.getElementById("employer2").style.display = "block";
                 }
             }
         </script>

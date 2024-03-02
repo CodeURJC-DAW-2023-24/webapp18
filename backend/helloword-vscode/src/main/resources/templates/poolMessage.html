@@ -1,5 +1,5 @@
 {{#messages}}
-<div class="commentContainer" id="message-{{id}}">
+<div class="subcontainer" id="message-{{id}}">
     <div class="msgAuthor"> <a href="/profile?type=0&mail={{author}}">{{author}}:</a> </div>
     <div class="msgPool"> {{body}} </div>
 
@@ -15,7 +15,7 @@
 </div>
 {{/messages}}
 {{^messages}}
-<div class="commentContainer">
+<div class="subcontainer">
     <div class="msgPool"> No hay comentarios </div>
 </div>
 {{/messages}}
