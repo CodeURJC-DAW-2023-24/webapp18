@@ -6,37 +6,90 @@
   - Marcos del Valle Hontanar - MarcoDelValleH - m.delvalle.2020@alumnos.urjc.es
   - Cristian Kim - cristianvictorkim - cv.kim.2023@alumnos.urjc.es
 
-# Entidades
-  - Usuarios (empleadores y socorristas)
-  - Piscinas
-  - Comentarios
-  - Ofertas
-# Relaciones
-  - Los empleadores publican ofertas para los socorristas.
-  - Las ofertas tienen una piscina asociada.
-  - Las piscinas tienen comentarios de otros socorristas.
 
-# Permisos usuarios
-  - Socorrista: Puede ver y aceptar ofertas. Puede comentar en el foro de cada piscina.
-  - Empleadores: Pueden ver y publicar ofertas. Pueden elegir un socorrista de los propuestos para la oferta.
-  - Anónimo: Puede ver ofertas y los comentarios de las piscinas.
-  - Admin: Además de poder hacer todo lo de los anteriores, también puede dar de alta empleadores.
+# Navegación (IMAGEN DE CRISTIAN)
 
-# Imágenes
-  - Tienen imágenes asociadas los socorristas (su titulación, foto personal) y las piscinas (foto de la piscina) y los emleadores (logo de la empresa)
+# Instrucciones de ejecución
 
-# Gráficos
-  - Mostrará el número de socorristas que reúnen cada aptitud.
-
-# Tecnología complementaria
-  - Google Maps
-
-# Algoritmo de consulta avanzada
-  - Mostrara a cada socorrista ofertas personalizadas para él (basado en la distancia, aptitudes...)
-
-# Diagrama E-R
+Para iniciar la aplicación web se deben seguir los siguientes pasos:
+  - Instalar las extensiones y librerias relativas a Spring y Java
+  - Iniciar la base de datos mySQL
+  - Descargar la aplicación
+  - Configurar en aplication.properties el puerto en el que se inicial el programa, el usuario de la base de datos local, su contraseña y su dirección.
+  - Iniciar Application.java
+  - Acceder desde el navegador (https://localhost:"puerto configurado en el paso anterior")
 
 
 
-![imagen](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/53cc30c7-72a6-4c19-95b8-3823bf6a607c)
+
+# Diagrama de los clases y templates
+
+![image](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/d5bc4008-3850-4338-ae25-5a2651e55881)
+
+
+# Diagrama de entidades
+
+![image](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/e28fbed3-cf45-4144-907c-b3614b940f9c)
+
+
+# Participación de miembros
+Jorge:
+   Tareas:
+   Commits: 
+     - poya
+     - webos
+     - poya y webos
+     -
+     -
+  Ficheros: 
+     -
+     -
+     -
+     -
+     -
+Marcos:
+   Tareas:
+   Commits: 
+     -
+     -
+     -
+     -
+     -
+  Ficheros: 
+     -
+     -
+     -
+     -
+     -
+Pedro:
+   Tareas:
+   Commits: 
+     -
+     -
+     -
+     -
+     -
+  Ficheros: 
+     -
+     -
+     -
+     -
+     -
+
+Cristian:
+   Tareas:
+   Commits: 
+     -
+     -
+     -
+     -
+     -
+  Ficheros: 
+     -
+     -
+     -
+     -
+     -
+     
+
 
