@@ -33,6 +33,9 @@ Para iniciar la aplicación web se deben seguir los siguientes pasos:
 
 
 # Participación de miembros
+
+El reparto de tareas tenía sentido en una fase inicial. Luego hicimos una lista de cosas pendientes y cada uno ibamos realizando tareas sin ningun criterio de reparto en especial. 
+
 Jorge:
    Tareas:
    Commits: 
@@ -42,25 +45,27 @@ Jorge:
      -
      -
   Ficheros: 
+     - 
+     - 
+     - 
      -
      -
-     -
-     -
-     -
+     
 Marcos:
-   Tareas:
+   Tareas: Gráfica, implementar lo relacionado a pools y messages, las offer applyances, privilegios de admin. 
    Commits: 
-     -
-     -
-     -
-     -
-     -
+     -Offer applying and checking added
+     -Graphic added
+     -Merge branch 'pruebaSecurity' into fase2
+     -Added form to create pools
+     -AddMessage and delete message now working through DB
   Ficheros: 
-     -
-     -
-     -
-     -
-     -
+     - PoolController
+     - PieController
+     - OfferController
+     - Pool
+     - Offer
+     
 Pedro:
    Tareas:
    Commits: 
