@@ -95,11 +95,8 @@
                     <input type="text" class="form-control" name="direction" id="direction" placeholder="Introduzca su calle">
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="typeUser">Tipo de usuario</label> <!-- FALTA ENLAZARLO CON EL SCRIPT DE AJAX-->
+                    <label for="typeUser">Tipo de usuario</label>
                     <select class="form-select" name="typeUser" id="typeUser" onchange="showForm()">
-                        <!--{{#edit}}
-                        <option value="{{offer.type}}" selected hidden>{{offer.type}}</option>
-                        {{/edit}}-->
                         <option value="" disabled selected>Elegir tipo de usuario</option>
                         <option value="lifeguard">Socorrista</option>
                         <option value="employer">Empleador</option>
@@ -170,14 +167,14 @@
             function showForm() {
                 var selectedType = document.getElementById("typeUser").value;
 
-                // Oculta todos los formularios
+                // Hide all forms
                 document.getElementById("lifeguard1").style.display = "none";
                 document.getElementById("lifeguard2").style.display = "none";
                 document.getElementById("lifeguard3").style.display = "none";
                 document.getElementById("employer1").style.display = "none";
                 document.getElementById("employer2").style.display = "none";
 
-                // Muestra el formulario correspondiente al tipo seleccionado
+                // Shows the form corresponding to the selected type
                 if (selectedType === "lifeguard") {
                     document.getElementById("lifeguard1").style.display = "block";
                     document.getElementById("lifeguard2").style.display = "block";

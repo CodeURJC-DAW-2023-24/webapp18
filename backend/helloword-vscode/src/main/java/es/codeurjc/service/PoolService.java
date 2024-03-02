@@ -56,7 +56,6 @@ public class PoolService {
 			new Message("Jose", "Mensaje 2.2")
 		};
 
-		// Collection<Message> defaultMessages = MessageService.findAll();
 
 		int i = 0;
 		for (Message message : defaultMessages) {

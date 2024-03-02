@@ -1,4 +1,4 @@
-const offerWidth = 250 + 2 * 20; // Ancho máximo de cada oferta + márgenes (los bordes están incluidos en el a)
+const offerWidth = 250 + 2 * 20; // Maximum width of each offer + margins (edges are included in the a)
 let isGridColumns = localStorage.getItem('isGridColumns') ? localStorage.getItem('isGridColumns') === "true" : true;
 let selectedPosition;
 let offers;

@@ -3,14 +3,12 @@ package es.codeurjc.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -87,7 +85,7 @@ public class Offer {
         return lifeguard;
     }
 
-    // Método para actualizar los datos de la oferta
+    // Method to update offer data
     public void update(Builder builder) {
         if (builder.pool != null) {
             this.pool = builder.pool;
@@ -103,7 +101,7 @@ public class Offer {
         }
     }
 
-    // Clase Builder para construir objetos de tipo Offer
+    // Builder class to build objects of type Offer
     public static class Builder {
         private Pool pool;
         private Integer salary;

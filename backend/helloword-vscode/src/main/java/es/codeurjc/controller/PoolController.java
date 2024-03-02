@@ -107,12 +107,9 @@ public class PoolController {
         }
 
         // Pool pool = DataBase.getPool(idP);
-        System.out.println("Se va a borrar el mensaje "+id+" de la piscina");
         Message msg = messageService.findById(id).get();
         Pool pool = msg.getPool();
-        System.out.println("ID:"+id);
-        System.out.println("Correspondiente al id de mensaje: "+id);
-        messageService.deleteById(id); //Esto puede ser que sobre su ponemos el borrado en cascada
+        messageService.deleteById(id);
         model.addAttribute("pool", pool);
         return "pool";
 
@@ -145,7 +142,6 @@ public class PoolController {
                         .company("Null")
                         .description(description)
                         .build();
-        //poner la foto en la pool
         poolService.save(pool);
         return "index";
     } 

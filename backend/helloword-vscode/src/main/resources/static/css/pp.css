@@ -40,7 +40,7 @@
 }
 
 .msgPool {
-    flex: 1; /* El mensaje ocupa todo el espacio disponible en el medio */
+    flex: 1; /* The message takes up all the available space in the media */
     text-align: left;
 }
 

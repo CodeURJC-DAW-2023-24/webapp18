@@ -93,7 +93,7 @@ public class Pool{
         return this.id;
     }
 
-    // Método para actualizar los datos de la piscina
+    // Method to update pool data
     public void update(Builder builder) {
         if (builder.name != null) {
             this.name = builder.name;
@@ -125,7 +125,7 @@ public class Pool{
 
     }
 
-    // Clase Builder para construir objetos de tipo Pool
+    // Builder class to build Pool type objects
     public static class Builder {
         private String name;
         private String photo;

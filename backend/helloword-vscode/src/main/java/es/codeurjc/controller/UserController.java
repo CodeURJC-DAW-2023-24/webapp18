@@ -36,94 +36,98 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
-    @Autowired 
-	private EmployerRepository employerRepository;
+    @Autowired
+    private EmployerRepository employerRepository;
 
-	@Autowired
-	private LifeguardRepository lifeguardRepository;
+    @Autowired
+    private LifeguardRepository lifeguardRepository;
 
-	@Autowired
+    @Autowired
     private OfferService offerService;
 
-	@Autowired
+    @Autowired
     private UserService userService;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    // -------------------------------------- MAIN --------------------------------------
+    // -------------------------------------- MAIN
+    // --------------------------------------
     @GetMapping("/")
-    public String initial(Model model,HttpServletRequest request) {
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
+    public String initial(Model model, HttpServletRequest request) {
+        // CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null) {
             model.addAttribute("loged", true);
-        }else{
+        } else {
             model.addAttribute("loged", false);
         }
-    
+
         return "index";
     }
 
-    // -------------------------------------- PROFILE ------------------------------------------
-	@GetMapping("/profile")
-    public String profile(Model model, HttpServletRequest request, @RequestParam("type") int type, @RequestParam("mail") String m) {
+    // -------------------------------------- PROFILE
+    // ------------------------------------------
+    @GetMapping("/profile")
+    public String profile(Model model, HttpServletRequest request, @RequestParam("type") int type,
+            @RequestParam("mail") String m) {
 
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
+        // CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null) {
             model.addAttribute("loged", true);
-        }else{
+        } else {
             model.addAttribute("loged", false);
         }
 
-        //Here you must pass the ID of the person logged in when publishing the referenced message.
-        if(type==1){
+        // Here you must pass the ID of the person logged in when publishing the
+        // referenced message.
+        if (type == 1) {
             String mail = request.getUserPrincipal().getName();
-            
-            model.addAttribute("me",true);
 
-        Optional<Employer> employer = employerRepository.findByMail(mail);
-        Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
-        Collection<Offer> offers = offerService.findAll();
-        if (employer.isPresent()){
-            Employer employerCast = employer.get();
-            employerCast.setOffersEmpty();
-            for (Offer offer : offers) {
-                if (offer.getPool().getCompany().equals(employerCast.getCompany())) {
-                    employerCast.addOffer(offer);
-                }
-            }
-            employerRepository.save(employerCast);
-            model.addAttribute("user", employerCast);
-            model.addAttribute("employer", request.isUserInRole("USER"));
+            model.addAttribute("me", true);
 
-        }else if(lifeguard.isPresent()){   
-            Lifeguard lifeguardCast = lifeguard.get();  
-            model.addAttribute("user", lifeguardCast);     
-            model.addAttribute("lifeguard", request.isUserInRole("USER"));      
-            List<Offer> offersLifeguard = new ArrayList<Offer>();
-            for (Offer offer : offers) {
-                if (offer.getLifeguard() != null && offer.getLifeguard().getMail().equals(lifeguardCast.getMail())) {
-                    offersLifeguard.add(offer);
+            Optional<Employer> employer = employerRepository.findByMail(mail);
+            Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
+            Collection<Offer> offers = offerService.findAll();
+            if (employer.isPresent()) {
+                Employer employerCast = employer.get();
+                employerCast.setOffersEmpty();
+                for (Offer offer : offers) {
+                    if (offer.getPool().getCompany().equals(employerCast.getCompany())) {
+                        employerCast.addOffer(offer);
+                    }
                 }
+                employerRepository.save(employerCast);
+                model.addAttribute("user", employerCast);
+                model.addAttribute("employer", request.isUserInRole("USER"));
+
+            } else if (lifeguard.isPresent()) {
+                Lifeguard lifeguardCast = lifeguard.get();
+                model.addAttribute("user", lifeguardCast);
+                model.addAttribute("lifeguard", request.isUserInRole("USER"));
+                List<Offer> offersLifeguard = new ArrayList<Offer>();
+                for (Offer offer : offers) {
+                    if (offer.getLifeguard() != null
+                            && offer.getLifeguard().getMail().equals(lifeguardCast.getMail())) {
+                        offersLifeguard.add(offer);
+                    }
+                }
+                model.addAttribute("offersLifeguard", offersLifeguard);
             }
-            model.addAttribute("offersLifeguard",offersLifeguard);
-        }
-        }
-        else if(type==0){
+        } else if (type == 0) {
             model.addAttribute("admin", request.isUserInRole("ADMIN"));
             Optional<Employer> employer = employerRepository.findByMail(m);
             Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(m);
-            model.addAttribute("me",false);
-            if (employer.isPresent()){
+            model.addAttribute("me", false);
+            if (employer.isPresent()) {
                 Employer employerCast = employer.get();
                 model.addAttribute("user", employerCast);
 
-            }else if(lifeguard.isPresent()){   
-                Lifeguard lifeguardCast = lifeguard.get();  
-                model.addAttribute("user", lifeguardCast);           
+            } else if (lifeguard.isPresent()) {
+                Lifeguard lifeguardCast = lifeguard.get();
+                model.addAttribute("user", lifeguardCast);
             }
         }
-        
+
         return "profile";
     }
 
@@ -134,16 +138,16 @@ public class UserController {
 
         return "index";
     }
-    
+
     @GetMapping("/loged")
     public String loged(Model model, HttpServletRequest request) {
 
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
+        // CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null) {
             model.addAttribute("loged", true);
-        }else{
+        } else {
             model.addAttribute("loged", false);
-        }        
+        }
 
         model.addAttribute("title", "Sesión iniciada");
         model.addAttribute("message", "Has iniciado sesión correctamente");
@@ -154,95 +158,99 @@ public class UserController {
     @GetMapping("/user/form")
     public String loadNewUser(Model model, HttpServletRequest request) {
 
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
+        // CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null) {
             model.addAttribute("loged", true);
-        }else{
+        } else {
             model.addAttribute("loged", false);
         }
-        
+
         return "new_user";
     }
 
-    public String checkForm(String mail, String age, String phone){
+    public String checkForm(String mail, String age, String phone) {
         int phoneNum = 0;
         int ageNum = 0;
         String message1 = "";
         String message2 = "";
         String message3 = "";
+        if(!phone.equals("")){
+            try {
+                phoneNum = Integer.parseInt(phone);
+            } catch (NumberFormatException e) {
+                message1 = "El teléfono debe ser un número.";
+            }
 
-        try {
-            phoneNum = Integer.parseInt(phone);
-        } catch (NumberFormatException e) {
-            message1 = "El teléfono debe ser un número.";
+            if (phoneNum < 0) {
+                message1 = "El teléfono debe ser un número positivo.";
+            }
+
+            if (String.valueOf(phoneNum).length() != 9) {
+                message1 = "El teléfono debe tener 9 cifras.";
+            }
         }
+        if(!age.equals("")){
+            try {
+                ageNum = Integer.parseInt(age);
+            } catch (NumberFormatException e) {
+                message2 = "La edad debe ser un número.";
+            }
 
-        if (phoneNum < 0) {
-            message1 = "El teléfono debe ser un número positivo.";
-        }
-
-        if (String.valueOf(phoneNum).length() != 9) {
-            message1 = "El teléfono debe tener 9 cifras.";
-        }
-
-        try {
-            ageNum = Integer.parseInt(age);
-        } catch (NumberFormatException e) {
-            message2 = "La edad debe ser un número.";
-        }
-
-        if (ageNum < 0) {
-            message2 = "La edad debe ser un número positivo.";
-        }
-
-        if (ageNum % 1 != 0) {
-            message2 = "La edad debe ser un número entero.";
+            if (ageNum < 0) {
+                message2 = "La edad debe ser un número positivo.";
+            }
+            
+            if (ageNum % 1 != 0) {
+                message2 = "La edad debe ser un número entero.";
+            }
         }
 
         Optional<Employer> employer = employerRepository.findByMail(mail);
-        if (employer.isPresent()){
+        if (employer.isPresent()) {
             message3 = "Correo ya en uso por otro empleado.";
         }
         Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
-        if (lifeguard.isPresent()){
+        if (lifeguard.isPresent()) {
             message3 = "Correo ya en uso por otro socorrista.";
         }
 
-    return message1 + " " + message2 + " " + message3;
+        return message1 + " " + message2 + " " + message3;
     }
 
     @PostMapping("/user/register")
-    public String newUser(HttpServletRequest request, HttpSession session, Model model, Lifeguard lifeguard, Employer employer, String typeUser, boolean reliability,
-            boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership, MultipartFile photoUserField, MultipartFile photoCompanyField) throws IOException {
+    public String newUser(HttpServletRequest request, HttpSession session, Model model, Lifeguard lifeguard,
+            Employer employer, String typeUser, boolean reliability,
+            boolean effort, boolean communication, boolean attitude, boolean problemsResolution, boolean leadership,
+            MultipartFile photoUserField, MultipartFile photoCompanyField) throws IOException {
 
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
+        // CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null) {
             model.addAttribute("loged", true);
-        }else{
+        } else {
             model.addAttribute("loged", false);
         }
-    
+
         model.addAttribute("title", "Exito");
-        String messageForm = checkForm(request.getParameter("mail"),request.getParameter("age"),request.getParameter("phone"));
-        if (messageForm.equals("  ")){ 
+        String messageForm = checkForm(request.getParameter("mail"), request.getParameter("age"),request.getParameter("phone"));
+        if (messageForm.equals("  ")) {
             if ("employer".equals(typeUser)) {
                 if (!photoCompanyField.isEmpty()) {
-			    employer.setPhotoCompany(BlobProxy.generateProxy(photoCompanyField.getInputStream(), photoCompanyField.getSize()));
-			    employer.setImageCompany(true);
-		        }
+                    employer.setPhotoCompany(
+                            BlobProxy.generateProxy(photoCompanyField.getInputStream(), photoCompanyField.getSize()));
+                    employer.setImageCompany(true);
+                }
                 employer.setPass(passwordEncoder.encode(request.getParameter("pass")));
-                employer.setRoles("USER","EMP");
+                employer.setRoles("USER", "EMP");
                 employerRepository.save(employer);
                 model.addAttribute("message", "Nuevo empleado creado correctamente");
                 model.addAttribute("back", "/");
             } else if ("lifeguard".equals(typeUser)) {
                 if (!photoUserField.isEmpty()) {
-                    System.out.println("LOG DE FOTOOOOOO********************* ----"+photoUserField);
-                    lifeguard.setPhotoUser(BlobProxy.generateProxy(photoUserField.getInputStream(), photoUserField.getSize()));
+                    lifeguard.setPhotoUser(
+                            BlobProxy.generateProxy(photoUserField.getInputStream(), photoUserField.getSize()));
                     lifeguard.setImageUser(true);
-                    }
+                }
                 lifeguard.setPass(passwordEncoder.encode(request.getParameter("pass")));
-                System.out.println("LOG PASS" + passwordEncoder.encode(request.getParameter("pass")));
                 if (reliability) {
                     lifeguard.addSkill("Confianza");
                 }
@@ -261,7 +269,7 @@ public class UserController {
                 if (leadership) {
                     lifeguard.addSkill("Liderazgo");
                 }
-                lifeguard.setRoles("USER","LIFE");
+                lifeguard.setRoles("USER", "LIFE");
                 lifeguardRepository.save(lifeguard);
                 model.addAttribute("message", "Nuevo socorrista creado correctamente");
                 model.addAttribute("back", "/");
@@ -272,62 +280,64 @@ public class UserController {
 
                 return "message";
             }
+        }else{
+            model.addAttribute("title", "Error");
+            model.addAttribute("message", messageForm);
+            model.addAttribute("back", "javascript:history.back()");
         }
-        model.addAttribute("message", messageForm);
 
         return "message";
     }
 
     @GetMapping("/user/{id}/image")
-	public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
-		Optional<Employer> employer = employerRepository.findById(id);
+    public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
+        Optional<Employer> employer = employerRepository.findById(id);
         Optional<Lifeguard> lifeguard = lifeguardRepository.findById(id);
-		if (employer.isPresent() && employer.get().getPhotoCompany() != null) {
+        if (employer.isPresent() && employer.get().getPhotoCompany() != null) {
 
-			Resource file = new InputStreamResource(employer.get().getPhotoCompany().getBinaryStream());
+            Resource file = new InputStreamResource(employer.get().getPhotoCompany().getBinaryStream());
 
-			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-					.contentLength(employer.get().getPhotoCompany().length()).body(file);
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                    .contentLength(employer.get().getPhotoCompany().length()).body(file);
 
-		}else if(lifeguard.isPresent() && lifeguard.get().getPhotoUser() != null) {
+        } else if (lifeguard.isPresent() && lifeguard.get().getPhotoUser() != null) {
 
-			Resource file = new InputStreamResource(lifeguard.get().getPhotoUser().getBinaryStream());
+            Resource file = new InputStreamResource(lifeguard.get().getPhotoUser().getBinaryStream());
 
-			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-					.contentLength(lifeguard.get().getPhotoUser().length()).body(file);
-		} 
-        else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                    .contentLength(lifeguard.get().getPhotoUser().length()).body(file);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @GetMapping("/availableMail")
     public ResponseEntity<?> checkMailAvailability(@RequestParam String mail) {
         boolean available = true;
         Optional<Employer> employer = employerRepository.findByMail(mail);
-        if (employer.isPresent()){
+        if (employer.isPresent()) {
             available = false;
         }
         Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
-        if (lifeguard.isPresent()){
+        if (lifeguard.isPresent()) {
             available = false;
-        }  
+        }
         return ResponseEntity.ok().body(Map.of("available", available));
     }
 
-    //// -------------------------------------- LOGIN --------------------------------------
+    //// -------------------------------------- LOGIN
+    //// --------------------------------------
     @RequestMapping("/login")
-	public String login() {
-		return "login";
-	}
+    public String login() {
+        return "login";
+    }
 
-	@RequestMapping("/loginerror")
-	public String loginerror(Model model) {
+    @RequestMapping("/loginerror")
+    public String loginerror(Model model) {
         model.addAttribute("title", "Error");
         model.addAttribute("message", "Credenciales inválidas");
         model.addAttribute("back", "/login");
 
         return "message";
-	}
+    }
 }

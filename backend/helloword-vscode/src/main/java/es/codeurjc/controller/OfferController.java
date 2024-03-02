@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Offer;
-import es.codeurjc.repository.DataBase;
 import es.codeurjc.service.OfferService;
 import es.codeurjc.service.PoolService;
 import es.codeurjc.service.UserService;
@@ -25,7 +24,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class OfferController {
     @Autowired
     private PoolService poolService;
-    
+
     @Autowired
     private OfferService offerService;
 
@@ -39,7 +38,6 @@ public class OfferController {
         Collection<Offer> offers2 = offerService.findAll();
         List<Offer> offersL = new ArrayList(offers2);
         List<Offer> offerSubL = offersL.subList(from, amount);
-        Offer[] offers = DataBase.getOffers(from, amount);
         model.addAttribute("offers", offerSubL);
         model.addAttribute("alternative", "No hay ofertas aún");
         return "offers";
@@ -47,7 +45,7 @@ public class OfferController {
 
     @GetMapping("/allOffersLoaded")
     public ResponseEntity<?> allOffersLoaded() {
-        boolean value = DataBase.allOffersLoaded();
+        boolean value = false; //TO IMPLEMENT JORGE
         return ResponseEntity.ok().body(Map.of("value", value));
     }
 
@@ -119,7 +117,6 @@ public class OfferController {
     public String loadOffered(@RequestParam("id") int id, Model model,HttpServletRequest request) {
         Offer offer = offerService.findById(id).get();
         List<Lifeguard> lifeguards = offer.getLifeguards();
-        // Hay que hacer que los mensajes sean referentes a pool
         //Collection<Message> messagesBD = messageService.findAll();
 
         if(offer.getLifeguard()!=null){
@@ -130,7 +127,6 @@ public class OfferController {
                 }
             }
         }
-        System.out.println("load "+id);
 
         model.addAttribute("offer", offer);
         model.addAttribute("lifeguards",lifeguards);
@@ -149,10 +145,7 @@ public class OfferController {
         lifeguard.addOffer(offer);
         offerService.save(offer);
         userService.saveLifeguard(lifeguard);
-
-        System.out.println("new "+id);
-
-        
+     
         model.addAttribute("offer", offer);
         model.addAttribute("id", offer.getId());
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
@@ -169,7 +162,6 @@ public class OfferController {
         lifeguard.addOfferAccepted(offer);
         offerService.save(offer);
         userService.saveLifeguard(lifeguard);
-        System.out.println("set "+id);
         
         return "redirect:/offer?id="+id;
     }

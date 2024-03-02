@@ -2,13 +2,6 @@
 <div class="commentContainer" id="message-{{id}}">
     <div class="msgAuthor"> <a href="/profile?type=0&mail={{author}}">{{author}}:</a> </div>
     <div class="msgPool"> {{body}} </div>
-    <!--{{#admin}}
-    <div class="btn-cont">
-        <button class="btn btn-red" onclick="deleteMsg('{{id}}')">
-            <i class="bi bi-trash"></i>
-        </button>
-    </div>
-    {{/admin}}-->
 
     {{#admin}}
     <form role="form" action='/pool/message/delete?id={{id}}' method="post">

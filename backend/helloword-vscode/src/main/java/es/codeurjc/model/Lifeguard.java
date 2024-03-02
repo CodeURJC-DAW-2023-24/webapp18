@@ -2,8 +2,6 @@ package es.codeurjc.model;
 
 import java.util.ArrayList;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import java.sql.Blob;
 
 import java.util.List;

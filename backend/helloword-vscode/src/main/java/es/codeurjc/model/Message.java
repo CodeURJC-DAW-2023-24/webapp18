@@ -17,7 +17,6 @@ public class Message {
     @ManyToOne
     private Pool pool;
 
-    //@ManyToOne Aqui el mensaje debera apuntar a la person asociada al autor
     String author;
 
     String body;

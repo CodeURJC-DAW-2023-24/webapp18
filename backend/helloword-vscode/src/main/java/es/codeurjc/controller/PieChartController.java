@@ -1,12 +1,10 @@
 package es.codeurjc.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
 
-import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +30,7 @@ public class PieChartController {
             model.addAttribute("loged", false);
         }
 
-        //encontrar los socorristas, recorrer sus listas de aptitudes y meterlas en un mapa. Rellenar el model con el mapa
+        //find the lifeguards, go through their skill lists and put them on a map. Fill the model with the map
 
       HashMap<String, Integer> mapa = fillAttitudes();
       

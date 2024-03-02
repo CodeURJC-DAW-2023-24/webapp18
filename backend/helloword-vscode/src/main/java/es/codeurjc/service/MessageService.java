@@ -24,18 +24,7 @@ public class MessageService {
 
 	@PostConstruct
 	public void init() {
-		/*
-		Message[] defaultMessages = {
-			new Message("Paco", "Mensaje 1.1"),
-			new Message("Juan", "Mensaje 1.2"),
-			new Message("Antonio", "Mensaje 2.1"),
-			new Message("Jose", "Mensaje 2.2")
-		};
 
-		for (Message message : defaultMessages) {
-			messages.save(message);
-		}
-		*/
 	}
 
 	public Collection<Message> findAll() {
