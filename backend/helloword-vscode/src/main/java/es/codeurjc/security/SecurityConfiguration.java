@@ -59,6 +59,7 @@ public class SecurityConfiguration {
 					.requestMatchers("/availableMail").permitAll()
 					.requestMatchers("/maps").permitAll()
 					.requestMatchers("/offer").permitAll()
+					.requestMatchers("/pieChart").permitAll()
 
 					// PRIVATE PAGES
 					.anyRequest().authenticated()
