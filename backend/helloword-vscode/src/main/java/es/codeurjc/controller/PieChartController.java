@@ -27,6 +27,8 @@ public class PieChartController {
         //find the lifeguards, go through their skill lists and put them on a map. Fill the model with the map
 
         HashMap<String, Integer> mapa = fillAttitudes();
+        HashMap<String, Float> mapa2 = getDistribution(mapa);
+
 
         model.addAttribute("trust", mapa.get("Confianza"));
         model.addAttribute("attitude", mapa.get("Actitud positiva"));
@@ -53,4 +55,16 @@ public class PieChartController {
 
         return map;
     }
+    public HashMap<String, Float> getDistribution(HashMap<String, Integer> m){
+        HashMap<String, Float> map = new HashMap<String, Float>();
+        float cont = 0;
+        for(String apt: m.keySet()){
+            cont = cont+m.get(apt);
+        }
+        for(String apt: m.keySet()){
+            map.put(apt, (m.get(apt)*100/cont));
+        }
+        return map;
+    }
+    
 }
