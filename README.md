@@ -7,7 +7,9 @@
   - Cristian Kim - cristianvictorkim - cv.kim.2023@alumnos.urjc.es
 
 
-# Navegación (IMAGEN DE CRISTIAN)
+# Navegación 
+![image](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/d62c1427-e17f-47ca-8b95-b1a422a1ef59)
+
 
 # Instrucciones de ejecución
 
