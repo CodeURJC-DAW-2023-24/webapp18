@@ -22,7 +22,7 @@ public class Offer {
     private Pool pool;
 
     @ManyToOne
-    private Employer emoloyer;
+    private Employer employer;
     
     @ManyToOne
     private Lifeguard lifeguard;
@@ -94,10 +94,10 @@ public class Offer {
         return lifeguard;
     }
     public Employer getEmployer(){
-        return this.emoloyer;
+        return this.employer;
     }
     public void addEmployer(Employer e){
-        this.emoloyer = e;
+        this.employer = e;
     }
 
     // Method to update offer data

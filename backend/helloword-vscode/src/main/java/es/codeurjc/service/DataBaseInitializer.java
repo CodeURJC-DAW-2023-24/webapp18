@@ -71,7 +71,7 @@ public class DataBaseInitializer {
             "Madrid",
             "Calle Amargura",
             "Marcos Friki",
-            "USER", "ADMIN", "EMP", "LIFE")); //HABRIA QUE QUITAR EL PERMISO LIFE A ADMIN PARA QUE NO LE SALGA PROPONERSE A UNA OFERTA
+            "USER", "ADMIN", "EMP")); 
     }
 }
 
