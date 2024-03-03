@@ -108,6 +108,7 @@ public class PoolController {
         poolService.save(pool);
         model.addAttribute("hasPhoto", pool.photoCheck);
         model.addAttribute("pool", pool);
+        model.addAttribute("admin", request.isUserInRole("ADMIN"));
         return "pool";
     }
 
@@ -127,6 +128,7 @@ public class PoolController {
         messageService.deleteById(id);
         model.addAttribute("pool", pool);
         model.addAttribute("hasPhoto", pool.photoCheck);
+        model.addAttribute("admin", request.isUserInRole("ADMIN"));
         return "pool";
 
     } 
