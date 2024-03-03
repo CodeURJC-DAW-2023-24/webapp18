@@ -57,9 +57,9 @@
             </form>
             {{/lifeguard}}
             <div class="btn-cont">
-                {{#employer}}
+                {{#canEdit}}
                 <button class="btn" onclick="showOffered('{{offer.id}}')" id="showButton">Ver propuestas</button>
-                {{/employer}}
+                {{/canEdit}}
                 {{#admin}}
                 <form role="form" action='/offer/delete' method="post">
                     <div class="btn-cont">

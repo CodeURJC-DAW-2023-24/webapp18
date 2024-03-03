@@ -71,6 +71,9 @@ public class OfferController {
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
         model.addAttribute("lifeguard", request.isUserInRole("LIFE") && !offer.isOffered(request.getUserPrincipal().getName()) && ! request.getUserPrincipal().getName().equals("admin"));
         model.addAttribute("employer", request.isUserInRole("EMP"));
+        boolean flag = false;
+        if(offer.getEmployer()!=null) flag = offer.getEmployer().getMail().equals(request.getUserPrincipal().getName());
+        model.addAttribute("canEdit", request.isUserInRole("ADMIN")||flag);
         return "offer";
     }
 
