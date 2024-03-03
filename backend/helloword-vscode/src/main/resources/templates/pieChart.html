@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html>
 
@@ -17,62 +13,54 @@
 
     <link type="text/css" rel="stylesheet" href="/css/general.css" />
     <link type="text/css" rel="stylesheet" href="/css/index.css" />
-
-   
-
 </head>
 
 <body>
     {{> header}}
 
     <main class="container">
-        <div class="top-container">
-            <h2>Distribución de aptitudes</h2>
-        </div>
-        <div class="btn-cont">
+        <h2>Distribución de aptitudes</h2>
 
-            <div  id="piechart" style="width: 900px; height: 500px;"></div>
+        <div class="btn-cont">
+            <div id="piechart" style="width: 900px; height: 500px;"></div>
             <div onload="setTrust('{{trust}}')"></div>
         </div>
-       
+    </main>
 
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <input type ="hidden" id="trust" value="{{trust}}"/>
-        <input type ="hidden" id="attitude" value="{{attitude}}"/>
-        <input type ="hidden" id="effort" value="{{effort}}"/>
-        <input type ="hidden" id="comunication" value="{{comunication}}"/>
-        <input type ="hidden" id="resolution" value="{{resolution}}"/>
-        <input type ="hidden" id="leadership" value="{{leadership}}"/>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <input type="hidden" id="trust" value="{{trust}}" />
+    <input type="hidden" id="attitude" value="{{attitude}}" />
+    <input type="hidden" id="effort" value="{{effort}}" />
+    <input type="hidden" id="comunication" value="{{comunication}}" />
+    <input type="hidden" id="resolution" value="{{resolution}}" />
+    <input type="hidden" id="leadership" value="{{leadership}}" />
 
 
-        <script type="text/javascript">
-            
-    
-        
-          google.charts.load('current', {'packages':['corechart']});
-          google.charts.setOnLoadCallback(drawChart);
-    
-          function drawChart() {
-            
+    <script type="text/javascript">
+
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
             var data = google.visualization.arrayToDataTable([
-              ['Aptitudes', 'Cantidad'],
-              ['Confianza',     parseInt(document.getElementById("trust").value)],
-              ['Actitud Positiva',      parseInt(document.getElementById("attitude").value)],
-              ['Esfuerzo',  parseInt(document.getElementById("effort").value)],
-              ['Resolución de problemas', parseInt(document.getElementById("resolution").value)],
-              ['Liderazgo',    parseInt(document.getElementById("leadership").value)],
-              ['Comunicación',    parseInt(document.getElementById("comunication").value)]
+                ['Aptitudes', 'Cantidad'],
+                ['Confianza', parseInt(document.getElementById("trust").value)],
+                ['Actitud Positiva', parseInt(document.getElementById("attitude").value)],
+                ['Esfuerzo', parseInt(document.getElementById("effort").value)],
+                ['Resolución de problemas', parseInt(document.getElementById("resolution").value)],
+                ['Liderazgo', parseInt(document.getElementById("leadership").value)],
+                ['Comunicación', parseInt(document.getElementById("comunication").value)]
             ]);
-    
+
             var options = {
-              title: 'Aptitudes'
+                title: 'Aptitudes'
             };
-    
+
             var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-    
+
             chart.draw(data, options);
-          }
-        </script>  
+        }
+    </script>
 
 </body>
 
