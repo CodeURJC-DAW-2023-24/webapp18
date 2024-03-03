@@ -1,5 +1,6 @@
 package es.codeurjc.model;
 
+import java.sql.Blob;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Pool{
 
     private String name;
     private String photo;
+    private Blob photoA;
     private String direction;
     private int capacity;
     private LocalTime scheduleStart;
@@ -92,7 +94,12 @@ public class Pool{
     public long getId(){
         return this.id;
     }
-
+    public void setPhotoUser(Blob photo) {
+		this.photoA = photo;
+	}
+    public Blob getPhotoUser() {
+		return photoA;
+	}
     // Method to update pool data
     public void update(Builder builder) {
         if (builder.name != null) {
@@ -188,5 +195,9 @@ public class Pool{
             }
             return new Pool(this);
         }
+    }
+
+    public void setPhoto(String string) {
+        this.photo=string;
     }
 }
