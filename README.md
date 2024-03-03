@@ -18,7 +18,7 @@ Para iniciar la aplicación web se deben seguir los siguientes pasos:
   - Descargar la aplicación
   - Configurar en aplication.properties el puerto en el que se inicial el programa, el usuario de la base de datos local, su contraseña y su dirección.
   - Iniciar Application.java
-  - Acceder desde el navegador (https://localhost:"puerto configurado en el paso anterior")
+  - Acceder desde el navegador (https://localhost:x, donde x es el puerto configurado en el paso anterior)
 
 
 
