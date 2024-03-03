@@ -25,7 +25,7 @@ public class Pool{
 
     @OneToMany(mappedBy = "pool", cascade = CascadeType.ALL)
     private List<Message> messages;
-
+    public boolean photoCheck;
     private String name;
     private String photo;
     private Blob photoA;
@@ -49,6 +49,7 @@ public class Pool{
         this.company = builder.company;
         this.description = builder.description;
         this.messages = builder.messages;
+        photoCheck=false;
     }
 
     public void addMessage(Message message){

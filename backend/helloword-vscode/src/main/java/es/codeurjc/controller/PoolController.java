@@ -106,6 +106,7 @@ public class PoolController {
         pool.addMessage(message);
         messageService.save(message);
         poolService.save(pool);
+        model.addAttribute("hasPhoto", pool.photoCheck);
         model.addAttribute("pool", pool);
         return "pool";
     }
@@ -125,6 +126,7 @@ public class PoolController {
         Pool pool = msg.getPool();
         messageService.deleteById(id);
         model.addAttribute("pool", pool);
+        model.addAttribute("hasPhoto", pool.photoCheck);
         return "pool";
 
     } 
@@ -158,6 +160,7 @@ public class PoolController {
                         .build();
         if (!photoField.isEmpty()) {
                     pool.setPhotoUser(BlobProxy.generateProxy(photoField.getInputStream(), photoField.getSize()));
+                    pool.photoCheck=true;
                 }
         poolService.save(pool);
         return "index";

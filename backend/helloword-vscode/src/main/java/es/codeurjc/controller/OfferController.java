@@ -63,6 +63,9 @@ public class OfferController {
         model.addAttribute("loged", request.getUserPrincipal() != null);
 
         Offer offer = offerService.findById(id).get();
+        Pool pool = offer.getPool();
+        if(pool.getPhotoUser()!=null) model.addAttribute("hasPhoto", true);
+        else model.addAttribute("hasPhoto", false);
         model.addAttribute("offer", offer);
         model.addAttribute("id", offer.getId());
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
