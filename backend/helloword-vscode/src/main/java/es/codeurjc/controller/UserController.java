@@ -47,15 +47,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // -------------------------------------- MAIN --------------------------------------
-    @GetMapping("/")
-    public String initial(Model model, HttpServletRequest request) {
-        // CHECK USER LOGED OR NOT
-        model.addAttribute("loged", request.getUserPrincipal() != null);
-
-        return "index";
-    }
-
     // -------------------------------------- PROFILE ------------------------------------------
     @GetMapping("/profile")
     public String profile(Model model, HttpServletRequest request, @RequestParam("type") int type,

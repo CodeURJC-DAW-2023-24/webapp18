@@ -1,12 +1,11 @@
 package es.codeurjc.controller;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,22 +30,26 @@ public class OfferController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/loadOffers")
-    public String loadOffers(HttpServletRequest request, Model model) {
-        int from = Integer.parseInt(request.getParameter("from"));
-        int amount = Integer.parseInt(request.getParameter("amount"));
-        Collection<Offer> offers2 = offerService.findAll();
-        List<Offer> offersL = new ArrayList(offers2);
-        List<Offer> offerSubL = offersL.subList(from, amount);
-        model.addAttribute("offers", offerSubL);
-        model.addAttribute("alternative", "No hay ofertas aún");
-        return "offers";
+    // -------------------------------------- MAIN --------------------------------------
+    @GetMapping("/")
+    public String showOffers(Model model, HttpServletRequest request, Pageable page) {
+        // CHECK USER LOGED OR NOT
+        model.addAttribute("loged", request.getUserPrincipal() != null);
+
+        // will be good implement the hasMore and nextPage attributes here
+        return "index";
     }
 
-    @GetMapping("/allOffersLoaded")
-    public ResponseEntity<?> allOffersLoaded() {
-        boolean value = false; //TO IMPLEMENT JORGE
-        return ResponseEntity.ok().body(Map.of("value", value));
+    // -------------------------------------- OFFER --------------------------------------
+    @GetMapping("/offers/load")
+    public String loadOffers(HttpServletRequest request, Model model,  @RequestParam("page") int pageNumber, @RequestParam("size") int size) {
+
+        Page<Offer> offers = offerService.findAll(PageRequest.of(pageNumber, size));
+
+        model.addAttribute("offers", offers);
+        model.addAttribute("hasMore", offers.hasNext());
+        model.addAttribute("alternative", "No hay ofertas");
+        return "offers";
     }
 
     @GetMapping("/offer")

@@ -6,7 +6,7 @@ let offers;
 document.addEventListener('DOMContentLoaded', function () {
     offers = document.getElementById("offers");
 
-    loadOffers();
+    loadOffers(0);
 });
 
 function calculateColumns() {
@@ -16,24 +16,24 @@ function calculateColumns() {
     return columns;
 }
 
-async function checkLoadMore() {
-    const response = await fetch(`/allOffersLoaded`);
-    const allOffersLoaded = await response.json();
-
+async function checkLoadMore(page) {
     const loadMore = document.getElementById("loadOffers");
+    const loadMoreButton = document.querySelector("#loadOffers button");
+    const hasMore = document.getElementById("hasMore");
 
-    if (allOffersLoaded.value) loadMore.remove();
+    loadMoreButton.setAttribute("onclick", "loadOffers("+page+")");
+
+    if (hasMore) hasMore.remove();
+    else loadMore.remove();
 }
 
-async function loadOffers() {
-    const from = offers.childElementCount;
-    const amount = Math.max(2, Math.min(5, calculateColumns()));  // Entre 2 y 5 ofertas
-
-    const response = await fetch(`/loadOffers?from=${from}&amount=${amount}`);
+async function loadOffers(page) {
+    const amount = Math.max(2, Math.min(5, calculateColumns()));  // Between 2 and 5 offers
+    const response = await fetch('/offers/load?page='+page+'&size='+amount);
     const newOffers = await response.text();
 
-    if (from == 0) { offers.innerHTML = newOffers }
+    if (page == 0) { offers.innerHTML = newOffers }
     else { offers.insertAdjacentHTML("beforeend", newOffers) }
 
-    checkLoadMore();
+    checkLoadMore(page+1);  // It will be better if we use nextPage in server side
 }
