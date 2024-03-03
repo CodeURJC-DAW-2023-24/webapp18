@@ -50,10 +50,10 @@ public class PoolService {
 		};
 
 		Message[] defaultMessages = {
-			new Message("Paco", "Mensaje 1.1"),
-			new Message("Juan", "Mensaje 1.2"),
-			new Message("Antonio", "Mensaje 2.1"),
-			new Message("Jose", "Mensaje 2.2")
+			new Message("s1", "Mensaje 1.1"),
+			new Message("e1", "Mensaje 1.2"),
+			new Message("e1", "Mensaje 2.1"),
+			new Message("s1", "Mensaje 2.2")
 		};
 
 

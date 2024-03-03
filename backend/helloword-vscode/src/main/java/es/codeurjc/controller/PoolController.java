@@ -45,6 +45,7 @@ public class PoolController {
         
     }
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
+        model.addAttribute("logged", request.isUserInRole("EMP")||request.isUserInRole("LIFE"));
         return "pool";
     }
 
