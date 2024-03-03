@@ -1,6 +1,8 @@
 package es.codeurjc.controller;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Offer;
+import es.codeurjc.model.Pool;
 import es.codeurjc.service.OfferService;
 import es.codeurjc.service.PoolService;
 import es.codeurjc.service.UserService;
@@ -55,13 +59,8 @@ public class OfferController {
 
     @GetMapping("/offer")
     public String offer(@RequestParam("id") int id, Model model, HttpServletRequest request) {
-
         //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
-            model.addAttribute("loged", true);
-        }else{
-            model.addAttribute("loged", false);
-        }
+        model.addAttribute("loged", request.getUserPrincipal() != null);
 
         Offer offer = offerService.findById(id).get();
         model.addAttribute("offer", offer);
@@ -74,41 +73,38 @@ public class OfferController {
 
     @GetMapping("/offer/form")
     public String newOffer(Model model, HttpServletRequest request) {
-
         //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
-            model.addAttribute("loged", true);
-        }else{
-            model.addAttribute("loged", false);
-        }        
+        model.addAttribute("loged", request.getUserPrincipal() != null);
 
+        Collection<Pool> pools = PoolService.findAll();
+        model.addAttribute("pools", pools);
         return "new_offer";
     }
 
     @PostMapping("/offer/add")
     public String addOffer(Model model, HttpServletRequest request) {
-
         //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
-            model.addAttribute("loged", true);
-        }else{
-            model.addAttribute("loged", false);
-        }        
+        model.addAttribute("loged", request.getUserPrincipal() != null);
+
+        try {
+            offerService.checkOffer(request);
+        } catch (Exception e) {
+            return offerService.showError(model, e.getMessage());
+        }
+
+        int poolId = Integer.parseInt(request.getParameter("pool-id"));
+        Pool pool = poolService.findById(poolId).get();
+
+        Offer offer = offerService.createOffer(pool, request);
+        offerService.save(offer);
 
         return "redirect:/offer/added";
     }
-    
-
 
     @GetMapping("/offer/added")
     public String addedOffer(Model model, HttpServletRequest request) {
-
         //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
-            model.addAttribute("loged", true);
-        }else{
-            model.addAttribute("loged", false);
-        }
+        model.addAttribute("loged", request.getUserPrincipal() != null);
 
         model.addAttribute("title", "Oferta añadida");
         model.addAttribute("message", "Oferta añadida correctamente. ¡Gracias por confiar en nosotros!");

@@ -28,8 +28,9 @@ public class Offer {
     private List<Lifeguard> lifeguards;
 
 
-    private int salary;
+    private String salary;
     private String start;
+    private String type;
     private String description;
 
     public Offer(){}
@@ -38,6 +39,7 @@ public class Offer {
         this.pool = builder.pool;
         this.salary = builder.salary;
         this.start = builder.start;
+        this.type = builder.type;
         this.description = builder.description;
         this.lifeguards = new ArrayList<>();
     }
@@ -51,12 +53,16 @@ public class Offer {
         return pool;
     }
 
-    public int getSalary() {
+    public String getSalary() {
         return salary;
     }
 
     public String getStart() {
         return start;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public void addOffered(Lifeguard lifeguard) {
@@ -104,8 +110,9 @@ public class Offer {
     // Builder class to build objects of type Offer
     public static class Builder {
         private Pool pool;
-        private Integer salary;
+        private String salary;
         private String start;
+        private String type;
         private String description;
 
         public Builder pool (Pool pool) {
@@ -113,13 +120,18 @@ public class Offer {
             return this;
         }
 
-        public Builder salary(int salary) {
+        public Builder salary(String salary) {
             this.salary = salary;
             return this;
         }
 
         public Builder start(String start) {
             this.start = start;
+            return this;
+        }
+
+        public Builder type(String type) {
+            this.type = type;
             return this;
         }
 

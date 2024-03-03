@@ -1,5 +1,6 @@
 package es.codeurjc.service;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -7,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import es.codeurjc.model.Offer;
 import es.codeurjc.model.Pool;
 import es.codeurjc.repository.OfferRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class OfferService {
 
@@ -29,32 +32,37 @@ public class OfferService {
         Offer[] defaultOffersData = {
             new Offer.Builder()
                 .pool(defaultPools.iterator().next())
-                .salary(1100)
+                .salary("1100")
                 .start("01/03/2024")
+                .type("Jornada completa")
                 .description("Descripcion 1")
                 .build(),
             new Offer.Builder()
                 .pool(defaultPools.iterator().next())
-                .salary(1500)
+                .salary("1500")
                 .start("Inicio 2")
+                .type("Fines de semana")
                 .description("Descripción 2")
                 .build(),
             new Offer.Builder()
                 .pool(defaultPools.iterator().next())
-                .salary(1200)
+                .salary("1200")
                 .start("Inicio 3")
+                .type("Media jornada")
                 .description("Descripción 3")
                 .build(),
             new Offer.Builder()
                 .pool(defaultPools.iterator().next())
-                .salary(2000)
+                .salary("2000")
                 .start("Inicio 4")
+                .type("Correturnos")
                 .description("Descripción 4")
                 .build(),
             new Offer.Builder()
                 .pool(defaultPools.iterator().next())
-                .salary(1800)
+                .salary("1800")
                 .start("Inicio 5")
+                .type("Jornada completa")
                 .description("Descripción 5")
                 .build()
         };
@@ -84,4 +92,68 @@ public class OfferService {
         this.offers.deleteById(id);
     }
 
+    public Offer createOffer(Pool pool, HttpServletRequest request) {
+        Offer offer = new Offer.Builder()
+            .pool(pool)
+            .salary(request.getParameter("salary"))
+            .start(request.getParameter("start"))
+            .type(request.getParameter("type"))
+            .description(request.getParameter("description"))
+            .build();
+
+        return offer;
+    }
+
+    public Boolean checkOffer(HttpServletRequest request) throws Exception {
+        String direction = request.getParameter("direction");
+        String type = request.getParameter("type");
+        String start = request.getParameter("start");
+        String description = request.getParameter("description");
+        String salary = request.getParameter("salary");
+        String pool = request.getParameter("pool-id");
+        int salaryPrice;
+        int poolId;
+
+        if (direction.equals(""))
+            throw new Exception("La dirección no puede estar vacía.");
+        if (type.equals(""))
+            throw new Exception("El tipo de contrato no puede estar vacío.");
+        if (start.equals(""))
+            throw new Exception("La fecha de inicio no puede estar vacía.");
+        if (salary.equals(""))
+            throw new Exception("El salario no puede estar vacío.");
+        if (pool.equals(""))
+            throw new Exception("La piscina no puede estar vacía.");
+
+        try {
+            salaryPrice = Integer.parseInt(salary);
+        } catch (NumberFormatException e) {
+            throw new Exception("El salario debe ser un número. ");
+        }
+        if (salaryPrice < 1100)
+            throw new Exception("El salario debe ser superior al sueldo mínimo.");
+
+        if (description.length() > 255)
+            throw new Exception("La descripción no puede superar los 255 caracteres.");
+
+        try {
+            poolId = Integer.parseInt(pool);
+        } catch (NumberFormatException e) {
+            throw new Exception("No has seleccionado una piscina válida.");
+        }
+        if (poolId == 0)
+            throw new Exception("Tienes que seleccionar una piscina");
+
+        LocalDate startDate = LocalDate.parse(start);
+        if (startDate.isBefore(LocalDate.now())) throw new Exception("La fecha de inicio no puede ser anterior a la fecha actual.");
+
+        return true;
+    }
+
+    public String showError(Model model, String errorMessage) {
+        model.addAttribute("title", "Error");
+        model.addAttribute("message", errorMessage);
+        model.addAttribute("back", "javascript:history.back()");
+        return "message";
+    }
 }

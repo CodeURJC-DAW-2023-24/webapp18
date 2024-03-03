@@ -23,8 +23,8 @@
 
         <form role="form" action="/offer/add" method="post">
             <div class="form-group">
-                <label for="dir">Dirección</label>
-                <input type="text" class="form-control" name="dir" placeholder="Móstoles, C/Velázquez 2">
+                <label for="direction">Dirección</label>
+                <input type="text" class="form-control" name="direction" placeholder="Móstoles, C/Velázquez 2">
             </div>
 
             <div class="form-group">
@@ -36,7 +36,7 @@
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="type">Tipo de jornada</label>
                     <select class="form-select" name="type">
-                        <option value="Puntual">Puntual</option>
+                        <option value="Puntual" selected>Puntual</option>
                         <option value="Media jornada">Media jornada</option>
                         <option value="Jornada completa">Jornada completa</option>
                         <option value="Fines de semana">Fines de semana</option>
@@ -55,10 +55,24 @@
                 <output for="price" id="outrange">1200</output>€
             </div>
 
+            <div class="form-group">
+                <label for="pool-id">Piscina</label>
+                <select class="form-select" name="pool-id" id="pool-id" required>
+                    <option value="0" selected hidden>Seleccione una de sus piscinas</option>
+                    {{#pools}}
+                    <option value="{{id}}">{{name}}</option>
+                    {{/pools}}
+                    {{^pools}}
+                    <option value="0" disabled>No hay piscinas disponibles</option>
+                    {{/pools}}
+                </select>
+            </div>
+
             <div class="btn-cont">
                 <button type="submit" class="btn"><i class="bi bi-download"></i> Guardar</button>
                 <a href="/" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
             </div>
+            <input type ="hidden" name="_csrf" value="{{token}}"/>
         </form>
     </div>
 </body>
