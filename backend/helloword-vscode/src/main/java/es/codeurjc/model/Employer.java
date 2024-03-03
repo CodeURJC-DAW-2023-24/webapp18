@@ -4,9 +4,11 @@ import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,7 +21,7 @@ public class Employer extends Person{
 
     private String company;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
     private List<Offer> offers;
 
     public Employer(){}

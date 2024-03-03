@@ -20,6 +20,9 @@ public class Offer {
 
     @ManyToOne
     private Pool pool;
+
+    @ManyToOne
+    private Employer emoloyer;
     
     @ManyToOne
     private Lifeguard lifeguard;
@@ -89,6 +92,12 @@ public class Offer {
 
     public Lifeguard getLifeguard(){
         return lifeguard;
+    }
+    public Employer getEmployer(){
+        return this.emoloyer;
+    }
+    public void addEmployer(Employer e){
+        this.emoloyer = e;
     }
 
     // Method to update offer data

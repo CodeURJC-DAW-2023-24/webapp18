@@ -61,7 +61,15 @@
                 <button class="btn" onclick="showOffered('{{offer.id}}')" id="showButton">Ver propuestas</button>
                 {{/employer}}
                 {{#admin}}
-                <a href="/" class="btn btn-red" role="button"><i class="bi bi-trash"></i> Eliminar</a>
+                <form role="form" action='/offer/delete' method="post">
+                    <div class="btn-cont">
+                        <button type = "submit" class="btn" >
+                            <i class="bi bi-trash">Eliminar</i>
+                        </button>
+                    </div>
+                    <input type ="hidden" name="id" value="{{offer.id}}"/>
+                    <input type ="hidden" name="_csrf" value="{{token}}"/>
+                </form>
                 {{/admin}}
                 <a href="/" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
             </div>

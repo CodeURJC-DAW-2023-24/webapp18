@@ -97,9 +97,13 @@ public class OfferController {
 
         int poolId = Integer.parseInt(request.getParameter("pool-id"));
         Pool pool = poolService.findById(poolId).get();
-
+        String mail = request.getUserPrincipal().getName();
+        Employer employer = userService.findEmployerByEmail(mail).get();
         Offer offer = offerService.createOffer(pool, request);
+        offer.addEmployer(employer);
+        employer.addOffer(offer);
         offerService.save(offer);
+        userService.saveEmployer(employer);
 
         return "redirect:/offer/added";
     }
@@ -180,5 +184,15 @@ public class OfferController {
         userService.saveLifeguard(lifeguard);
         
         return "redirect:/offer?id="+id;
+    }
+
+    @PostMapping("/offer/delete")
+    public String offerDelete(@RequestParam("id") int id, Model model, HttpServletRequest request) {
+        //   Pool pool = DataBase.getPool(id);
+        Offer offer = offerService.findById(id).get();
+        offerService.deleteById(id);
+        model.addAttribute("loged", request.getUserPrincipal() != null);
+        model.addAttribute("employer", request.isUserInRole("EMP"));
+        return "index";
     }
 }
