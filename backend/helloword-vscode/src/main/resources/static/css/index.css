@@ -1,12 +1,12 @@
-.offers{
+.offers {
     display: grid;
-    padding: 20px;
+    margin: 20px;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 40px;
     justify-items: center;
 }
 
-.offers a{
+.offers a {
     width: 250px;
     text-align: center;
     border: 1px solid #ccc;
@@ -21,11 +21,31 @@
     transition: box-shadow 0.2s;
 }
 
-.offers p{
+.offers img {
+    height: 200px;
+    max-width: 100%;
+}
+
+.offers p {
     text-align: center;
     margin: 10px;
 }
 
-.offers a:hover{
+.offers a:hover {
     box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.5);
+}
+
+.bottom-right-button {
+    position: fixed;
+    bottom: 1%;
+    right: 2%;
+}
+
+.bottom-right-button > .btn {
+    min-width: 50px;
+    border-radius: 10px;
+}
+
+.bi-plus-circle {
+    font-size: 1.25em;
 }

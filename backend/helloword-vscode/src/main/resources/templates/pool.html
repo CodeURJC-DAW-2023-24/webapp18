@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{pool.name}}</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka|Yanone+Kaffeesatz" rel="stylesheet" type="text/css">
+
+    <link type="text/css" rel="stylesheet" href="/css/general.css" />
+    <link type="text/css" rel="stylesheet" href="/css/data.css" />
+    <link type="text/css" rel="stylesheet" href="/css/comment.css" />
+
+    <script src="/js/poolMessages.js"></script>
+</head>
+
+<body>
+    {{> header}}
+
+    <div class="data">
+        {{#pool}}
+        <div class="container container-main">
+            <h2>{{name}}</h2>
+
+            <div class="row">
+                <a class="col-md-6 col-xs-4">
+                    {{#hasPhoto}}
+                    <img id="img-user" src="/pool/{{id}}/image" alt="{{direction}}">
+                    {{/hasPhoto}}
+                    {{^hasPhoto}}
+                    <img id="img-pool" src="{{photo}}" alt="{{direction}}">
+                    {{/hasPhoto}}
+                </a>
+                <div class="col-md-6">
+                    <p><strong>Dirección:</strong> {{direction}}</p>
+                    <p><strong>Horario:</strong> {{scheduleStart}}-{{scheduleEnd}}</p>
+                    <p><strong>Aforo:</strong> {{capacity}} personas</p>
+                    <p><strong>Descripción:</strong> {{description}}</p>
+                </div>
+            </div>
+
+            <div class="btn-cont">
+              
+                {{#admin}}
+                <form role="form" action='/pool/delete?id={{id}}' method="post">
+                    <div class="btn-cont">
+                        <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
+                    </div>
+                    <input type ="hidden" name="_csrf" value="{{token}}"/>
+                </form>
+                {{/admin}}
+                <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+            </div>
+        </div>
+        <div class="container container-additional">
+            <h3>Comentarios</h3>
+            {{#logged}}
+            <div class="commentContainer newCommentContainer">
+                <form role="form" action='/pool/message/add' method="post">
+                    <input type="text" id="commentInput" name="commentInput" placeholder="Escribe el comentario"/>
+                    <div class="btn-cont">
+                        <button type = "submit" class="btn" >
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </div>
+                    <input type ="hidden" name="id" value="{{id}}"/>
+                    <input type ="hidden" name="_csrf" value="{{token}}"/>
+                </form>
+            </div>
+            {{/logged}}
+            <div id="messageContainer"></div>
+            <div class="btn-cont">
+                <button class="btn" onclick="showMessages('{{id}}')" id="showButton">Ver comentarios</button>
+            </div>
+        </div>
+        {{/pool}}
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<header>
+    <a href="/" style="color: inherit; text-decoration: none">
+        <img id="header-img" src="/images/h2oslogo.png" alt="Logo H2OS">
+        <h1>H20S</h1>
+    </a>
+
+    <a href="/pieChart" style="color: inherit; text-decoration: none">
+        <i class="bi bi-bar-chart-fill"></i>
+    </a>
+    
+    {{#loged}}
+    <a href="/profile?type=1&mail=none" style="color: inherit; text-decoration: none">
+        <i class="bi bi-person-fill"></i>
+    </a>
+    {{/loged}}
+    {{^loged}}
+    <a href="/login" style="color: inherit; text-decoration: none">
+        <i class="bi bi-person-fill"></i>
+    </a>
+    {{/loged}}
+
+</header>

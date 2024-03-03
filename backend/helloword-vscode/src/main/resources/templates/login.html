@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Iniciar sesión</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka|Yanone+Kaffeesatz" rel="stylesheet" type="text/css">
+
+    <link type="text/css" rel="stylesheet" href="/css/general.css" />
+    <link type="text/css" rel="stylesheet" href="/css/newUser.css" />
+</head>
+
+<body>
+    {{> header}}
+
+    <div class="container">
+        <h2>Iniciar Sesión</h2>
+
+        <form role="form" action="/login" method="post">
+            <div class="form-group">
+                <label for="username">E-mail</label>
+                <input type="text" class="form-control" name="username" id="username" placeholder="example@gmail.com">
+            </div>
+            <div class="form-group">
+                <label for="pass">Contraseña</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="1234">
+            </div>
+
+            <div class="btn-cont">
+                <button type="submit" class="btn"><i class="bi bi-box-arrow-right"></i> Acceder</button>
+                <a href="/" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
+            </div>
+            <input type ="hidden" name="_csrf" value="{{token}}"/>
+        </form>
+
+        <hr class="horizontal-line">
+        <p>¿No tienes cuenta? <a href="/user/form">Regístrate aquí</a></p>
+    </div>
+</body>
+
+</html>
