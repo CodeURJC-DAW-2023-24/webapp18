@@ -51,6 +51,7 @@ public class PoolController {
     @PostMapping("pool/delete")
     public String deletePool(@RequestParam("id") int id, Model model,HttpServletRequest request) {
         poolService.deleteById(id);
+        model.addAttribute("employer", request.isUserInRole("EMP"));
         return "index";
     }
 

@@ -111,6 +111,7 @@ public class UserController {
     public String deleteAccount(Model model, HttpServletRequest request, @RequestParam("mail") String mail) {
 
         userService.deleteUserByEmail(mail);
+        model.addAttribute("employer", request.isUserInRole("EMP"));
 
         return "index";
     }

@@ -35,6 +35,7 @@ public class OfferController {
     public String showOffers(Model model, HttpServletRequest request, Pageable page) {
         // CHECK USER LOGED OR NOT
         model.addAttribute("loged", request.getUserPrincipal() != null);
+        model.addAttribute("employer", request.isUserInRole("EMP"));
 
         // will be good implement the hasMore and nextPage attributes here
         return "index";
