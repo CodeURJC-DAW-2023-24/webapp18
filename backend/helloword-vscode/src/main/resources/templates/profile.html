@@ -51,6 +51,7 @@
                     <p><strong>Descripción:</strong> {{description}}</p>
 
                 </div>
+                {{#lifeguard}}
                 <div class="subcontainer">
                     <h3>Aptitudes</h3>
                     <ul>
@@ -62,12 +63,13 @@
                         {{/skills}}
                     </ul>
                 </div>
+                {{/lifeguard}}
             </div>
             <form action="/logout" method="post">
                 <input type="hidden" name="_csrf" value="{{token}}"/>
                 <div class="btn-cont">
                     {{#me}}
-                    <a href="/user/edit?id={{id}}" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+                    <a href="/user/{{mail}}/edit" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
 
                     <input type="submit" class="btn btn-red" value="Cerrar sesión"/>
                     {{/me}}

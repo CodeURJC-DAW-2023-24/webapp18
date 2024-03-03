@@ -20,30 +20,40 @@
     {{> header}}
 
     <div class="container">
+        {{#edit}}
+        <h2>Editar {{user.name}}</h2>
+        {{/edit}}
+        {{^edit}}
         <h2>Nuevo usuario</h2>
+        {{/edit}}
 
+        {{#edit}}
+        <form role="form" action="/user/{{user.mail}}/edit" method="post" enctype="multipart/form-data">
+        {{/edit}}
+        {{^edit}}
         <form role="form" action="/user/register" method="post" enctype="multipart/form-data">
+        {{/edit}}
             <input type ="hidden" name="_csrf" value="{{token}}"/>
             <div class="row">
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="name">Nombre</label>
-                    <input type="text" class="form-control" name="name" placeholder="Introduzca su nombre">
+                    <input type="text" class="form-control" name="name" placeholder="Introduzca su nombre" value="{{#user}}{{user.name}}{{/user}}">
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="surname">Apellidos</label>
-                    <input type="text" class="form-control" name="surname" placeholder="Introduzca sus apellidos">
+                    <input type="text" class="form-control" name="surname" placeholder="Introduzca sus apellidos" value="{{#user}}{{user.surname}}{{/user}}">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="description">Descripción</label>
-                <textarea type="text" class="form-control" name="description" placeholder="Datos personales y profesionales de interés"></textarea>
+                <textarea type="text" class="form-control" name="description" placeholder="Datos personales y profesionales de interés">{{#user}}{{user.description}}{{/user}}</textarea>
             </div>
 
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="dni">DNI</label>
-                    <input type="text" class="form-control" name="dni" placeholder="DNI/NIE">
+                    <input type="text" class="form-control" name="dni" placeholder="DNI/NIE" value="{{#user}}{{user.dni}}{{/user}}">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="age">Edad</label>
@@ -53,6 +63,7 @@
             </div>
 
 
+            {{^edit}}
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="mail">Correo electrónico*</label>
@@ -65,54 +76,65 @@
                     <div id="passContent"></div>
                 </div>
             </div>
+            {{/edit}}
 
             <div class="row">
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="phone">Teléfono de contacto</label>
-                    <input type="text" class="form-control" name="phone" oninput="checkPhone()" id="phone" placeholder="Introduzca su número de teléfono">
+                    <input type="text" class="form-control" name="phone" oninput="checkPhone()" id="phone" value="{{#user}}{{user.phone}}{{/user}}" placeholder="Introduzca su número de teléfono">
                     <div id="phoneContent" style="color:red"></div>
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="country">País</label>
-                    <input type="text" class="form-control" name="country" placeholder="Introduzca su país">
+                    <input type="text" class="form-control" name="country" value="{{#user}}{{user.country}}{{/user}}" placeholder="Introduzca su país">
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="locality">Localidad</label>
-                    <input type="text" class="form-control" name="locality" id="locality" placeholder="Introduzca su localidad">
+                    <input type="text" class="form-control" name="locality" id="locality" value="{{#user}}{{user.locality}}{{/user}}" placeholder="Introduzca su localidad">
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="province">Provincia</label>
-                    <input type="text" class="form-control" name="province" id="province" placeholder="Introduzca su provincia">
+                    <input type="text" class="form-control" name="province" id="province" value="{{#user}}{{user.province}}{{/user}}" placeholder="Introduzca su provincia">
                 </div>
             </div>
 
             <div class="row">
+                {{#edit}}
+                <div class="form-group col-md-12">
+                {{/edit}}
+                {{^edit}}
                 <div class="form-group col-md-8">
+                {{/edit}}
                     <label for="direction">Calle</label>
-                    <input type="text" class="form-control" name="direction" id="direction" placeholder="Introduzca su calle">
+                    <input type="text" class="form-control" name="direction" id="direction" value="{{#user}}{{user.direction}}{{/user}}" placeholder="Introduzca su calle">
                 </div>
+                {{^edit}}
                 <div class="form-group col-md-4">
                     <label for="typeUser">Tipo de usuario*</label>
-                    <select class="form-select" name="typeUser" id="typeUser" onchange="showForm()">
-                        <option value="" disabled selected>Elegir tipo de usuario</option>
+                    <select class="form-select" name="typeUser" id="typeUser" onchange="showForm()" required>
+                        <option value="" disabled selected hidden>Elegir tipo de usuario</option>
                         <option value="lifeguard">Socorrista</option>
                         <option value="employer">Empleador</option>
                     </select>
                 </div>
+                {{/edit}}
+                {{#edit}}
+                <input style="display:none" id="typeUser" value="{{#employer}}employer{{/employer}}{{#lifeguard}}lifeguard{{/lifeguard}}" >
+                {{/edit}}
             </div>
 
             <div class="form-group">
                 <label for="photoField">Foto de perfil</label>
-                <input type="file" class="form-control" name="photoField" id="photoField" accept=".jpg, .jpeg, .png">
+                <input type="file" class="form-control" name="photoField" id="photoField" accept=".jpeg, .png">
             </div>
 
             <!-- Lifeguard -->
             <div class="form-group" id="lifeguard1" style="display:none">
-                <label for="document">Títulación/es</label>
-                <input type="text" class="form-control" name="document" id="document" placeholder="Se requerirá el día de la firma del contrato">
+                <label for="document">Titulación</label>
+                <input type="text" class="form-control" name="document" id="document" placeholder="Se requerirá el día de la firma del contrato" value="{{#lifeguard}}{{user.document}}{{/lifeguard}}">
             </div>
 
             <div class="skills-container" id="lifeguard2" style="display:none">
@@ -130,8 +152,6 @@
                         <label for="communication">Comunicación</label>
                         <input type="checkbox" name="communication" id="communication">
                     </div>
-                </div>
-                <div class="row">
                     <div class="form-group col-md-4">
                         <label for="attitude">Actitud positiva</label>
                         <input type="checkbox" name="attitude" id="attitude">
@@ -150,7 +170,7 @@
             <!-- Employer -->
             <div class="form-group" id="employer1" style="display:none">
                 <label for="company">Empresa</label>
-                <input type="text" class="form-control" name="company" placeholder="Introduzca su posición en la empresa">
+                <input type="text" class="form-control" name="company" placeholder="Introduzca su posición en la empresa" value="{{#employer}}{{user.company}}{{/employer}}">
             </div>
 
             <!-- Buttons -->
@@ -162,6 +182,9 @@
         </form>
 
         <script>
+            if ("{{edit}}" == "true") {
+                showForm();
+            }
             function showForm() {
                 var selectedType = document.getElementById("typeUser").value;
 

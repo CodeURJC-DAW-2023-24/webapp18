@@ -1,10 +1,13 @@
 package es.codeurjc.model;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.HashSet;
 import java.sql.Blob;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -12,6 +15,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "lifeguard")
@@ -21,6 +25,8 @@ public class Lifeguard extends Person{
 	private boolean imageUser;
     private String document;
     private List<String> skills;
+    @Transient
+    private static Set<String> skillsSet = initializeSkillsSet();
     @ManyToMany
     private List<Pool> pools;
 
@@ -43,6 +49,10 @@ public class Lifeguard extends Person{
         this.offerAssigned = false;
     }
 
+    public String getType(){
+        return "lifeguard";
+    }
+
     public String getDocument() {
         return document;
     }
@@ -59,10 +69,24 @@ public class Lifeguard extends Person{
         this.skills = skills;
     }
 
+    public static Set<String> getSkillsSet() {
+        return skillsSet;
+    }
+
+    private static Set<String> initializeSkillsSet(){
+        Set<String> skillsSet = new HashSet<>();
+        skillsSet.add("Confianza");
+        skillsSet.add("Esfuerzo");
+        skillsSet.add("Comunicación");
+        skillsSet.add("Actitud positiva");
+        skillsSet.add("Resolución de problemas");
+        skillsSet.add("Liderazgo");
+        return skillsSet;
+    }
+
     public void addSkill(String skill) {
-        if (this.skills == null) {
+        if (this.skills == null)
             this.skills = new ArrayList<>();
-        }
         this.skills.add(skill);
     }
 

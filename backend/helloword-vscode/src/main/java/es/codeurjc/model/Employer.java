@@ -30,6 +30,10 @@ public class Employer extends Person{
         this.offers = new ArrayList<Offer>();
     }
 
+    public String getType(){
+        return "employer";
+    }
+
     public void setPhotoCompany(Blob photo){
         this.photo = photo;
     }

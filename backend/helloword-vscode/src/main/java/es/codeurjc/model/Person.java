@@ -15,7 +15,7 @@ import jakarta.persistence.MappedSuperclass;
 
 
 
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @MappedSuperclass
 public abstract class Person {
     @Id
@@ -60,6 +60,8 @@ public abstract class Person {
         this.direction = direction;
         this.roles = List.of(roles);
     }
+
+    public abstract String getType();
 
     public Long getId() {
 		return id;
