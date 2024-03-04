@@ -88,7 +88,23 @@ public class PoolController {
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
         return "poolMessage";
     }
+    @GetMapping("/pool/editB")
+    public String editPoolsB(@RequestParam("id") int id, Model model,HttpServletRequest request) {
 
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
+        //Pool pool = DataBase.getPool(id);
+        Pool pool = poolService.findById(id).get();
+        model.addAttribute("pool", pool);
+        model.addAttribute("admin", request.isUserInRole("ADMIN"));
+        model.addAttribute("edit", true);
+        return "new_pool";
+    }
     @PostMapping("/pool/message/add")
     public String newMessage(@RequestParam("commentInput") String input, @RequestParam("id") int id, Model model, HttpServletRequest request) {
 
@@ -126,6 +142,7 @@ public class PoolController {
         Message msg = messageService.findById(id).get();
         Pool pool = msg.getPool();
         messageService.deleteById(id);
+        
         model.addAttribute("pool", pool);
         model.addAttribute("hasPhoto", pool.photoCheck);
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
@@ -167,7 +184,45 @@ public class PoolController {
         poolService.save(pool);
         return "index";
     } 
+    @PostMapping("/pool/edit")
+    public String editPool(HttpServletRequest request, HttpSession session, Model model,
+                    @RequestParam("id") int id,
+                    @RequestParam("name") String name,
+                    @RequestParam("dir") String dir,
+                    @RequestParam("description") String description,
+                    @RequestParam("aforo") String aforo,
+                    @RequestParam("start") LocalTime start,
+                    @RequestParam("close") LocalTime close,
+                    MultipartFile photoField) throws IOException {
 
+
+        //CHECK USER LOGED OR NOT
+        if (request.getUserPrincipal() != null){
+            model.addAttribute("loged", true);
+        }else{
+            model.addAttribute("loged", false);
+        }
+
+        Pool pool = poolService.findById(id).get();
+        pool.setPhoto("/images/default-image.jpg");
+        if (!photoField.isEmpty()) {
+            pool.setPhotoUser(BlobProxy.generateProxy(photoField.getInputStream(), photoField.getSize()));
+            pool.photoCheck=true;
+        }
+        if("".equals(aforo+"")) pool.setCapacity(20);
+        else pool.setCapacity(Integer.valueOf(aforo));
+        pool.setCompany("");
+        pool.setDescription(description);
+        pool.setDirection(dir);
+        pool.setStart(start);
+        pool.setEnd(close);
+        pool.setName(name);
+        poolService.save(pool);
+        model.addAttribute("hasPhoto", pool.photoCheck);
+        model.addAttribute("pool", pool);
+        model.addAttribute("admin", request.isUserInRole("ADMIN"));
+        return "pool";
+    } 
     @GetMapping("/pool/form")
     public String newPool(Model model,HttpServletRequest request){
 
