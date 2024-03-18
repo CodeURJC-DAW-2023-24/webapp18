@@ -101,6 +101,28 @@ public class Pool{
     public Blob getPhotoUser() {
 		return photoA;
 	}
+
+    public void setName(String name){
+        this.name = name;
+    }
+    public void setDirection(String d){
+        this.direction = d;
+    }
+    public void setDescription(String d){
+        this.description = d;
+    }
+    public void setCapacity(int c){
+        this.capacity = c;
+    }
+    public void setStart(LocalTime l){
+        this.scheduleStart = l;
+    }
+    public void setEnd(LocalTime l){
+        this.scheduleEnd = l;
+    }
+    public void setCompany(String c){
+        this.company = c;
+    }
     // Method to update pool data
     public void update(Builder builder) {
         if (builder.name != null) {

@@ -60,6 +60,7 @@ public class SecurityConfiguration {
 					.requestMatchers("/maps").permitAll()
 					.requestMatchers("/offer").permitAll()
 					.requestMatchers("/pieChart").permitAll()
+					.requestMatchers("/pool/*/image").permitAll()
 
 					// PRIVATE PAGES
 					.anyRequest().authenticated()

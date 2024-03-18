@@ -52,13 +52,14 @@
                     </div>
                     <input type ="hidden" name="_csrf" value="{{token}}"/>
                 </form>
+                <a href="/pool/editB?id={{id}}" class="btn" role="button"><i class="btn btn-primary"></i> Editar</a>
                 {{/admin}}
                 <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
             </div>
         </div>
         <div class="container container-additional">
             <h3>Comentarios</h3>
-            {{#logged}}
+            {{#loged}}
             <div class="commentContainer newCommentContainer">
                 <form role="form" action='/pool/message/add' method="post">
                     <input type="text" id="commentInput" name="commentInput" placeholder="Escribe el comentario"/>
@@ -71,7 +72,7 @@
                     <input type ="hidden" name="_csrf" value="{{token}}"/>
                 </form>
             </div>
-            {{/logged}}
+            {{/loged}}
             <div id="messageContainer"></div>
             <div class="btn-cont">
                 <button class="btn" onclick="showMessages('{{id}}')" id="showButton">Ver comentarios</button>
