@@ -21,6 +21,8 @@ public class Message {
 
     String body;
 
+    boolean owner;
+
     public Message(){
     }
 
@@ -38,5 +40,14 @@ public class Message {
     }
     public Pool getPool(){
         return this.pool;
+    }
+    public void setOwner(boolean o){
+        owner = o;
+    }
+    public boolean getOwner(){
+        return owner;
+    }
+    public String getAuthor(){
+        return this.author;
     }
 }
