@@ -18,9 +18,10 @@ public class Offer {
 	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    
     @ManyToOne
     private Pool pool;
-
+    
     @ManyToOne
     private Employer employer;
     
