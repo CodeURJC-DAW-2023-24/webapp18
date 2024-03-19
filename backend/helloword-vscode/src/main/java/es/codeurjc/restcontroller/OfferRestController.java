@@ -36,19 +36,19 @@ public class OfferRestController {
     private UserService userService;
 
     @GetMapping("/api/offer/{id}")
-    public OfferDTO getOffer(@PathVariable int id){
+    public OfferDTO getOffer(@PathVariable int id){ 
         Optional<Offer> offer = offerService.findById(id);
         if (offer.isPresent()) return (new OfferDTO(offer.get()));
         else return null;
     }
 
     @DeleteMapping("/api/offer/{id}")
-    public String deleteOffer(@PathVariable int id){
+    public String deleteOffer(@PathVariable int id){ //Only for admin and owner
         offerService.deleteById(id);
         return "Se ha borrado correctamente";
     }
     @PutMapping("/api/offer/{id}")
-    public String editOffer(@PathVariable int id){
+    public String editOffer(@PathVariable int id){ //Only for admin and owner
         //GEORGE MANIN YOU HAVE TO IMPLEMENT THIS MF PETITION
         return "Se ha editado correctamente";
     }
@@ -89,8 +89,8 @@ public class OfferRestController {
         }
         return "Se ha quitado el socorrista de la oferta";
     }
-    @PutMapping("/api/offer/{id}/lifeguards")
-    public String putNewApply(@PathVariable int id) {
+    @PostMapping("/api/offer/{id}/lifeguards") //Only lifeguards not already applyed
+    public String NewApply(@PathVariable int id) {
         Lifeguard l = userService.findLifeguardByEmail(null).get(); //lo catcheas
         Optional<Offer> offer = offerService.findById(id);
         if (offer.isPresent()){
@@ -102,7 +102,7 @@ public class OfferRestController {
         
         return "Has aplicado correctamente";
     }
-    @PostMapping("/api/offer/{id}/lifeguards")
+    @PutMapping("/api/offer/{id}/lifeguards") //Only for admin and owner
     public String selectLifeguard(@RequestBody int id) {
         Lifeguard l = userService.findLifeguardByEmail(null).get(); //lo catcheas
         Optional<Offer> offer = offerService.findById(id);
