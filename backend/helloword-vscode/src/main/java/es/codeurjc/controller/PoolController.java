@@ -82,8 +82,15 @@ public class PoolController {
         Pool pool = poolService.findById(id).get();
         List<Message> messages = pool.getMessages();
         //Collection<Message> messagesBD = messageService.findAll();
-        for(Message message: messages){
-            message.setOwner(request.isUserInRole("ADMIN")|| message.getAuthor().equals(request.getUserPrincipal().getName()));
+        if (request.getUserPrincipal() != null){
+            for(Message message: messages){
+                message.setOwner(request.isUserInRole("ADMIN")|| message.getAuthor().equals(request.getUserPrincipal().getName()));
+            }
+    }
+        else{
+            for(Message message: messages){
+                message.setOwner(false);
+            }
         }
         model.addAttribute("messages", messages);
         model.addAttribute("poolId", id);
