@@ -10,67 +10,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import es.codeurjc.model.Employer;
 import es.codeurjc.model.Offer;
 import es.codeurjc.model.Pool;
+import es.codeurjc.repository.EmployerRepository;
 import es.codeurjc.repository.OfferRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class OfferService {
 
-    private OfferRepository offers;
-
     @Autowired
-    public OfferService(OfferRepository offers) {
-        this.offers = offers;
-    }
-
-    @PostConstruct
-    public void init() {
-        Collection<Pool> defaultPools = PoolService.findAll();
-
-        Offer[] defaultOffersData = {
-            new Offer.Builder()
-                .pool(defaultPools.iterator().next())
-                .salary("1100")
-                .start("01/03/2024")
-                .type("Jornada completa")
-                .description("Descripcion 1")
-                .build(),
-            new Offer.Builder()
-                .pool(defaultPools.iterator().next())
-                .salary("1500")
-                .start("Inicio 2")
-                .type("Fines de semana")
-                .description("Descripción 2")
-                .build(),
-            new Offer.Builder()
-                .pool(defaultPools.iterator().next())
-                .salary("1200")
-                .start("Inicio 3")
-                .type("Media jornada")
-                .description("Descripción 3")
-                .build(),
-            new Offer.Builder()
-                .pool(defaultPools.iterator().next())
-                .salary("2000")
-                .start("Inicio 4")
-                .type("Correturnos")
-                .description("Descripción 4")
-                .build(),
-            new Offer.Builder()
-                .pool(defaultPools.iterator().next())
-                .salary("1800")
-                .start("Inicio 5")
-                .type("Jornada completa")
-                .description("Descripción 5")
-                .build()
-        };
-
-        for (Offer offer : defaultOffersData) {
-            save(offer);
-        }
-    }
+    private OfferRepository offers;
+    
 
     public Collection<Offer> findAll() {
         return offers.findAll();

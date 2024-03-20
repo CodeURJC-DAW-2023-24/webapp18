@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.codeurjc.DTO.OfferDTO;
+import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Offer;
+import es.codeurjc.model.Pool;
 import es.codeurjc.service.OfferService;
 import es.codeurjc.service.PoolService;
 import es.codeurjc.service.UserService;
@@ -35,24 +37,24 @@ public class OfferRestController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/api/offer/{id}")
+    @GetMapping("/api/offers/{id}")
     public OfferDTO getOffer(@PathVariable int id){ 
         Optional<Offer> offer = offerService.findById(id);
         if (offer.isPresent()) return (new OfferDTO(offer.get()));
         else return null;
     }
 
-    @DeleteMapping("/api/offer/{id}")
+    @DeleteMapping("/api/offers/{id}")
     public String deleteOffer(@PathVariable int id){ //Only for admin and owner
         offerService.deleteById(id);
         return "Se ha borrado correctamente";
     }
-    @PutMapping("/api/offer/{id}")
+    @PutMapping("/api/offers/{id}")
     public String editOffer(@PathVariable int id){ //Only for admin and owner
         //GEORGE MANIN YOU HAVE TO IMPLEMENT THIS MF PETITION
         return "Se ha editado correctamente";
     }
-    @GetMapping("/api/offer/{id}/lifeguards")
+    @GetMapping("/api/offers/{id}/lifeguards")
     public HashMap<String, ArrayList<String>> getLifeguards(@PathVariable int id){
         Optional<Offer> offer = offerService.findById(id);
         if (offer.isPresent()){
@@ -74,7 +76,7 @@ public class OfferRestController {
         }
         else return null;
     }
-    @DeleteMapping("/api/offer/{id}/lifeguards") //Only for admin and owner
+    @DeleteMapping("/api/offers/{id}/lifeguards") //Only for admin and owner
     public String unSelectProposed(@PathVariable int id){
         Optional<Offer> offer = offerService.findById(id);
         if (offer.isPresent()){
@@ -89,7 +91,7 @@ public class OfferRestController {
         }
         return "Se ha quitado el socorrista de la oferta";
     }
-    @PostMapping("/api/offer/{id}/lifeguards") //Only lifeguards not already applyed
+    @PostMapping("/api/offers/{id}/lifeguards") //Only lifeguards not already applyed
     public String NewApply(@PathVariable int id) {
         Lifeguard l = userService.findLifeguardByEmail(null).get(); //lo catcheas
         Optional<Offer> offer = offerService.findById(id);
@@ -102,7 +104,7 @@ public class OfferRestController {
         
         return "Has aplicado correctamente";
     }
-    @PutMapping("/api/offer/{id}/lifeguards") //Only for admin and owner
+    @PutMapping("/api/offers/{id}/lifeguards") //Only for admin and owner
     public String selectLifeguard(@RequestBody int id) {
         Lifeguard l = userService.findLifeguardByEmail(null).get(); //lo catcheas
         Optional<Offer> offer = offerService.findById(id);
@@ -116,5 +118,31 @@ public class OfferRestController {
         
         return "Selecteado correctamente";
     }
+    @PostMapping("/api/offers")
+    public String postMethodName(@RequestBody OfferDTO offerDTO) {
+        Offer offer = offerFromDTO(offerDTO);
+        Pool pool = poolService.findById(offerDTO.getPoolID()).get();
+        Employer employer = userService.findEmployerByEmail("e1").get();
+        offer.addEmployer(employer);
+        employer.addOffer(offer);
+        offerService.save(offer);
+        userService.saveEmployer(employer);
+        pool.addOffer(offer);
+        poolService.save(pool);
+        return "hola";
+    }
+    
+
+public Offer offerFromDTO(OfferDTO o){
+    Pool pool = poolService.findById(o.getPoolID()).get();
+    Offer offer = new Offer.Builder()
+    .pool(pool)
+    .salary(o.getSalary())
+    .start(o.getStart())
+    .type(o.getType())
+    .description(o.getDescription())
+    .build();
+    return offer;
+}
     
 }
