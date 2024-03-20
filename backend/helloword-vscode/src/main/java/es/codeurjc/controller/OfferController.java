@@ -33,6 +33,7 @@ public class OfferController {
 
     @Autowired
     private UserService userService;
+    
 
     // -------------------------------------- MAIN --------------------------------------
     @GetMapping("/")
@@ -72,7 +73,7 @@ public class OfferController {
         model.addAttribute("lifeguard", request.isUserInRole("LIFE") && !offer.isOffered(request.getUserPrincipal().getName()) && ! request.getUserPrincipal().getName().equals("admin"));
         model.addAttribute("employer", request.isUserInRole("EMP"));
         boolean flag = false;
-        if(offer.getEmployer()!=null) flag = offer.getEmployer().getMail().equals(request.getUserPrincipal().getName());
+        if(offer.getEmployer()!=null && request.getUserPrincipal()!=null) flag = offer.getEmployer().getMail().equals(request.getUserPrincipal().getName());
         model.addAttribute("canEdit", request.isUserInRole("ADMIN")||flag);
         return "offer";
     }
@@ -82,7 +83,7 @@ public class OfferController {
         //CHECK USER LOGED OR NOT
         model.addAttribute("loged", request.getUserPrincipal() != null);
 
-        Collection<Pool> pools = PoolService.findAll();
+        Collection<Pool> pools = poolService.findAll();
         model.addAttribute("pools", pools);
         return "new_offer";
     }
@@ -107,6 +108,8 @@ public class OfferController {
         employer.addOffer(offer);
         offerService.save(offer);
         userService.saveEmployer(employer);
+        pool.addOffer(offer);
+        poolService.save(pool);
 
         return "redirect:/offer/added";
     }

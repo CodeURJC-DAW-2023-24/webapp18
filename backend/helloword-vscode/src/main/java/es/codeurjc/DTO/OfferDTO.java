@@ -15,8 +15,9 @@ public class OfferDTO {
 
     private Long id;
     private String poolName;
+    private long poolID;
     //private String poolPic;
-    //private String employer;
+    private String employer;
     private String salary;
     private String start;
     private String type;
@@ -26,10 +27,11 @@ public class OfferDTO {
         this.description = offer.getDescription();
         this.type = offer.getType();
         this.id = offer.getId();
-   //     this.employer = offer.getEmployer().getMail(); when george includes employer in offers
+        this.employer = offer.getEmployer().getMail();
         this.poolName = offer.getPool().getName();
         this.salary = offer.getSalary();
         this.start = offer.getStart();
+        this.poolID = offer.getPool().getId();
        // this.poolPic = offer.getPool().getPhotoUser(); ill end this when the rest is done
 
     } 
@@ -59,5 +61,16 @@ public class OfferDTO {
     public String getDescription() {
         return description;
     }
-
+    public long getPoolID() {
+        return poolID;
+    }
+    public void setPoolID(long poolID) {
+        this.poolID = poolID;
+    }
+    public void setEmployer(String e){
+        this.employer = e;
+    }
+    public String getEmployer(){
+        return this.employer;
+    }
 }
