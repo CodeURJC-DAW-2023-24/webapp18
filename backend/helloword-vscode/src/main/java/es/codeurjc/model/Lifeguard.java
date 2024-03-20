@@ -145,4 +145,12 @@ public class Lifeguard extends Person{
 	public void setofferAssigned(boolean offerAssigned){
 		this.offerAssigned = offerAssigned;
 	}
+
+    public List<Offer> getOffersAccepted() {
+        return this.offers_accepted;
+    }
+
+    public List<Offer> getOffers() {
+        return this.offers;
+    }
 }
