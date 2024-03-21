@@ -45,10 +45,10 @@ public class OfferRestController {
     private UserService userService;
 
     @GetMapping("/api/offers/{id}")
-    public OfferDTO getOffer(@PathVariable int id){ 
+    public ResponseEntity<OfferDTO> getOffer(@PathVariable int id){ 
         Optional<Offer> offer = offerService.findById(id);
-        if (offer.isPresent()) return (new OfferDTO(offer.get()));
-        else return null;
+        if (offer.isPresent()) return ResponseEntity.status(HttpStatus.OK).body(new OfferDTO(offer.get()));
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @DeleteMapping("/api/offers/{id}")
@@ -222,6 +222,7 @@ public class OfferRestController {
             Optional<Employer> eOP = userService.findEmployerByEmail(principal.getName());
             if(eOP.isPresent()){
                 Employer e = eOP.get();
+                if(isValid(offerDTO)){
                 Pool pool = poolService.findById(offerDTO.getPoolID()).get();
                 Offer offer = offerFromDTO(offerDTO);
                 offer.addEmployer(e);
@@ -236,6 +237,12 @@ public class OfferRestController {
                 .toUri();
                 OfferDTO returnOfferDTO = new  OfferDTO(offer);
                 return ResponseEntity.created(location).body(returnOfferDTO);
+                }
+                else{
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.add("Error-Message", "Los datos no son válidos");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
+                 }
             }
             else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -287,5 +294,10 @@ public HashMap<String, ArrayList<String>> buildMap(Offer offer){
                         }
                         mapa.put("Propuestos", l2);
     return mapa;
+}
+
+public boolean isValid(OfferDTO offerDTO){
+    if(Integer.valueOf(offerDTO.getSalary())<1300) return false;
+    return true;
 }
 }
