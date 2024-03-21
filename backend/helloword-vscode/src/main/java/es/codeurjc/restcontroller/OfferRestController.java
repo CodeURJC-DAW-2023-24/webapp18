@@ -129,7 +129,7 @@ public class OfferRestController {
                         else{
                             HttpHeaders headers = new HttpHeaders();
                             headers.add("Error-Message", "No hay ningun socorrista seleccionado");
-                            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).headers(headers).build(); 
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build(); 
                         }
                             
 
@@ -166,7 +166,7 @@ public class OfferRestController {
                     else{
                         HttpHeaders headers = new HttpHeaders();
                         headers.add("Error-Message", "Ya has aplicado");
-                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).headers(headers).build();                        
+                        return ResponseEntity.status(HttpStatus.CONFLICT).headers(headers).build();                        
                     }
                     
                 
@@ -201,7 +201,7 @@ public class OfferRestController {
                         else{
                             HttpHeaders headers = new HttpHeaders();
                             headers.add("Error-Message", "Selecciona un socorrista valido");
-                            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).headers(headers).build();
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
                         }
                     }
                     else{
