@@ -65,7 +65,7 @@ public class Lifeguard extends Person{
         return skills;
     }
 
-    public void setSkills(ArrayList<String> skills) {
+    public void setSkills(List<String> skills) {
         this.skills = skills;
     }
 

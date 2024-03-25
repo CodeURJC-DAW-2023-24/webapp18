@@ -1,5 +1,6 @@
 package es.codeurjc.DTO;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.List;
 
 import es.codeurjc.model.Lifeguard;
@@ -57,6 +58,32 @@ public class LifeguardDTO{
         this.offers_accepted = lifeguard.getOffersAccepted();
         this.offers = lifeguard.getOffers();
         this.offerAssigned = lifeguard.getofferAssigned();
+    }
+
+    public Lifeguard toLifeguard() {
+        Lifeguard lifeguard = new Lifeguard();
+        lifeguard.setName(this.name);
+        lifeguard.setSurname(this.surname);
+        lifeguard.setDescription(this.description);
+        lifeguard.setDni(this.dni);
+        lifeguard.setMail(this.mail);
+        lifeguard.setAge(this.age);
+        lifeguard.setPass(this.pass);
+        lifeguard.setPhone(this.phone);
+        lifeguard.setCountry(this.country);
+        lifeguard.setLocality(this.locality);
+        lifeguard.setProvince(this.province);
+        lifeguard.setDirection(this.direction);
+        lifeguard.setPhotoUser(this.photo);
+        lifeguard.setImageUser(this.imageUser);
+        lifeguard.setDocument(this.document);
+        lifeguard.setSkills(this.skills);
+        // No se puede asignar las listas de pools, offers_accepted y offers directamente porque estas necesitan ser inicializadas correctamente.
+        // lifeguard.setPools(this.pools);
+        // lifeguard.setOffers_accepted(this.offers_accepted);
+        // lifeguard.setOffers(this.offers);
+        lifeguard.setofferAssigned(this.offerAssigned);
+        return lifeguard;
     }
 
      // Getters

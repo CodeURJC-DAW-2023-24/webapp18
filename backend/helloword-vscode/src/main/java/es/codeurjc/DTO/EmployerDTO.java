@@ -50,6 +50,26 @@ public class EmployerDTO {
 
     }
 
+    public Employer toEmployer() {
+        Employer employer = new Employer();
+        employer.setName(this.name);
+        employer.setSurname(this.surname);
+        employer.setDescription(this.description);
+        employer.setDni(this.dni);
+        employer.setMail(this.mail);
+        employer.setAge(this.age);
+        employer.setPass(this.pass);
+        employer.setPhone(this.phone);
+        employer.setCountry(this.country);
+        employer.setLocality(this.locality);
+        employer.setProvince(this.province);
+        employer.setDirection(this.direction);
+        employer.setPhotoCompany(this.photo);
+        employer.setImageCompany(this.imageCompany);
+        employer.setCompany(this.company);
+        return employer;
+    }
+
      // Getters
     public Long getId() {
         return id;

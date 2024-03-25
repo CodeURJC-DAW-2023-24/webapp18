@@ -114,62 +114,75 @@ public class UserRestController {
 
     @PostMapping("/api/lifeguard")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Lifeguard createLifeguard(@RequestBody Lifeguard lifeguard, HttpServletRequest request) {
-
-		lifeguardService.save(lifeguard);
-
-		return lifeguard;
+	public ResponseEntity<Lifeguard> createLifeguard(@RequestBody LifeguardDTO lifeguardDTO) {
+		String messageForm = userService.checkForm(lifeguardDTO.getMail(), lifeguardDTO.getAge(),lifeguardDTO.getPhone());
+		if (messageForm.equals("")) {
+			Lifeguard lifeguard = lifeguardDTO.toLifeguard();
+			lifeguard.setPass(passwordEncoder.encode(lifeguard.getPass()));
+			lifeguard.setRoles("USER", "LIFE");
+			lifeguardService.save(lifeguard);
+			return new ResponseEntity<>(lifeguard, HttpStatus.OK);
+		}else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	
 	}
 
     @PostMapping("/api/employer")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Employer createEmployer(@RequestBody Employer employer, HttpServletRequest request) {
-		employer.setPass(passwordEncoder.encode(request.getParameter("pass")));
-        employer.setRoles("USER", "EMP");
-		employerService.save(employer);
-
-		return employer;
+	public ResponseEntity<Employer> createEmployer(@RequestBody EmployerDTO employerDTO) {
+		String messageForm = userService.checkForm(employerDTO.getMail(), employerDTO.getAge(),employerDTO.getPhone());
+		if (messageForm.equals("")) {
+			Employer employer = employerDTO.toEmployer();
+			employer.setPass(passwordEncoder.encode(employer.getPass()));
+        	employer.setRoles("USER", "EMP");
+			employerService.save(employer);
+			return new ResponseEntity<>(employer, HttpStatus.OK);
+		}else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
     @PutMapping("/api/lifeguard/{id}")
-	public ResponseEntity<Lifeguard> updateLifeguard(@PathVariable long id, @RequestBody Lifeguard updatedLifeguard) throws SQLException {
-
+	public ResponseEntity<Lifeguard> updateLifeguard(@PathVariable long id, @RequestBody LifeguardDTO lifeguardDTO) throws SQLException {
 		if (lifeguardService.existsById(id)) {
-
-			if (updatedLifeguard.getImageUser()) {
+	
+			/*if (updatedLifeguard.getImageUser()) {
 				Lifeguard dbLifeguard = lifeguardService.findById(id).orElseThrow();
 				if (dbLifeguard.getImageUser()) {
 					updatedLifeguard.setPhotoUser(BlobProxy.generateProxy(dbLifeguard.getPhotoUser().getBinaryStream(),
 							dbLifeguard.getPhotoUser().length()));
 				}
-			}
+			}*/
+			String messageForm = userService.checkForm(lifeguardDTO.getMail(), lifeguardDTO.getAge(),lifeguardDTO.getPhone());
+			Lifeguard lifeguard = lifeguardService.findById(id).get();
+			if (messageForm.equals("") || (messageForm.equals("Correo ya en uso por otro socorrista. ") && lifeguardDTO.getMail().equals(lifeguard.getMail()))) {
+				updateLifeguardDTO(lifeguardDTO, lifeguard);
+				return new ResponseEntity<>(lifeguard, HttpStatus.OK);
 
-			updatedLifeguard.setId(id);
-			lifeguardService.save(updatedLifeguard);
+			}return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-			return new ResponseEntity<>(updatedLifeguard, HttpStatus.OK);
 		} else	{
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
     @PutMapping("/api/employer/{id}")
-	public ResponseEntity<Employer> updateEmployer(@PathVariable long id, @RequestBody Employer updatedEmployer) throws SQLException {
+	public ResponseEntity<Employer> updateEmployer(@PathVariable long id, @RequestBody EmployerDTO employerDTO) throws SQLException {
 
 		if (employerService.existsById(id)) {
 
-			if (updatedEmployer.getImageCompany()) {
+			/**if (updatedEmployer.getImageCompany()) {
 				Employer dbEmployer = employerService.findById(id).orElseThrow();
 				if (dbEmployer.getImageCompany()) {
 					updatedEmployer.setPhotoCompany(BlobProxy.generateProxy(dbEmployer.getPhotoCompany().getBinaryStream(),
 							dbEmployer.getPhotoCompany().length()));
 				}
-			}
+			}*/
+			String messageForm = userService.checkForm(employerDTO.getMail(), employerDTO.getAge(),employerDTO.getPhone());
+			Employer employer = employerService.findById(id).get();
+			if (messageForm.equals("") || (messageForm.equals("Correo ya en uso por otro empleado. ") && employerDTO.getMail().equals(employer.getMail()))) {
+				updateEmployerDTO(employerDTO, employer);
+				return new ResponseEntity<>(employer, HttpStatus.OK);
 
-			updatedEmployer.setId(id);
-			employerService.save(updatedEmployer);
+			}return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-			return new ResponseEntity<>(updatedEmployer, HttpStatus.OK);
 		} else	{
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -263,6 +276,40 @@ public class UserRestController {
 		lifeguardService.save(lifeguard);
 
 		return ResponseEntity.noContent().build();
+	}
+
+	public void updateLifeguardDTO(LifeguardDTO lifeguardDTO, Lifeguard lifeguard){
+		if (lifeguardDTO.getName()!=null) lifeguard.setName(lifeguardDTO.getName());
+		if (lifeguardDTO.getSurname()!=null) lifeguard.setSurname(lifeguardDTO.getSurname());
+		if (lifeguardDTO.getDescription()!=null) lifeguard.setDescription(lifeguardDTO.getDescription());
+		if (lifeguardDTO.getDni()!=null) lifeguard.setDni(lifeguardDTO.getDni());
+		if (lifeguardDTO.getMail()!=null) lifeguard.setMail(lifeguardDTO.getMail());
+		if (lifeguardDTO.getAge()!=null) lifeguard.setAge(lifeguardDTO.getAge());
+		if (lifeguardDTO.getPass()!=null) lifeguard.setPass(passwordEncoder.encode(lifeguardDTO.getPass()));
+		if (lifeguardDTO.getPhone()!=null) lifeguard.setPhone(lifeguardDTO.getPhone());
+		if (lifeguardDTO.getCountry()!=null) lifeguard.setCountry(lifeguardDTO.getCountry());
+		if (lifeguardDTO.getLocality()!=null) lifeguard.setLocality(lifeguardDTO.getLocality());
+		if (lifeguardDTO.getProvince()!=null) lifeguard.setProvince(lifeguardDTO.getProvince());
+		//if (lifeguardDTO.getPhoto()!=null) lifeguard.setPhotoUser(lifeguardDTO.getPhoto());
+		if (lifeguardDTO.getDocument()!=null) lifeguard.setDocument(lifeguardDTO.getDocument());
+		lifeguardService.save(lifeguard);
+	}
+
+	public void updateEmployerDTO(EmployerDTO employerDTO, Employer employer){
+		if (employerDTO.getName()!=null) employer.setName(employerDTO.getName());
+		if (employerDTO.getSurname()!=null) employer.setSurname(employerDTO.getSurname());
+		if (employerDTO.getDescription()!=null) employer.setDescription(employerDTO.getDescription());
+		if (employerDTO.getDni()!=null) employer.setDni(employerDTO.getDni());
+		if (employerDTO.getMail()!=null) employer.setMail(employerDTO.getMail());
+		if (employerDTO.getAge()!=null) employer.setAge(employerDTO.getAge());
+		if (employerDTO.getPass()!=null) employer.setPass(passwordEncoder.encode(employerDTO.getPass()));
+		if (employerDTO.getPhone()!=null) employer.setPhone(employerDTO.getPhone());
+		if (employerDTO.getCountry()!=null) employer.setCountry(employerDTO.getCountry());
+		if (employerDTO.getLocality()!=null) employer.setLocality(employerDTO.getLocality());
+		if (employerDTO.getProvince()!=null) employer.setProvince(employerDTO.getProvince());
+		//if (employerDTO.getPhotoCompany()!=null) employer.setPhotoCompany(employerDTO.getPhotoCompany());
+		if (employerDTO.getCompany()!=null) employer.setCompany(employerDTO.getCompany());
+		employerService.save(employer);
 	}
 
 }
