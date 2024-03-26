@@ -44,7 +44,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
-
 @RestController
 public class UserRestController {
 
@@ -97,15 +96,19 @@ public class UserRestController {
     }
 
     @DeleteMapping("/api/lifeguard/{id}")
-    public String deleteLifeguard(@PathVariable long id){ //Only for admin and owner
-        lifeguardService.deleteById(id);
-        return "Se ha borrado correctamente";
+    public ResponseEntity<?> deleteLifeguard(@PathVariable long id, Principal principal){ //Only for admin and owner
+        if(principal !=null){
+			lifeguardService.deleteById(id);
+			return ResponseEntity.status(HttpStatus.OK).build();
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @DeleteMapping("/api/employer/{id}")
-    public String deleteEmployer(@PathVariable long id){ //Only for admin and owner
-        employerService.deleteById(id);
-        return "Se ha borrado correctamente";
+    public ResponseEntity<?> deleteEmployer(@PathVariable long id, Principal principal){ //Only for admin and owner
+        if(principal !=null){
+			employerService.deleteById(id);
+			return ResponseEntity.status(HttpStatus.OK).build();
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @PostMapping("/api/lifeguard")
@@ -136,67 +139,72 @@ public class UserRestController {
 	}
 
     @PutMapping("/api/lifeguard/{id}")
-	public ResponseEntity<Lifeguard> updateLifeguard(@PathVariable long id, @RequestBody LifeguardDTO lifeguardDTO) throws SQLException {
-		if (lifeguardService.existsById(id)) {
-	
-			/*if (updatedLifeguard.getImageUser()) {
-				Lifeguard dbLifeguard = lifeguardService.findById(id).orElseThrow();
-				if (dbLifeguard.getImageUser()) {
-					updatedLifeguard.setPhotoUser(BlobProxy.generateProxy(dbLifeguard.getPhotoUser().getBinaryStream(),
-							dbLifeguard.getPhotoUser().length()));
-				}
-			}*/
-			String messageForm = userService.checkForm(lifeguardDTO.getMail(), lifeguardDTO.getAge(),lifeguardDTO.getPhone());
-			Lifeguard lifeguard = lifeguardService.findById(id).get();
-			if (messageForm.equals("") || (messageForm.equals("Correo ya en uso por otro socorrista. ") && lifeguardDTO.getMail().equals(lifeguard.getMail()))) {
-				updateLifeguardDTO(lifeguardDTO, lifeguard);
-				return new ResponseEntity<>(lifeguard, HttpStatus.OK);
+	public ResponseEntity<Lifeguard> updateLifeguard(@PathVariable long id, @RequestBody LifeguardDTO lifeguardDTO, Principal principal) throws SQLException {
+		if(principal !=null){
+			if (lifeguardService.existsById(id)) {
+				String messageForm = userService.checkForm(lifeguardDTO.getMail(), lifeguardDTO.getAge(),lifeguardDTO.getPhone());
+				Lifeguard lifeguard = lifeguardService.findById(id).get();
+				if (messageForm.equals("") || (messageForm.equals("Correo ya en uso por otro socorrista. ") && lifeguardDTO.getMail().equals(lifeguard.getMail()))) {
+					updateLifeguardDTO(lifeguardDTO, lifeguard);
+					return new ResponseEntity<>(lifeguard, HttpStatus.OK);
 
-			}return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				}return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-		} else	{
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+			} else	{
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
     @PutMapping("/api/employer/{id}")
-	public ResponseEntity<Employer> updateEmployer(@PathVariable long id, @RequestBody EmployerDTO employerDTO) throws SQLException {
+	public ResponseEntity<Employer> updateEmployer(@PathVariable long id, @RequestBody EmployerDTO employerDTO, Principal principal) throws SQLException {
+		if(principal !=null){
+			if (employerService.existsById(id)) {
 
-		if (employerService.existsById(id)) {
+				String messageForm = userService.checkForm(employerDTO.getMail(), employerDTO.getAge(),employerDTO.getPhone());
+				Employer employer = employerService.findById(id).get();
+				if (messageForm.equals("") || (messageForm.equals("Correo ya en uso por otro empleado. ") && employerDTO.getMail().equals(employer.getMail()))) {
+					updateEmployerDTO(employerDTO, employer);
+					return new ResponseEntity<>(employer, HttpStatus.OK);
 
-			/**if (updatedEmployer.getImageCompany()) {
-				Employer dbEmployer = employerService.findById(id).orElseThrow();
-				if (dbEmployer.getImageCompany()) {
-					updatedEmployer.setPhotoCompany(BlobProxy.generateProxy(dbEmployer.getPhotoCompany().getBinaryStream(),
-							dbEmployer.getPhotoCompany().length()));
-				}
-			}*/
-			String messageForm = userService.checkForm(employerDTO.getMail(), employerDTO.getAge(),employerDTO.getPhone());
-			Employer employer = employerService.findById(id).get();
-			if (messageForm.equals("") || (messageForm.equals("Correo ya en uso por otro empleado. ") && employerDTO.getMail().equals(employer.getMail()))) {
-				updateEmployerDTO(employerDTO, employer);
-				return new ResponseEntity<>(employer, HttpStatus.OK);
+				}return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-			}return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-		} else	{
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+			} else	{
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
     @PostMapping("/api/employer/{id}/photoCompany")
-	public ResponseEntity<Object> uploadPhotoCompany(@PathVariable long id, @RequestParam MultipartFile imageFile)
+	public ResponseEntity<Object> uploadPhotoCompany(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal)
 			throws IOException {
+		if(principal !=null){
+			Employer employer = employerService.findById(id).orElseThrow();
 
-		Employer employer = employerService.findById(id).orElseThrow();
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+			employer.setImageCompany(true);
+			employer.setPhotoCompany(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+			employerService.save(employer);
 
-		employer.setImageCompany(true);
-		employer.setPhotoCompany(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
-		employerService.save(employer);
+			return ResponseEntity.created(location).build();
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	}
 
-		return ResponseEntity.created(location).build();
+	@PutMapping("/api/employer/{id}/photoCompany")
+	public ResponseEntity<Object> refreshPhotoCompany(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal)
+			throws IOException {
+		if(principal !=null){
+			Employer employer = employerService.findById(id).orElseThrow();
+
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+
+			employer.setImageCompany(true);
+			employer.setPhotoCompany(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+			employerService.save(employer);
+
+			return ResponseEntity.created(location).build();
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
 	@GetMapping("/api/employer/{id}/photoCompany")
@@ -206,7 +214,7 @@ public class UserRestController {
 
 		if (employer.getPhotoCompany() != null) {
 
-			Resource file = (Resource) new InputStreamResource(employer.getPhotoCompany().getBinaryStream());
+			org.springframework.core.io.Resource file = new InputStreamResource(employer.getPhotoCompany().getBinaryStream());
 
 			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
 					.contentLength(employer.getPhotoCompany().length()).body(file);
@@ -217,31 +225,49 @@ public class UserRestController {
 	}
 
 	@DeleteMapping("/api/employer/{id}/photoCompany")
-	public ResponseEntity<Object> deletePhotoCompany(@PathVariable long id) throws IOException {
+	public ResponseEntity<Object> deletePhotoCompany(@PathVariable long id, Principal principal) throws IOException {
+		if(principal !=null){
+			Employer employer = employerService.findById(id).orElseThrow();
 
-		Employer employer = employerService.findById(id).orElseThrow();
+			employer.setPhotoCompany(null);
+			employer.setImageCompany(false);
 
-		employer.setPhotoCompany(null);
-		employer.setImageCompany(false);
+			employerService.save(employer);
 
-		employerService.save(employer);
-
-		return ResponseEntity.noContent().build();
+			return ResponseEntity.noContent().build();
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
     @PostMapping("/api/lifeguard/{id}/photoUser")
-	public ResponseEntity<Object> uploadPhotoUser(@PathVariable long id, @RequestParam MultipartFile imageFile)
+	public ResponseEntity<Object> uploadPhotoUser(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal)
 			throws IOException {
+		if(principal !=null){
+			Lifeguard lifeguard = lifeguardService.findById(id).orElseThrow();
 
-		Lifeguard lifeguard = lifeguardService.findById(id).orElseThrow();
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+			lifeguard.setImageUser(true);
+			lifeguard.setPhotoUser(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+			lifeguardService.save(lifeguard);
 
-		lifeguard.setImageUser(true);
-		lifeguard.setPhotoUser(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
-		lifeguardService.save(lifeguard);
+			return ResponseEntity.created(location).build();
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	}
 
-		return ResponseEntity.created(location).build();
+	@PutMapping("/api/lifeguard/{id}/photoUser")
+	public ResponseEntity<Object> refreshPhotoUser(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal)
+			throws IOException {
+		if(principal !=null){
+			Lifeguard lifeguard = lifeguardService.findById(id).orElseThrow();
+
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+
+			lifeguard.setImageUser(true);
+			lifeguard.setPhotoUser(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+			lifeguardService.save(lifeguard);
+
+			return ResponseEntity.created(location).build();
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
 	@GetMapping("/api/lifeguard/{id}/photoUser")
@@ -251,7 +277,7 @@ public class UserRestController {
 
 		if (lifeguard.getPhotoUser() != null) {
 
-			Resource file = (Resource) new InputStreamResource(lifeguard.getPhotoUser().getBinaryStream());
+			org.springframework.core.io.Resource file = new InputStreamResource(lifeguard.getPhotoUser().getBinaryStream());
 
 			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
 					.contentLength(lifeguard.getPhotoUser().length()).body(file);
@@ -262,139 +288,152 @@ public class UserRestController {
 	}
 
 	@DeleteMapping("/api/lifeguard/{id}/photoUser")
-	public ResponseEntity<Object> deletePhotoUser(@PathVariable long id) throws IOException {
+	public ResponseEntity<Object> deletePhotoUser(@PathVariable long id, Principal principal) throws IOException {
+		if(principal !=null){
+			Lifeguard lifeguard = lifeguardService.findById(id).orElseThrow();
 
-		Lifeguard lifeguard = lifeguardService.findById(id).orElseThrow();
+			lifeguard.setPhotoUser(null);
+			lifeguard.setImageUser(false);
 
-		lifeguard.setPhotoUser(null);
-		lifeguard.setImageUser(false);
+			lifeguardService.save(lifeguard);
 
-		lifeguardService.save(lifeguard);
-
-		return ResponseEntity.noContent().build();
+			return ResponseEntity.noContent().build();
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
 	@GetMapping("/api/lifeguard/{id}/offers")
-	public ResponseEntity<List<OfferDTO>> getLifeguardOffers(@PathVariable long id){ 
-    	Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
-    	if (lifeguardOptional.isPresent()) {
-        	Lifeguard lifeguard = lifeguardOptional.get();
-        
-        	List<OfferDTO> offersDTO = lifeguard.getOffers().stream()
-            	.map(OfferDTO::new)
-            	.collect(Collectors.toList());
-        
-        	return ResponseEntity.status(HttpStatus.OK).body(offersDTO);
-    	} else {
-        	return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    	}
+	public ResponseEntity<List<OfferDTO>> getLifeguardOffers(@PathVariable long id, Principal principal){ 
+    	if(principal !=null){
+			Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
+			if (lifeguardOptional.isPresent()) {
+				Lifeguard lifeguard = lifeguardOptional.get();
+			
+				List<OfferDTO> offersDTO = lifeguard.getOffers().stream()
+					.map(OfferDTO::new)
+					.collect(Collectors.toList());
+			
+				return ResponseEntity.status(HttpStatus.OK).body(offersDTO);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
 	@GetMapping("/api/lifeguard/{id}/offersAccepted")
-	public ResponseEntity<List<OfferDTO>> getLifeguardOffersAccepted(@PathVariable long id){ 
-    	Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
-    	if (lifeguardOptional.isPresent()) {
-        	Lifeguard lifeguard = lifeguardOptional.get();
-        
-        	List<OfferDTO> offersAcceptedDTO = lifeguard.getOffersAccepted().stream()
-            	.map(OfferDTO::new)
-            	.collect(Collectors.toList());
-        
-        	return ResponseEntity.status(HttpStatus.OK).body(offersAcceptedDTO);
-    	} else {
-        	return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    	}
+	public ResponseEntity<List<OfferDTO>> getLifeguardOffersAccepted(@PathVariable long id, Principal principal){ 
+    	if(principal !=null){
+			Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
+			if (lifeguardOptional.isPresent()) {
+				Lifeguard lifeguard = lifeguardOptional.get();
+			
+				List<OfferDTO> offersAcceptedDTO = lifeguard.getOffersAccepted().stream()
+					.map(OfferDTO::new)
+					.collect(Collectors.toList());
+			
+				return ResponseEntity.status(HttpStatus.OK).body(offersAcceptedDTO);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
 	@DeleteMapping("/api/lifeguard/{id}/offers/{offerId}")
-	public ResponseEntity<Void> deleteOfferFromLifeguard(@PathVariable long id, @PathVariable long offerId) {
-		Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
-		if (lifeguardOptional.isPresent()) {
-			Lifeguard lifeguard = lifeguardOptional.get();
-			Offer offerToRemove = null;
-			for (Offer offer : lifeguard.getOffers()) {
-				if (offer.getId() == offerId) {
-					offerToRemove = offer;
-					break;
+	public ResponseEntity<Void> deleteOfferFromLifeguard(@PathVariable long id, @PathVariable long offerId, Principal principal) {
+		if(principal !=null){
+			Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
+			if (lifeguardOptional.isPresent()) {
+				Lifeguard lifeguard = lifeguardOptional.get();
+				Offer offerToRemove = null;
+				for (Offer offer : lifeguard.getOffers()) {
+					if (offer.getId() == offerId) {
+						offerToRemove = offer;
+						break;
+					}
 				}
-			}
-			if (offerToRemove != null) {
-				lifeguard.getOffers().remove(offerToRemove);
-				lifeguardService.save(lifeguard);
-				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+				if (offerToRemove != null) {
+					lifeguard.getOffers().remove(offerToRemove);
+					lifeguardService.save(lifeguard);
+					return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+				} else {
+					return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+				}
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 			}
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
 	@DeleteMapping("/api/lifeguard/{id}/offersAccepted/{offerId}")
-	public ResponseEntity<Void> deleteOfferAcceptedFromLifeguard(@PathVariable long id, @PathVariable long offerId) {
-		Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
-		if (lifeguardOptional.isPresent()) {
-			Lifeguard lifeguard = lifeguardOptional.get();
-			Offer offerAcceptedToRemove = null;
-			for (Offer offerAccepted : lifeguard.getOffersAccepted()) {
-				if (offerAccepted.getId() == offerId) {
-					offerAcceptedToRemove = offerAccepted;
-					break;
+	public ResponseEntity<Void> deleteOfferAcceptedFromLifeguard(@PathVariable long id, @PathVariable long offerId, Principal principal) {
+		if(principal !=null){
+			Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
+			if (lifeguardOptional.isPresent()) {
+				Lifeguard lifeguard = lifeguardOptional.get();
+				Offer offerAcceptedToRemove = null;
+				for (Offer offerAccepted : lifeguard.getOffersAccepted()) {
+					if (offerAccepted.getId() == offerId) {
+						offerAcceptedToRemove = offerAccepted;
+						break;
+					}
 				}
-			}
-			if (offerAcceptedToRemove != null) {
-				lifeguard.getOffersAccepted().remove(offerAcceptedToRemove);
-				lifeguardService.save(lifeguard);
-				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+				if (offerAcceptedToRemove != null) {
+					lifeguard.getOffersAccepted().remove(offerAcceptedToRemove);
+					lifeguardService.save(lifeguard);
+					return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+				} else {
+					return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+				}
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 			}
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
 	@GetMapping("/api/employer/{id}/offers")
-	public ResponseEntity<List<OfferDTO>> getEmployerOffers(@PathVariable long id){ 
-    	Optional<Employer> employerOptional = employerService.findById(id);
-    	if (employerOptional.isPresent()) {
-        	Employer employer = employerOptional.get();
-        
-        	List<OfferDTO> offersDTO = employer.getOffers().stream()
-            	.map(OfferDTO::new)
-            	.collect(Collectors.toList());
-        
-        	return ResponseEntity.status(HttpStatus.OK).body(offersDTO);
-    	} else {
-        	return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    	}
-	}
-
-	@DeleteMapping("/api/employer/{id}/offers/{offerId}")
-	public ResponseEntity<Void> deleteOfferFromEmployer(@PathVariable long id, @PathVariable long offerId) {
-		Optional<Employer> employerOptional = employerService.findById(id);
-		if (employerOptional.isPresent()) {
-			Employer employer = employerOptional.get();
-			Offer offerToRemove = null;
-			for (Offer offer : employer.getOffers()) {
-				if (offer.getId() == offerId) {
-					offerToRemove = offer;
-					break;
-				}
-			}
-			if (offerToRemove != null) {
-				employer.getOffers().remove(offerToRemove);
-				employerService.save(employer);
-				
-				offerService.deleteById(offerToRemove.getId());
-				
-				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	public ResponseEntity<List<OfferDTO>> getEmployerOffers(@PathVariable long id, Principal principal){ 
+    	if(principal !=null){
+			Optional<Employer> employerOptional = employerService.findById(id);
+			if (employerOptional.isPresent()) {
+				Employer employer = employerOptional.get();
+			
+				List<OfferDTO> offersDTO = employer.getOffers().stream()
+					.map(OfferDTO::new)
+					.collect(Collectors.toList());
+			
+				return ResponseEntity.status(HttpStatus.OK).body(offersDTO);
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 			}
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	}
+
+	@DeleteMapping("/api/employer/{id}/offers/{offerId}")
+	public ResponseEntity<Void> deleteOfferFromEmployer(@PathVariable long id, @PathVariable long offerId, Principal principal) {
+		if(principal !=null){
+			Optional<Employer> employerOptional = employerService.findById(id);
+			if (employerOptional.isPresent()) {
+				Employer employer = employerOptional.get();
+				Offer offerToRemove = null;
+				for (Offer offer : employer.getOffers()) {
+					if (offer.getId() == offerId) {
+						offerToRemove = offer;
+						break;
+					}
+				}
+				if (offerToRemove != null) {
+					employer.getOffers().remove(offerToRemove);
+					employerService.save(employer);
+					
+					offerService.deleteById(offerToRemove.getId());
+					
+					return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+				} else {
+					return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+				}
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
 	public void updateLifeguardDTO(LifeguardDTO lifeguardDTO, Lifeguard lifeguard){
@@ -409,7 +448,6 @@ public class UserRestController {
 		if (lifeguardDTO.getCountry()!=null) lifeguard.setCountry(lifeguardDTO.getCountry());
 		if (lifeguardDTO.getLocality()!=null) lifeguard.setLocality(lifeguardDTO.getLocality());
 		if (lifeguardDTO.getProvince()!=null) lifeguard.setProvince(lifeguardDTO.getProvince());
-		//if (lifeguardDTO.getPhoto()!=null) lifeguard.setPhotoUser(lifeguardDTO.getPhoto());
 		if (lifeguardDTO.getDocument()!=null) lifeguard.setDocument(lifeguardDTO.getDocument());
 		lifeguardService.save(lifeguard);
 	}
@@ -426,7 +464,6 @@ public class UserRestController {
 		if (employerDTO.getCountry()!=null) employer.setCountry(employerDTO.getCountry());
 		if (employerDTO.getLocality()!=null) employer.setLocality(employerDTO.getLocality());
 		if (employerDTO.getProvince()!=null) employer.setProvince(employerDTO.getProvince());
-		//if (employerDTO.getPhotoCompany()!=null) employer.setPhotoCompany(employerDTO.getPhotoCompany());
 		if (employerDTO.getCompany()!=null) employer.setCompany(employerDTO.getCompany());
 		employerService.save(employer);
 	}

@@ -23,14 +23,11 @@ public class LifeguardDTO{
     private String province;
     private String direction;
 
-    private Blob photo;
-	private boolean imageUser;
     private String document;
     private List<String> skills;
     private List<Pool> pools;
     private List<Offer> offers_accepted;
     private List<Offer> offers;
-    private Boolean offerAssigned;
 
     public LifeguardDTO(){
 
@@ -50,14 +47,11 @@ public class LifeguardDTO{
         this.locality = lifeguard.getLocality();
         this.province = lifeguard.getProvince();
         this.direction = lifeguard.getDirection();
-        this.photo = lifeguard.getPhotoUser();
-        this.imageUser = lifeguard.getImageUser();
         this.document = lifeguard.getDocument();
         this.skills = lifeguard.getSkills();
         this.pools = lifeguard.getPools();
         this.offers_accepted = lifeguard.getOffersAccepted();
         this.offers = lifeguard.getOffers();
-        this.offerAssigned = lifeguard.getofferAssigned();
     }
 
     public Lifeguard toLifeguard() {
@@ -74,15 +68,13 @@ public class LifeguardDTO{
         lifeguard.setLocality(this.locality);
         lifeguard.setProvince(this.province);
         lifeguard.setDirection(this.direction);
-        lifeguard.setPhotoUser(this.photo);
-        lifeguard.setImageUser(this.imageUser);
+
         lifeguard.setDocument(this.document);
         lifeguard.setSkills(this.skills);
         // No se puede asignar las listas de pools, offers_accepted y offers directamente porque estas necesitan ser inicializadas correctamente.
         // lifeguard.setPools(this.pools);
         // lifeguard.setOffers_accepted(this.offers_accepted);
         // lifeguard.setOffers(this.offers);
-        lifeguard.setofferAssigned(this.offerAssigned);
         return lifeguard;
     }
 
@@ -139,14 +131,6 @@ public class LifeguardDTO{
         return direction;
     }
 
-    public Blob getPhoto() {
-        return photo;
-    }
-
-    public boolean isImageUser() {
-        return imageUser;
-    }
-
     public String getDocument() {
         return document;
     }
@@ -167,7 +151,4 @@ public class LifeguardDTO{
         return offers;
     }
 
-    public Boolean isOfferAssigned() {
-        return offerAssigned;
-    }
 }

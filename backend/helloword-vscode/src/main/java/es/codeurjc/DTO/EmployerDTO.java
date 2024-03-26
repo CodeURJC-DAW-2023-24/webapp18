@@ -1,10 +1,7 @@
 package es.codeurjc.DTO;
 
-import java.sql.Blob;
-import java.util.List;
 
 import es.codeurjc.model.Employer;
-import es.codeurjc.model.Offer;
 
 public class EmployerDTO {
     private Long id;
@@ -21,8 +18,6 @@ public class EmployerDTO {
     private String province;
     private String direction;
 
-    private Blob photo;
-	private boolean imageCompany;
     private String company;
 
     public EmployerDTO(){
@@ -44,8 +39,6 @@ public class EmployerDTO {
         this.locality = employer.getLocality();
         this.province = employer.getProvince();
         this.direction = employer.getDirection();
-        this.photo = employer.getPhotoCompany();
-        this.imageCompany = employer.getImageCompany();
         this.company = employer.getCompany();
 
     }
@@ -64,8 +57,6 @@ public class EmployerDTO {
         employer.setLocality(this.locality);
         employer.setProvince(this.province);
         employer.setDirection(this.direction);
-        employer.setPhotoCompany(this.photo);
-        employer.setImageCompany(this.imageCompany);
         employer.setCompany(this.company);
         return employer;
     }
@@ -121,14 +112,6 @@ public class EmployerDTO {
     
     public String getDirection() {
         return direction;
-    }
-
-    public Blob getPhoto() {
-        return photo;
-    }
-
-    public boolean isImageCompany() {
-        return imageCompany;
     }
 
     public String getCompany() {
