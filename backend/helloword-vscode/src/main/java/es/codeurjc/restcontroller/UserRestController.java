@@ -34,10 +34,15 @@ import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Offer;
 import es.codeurjc.repository.EmployerRepository;
 import es.codeurjc.repository.LifeguardRepository;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import es.codeurjc.service.OfferService;
 import es.codeurjc.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -62,7 +67,25 @@ public class UserRestController {
 	@Autowired
     private PasswordEncoder passwordEncoder;
 
-
+	@Operation(summary = "Get your own profille")
+	@ApiResponses(value = {
+	@ApiResponse(
+	responseCode = "200",
+	description = "Found yourself",
+	content = @Content
+	),
+	@ApiResponse(
+	responseCode = "400",
+	description = "You are not logged in",
+	content = @Content
+	),
+	@ApiResponse(
+	responseCode = "404",
+	description = "User not found",
+	content = @Content
+	)
+	})
+	
     @GetMapping("/api/me")
 	public ResponseEntity<Object> me(HttpServletRequest request) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -78,40 +101,130 @@ public class UserRestController {
 				return ResponseEntity.status(HttpStatus.OK).body(new LifeguardDTO(lifeguard.get()));
 			}else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-		}else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}else return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
-
-    @GetMapping("/api/lifeguard/{id}")
+	
+	@Operation(summary = "Get a lifeguard by its id")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Found the lifeguard",
+	 content = {@Content(
+	 mediaType = "application/json",
+	 schema = @Schema(implementation=LifeguardDTO.class)
+	 )}
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Lifeguard not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
+    @GetMapping("/api/lifeguards/{id}")
     public ResponseEntity<LifeguardDTO> getLifeguard(@PathVariable long id){ 
         Optional<Lifeguard> lifeguard = lifeguardService.findById(id);
         if (lifeguard.isPresent()) return ResponseEntity.status(HttpStatus.OK).body(new LifeguardDTO(lifeguard.get()));
         else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @GetMapping("/api/employer/{id}")
+	@Operation(summary = "Get an employer by its id")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Found the employer",
+	 content = {@Content(
+	 mediaType = "application/json",
+	 schema = @Schema(implementation=EmployerDTO.class)
+	 )}
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Employer not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
+    @GetMapping("/api/employers/{id}")
     public ResponseEntity<EmployerDTO> getEmployer(@PathVariable long id){ 
         Optional<Employer> employer = employerService.findById(id);
         if (employer.isPresent()) return ResponseEntity.status(HttpStatus.OK).body(new EmployerDTO(employer.get()));
         else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @DeleteMapping("/api/lifeguard/{id}")
+	@Operation(summary = "Delete a lifeguard by its id. You need to be an administrator or the own employer.")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Lifeguard deleted",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Lifeguard not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
+    @DeleteMapping("/api/lifeguards/{id}")
     public ResponseEntity<?> deleteLifeguard(@PathVariable long id, Principal principal){ //Only for admin and owner
         if(principal !=null){
-			lifeguardService.deleteById(id);
-			return ResponseEntity.status(HttpStatus.OK).build();
+			Optional<Lifeguard> lifeguard = lifeguardService.findById(id);
+			if (lifeguard.isPresent()){
+				lifeguardService.deleteById(id);
+				return ResponseEntity.status(HttpStatus.OK).build();
+			}else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @DeleteMapping("/api/employer/{id}")
+	@Operation(summary = "Delete an employer by its id. You need to be an administrator or the own employer.")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Employer deleted",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Employer not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
+    @DeleteMapping("/api/employers/{id}")
     public ResponseEntity<?> deleteEmployer(@PathVariable long id, Principal principal){ //Only for admin and owner
         if(principal !=null){
-			employerService.deleteById(id);
-			return ResponseEntity.status(HttpStatus.OK).build();
+			Optional<Employer> employer = employerService.findById(id);
+			if (employer.isPresent()){
+				employerService.deleteById(id);
+				return ResponseEntity.status(HttpStatus.OK).build();
+			}else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @PostMapping("/api/lifeguard")
+	@Operation(summary = "Post a new lifeguard")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Lifeguard posted correctly",
+	 content = {@Content(
+		mediaType = "application/json",
+		schema = @Schema(implementation=LifeguardDTO.class)
+		)}
+	 ),
+	 @ApiResponse(
+	 responseCode = "400",
+	 description = "Data entered incorrectly.",
+	 content = @Content
+	 )
+	})
+    @PostMapping("/api/lifeguards")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Lifeguard> createLifeguard(@RequestBody LifeguardDTO lifeguardDTO) {
 		String messageForm = userService.checkForm(lifeguardDTO.getMail(), lifeguardDTO.getAge(),lifeguardDTO.getPhone());
@@ -121,11 +234,30 @@ public class UserRestController {
 			lifeguard.setRoles("USER", "LIFE");
 			lifeguardService.save(lifeguard);
 			return new ResponseEntity<>(lifeguard, HttpStatus.OK);
-		}else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	
+		}else{
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Error-Message", messageForm);
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
+		}
 	}
 
-    @PostMapping("/api/employer")
+	@Operation(summary = "Post a new employer")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Employer posted correctly",
+	 content = {@Content(
+		mediaType = "application/json",
+		schema = @Schema(implementation=EmployerDTO.class)
+		)}
+	 ),
+	 @ApiResponse(
+	 responseCode = "400",
+	 description = "Data entered incorrectly.",
+	 content = @Content
+	 )
+	})
+    @PostMapping("/api/employers")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Employer> createEmployer(@RequestBody EmployerDTO employerDTO) {
 		String messageForm = userService.checkForm(employerDTO.getMail(), employerDTO.getAge(),employerDTO.getPhone());
@@ -135,10 +267,40 @@ public class UserRestController {
         	employer.setRoles("USER", "EMP");
 			employerService.save(employer);
 			return new ResponseEntity<>(employer, HttpStatus.OK);
-		}else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}else{
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Error-Message", messageForm);
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
+		}
 	}
 
-    @PutMapping("/api/lifeguard/{id}")
+	@Operation(summary = "Update a lifeguard fields by ID. You need to be an administrator or the own lifeguard.")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Lifeguard updated correctly. You can update only the fields you want",
+	 content = {@Content(
+		mediaType = "application/json",
+		schema = @Schema(implementation=EmployerDTO.class)
+		)}
+	 ),
+	 @ApiResponse(
+	 responseCode = "400",
+	 description = "Data entered incorrectly.",
+	 content = @Content
+	 ),	
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Lifeguard not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
+    @PutMapping("/api/lifeguards/{id}")
 	public ResponseEntity<Lifeguard> updateLifeguard(@PathVariable long id, @RequestBody LifeguardDTO lifeguardDTO, Principal principal) throws SQLException {
 		if(principal !=null){
 			if (lifeguardService.existsById(id)) {
@@ -148,15 +310,44 @@ public class UserRestController {
 					updateLifeguardDTO(lifeguardDTO, lifeguard);
 					return new ResponseEntity<>(lifeguard, HttpStatus.OK);
 
-				}return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+				}else{
+					HttpHeaders headers = new HttpHeaders();
+					headers.add("Error-Message", messageForm);
+        			return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
+				}
 			} else	{
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-    @PutMapping("/api/employer/{id}")
+	@Operation(summary = "Update an employer fields by ID. You need to be an administrator or the own employer.")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Employer updated correctly. You can update only the fields you want",
+	 content = {@Content(
+		mediaType = "application/json",
+		schema = @Schema(implementation=EmployerDTO.class)
+		)}
+	 ),
+	 @ApiResponse(
+	 responseCode = "400",
+	 description = "Data entered incorrectly.",
+	 content = @Content
+	 ),	
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Employer not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
+    @PutMapping("/api/employers/{id}")
 	public ResponseEntity<Employer> updateEmployer(@PathVariable long id, @RequestBody EmployerDTO employerDTO, Principal principal) throws SQLException {
 		if(principal !=null){
 			if (employerService.existsById(id)) {
@@ -167,15 +358,36 @@ public class UserRestController {
 					updateEmployerDTO(employerDTO, employer);
 					return new ResponseEntity<>(employer, HttpStatus.OK);
 
-				}return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+				}else{
+					HttpHeaders headers = new HttpHeaders();
+					headers.add("Error-Message", messageForm);
+        			return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
+				}
 			} else	{
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-    @PostMapping("/api/employer/{id}/photoCompany")
+	@Operation(summary = "Post a new photo of the company of an employer by id")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "201",
+	 description = "Company photo posted correctly",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "400",
+	 description = "Data entered incorrectly, probably invalid id supplied",
+	 content = @Content
+	 ),	 
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 )
+	})
+    @PostMapping("/api/employers/{id}/photoCompany")
 	public ResponseEntity<Object> uploadPhotoCompany(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal)
 			throws IOException {
 		if(principal !=null){
@@ -191,7 +403,25 @@ public class UserRestController {
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-	@PutMapping("/api/employer/{id}/photoCompany")
+	@Operation(summary = "Upload a new photo of the company of an employer by id")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "201",
+	 description = "Company photo uploaded correctly",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "400",
+	 description = "Data entered incorrectly, probably invalid id supplied",
+	 content = @Content
+	 ),	 
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 )
+	})
+	@PutMapping("/api/employers/{id}/photoCompany")
 	public ResponseEntity<Object> refreshPhotoCompany(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal)
 			throws IOException {
 		if(principal !=null){
@@ -207,7 +437,25 @@ public class UserRestController {
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-	@GetMapping("/api/employer/{id}/photoCompany")
+	@Operation(summary = "Get the photo of the company of an employer by id")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Found the company photo",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "400",
+	 description = "Data entered incorrectly, probably invalid id supplied",
+	 content = @Content
+	 ),	 
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "That employer does not have a company photo",
+	 content = @Content
+	 )
+	})
+	@GetMapping("/api/employers/{id}/photoCompany")
 	public ResponseEntity<Object> downloadPhotoCompany(@PathVariable long id) throws SQLException {
 
 		Employer employer = employerService.findById(id).orElseThrow();
@@ -224,7 +472,25 @@ public class UserRestController {
 		}
 	}
 
-	@DeleteMapping("/api/employer/{id}/photoCompany")
+	@Operation(summary = "Delete the photo of the company of an employer by id. You need to be an admin or the own employer")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Company photo deleted correctly",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "400",
+	 description = "Data entered incorrectly, probably invalid id supplied",
+	 content = @Content
+	 ),	 
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 )
+	})
+	@DeleteMapping("/api/employers/{id}/photoCompany")
 	public ResponseEntity<Object> deletePhotoCompany(@PathVariable long id, Principal principal) throws IOException {
 		if(principal !=null){
 			Employer employer = employerService.findById(id).orElseThrow();
@@ -238,7 +504,25 @@ public class UserRestController {
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-    @PostMapping("/api/lifeguard/{id}/photoUser")
+	@Operation(summary = "Post a new photo of the user of a lifeguard by id")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "201",
+	 description = "User photo posted correctly",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "400",
+	 description = "Data entered incorrectly, probably invalid id supplied",
+	 content = @Content
+	 ),	 
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 )
+	})
+    @PostMapping("/api/lifeguards/{id}/photoUser")
 	public ResponseEntity<Object> uploadPhotoUser(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal)
 			throws IOException {
 		if(principal !=null){
@@ -254,7 +538,25 @@ public class UserRestController {
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-	@PutMapping("/api/lifeguard/{id}/photoUser")
+	@Operation(summary = "Upload a new photo of the user of a lifeguard by id")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "201",
+	 description = "User photo uploaded correctly",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "400",
+	 description = "Data entered incorrectly, probably invalid id supplied",
+	 content = @Content
+	 ),	 
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 )
+	})
+	@PutMapping("/api/lifeguards/{id}/photoUser")
 	public ResponseEntity<Object> refreshPhotoUser(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal)
 			throws IOException {
 		if(principal !=null){
@@ -270,7 +572,25 @@ public class UserRestController {
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-	@GetMapping("/api/lifeguard/{id}/photoUser")
+	@Operation(summary = "Get the photo of the user of a lifeguard by id")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Found the user photo",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "400",
+	 description = "Data entered incorrectly, probably invalid id supplied",
+	 content = @Content
+	 ),	 
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "That lifeguard does not have an user photo",
+	 content = @Content
+	 )
+	})
+	@GetMapping("/api/lifeguards/{id}/photoUser")
 	public ResponseEntity<Object> downloadPhotoUser(@PathVariable long id) throws SQLException {
 
 		Lifeguard lifeguard = lifeguardService.findById(id).orElseThrow();
@@ -287,7 +607,25 @@ public class UserRestController {
 		}
 	}
 
-	@DeleteMapping("/api/lifeguard/{id}/photoUser")
+	@Operation(summary = "Delete the photo of the user of an lifeguard by id. You need to be an admin or the own lifeguard")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "User photo deleted correctly",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "400",
+	 description = "Data entered incorrectly, probably invalid id supplied",
+	 content = @Content
+	 ),	 
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 )
+	})
+	@DeleteMapping("/api/lifeguards/{id}/photoUser")
 	public ResponseEntity<Object> deletePhotoUser(@PathVariable long id, Principal principal) throws IOException {
 		if(principal !=null){
 			Lifeguard lifeguard = lifeguardService.findById(id).orElseThrow();
@@ -301,7 +639,25 @@ public class UserRestController {
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-	@GetMapping("/api/lifeguard/{id}/offers")
+	@Operation(summary = "Get the offers of a lifeguard by id. You need to be an admin or the own lifeguard")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Found the offer list of the lifeguard",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 ),	
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Data entered incorrectly, probably invalid id supplied",
+	 content = @Content
+	 ),	 
+	})
+	@GetMapping("/api/lifeguards/{id}/offers")
 	public ResponseEntity<List<OfferDTO>> getLifeguardOffers(@PathVariable long id, Principal principal){ 
     	if(principal !=null){
 			Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
@@ -319,7 +675,25 @@ public class UserRestController {
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-	@GetMapping("/api/lifeguard/{id}/offersAccepted")
+	@Operation(summary = "Get the offers accepted of a lifeguard by id. You need to be an admin or the own lifeguard")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Found the offers accepted list of the lifeguard",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 ),	
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Data entered incorrectly, probably invalid id supplied",
+	 content = @Content
+	 ),	 
+	})
+	@GetMapping("/api/lifeguards/{id}/offersAccepted")
 	public ResponseEntity<List<OfferDTO>> getLifeguardOffersAccepted(@PathVariable long id, Principal principal){ 
     	if(principal !=null){
 			Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
@@ -337,7 +711,25 @@ public class UserRestController {
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-	@DeleteMapping("/api/lifeguard/{id}/offers/{offerId}")
+	@Operation(summary = "Remove an offer of the lifeguard's offers list by id. You need to be an admin or the own lifeguard")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Offer removed correctly",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 ),	
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Data entered incorrectly, probably invalid id or offerId supplied",
+	 content = @Content
+	 ),	 
+	})
+	@DeleteMapping("/api/lifeguards/{id}/offers/{offerId}")
 	public ResponseEntity<Void> deleteOfferFromLifeguard(@PathVariable long id, @PathVariable long offerId, Principal principal) {
 		if(principal !=null){
 			Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
@@ -363,7 +755,25 @@ public class UserRestController {
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-	@DeleteMapping("/api/lifeguard/{id}/offersAccepted/{offerId}")
+	@Operation(summary = "Remove an offer of the lifeguard's offersAccepted list by id. You need to be an admin or the own lifeguard")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Offer removed correctly",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 ),	
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Data entered incorrectly, probably invalid id or offerId supplied",
+	 content = @Content
+	 ),	 
+	})
+	@DeleteMapping("/api/lifeguards/{id}/offersAccepted/{offerId}")
 	public ResponseEntity<Void> deleteOfferAcceptedFromLifeguard(@PathVariable long id, @PathVariable long offerId, Principal principal) {
 		if(principal !=null){
 			Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
@@ -389,7 +799,25 @@ public class UserRestController {
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-	@GetMapping("/api/employer/{id}/offers")
+	@Operation(summary = "Get the offers of an employer by id. You need to be an admin or the own employer")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Found the offer list of the employer",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 ),	
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Data entered incorrectly, probably invalid id supplied",
+	 content = @Content
+	 ),	 
+	})
+	@GetMapping("/api/employers/{id}/offers")
 	public ResponseEntity<List<OfferDTO>> getEmployerOffers(@PathVariable long id, Principal principal){ 
     	if(principal !=null){
 			Optional<Employer> employerOptional = employerService.findById(id);
@@ -407,7 +835,25 @@ public class UserRestController {
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-	@DeleteMapping("/api/employer/{id}/offers/{offerId}")
+	@Operation(summary = "Delete an offer of the employer by id. You need to be an admin or the own employer")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Offer deleted correctly",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 ),	
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Data entered incorrectly, probably invalid id or offerId supplied",
+	 content = @Content
+	 ),	 
+	})
+	@DeleteMapping("/api/employers/{id}/offers/{offerId}")
 	public ResponseEntity<Void> deleteOfferFromEmployer(@PathVariable long id, @PathVariable long offerId, Principal principal) {
 		if(principal !=null){
 			Optional<Employer> employerOptional = employerService.findById(id);
