@@ -5,12 +5,10 @@ import java.net.URI;
 import java.security.Principal;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import org.apache.catalina.connector.Response;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -30,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import es.codeurjc.DTO.EmployerDTO;
 import es.codeurjc.DTO.LifeguardDTO;
+import es.codeurjc.DTO.OfferDTO;
 import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Offer;
@@ -38,7 +37,6 @@ import es.codeurjc.repository.LifeguardRepository;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import es.codeurjc.service.OfferService;
-import es.codeurjc.service.PoolService;
 import es.codeurjc.service.UserService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,8 +47,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 public class UserRestController {
-     @Autowired
-    private PoolService poolService;
 
     @Autowired
     private OfferService offerService;
@@ -276,6 +272,129 @@ public class UserRestController {
 		lifeguardService.save(lifeguard);
 
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/api/lifeguard/{id}/offers")
+	public ResponseEntity<List<OfferDTO>> getLifeguardOffers(@PathVariable long id){ 
+    	Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
+    	if (lifeguardOptional.isPresent()) {
+        	Lifeguard lifeguard = lifeguardOptional.get();
+        
+        	List<OfferDTO> offersDTO = lifeguard.getOffers().stream()
+            	.map(OfferDTO::new)
+            	.collect(Collectors.toList());
+        
+        	return ResponseEntity.status(HttpStatus.OK).body(offersDTO);
+    	} else {
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+	}
+
+	@GetMapping("/api/lifeguard/{id}/offersAccepted")
+	public ResponseEntity<List<OfferDTO>> getLifeguardOffersAccepted(@PathVariable long id){ 
+    	Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
+    	if (lifeguardOptional.isPresent()) {
+        	Lifeguard lifeguard = lifeguardOptional.get();
+        
+        	List<OfferDTO> offersAcceptedDTO = lifeguard.getOffersAccepted().stream()
+            	.map(OfferDTO::new)
+            	.collect(Collectors.toList());
+        
+        	return ResponseEntity.status(HttpStatus.OK).body(offersAcceptedDTO);
+    	} else {
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+	}
+
+	@DeleteMapping("/api/lifeguard/{id}/offers/{offerId}")
+	public ResponseEntity<Void> deleteOfferFromLifeguard(@PathVariable long id, @PathVariable long offerId) {
+		Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
+		if (lifeguardOptional.isPresent()) {
+			Lifeguard lifeguard = lifeguardOptional.get();
+			Offer offerToRemove = null;
+			for (Offer offer : lifeguard.getOffers()) {
+				if (offer.getId() == offerId) {
+					offerToRemove = offer;
+					break;
+				}
+			}
+			if (offerToRemove != null) {
+				lifeguard.getOffers().remove(offerToRemove);
+				lifeguardService.save(lifeguard);
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+
+	@DeleteMapping("/api/lifeguard/{id}/offersAccepted/{offerId}")
+	public ResponseEntity<Void> deleteOfferAcceptedFromLifeguard(@PathVariable long id, @PathVariable long offerId) {
+		Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(id);
+		if (lifeguardOptional.isPresent()) {
+			Lifeguard lifeguard = lifeguardOptional.get();
+			Offer offerAcceptedToRemove = null;
+			for (Offer offerAccepted : lifeguard.getOffersAccepted()) {
+				if (offerAccepted.getId() == offerId) {
+					offerAcceptedToRemove = offerAccepted;
+					break;
+				}
+			}
+			if (offerAcceptedToRemove != null) {
+				lifeguard.getOffersAccepted().remove(offerAcceptedToRemove);
+				lifeguardService.save(lifeguard);
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+
+	@GetMapping("/api/employer/{id}/offers")
+	public ResponseEntity<List<OfferDTO>> getEmployerOffers(@PathVariable long id){ 
+    	Optional<Employer> employerOptional = employerService.findById(id);
+    	if (employerOptional.isPresent()) {
+        	Employer employer = employerOptional.get();
+        
+        	List<OfferDTO> offersDTO = employer.getOffers().stream()
+            	.map(OfferDTO::new)
+            	.collect(Collectors.toList());
+        
+        	return ResponseEntity.status(HttpStatus.OK).body(offersDTO);
+    	} else {
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+	}
+
+	@DeleteMapping("/api/employer/{id}/offers/{offerId}")
+	public ResponseEntity<Void> deleteOfferFromEmployer(@PathVariable long id, @PathVariable long offerId) {
+		Optional<Employer> employerOptional = employerService.findById(id);
+		if (employerOptional.isPresent()) {
+			Employer employer = employerOptional.get();
+			Offer offerToRemove = null;
+			for (Offer offer : employer.getOffers()) {
+				if (offer.getId() == offerId) {
+					offerToRemove = offer;
+					break;
+				}
+			}
+			if (offerToRemove != null) {
+				employer.getOffers().remove(offerToRemove);
+				employerService.save(employer);
+				
+				offerService.deleteById(offerToRemove.getId());
+				
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 	}
 
 	public void updateLifeguardDTO(LifeguardDTO lifeguardDTO, Lifeguard lifeguard){
