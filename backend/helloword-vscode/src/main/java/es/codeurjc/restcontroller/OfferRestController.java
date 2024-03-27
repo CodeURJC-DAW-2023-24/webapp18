@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import es.codeurjc.DTO.EmployerDTO;
 import es.codeurjc.DTO.OfferDTO;
 import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
@@ -28,6 +30,12 @@ import es.codeurjc.model.Pool;
 import es.codeurjc.service.OfferService;
 import es.codeurjc.service.PoolService;
 import es.codeurjc.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -44,6 +52,22 @@ public class OfferRestController {
     @Autowired
     private UserService userService;
 
+    @Operation(summary = "Get an offer by its ID.")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Offer found",
+	 content = {@Content(
+		mediaType = "application/json",
+		schema = @Schema(implementation=OfferDTO.class)
+		)}
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Offer not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
     @GetMapping("/api/offers/{id}")
     public ResponseEntity<OfferDTO> getOffer(@PathVariable int id){ 
         Optional<Offer> offer = offerService.findById(id);
@@ -51,6 +75,25 @@ public class OfferRestController {
         else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+
+    @Operation(summary = "Delete an offer by its ID.")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Offer deleted",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized, you are not the owner or the admin",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Offer not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
     @DeleteMapping("/api/offers/{id}")
     public ResponseEntity<Void> deleteOffer(@PathVariable int id, Principal principal){ //Only for admin and owner
         if(principal !=null){
@@ -75,11 +118,55 @@ public class OfferRestController {
         }
         else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+
+    @Operation(summary = "Edit an offer by its ID.")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Offer edited",
+	 content = {@Content(
+		mediaType = "application/json",
+		schema = @Schema(implementation=OfferDTO.class)
+		)}
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized, you are not the owner or the admin",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Offer not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
     @PutMapping("/api/offers/{id}")
     public String editOffer(@PathVariable int id){ //Only for admin and owner
         //GEORGE MANIN YOU HAVE TO IMPLEMENT THIS MF PETITION :3
         return "Se ha editado correctamente";
     }
+
+    @Operation(summary = "View lifeguards who applied to an offer and the selected one.")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Lifeguards found",
+	 content = {@Content(
+		mediaType = "application/json",
+		schema = @Schema(implementation=HashMap.class)
+		)}
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized, you are not the owner or the admin",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Offer not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
     @GetMapping("/api/offers/{id}/lifeguards")
     public ResponseEntity<HashMap<String, ArrayList<String>>> getLifeguards(@PathVariable int id, Principal principal){
         if(principal !=null){
@@ -106,6 +193,28 @@ public class OfferRestController {
         else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         
     }
+
+    @Operation(summary = "Unselect lifeguard of an offer.")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Lifeguard unselected",
+	 content = {@Content(
+		mediaType = "application/json",
+		schema = @Schema(implementation=HashMap.class)
+		)}
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized, you are not the owner or the admin",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Offer not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
     @DeleteMapping("/api/offers/{id}/lifeguards") //Only for admin and owner
     public ResponseEntity<HashMap<String, ArrayList<String>>> unSelectProposed(@PathVariable int id, Principal principal){
 
@@ -147,6 +256,33 @@ public class OfferRestController {
         else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
     }
+
+    @Operation(summary = "Apply to an offer.")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Offer found",
+	 content = {@Content(
+		mediaType = "application/json",
+		schema = @Schema(implementation=OfferDTO.class)
+		)}
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized, you are not a lifeguard",
+	 content = @Content
+	 ),
+     @ApiResponse(
+	 responseCode = "409",
+	 description = "Conflict, you applyed more than once",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Offer not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
     @PostMapping("/api/offers/{id}/lifeguards") //Only lifeguards not already applyed
     public ResponseEntity<OfferDTO> NewApply(@PathVariable int id, Principal principal) {
 
@@ -178,6 +314,28 @@ public class OfferRestController {
         else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); //not logged
         
     }
+
+    @Operation(summary = "Select lifeguard for an offer.")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Lifeguard selected",
+	 content = {@Content(
+		mediaType = "application/json",
+		schema = @Schema(implementation=HashMap.class)
+		)}
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized, you are not the owner or the admin",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Offer not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
     @PutMapping("/api/offers/{id}/lifeguards/{nSelected}") //Only for admin and owner
     public ResponseEntity<HashMap<String, ArrayList<String>>> selectLifeguard(@PathVariable int id, @PathVariable int nSelected, Principal principal) {
         if(principal !=null){
@@ -216,6 +374,33 @@ public class OfferRestController {
         }
         else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+
+    @Operation(summary = "Create an offer.")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "200",
+	 description = "Offer created",
+	 content = {@Content(
+		mediaType = "application/json",
+		schema = @Schema(implementation=OfferDTO.class)
+		)}
+	 ),
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized, you are not a an employer",
+	 content = @Content
+	 ),
+     @ApiResponse(
+	 responseCode = "400",
+	 description = "Bad request, invalid data in new offer",
+	 content = @Content
+	 ),
+     @ApiResponse(
+	 responseCode = "404",
+	 description = "Pool not found, probably invalid id supplied",
+	 content = @Content
+	 )
+	})
     @PostMapping("/api/offers")
     public ResponseEntity<OfferDTO> postMethodName(@RequestBody OfferDTO offerDTO, Principal principal) { 
         if(principal !=null){
@@ -223,14 +408,16 @@ public class OfferRestController {
             if(eOP.isPresent()){
                 Employer e = eOP.get();
                 if(isValid(offerDTO)){
-                Pool pool = poolService.findById(offerDTO.getPoolID()).get();
+                Optional<Pool> pOP = poolService.findById(offerDTO.getPoolID());
+                if(pOP.isPresent()){
+                Pool pool = pOP.get();
                 Offer offer = offerFromDTO(offerDTO);
                 offer.addEmployer(e);
                 e.addOffer(offer);
                 offerService.save(offer);
                 userService.saveEmployer(e);
                 pool.addOffer(offer);
-                poolService.save(pool); //Falta poner caso con codigo de error si los datos no son correctos
+                poolService.save(pool); //Error code missimg in data are incorect
                 URI location = ServletUriComponentsBuilder.fromHttpUrl("https://localhost:8443")
                 .path("/api/offers/{id}")
                 .buildAndExpand(offer.getId())
@@ -239,8 +426,12 @@ public class OfferRestController {
                 return ResponseEntity.created(location).body(returnOfferDTO);
                 }
                 else{
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                }
+                }
+                else{
                     HttpHeaders headers = new HttpHeaders();
-                    headers.add("Error-Message", "Los datos no son válidos");
+                    headers.add("Error-Message", getErrorMessage(offerDTO));
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
                  }
             }
@@ -262,14 +453,7 @@ public Offer offerFromDTO(OfferDTO o){
     return offer;
 }
 
-@GetMapping("/api/aut/offers/{id}")
-public OfferDTO getOfferp(@PathVariable int id){  //how to take credentials 
-    Optional<Offer> offer = offerService.findById(id);
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String currentUsername = authentication.getName();
-    if (offer.isPresent() && currentUsername!=offer.get().getEmployer().getMail()) return (new OfferDTO(offer.get()));
-    else return null;
-}
+
 
 public boolean isOwner(Offer o, String n){
     return o.getEmployer().getMail().equals(n);
@@ -297,7 +481,11 @@ public HashMap<String, ArrayList<String>> buildMap(Offer offer){
 }
 
 public boolean isValid(OfferDTO offerDTO){
-    if(Integer.valueOf(offerDTO.getSalary())<1300) return false;
+    if(Integer.valueOf(Integer.valueOf(offerDTO.getSalary()))<1300) return false;
     return true;
+}
+public String getErrorMessage(OfferDTO offerDTO){
+    if(Integer.valueOf(Integer.valueOf(offerDTO.getSalary()))<1300) return "No se puede introducir un salario menor al salario minimo";
+    return "true";
 }
 }
