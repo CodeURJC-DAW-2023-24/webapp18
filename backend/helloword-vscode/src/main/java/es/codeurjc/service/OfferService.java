@@ -10,12 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import es.codeurjc.model.Employer;
 import es.codeurjc.model.Offer;
 import es.codeurjc.model.Pool;
-import es.codeurjc.repository.EmployerRepository;
 import es.codeurjc.repository.OfferRepository;
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class OfferService {

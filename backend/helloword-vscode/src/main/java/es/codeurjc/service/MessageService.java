@@ -3,7 +3,6 @@ package es.codeurjc.service;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,6 @@ public class MessageService {
 
 	private MessageRepository messages;
 
-	@Autowired
 	public MessageService(MessageRepository messages) {
 		this.messages = messages;
 	}

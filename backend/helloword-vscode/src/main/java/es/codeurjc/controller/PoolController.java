@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import es.codeurjc.model.Employer;
-import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Message;
 import es.codeurjc.model.Pool;
 import es.codeurjc.service.MessageService;

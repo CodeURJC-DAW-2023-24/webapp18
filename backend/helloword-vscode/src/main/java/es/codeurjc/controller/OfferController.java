@@ -1,7 +1,6 @@
 package es.codeurjc.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,8 +193,6 @@ public class OfferController {
 
     @PostMapping("/offer/delete")
     public String offerDelete(@RequestParam("id") int id, Model model, HttpServletRequest request) {
-        //   Pool pool = DataBase.getPool(id);
-        Offer offer = offerService.findById(id).get();
         offerService.deleteById(id);
         model.addAttribute("loged", request.getUserPrincipal() != null);
         model.addAttribute("employer", request.isUserInRole("EMP"));

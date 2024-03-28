@@ -1,15 +1,6 @@
 package es.codeurjc.DTO;
 
-import java.util.List;
-
-import es.codeurjc.model.Employer;
-import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Offer;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 
 public class OfferDTO {
 

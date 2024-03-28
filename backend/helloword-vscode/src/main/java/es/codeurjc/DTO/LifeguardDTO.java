@@ -1,12 +1,7 @@
 package es.codeurjc.DTO;
-import java.sql.Blob;
-import java.util.ArrayList;
 import java.util.List;
 
 import es.codeurjc.model.Lifeguard;
-import es.codeurjc.model.Offer;
-import es.codeurjc.model.Pool;
-
 
 public class LifeguardDTO{
     private Long id;

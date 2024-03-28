@@ -1,7 +1,6 @@
 package es.codeurjc.service;
 
 import java.time.LocalTime;
-import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
