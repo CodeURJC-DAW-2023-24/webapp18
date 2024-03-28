@@ -14,7 +14,7 @@ import es.codeurjc.service.UserService;
 
 import org.springframework.web.bind.annotation.GetMapping;;
 @RestController
-public class chartRestController {
+public class ChartRestController {
     
     @Autowired
     private UserService userService;
