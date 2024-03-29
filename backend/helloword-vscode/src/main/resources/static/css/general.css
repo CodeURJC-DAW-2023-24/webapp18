@@ -184,6 +184,10 @@ form {
     background-color: var(--second-color);
     color: var(--third-color);
     border: transparent;
+
+    height: 49px;
+    display: flex;
+    align-items: center;
 }
 
 .top-container .btn:hover{

@@ -30,6 +30,15 @@
       <section id="map"></section>
     </main>
 
+    <div id="distances" style="display:none;">
+      {{#offers}}
+      <div id="offer-{{id}}">{{pool.direction}}</div>
+      {{/offers}}
+      {{#user}}
+      <div id="user">{{direction}}</div>
+      {{/user}}
+    </div>
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnW4ze6zMjnLrtTqHuLUgWyzRrzcshgd0&callback=initMap" async defer></script>
     <script src="/js/maps.js"></script>
 </body>
