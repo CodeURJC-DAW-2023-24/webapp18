@@ -20,64 +20,60 @@
 <body>
     {{> header}}
 
-    <div class="data">
-        <div class="container">
-            {{#offer}}
-            <h2>Oferta en <a href="/pool?id={{pool.id}}">{{pool.name}}</a></h2>
+    <div class="container">
+        {{#offer}}
+        <h2>Oferta en <a href="/pool?id={{pool.id}}">{{pool.name}}</a></h2>
 
-            <div class="row">
-                <a class="col-lg-6 col-img" href="/pool?id={{pool.id}}">
-                    {{#hasPhoto}}
-                    <img id="img-user" src="/pool/{{pool.id}}/image" >
-                    {{/hasPhoto}}
-                    {{^hasPhoto}}
-                    <img id="img-pool" src="{{pool.photo}}" >
-                    {{/hasPhoto}}
-                </a>
-                <div class="col-lg-6 col-data">
-                    <p><strong>Dirección:</strong> {{pool.direction}}</p>
-                    <p><strong>Empleador:</strong> {{employer.mail}}</p>
-                    <p><strong>Tipo de contrato:</strong> {{type}}</p>
-                    <p><strong>Fecha de inicio:</strong> {{start}}</p>
-                    <p><strong>Salario:</strong> {{salary}}€</p>
-                </div>
+        <div class="row">
+            <a class="col-lg-6 col-img" href="/pool?id={{pool.id}}">
+                {{#hasPhoto}}
+                <img id="img-user" src="/pool/{{pool.id}}/image" >
+                {{/hasPhoto}}
+                {{^hasPhoto}}
+                <img id="img-pool" src="{{pool.photo}}" >
+                {{/hasPhoto}}
+            </a>
+            <div class="col-lg-6 col-data">
+                <p><strong>Dirección:</strong> {{pool.direction}}</p>
+                <p><strong>Empleador:</strong> {{employer.mail}}</p>
+                <p><strong>Tipo de contrato:</strong> {{type}}</p>
+                <p><strong>Fecha de inicio:</strong> {{start}}</p>
+                <p><strong>Salario:</strong> {{salary}}€</p>
+                <p><strong>Descripción:</strong> {{description}}</p>
             </div>
-            <p><strong>Descripción:</strong> {{description}}</p>
-            {{/offer}}
+        </div>
+        {{/offer}}
 
-            {{#lifeguard}}
-            <form role="form" action='/offer/offered/new' method="post">
+        {{#lifeguard}}
+        <form role="form" action='/offer/offered/new' method="post">
+            <div class="btn-cont">
+                <button type = "submit" class="btn" >
+                    <i class="btn">Proponerse</i>
+                </button>
+            </div>
+            <input type ="hidden" name="id" value="{{offer.id}}"/>
+            <input type ="hidden" name="_csrf" value="{{token}}"/>
+        </form>
+        {{/lifeguard}}
+        <div class="btn-cont">
+            {{#canEdit}}
+            <button class="btn" onclick="showOffered('{{offer.id}}')" id="showButton">Ver propuestas</button>
+            {{/canEdit}}
+            {{#admin}}
+            <form role="form" action='/offer/delete' method="post">
                 <div class="btn-cont">
                     <button type = "submit" class="btn" >
-                        <i class="btn">Proponerse</i>
+                        <i class="bi bi-trash">Eliminar</i>
                     </button>
                 </div>
                 <input type ="hidden" name="id" value="{{offer.id}}"/>
                 <input type ="hidden" name="_csrf" value="{{token}}"/>
             </form>
-            {{/lifeguard}}
-            <div class="btn-cont">
-                {{#canEdit}}
-                <button class="btn" onclick="showOffered('{{offer.id}}')" id="showButton">Ver propuestas</button>
-                {{/canEdit}}
-                {{#admin}}
-                <form role="form" action='/offer/delete' method="post">
-                    <div class="btn-cont">
-                        <button type = "submit" class="btn" >
-                            <i class="bi bi-trash">Eliminar</i>
-                        </button>
-                    </div>
-                    <input type ="hidden" name="id" value="{{offer.id}}"/>
-                    <input type ="hidden" name="_csrf" value="{{token}}"/>
-                </form>
-                {{/admin}}
-                <a href="/" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
-            </div>
-
-            <div id="messageContainer"></div>
-            
-
+            {{/admin}}
+            <a href="/" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
         </div>
+
+        <div id="messageContainer"></div>
     </div>
 </body>
 

@@ -27,7 +27,7 @@
             <h2>{{name}}</h2>
 
             <div class="row">
-                <a class="col-md-6 col-xs-4">
+                <a class="col-lg-6">
                     {{#hasPhoto}}
                     <img id="img-user" src="/pool/{{id}}/image" alt="{{direction}}">
                     {{/hasPhoto}}
@@ -35,7 +35,7 @@
                     <img id="img-pool" src="{{photo}}" alt="{{direction}}">
                     {{/hasPhoto}}
                 </a>
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <p><strong>Dirección:</strong> {{direction}}</p>
                     <p><strong>Horario:</strong> {{scheduleStart}}-{{scheduleEnd}}</p>
                     <p><strong>Aforo:</strong> {{capacity}} personas</p>
@@ -44,7 +44,6 @@
             </div>
 
             <div class="btn-cont">
-              
                 {{#admin}}
                 <form role="form" action='/pool/delete?id={{id}}' method="post">
                     <div class="btn-cont">

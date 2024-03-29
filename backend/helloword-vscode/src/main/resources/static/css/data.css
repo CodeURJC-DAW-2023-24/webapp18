@@ -1,27 +1,5 @@
-.data {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: start;
-
-    width: 90%;
-    margin: 20px auto;
-    gap: 20px;
-}
-
 .container {
-    margin: 0px;
     max-width: 1200px;
-}
-
-.container-main {
-    flex: 3;
-    min-width: 900px;
-}
-
-.container-additional {
-    flex: 2;
-    min-width: 600px;
 }
 
 .subcontainer {
@@ -70,4 +48,30 @@ h2 a {
 
 h2 a:hover {
     color: var(--main-color-light);
+}
+
+@media screen and (min-width: 1690px){ /* (900 + 600 + 20) * 100 / 90 */
+    .data {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: start;
+
+        padding-left: 5%;
+        padding-right: 5%;
+        gap: 20px;
+    }
+
+    .container-main {
+        flex: 3;
+        min-width: 900px;
+        margin-right: 0;
+    }
+
+    .container-additional {
+        flex: 2;
+        min-width: 600px;
+        max-width: 800px;  /* 1200 * 2 / 3 */
+        margin-left: 0;
+    }
 }
