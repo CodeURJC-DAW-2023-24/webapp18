@@ -84,7 +84,7 @@ public class OfferController {
 
         Collection<Pool> pools = poolService.findAll();
         model.addAttribute("pools", pools);
-        return "new_offer";
+        return "offer_form";
     }
 
     @PostMapping("/offer/add")

@@ -1,0 +1,21 @@
+.skills-container {
+    max-width: fit-content;
+}
+
+.skills-container .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skills-container .form-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+.skills-container label {
+    margin: 0;
+    color: var(--subcontainer-text-color);
+}

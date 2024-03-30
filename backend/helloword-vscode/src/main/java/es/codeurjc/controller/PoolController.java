@@ -110,7 +110,7 @@ public class PoolController {
         model.addAttribute("pool", pool);
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
         model.addAttribute("edit", true);
-        return "new_pool";
+        return "pool_form";
     }
     @PostMapping("/pool/message/add")
     public String newMessage(@RequestParam("commentInput") String input, @RequestParam("id") int id, Model model, HttpServletRequest request) {
@@ -240,7 +240,7 @@ public class PoolController {
             model.addAttribute("loged", false);
         }
 
-        return "new_pool";
+        return "pool_form";
     }
     
     @GetMapping("/pool/{id}/image")
