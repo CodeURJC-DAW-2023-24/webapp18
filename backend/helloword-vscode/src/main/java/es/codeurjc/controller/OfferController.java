@@ -121,7 +121,7 @@ public class OfferController {
         model.addAttribute("title", "Oferta añadida");
         model.addAttribute("message", "Oferta añadida correctamente. ¡Gracias por confiar en nosotros!");
         model.addAttribute("back", "/");
-        return "message";
+        return "feedback";
     }
 
 
@@ -145,7 +145,7 @@ public class OfferController {
         model.addAttribute("id", id);
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
         model.addAttribute("employer", request.isUserInRole("EMP"));
-        return "offered";
+        return "offer_applications";
     }
 
     @PostMapping("/offer/offered/new")

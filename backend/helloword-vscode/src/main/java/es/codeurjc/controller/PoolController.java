@@ -93,7 +93,7 @@ public class PoolController {
         model.addAttribute("messages", messages);
         model.addAttribute("poolId", id);
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
-        return "poolMessage";
+        return "pool_comments";
     }
     @GetMapping("/pool/editB")
     public String editPoolsB(@RequestParam("id") int id, Model model,HttpServletRequest request) {

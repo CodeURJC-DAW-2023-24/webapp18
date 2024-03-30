@@ -59,7 +59,7 @@ public class UserController {
             model.addAttribute("title", "Error");
             model.addAttribute("message", "Debes iniciar sesión para acceder a tu perfil");
             model.addAttribute("back", "/login");
-            return "message";
+            return "feedback";
         }
 
         // Here you must pass the ID of the person logged in when publishing the
@@ -132,7 +132,7 @@ public class UserController {
         model.addAttribute("title", "Sesión iniciada");
         model.addAttribute("message", "Has iniciado sesión correctamente");
         model.addAttribute("back", "/profile");
-        return "message";
+        return "feedback";
     }
 
     @GetMapping("/user/form")
@@ -156,7 +156,7 @@ public class UserController {
             model.addAttribute("title", "Error");
             model.addAttribute("message", messageForm);
             model.addAttribute("back", "javascript:history.back()");
-            return "message";
+            return "feedback";
         }
 
         model.addAttribute("title", "Éxito");
@@ -192,7 +192,7 @@ public class UserController {
                 break;
         }
 
-        return "message";
+        return "feedback";
     }
 
     @GetMapping("/user/{id}/image")
@@ -281,6 +281,6 @@ public class UserController {
         model.addAttribute("message", "Credenciales inválidas");
         model.addAttribute("back", "/login");
 
-        return "message";
+        return "feedback";
     }
 }
