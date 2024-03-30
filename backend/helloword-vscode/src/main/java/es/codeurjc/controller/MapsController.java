@@ -1,31 +1,33 @@
 package es.codeurjc.controller;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Offer;
+import es.codeurjc.repository.OfferRepository;
 import es.codeurjc.service.OfferService;
-import es.codeurjc.service.PoolService;
 import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class MapsController {
     @Autowired
-    private PoolService poolService;  // we need the pools before the offers
-
-    @Autowired
     private OfferService offerService;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OfferRepository offerRepository;
 
     @GetMapping("/maps")
     public String maps(Model model, HttpServletRequest request) {
@@ -46,5 +48,15 @@ public class MapsController {
         Collection<Offer> offers = offerService.findAll();
         model.addAttribute("offers", offers);
         return "maps";
+    }
+
+    @GetMapping("/maps/offers")
+    public String loadOffers(@RequestParam("address") String address, Model model, HttpServletRequest request) {
+        List<Offer> offers = offerRepository.findByPoolDirection(address);
+
+        model.addAttribute("address", address);
+        model.addAttribute("offers", offers);
+        model.addAttribute("alternative", "No hay ofertas");
+        return "offers_maps";
     }
 }

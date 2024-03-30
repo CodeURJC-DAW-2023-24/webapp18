@@ -52,7 +52,15 @@ public class UserController {
     public String profile(Model model, HttpServletRequest request, @RequestParam("type") int type,
             @RequestParam("mail") String m) {
         // CHECK USER LOGED OR NOT
-        model.addAttribute("loged", request.getUserPrincipal() != null);
+        Boolean loged = request.getUserPrincipal() != null;
+        model.addAttribute("loged", loged);
+
+        if (!loged) {
+            model.addAttribute("title", "Error");
+            model.addAttribute("message", "Debes iniciar sesión para acceder a tu perfil");
+            model.addAttribute("back", "/login");
+            return "message";
+        }
 
         // Here you must pass the ID of the person logged in when publishing the
         // referenced message.
