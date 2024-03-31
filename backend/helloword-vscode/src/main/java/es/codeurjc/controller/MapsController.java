@@ -31,11 +31,10 @@ public class MapsController {
 
     @GetMapping("/maps")
     public String maps(Model model, HttpServletRequest request) {
-        //CHECK USER LOGED OR NOT
-        Boolean loged = request.getUserPrincipal() != null;
-        model.addAttribute("loged", loged);
+        Boolean logged = request.getUserPrincipal() != null;
+        model.addAttribute("logged", logged);
 
-        if (loged) {
+        if (logged) {
             String mail = request.getUserPrincipal().getName();
             Optional<Lifeguard> lifeguard = userService.findLifeguardByEmail(mail);
             Optional<Employer> employer = userService.findEmployerByEmail(mail);

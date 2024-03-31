@@ -20,10 +20,6 @@ public class PieChartController {
 
     @GetMapping("/pieChart")
     public String showPieChart(Model model, HttpServletRequest request) {
-
-        //CHECK USER LOGED OR NOT
-        model.addAttribute("loged", request.getUserPrincipal() != null);
-
         //find the lifeguards, go through their skill lists and put them on a map. Fill the model with the map
 
         HashMap<String, Integer> mapa = fillAttitudes();

@@ -271,8 +271,11 @@ public class UserController {
 
     // -------------------------------------- LOGIN --------------------------------------
     @RequestMapping("/login")
-    public String login() {
-        return "login";
+    public String login(HttpServletRequest request) {
+        if (request.getUserPrincipal() != null)
+            return "redirect:/profile?type=1&mail=none";
+        else
+            return "login";
     }
 
     @RequestMapping("/loginerror")

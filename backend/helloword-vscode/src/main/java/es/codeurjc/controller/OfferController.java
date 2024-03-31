@@ -37,8 +37,6 @@ public class OfferController {
     // -------------------------------------- MAIN --------------------------------------
     @GetMapping("/")
     public String showOffers(Model model, HttpServletRequest request, Pageable page) {
-        // CHECK USER LOGED OR NOT
-        model.addAttribute("loged", request.getUserPrincipal() != null);
         model.addAttribute("employer", request.isUserInRole("EMP"));
 
         // will be good implement the hasMore and nextPage attributes here
@@ -59,9 +57,6 @@ public class OfferController {
 
     @GetMapping("/offer")
     public String offer(@RequestParam("id") int id, Model model, HttpServletRequest request) {
-        //CHECK USER LOGED OR NOT
-        model.addAttribute("loged", request.getUserPrincipal() != null);
-
         Offer offer = offerService.findById(id).get();
         Pool pool = offer.getPool();
         if(pool.getPhotoUser()!=null) model.addAttribute("hasPhoto", true);
@@ -79,9 +74,6 @@ public class OfferController {
 
     @GetMapping("/offer/form")
     public String newOffer(Model model, HttpServletRequest request) {
-        //CHECK USER LOGED OR NOT
-        model.addAttribute("loged", request.getUserPrincipal() != null);
-
         Collection<Pool> pools = poolService.findAll();
         model.addAttribute("pools", pools);
         return "offer_form";
@@ -89,9 +81,6 @@ public class OfferController {
 
     @PostMapping("/offer/add")
     public String addOffer(Model model, HttpServletRequest request) {
-        //CHECK USER LOGED OR NOT
-        model.addAttribute("loged", request.getUserPrincipal() != null);
-
         try {
             offerService.checkOffer(request);
         } catch (Exception e) {
@@ -115,9 +104,6 @@ public class OfferController {
 
     @GetMapping("/offer/added")
     public String addedOffer(Model model, HttpServletRequest request) {
-        //CHECK USER LOGED OR NOT
-        model.addAttribute("loged", request.getUserPrincipal() != null);
-
         model.addAttribute("title", "Oferta añadida");
         model.addAttribute("message", "Oferta añadida correctamente. ¡Gracias por confiar en nosotros!");
         model.addAttribute("back", "/");
@@ -194,7 +180,6 @@ public class OfferController {
     @PostMapping("/offer/delete")
     public String offerDelete(@RequestParam("id") int id, Model model, HttpServletRequest request) {
         offerService.deleteById(id);
-        model.addAttribute("loged", request.getUserPrincipal() != null);
         model.addAttribute("employer", request.isUserInRole("EMP"));
         return "index";
     }

@@ -37,14 +37,6 @@ public class PoolController {
 
     @GetMapping("/pool")
     public String pool(@RequestParam("id") int id, Model model, HttpServletRequest request) {
-
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
-            model.addAttribute("loged", true);
-        }else{
-            model.addAttribute("loged", false);
-        }
-
         //Pool pool = DataBase.getPool(id);
 
         Optional<Pool> pool = poolService.findById(id);
@@ -55,7 +47,7 @@ public class PoolController {
         
     }
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
-        model.addAttribute("loged", request.isUserInRole("EMP")||request.isUserInRole("LIFE"));
+        model.addAttribute("logged", request.isUserInRole("EMP")||request.isUserInRole("LIFE"));
         return "pool";
     }
 
@@ -68,14 +60,6 @@ public class PoolController {
 
     @GetMapping("/pool/message/load")
     public String loadMessages(@RequestParam("id") int id, Model model,HttpServletRequest request) {
-
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
-            model.addAttribute("loged", true);
-        }else{
-            model.addAttribute("loged", false);
-        }
-
         //Pool pool = DataBase.getPool(id);
         Pool pool = poolService.findById(id).get();
         List<Message> messages = pool.getMessages();
@@ -97,14 +81,6 @@ public class PoolController {
     }
     @GetMapping("/pool/editB")
     public String editPoolsB(@RequestParam("id") int id, Model model,HttpServletRequest request) {
-
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
-            model.addAttribute("loged", true);
-        }else{
-            model.addAttribute("loged", false);
-        }
-
         //Pool pool = DataBase.getPool(id);
         Pool pool = poolService.findById(id).get();
         model.addAttribute("pool", pool);
@@ -114,14 +90,6 @@ public class PoolController {
     }
     @PostMapping("/pool/message/add")
     public String newMessage(@RequestParam("commentInput") String input, @RequestParam("id") int id, Model model, HttpServletRequest request) {
-
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
-            model.addAttribute("loged", true);
-        }else{
-            model.addAttribute("loged", false);
-        }
-
         String mail = request.getUserPrincipal().getName();
         Message message = new Message(mail, input);
      //   Pool pool = DataBase.getPool(id);
@@ -137,14 +105,6 @@ public class PoolController {
 
     @PostMapping("/pool/message/delete")
     public String deletePoolMessage(@RequestParam("id") int id, Model model, HttpServletRequest request) {
-
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
-            model.addAttribute("loged", true);
-        }else{
-            model.addAttribute("loged", false);
-        }
-
         // Pool pool = DataBase.getPool(idP);
         Message msg = messageService.findById(id).get();
         Pool pool = msg.getPool();
@@ -165,14 +125,6 @@ public class PoolController {
                     @RequestParam("start") LocalTime start,
                     @RequestParam("close") LocalTime close,
                     MultipartFile photoField) throws IOException {
-
-
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
-            model.addAttribute("loged", true);
-        }else{
-            model.addAttribute("loged", false);
-        }
 
         Pool pool = new Pool.Builder()
                         .name(name)
@@ -202,14 +154,6 @@ public class PoolController {
                     @RequestParam("close") LocalTime close,
                     MultipartFile photoField) throws IOException {
 
-
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
-            model.addAttribute("loged", true);
-        }else{
-            model.addAttribute("loged", false);
-        }
-
         Pool pool = poolService.findById(id).get();
         pool.setPhoto("/images/default-image.jpg");
         if (!photoField.isEmpty()) {
@@ -232,14 +176,6 @@ public class PoolController {
     } 
     @GetMapping("/pool/form")
     public String newPool(Model model,HttpServletRequest request){
-
-        //CHECK USER LOGED OR NOT
-        if (request.getUserPrincipal() != null){
-            model.addAttribute("loged", true);
-        }else{
-            model.addAttribute("loged", false);
-        }
-
         return "pool_form";
     }
     

@@ -56,7 +56,7 @@
         </div>
         <div class="container container-additional">
             <h3>Comentarios</h3>
-            {{#loged}}
+            {{#logged}}
             <form role="form" action='/pool/message/add' method="post">
                 <input type ="hidden" name="id" value="{{id}}"/>
                 <input type ="hidden" name="_csrf" value="{{token}}"/>
@@ -69,7 +69,7 @@
                     </div>
                 </div>
             </form>
-            {{/loged}}
+            {{/logged}}
             <div id="messageContainer"></div>
             <div class="btn-cont" id="showButton">
                 <button class="btn" onclick="showMessages('{{id}}')">Ver comentarios</button>
