@@ -45,13 +45,11 @@
 
             <div class="btn-cont">
                 {{#admin}}
+                <a href="/pool/editB?id={{id}}" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
                 <form role="form" action='/pool/delete?id={{id}}' method="post">
-                    <div class="btn-cont">
-                        <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
-                    </div>
                     <input type ="hidden" name="_csrf" value="{{token}}"/>
+                    <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i> Eliminar</button>
                 </form>
-                <a href="/pool/editB?id={{id}}" class="btn" role="button"><i class="btn btn-primary"></i> Editar</a>
                 {{/admin}}
                 <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
             </div>
@@ -59,22 +57,22 @@
         <div class="container container-additional">
             <h3>Comentarios</h3>
             {{#loged}}
-            <div class="commentContainer newCommentContainer">
-                <form role="form" action='/pool/message/add' method="post">
-                    <input type="text" id="commentInput" name="commentInput" placeholder="Escribe el comentario"/>
+            <form role="form" action='/pool/message/add' method="post">
+                <input type ="hidden" name="id" value="{{id}}"/>
+                <input type ="hidden" name="_csrf" value="{{token}}"/>
+                <div class="subcontainer commentContainer">
+                    <input type="text" id="commentInput" name="commentInput" placeholder="Deja tu opinión"/>
                     <div class="btn-cont">
                         <button type = "submit" class="btn" >
                             <i class="bi bi-send-fill"></i>
                         </button>
                     </div>
-                    <input type ="hidden" name="id" value="{{id}}"/>
-                    <input type ="hidden" name="_csrf" value="{{token}}"/>
-                </form>
-            </div>
+                </div>
+            </form>
             {{/loged}}
             <div id="messageContainer"></div>
-            <div class="btn-cont">
-                <button class="btn" onclick="showMessages('{{id}}')" id="showButton">Ver comentarios</button>
+            <div class="btn-cont" id="showButton">
+                <button class="btn" onclick="showMessages('{{id}}')">Ver comentarios</button>
             </div>
         </div>
         {{/pool}}

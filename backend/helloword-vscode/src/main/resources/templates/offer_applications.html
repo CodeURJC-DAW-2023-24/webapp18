@@ -1,32 +1,34 @@
 {{#lifeguards}}
-<div class="subcontainer" id="{{offer.id}}">
-    {{#employer}}
-    <form role="form" action='/offer/offered/set' method="post">
-        <div class="lifeguard"> <a href="/profile?type=0&mail={{mail}}">{{mail}}:</a></div>
-        <div class="btn-cont">
-            <button type="submit" class="btn btn-blue "><i class="bi bi-person-add"></i></button> {{#offerAssigned}}<div class="btn-cont"><a class="btn btn-blue"><i class="bi bi-check2"></i></a></div>{{/offerAssigned}}
-        </div>
-        <input type ="hidden" name="_csrf" value="{{token}}"/>
-        <input type ="hidden" name="lg" value="{{mail}}"/>
-        <input type ="hidden" name="ido" value="{{offer.id}}"/>
-    </form>
-    {{#offerAssigned}}
-    <form role="form" action='/offer/offered/delete' method="post">
-        <div class="lifeguard"> <a href="/profile?type=0&mail={{mail}}">{{mail}}:</a></div>
-        <div class="btn-cont">
-            <button type="submit" class="btn btn-red "><i class="bi bi-person-dash"></i></button>
-        </div>
-        <input type ="hidden" name="_csrf" value="{{token}}"/>
-        <input type ="hidden" name="lg" value="{{mail}}"/>
-        <input type ="hidden" name="ido" value="{{offer.id}}"/>
-    </form>
+<div class="subcontainer message" id="{{offer.id}}">
+    <data>
+        <a class="author" href="/profile?type=0&mail={{mail}}">{{mail}}:</a>
+        <p class="body"> {{description}} </p>
+    </data>
+    {{^offerAssigned}}
+    <div class="btn-cont">
+        <form role="form" action='/offer/offered/set' method="post">
+            <input type ="hidden" name="_csrf" value="{{token}}"/>
+            <input type ="hidden" name="lg" value="{{mail}}"/>
+            <input type ="hidden" name="ido" value="{{offer.id}}"/>
+            <button type="submit" class="btn"><i class="bi bi-person-add"></i></button>
+        </form>
+    </div>
     {{/offerAssigned}}
-    {{/employer}}
 
+    {{#offerAssigned}}
+    <div class="btn-cont">
+    <form role="form" action='/offer/offered/delete' method="post">
+            <button type="submit" class="btn btn-red "><i class="bi bi-person-dash"></i></button>
+            <input type ="hidden" name="_csrf" value="{{token}}"/>
+            <input type ="hidden" name="lg" value="{{mail}}"/>
+            <input type ="hidden" name="ido" value="{{offer.id}}"/>
+        </form>
+    </div>
+    {{/offerAssigned}}
 </div>
 {{/lifeguards}}
 {{^lifeguards}}
-<div class="subcontainer">
-    <div class="msgPool"> No hay ofertas </div>
+<div class="subcontainer message">
+    <div class="message">No hay propuestas </div>
 </div>
 {{/lifeguards}}

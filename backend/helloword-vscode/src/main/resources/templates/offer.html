@@ -13,7 +13,7 @@
 
     <link type="text/css" rel="stylesheet" href="/css/general.css" />
     <link type="text/css" rel="stylesheet" href="/css/data.css" />
-    <link type="text/css" rel="stylesheet" href="/css/pp.css" />
+    <link type="text/css" rel="stylesheet" href="/css/messages.css" />
     <script src="/js/poolMessages.js"></script>
 </head>
 
@@ -44,30 +44,26 @@
         </div>
         {{/offer}}
 
-        {{#lifeguard}}
-        <form role="form" action='/offer/offered/new' method="post">
-            <div class="btn-cont">
-                <button type = "submit" class="btn" >
-                    <i class="btn">Proponerse</i>
-                </button>
-            </div>
-            <input type ="hidden" name="id" value="{{offer.id}}"/>
-            <input type ="hidden" name="_csrf" value="{{token}}"/>
-        </form>
-        {{/lifeguard}}
         <div class="btn-cont">
+            {{#lifeguard}}
+            <form role="form" action='/offer/offered/new' method="post">
+                <input type ="hidden" name="id" value="{{offer.id}}"/>
+                <input type ="hidden" name="_csrf" value="{{token}}"/>
+                <button type = "submit" class="btn" >
+                    <i class="bi bi-bookmark-fill"> Proponerse</i>
+                </button>
+            </form>
+            {{/lifeguard}}
             {{#canEdit}}
             <button class="btn" onclick="showOffered('{{offer.id}}')" id="showButton">Ver propuestas</button>
             {{/canEdit}}
             {{#admin}}
             <form role="form" action='/offer/delete' method="post">
-                <div class="btn-cont">
-                    <button type = "submit" class="btn" >
-                        <i class="bi bi-trash">Eliminar</i>
-                    </button>
-                </div>
-                <input type ="hidden" name="id" value="{{offer.id}}"/>
-                <input type ="hidden" name="_csrf" value="{{token}}"/>
+                <input type="hidden" name="id" value="{{offer.id}}"/>
+                <input type="hidden" name="_csrf" value="{{token}}"/>
+                <button type="submit" class="btn btn-red" >
+                    <i class="bi bi-trash"> Eliminar</i>
+                </button>
             </form>
             {{/admin}}
             <a href="/" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>

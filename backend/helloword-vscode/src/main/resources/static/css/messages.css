@@ -1,50 +1,39 @@
-.commentContainer {
-    margin: 20px auto;
-    padding: 10px;
-    width: 80%;
-    max-width: none;
-
-    background-color: #e4e4e4;
-    border: 1px solid #8b8b8bcc;
-    border-radius: 5px;
-    text-align: left;
-
+.subcontainer {
     display: flex;
-    flex-direction: row;
-    grid-template-columns: 1fr 1fr 1fr;
+    flex-flow: row wrap;
+    justify-content: space-between;
     align-items: center;
+    row-gap: 10px;
 }
 
-.commentContainer .btn-cont {
-    margin: 0;
-    margin-left: 10px;
+.commentContainer {
+    background: var(--gradient-inverse);
 }
 
-.commentContainer .btn {
+.btn-cont, .body, /* These two are only for the margin */
+.commentContainer .btn, .message .btn {
     min-width: 40px;
+    margin: 0;
 }
 
 .commentContainer input[type="text"] {
     flex: 1;
-    margin-right: 10px;
+    max-width: 100%;
+    height: fit-content;
+
+    border: none;
+    border-radius: 3px;
+    padding: 5px;
 }
 
-.newCommentContainer {
-    background-color: rgb(206, 254, 255);
-}
+.author {
+    width: fit-content;
 
-.msgAuthor a {
     text-decoration: none;
-    margin-right: 5px;
     color: var(--main-color-dark);
     font-weight: bold;
 }
 
-.msgAuthor a:hover{
+.author:hover{
     color: white;
-}
-
-.msgPool {
-    flex: 1; /* The message takes up all the available space in the media */
-    text-align: left;
 }

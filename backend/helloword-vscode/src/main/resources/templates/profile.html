@@ -64,18 +64,16 @@
                 </div>
                 {{/lifeguard}}
             </div>
-            <form action="/logout" method="post">
-                <input type="hidden" name="_csrf" value="{{token}}"/>
-                <div class="btn-cont">
-                    {{#me}}
-                    <a href="/user/{{mail}}/edit" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-
+            <div class="btn-cont">
+                {{#me}}
+                <a href="/user/{{mail}}/edit" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+                <form action="/logout" method="post">
+                    <input type="hidden" name="_csrf" value="{{token}}"/>
                     <input type="submit" class="btn btn-red" value="Cerrar sesión"/>
-                    {{/me}}
-
-                    <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
-                </div>
-            </form>
+                </form>
+                {{/me}}
+                <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+            </div>
 
             {{#admin}}
             <form role="form" action='/profile/delete?id={{id}}' method="post">
