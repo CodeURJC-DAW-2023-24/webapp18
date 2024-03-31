@@ -135,6 +135,10 @@ public class Lifeguard extends Person{
 	public void setImageUser(boolean imageUser){
 		this.imageUser = imageUser;
 	}
+    
+    public void initSkills(){
+		this.skills = new ArrayList<String>();
+	}
 
     public boolean getofferAssigned(){
 		return this.offerAssigned;

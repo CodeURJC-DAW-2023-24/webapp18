@@ -70,7 +70,7 @@ public class UserService {
 
     public Lifeguard createLifeguard(HttpServletRequest request) {
         Lifeguard lifeguard = new Lifeguard();
-
+        lifeguard.initSkills();
         lifeguard.setMail(request.getParameter("mail"));
         lifeguard.setDocument(request.getParameter("document"));
         updatePerson(lifeguard, request);
