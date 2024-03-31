@@ -45,7 +45,7 @@
 
             <div class="btn-cont">
                 {{#admin}}
-                <a href="/pool/editB?id={{id}}" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+                <a href="/pool/edit?id={{id}}" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
                 <form role="form" action='/pool/delete?id={{id}}' method="post">
                     <input type ="hidden" name="_csrf" value="{{token}}"/>
                     <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i> Eliminar</button>
