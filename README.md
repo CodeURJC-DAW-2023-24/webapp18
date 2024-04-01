@@ -6,25 +6,12 @@
   - Marcos del Valle Hontanar - MarcoDelValleH - m.delvalle.2020@alumnos.urjc.es
 
 
-## Navegación 
-![image](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/d62c1427-e17f-47ca-8b95-b1a422a1ef59)
-
-
-## Instrucciones de ejecución
-Para iniciar la aplicación web se deben seguir los siguientes pasos:
-  - Instalar las extensiones y librerias relativas a Spring y Java
-  - Iniciar la base de datos mySQL
-  - Descargar la aplicación
-  - Configurar en aplication.properties el puerto en el que se inicial el programa, el usuario de la base de datos local, su contraseña y su dirección.
-  - Iniciar Application.java
-  - Acceder desde el navegador (https://localhost:x, donde x es el puerto configurado en el paso anterior)
-
-
 
 
 ## Diagrama de los clases y templates
 
-![image](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/d5bc4008-3850-4338-ae25-5a2651e55881)
+![image](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/e7f730fc-fe3f-4e41-bacd-3d00ab52ede9)
+
 
 
 ## Diagrama de entidades
@@ -54,19 +41,19 @@ Implementación de las ofertas, paginación, edición de usuario, google maps. D
      
 ### Marcos:
 #### Tareas:
-Gráfica, implementar lo relacionado a pools y messages, las offer applyances, privilegios de admin. 
+RestController de la Grafica y de Offer 
 #### Commits: 
-  - Offer applying and checking added
-  - Graphic added
-  - Merge branch 'pruebaSecurity' into fase2
-  - Added form to create pools
-  - AddMessage and delete message now working through DB
+  - security changes needed to do rest petitions added
+  - chart rest controller added
+  - added DOT dir, offer rest controller almost implemented
+  - error messages to GET api/offers and offer check function
+  - Documentation added, error messages added and fixed creating offer without a valid pool ID
 #### Ficheros: 
-  - PoolController
-  - PieController
-  - OfferController
-  - Pool
-  - Offer
+  - OfferDTO
+  - PieChartRestController
+  - OfferRestController
+  - LoginRestController
+
      
 ### Pedro:
 #### Tareas:
@@ -82,7 +69,7 @@ Implementar lo relacionado a usuarios (employers y lifeguards) en la API REST
   - EmployerRestController
   - LifeguardDTO
   - EmployerDTO
-  - LoginrRestController
+  - LoginRestController
 
 ### Nico:
 #### Tareas:
