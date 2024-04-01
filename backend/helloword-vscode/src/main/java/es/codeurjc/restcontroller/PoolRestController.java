@@ -1,23 +1,24 @@
 package es.codeurjc.restcontroller;
 
-import java.net.URI;
-import java.security.Principal;
-import java.sql.SQLException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import es.codeurjc.DTO.PoolDTO;
 import es.codeurjc.model.Pool;
@@ -43,7 +44,7 @@ public class PoolRestController {
     })
     @GetMapping
     public ResponseEntity<List<PoolDTO>> getPools() {
-        List<Pool> pools = poolService.findAll();
+        Collection<Pool> pools = poolService.findAll();
         List<PoolDTO> poolDTOs = new ArrayList<>();
 
         for (Pool pool : pools) {
@@ -70,6 +71,19 @@ public class PoolRestController {
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+    // ----------------------------------------------- POST -----------------------------------------------
+    @Operation(summary = "Create a new pool.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Pool created", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = PoolDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid data in poolDTO", content = @Content)
+    })
+    @PostMapping
+    public ResponseEntity<PoolDTO> createPool(@RequestBody PoolDTO poolDTO) {
+        Pool pool = poolFromDTO(poolDTO);
+        poolService.save(pool);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new PoolDTO(pool));
+    }
 
     // ----------------------------------------------- PUT -----------------------------------------------
     @Operation(summary = "Update a pool by its ID.")
@@ -91,7 +105,10 @@ public class PoolRestController {
         pool.setPhoto(poolDTO.getPhoto());
         pool.setDirection(poolDTO.getDirection());
         pool.setCapacity(poolDTO.getCapacity());
-        // Actualizar otros campos...
+        pool.setStart(LocalTime.parse(poolDTO.getScheduleStart())); // asumiendo que es un String con formato válido de hora
+        pool.setEnd(LocalTime.parse(poolDTO.getScheduleEnd())); // asumiendo que es un String con formato válido de hora
+        pool.setCompany(poolDTO.getCompany());
+        pool.setDescription(poolDTO.getDescription());
 
         poolService.save(pool);
         return ResponseEntity.ok().body(new PoolDTO(pool));
@@ -114,32 +131,50 @@ public class PoolRestController {
     }
 
     // ------------------------------------------------- SERVICE --------------------------------------------
-    
     public Pool poolFromDTO(PoolDTO poolDTO) {
-        Pool pool = new Pool();
-    pool.setName(poolDTO.getName());
-    pool.setPhoto(poolDTO.getPhoto());
-    pool.setDirection(poolDTO.getDirection());
-    pool.setCapacity(poolDTO.getCapacity());
-    // Asignar otros atributos...
-
-    return pool;
-    }
-
-    public Pool updatePoolFromDTO(Pool pool, PoolDTO poolDTO) {
-        pool.setName(poolDTO.getName());
-        pool.setPhoto(poolDTO.getPhoto());
-        pool.setDirection(poolDTO.getDirection());
-        pool.setCapacity(poolDTO.getCapacity());
-        // Actualizar otros atributos...
-
+        // Convertir el String de scheduleStart a LocalTime
+        LocalTime scheduleStart = LocalTime.parse(poolDTO.getScheduleStart(), DateTimeFormatter.ofPattern("HH:mm"));
+        // Convertir el String de scheduleEnd a LocalTime
+        LocalTime scheduleEnd = LocalTime.parse(poolDTO.getScheduleEnd(), DateTimeFormatter.ofPattern("HH:mm"));
+        
+        Pool pool = new Pool.Builder()
+            .name(poolDTO.getName())
+            .photo(poolDTO.getPhoto())
+            .direction(poolDTO.getDirection())
+            .capacity(poolDTO.getCapacity())
+            .scheduleStart(scheduleStart) // Pasar el LocalTime al constructor
+            .scheduleEnd(scheduleEnd) // Pasar el LocalTime al constructor
+            .company(poolDTO.getCompany())
+            .description(poolDTO.getDescription())
+            .build();
         return pool;
     }
 
-    public HashMap<String, ArrayList<String>> buildMap(Pool pool) {
+    public Pool updatePoolFromDTO(Pool pool, PoolDTO poolDTO) {
+        // Convertir el String de scheduleStart a LocalTime
+        LocalTime scheduleStart = LocalTime.parse(poolDTO.getScheduleStart(), DateTimeFormatter.ofPattern("HH:mm"));
+        // Convertir el String de scheduleEnd a LocalTime
+        LocalTime scheduleEnd = LocalTime.parse(poolDTO.getScheduleEnd(), DateTimeFormatter.ofPattern("HH:mm"));
+        
+        Pool.Builder poolBuilder = new Pool.Builder();
+        poolBuilder
+            .name(poolDTO.getName())
+            .photo(poolDTO.getPhoto())
+            .direction(poolDTO.getDirection())
+            .capacity(poolDTO.getCapacity())
+            .scheduleStart(scheduleStart) // Pasar el LocalTime al constructor
+            .scheduleEnd(scheduleEnd) // Pasar el LocalTime al constructor
+            .company(poolDTO.getCompany())
+            .description(poolDTO.getDescription())
+            .messages(new ArrayList<>(pool.getMessages())); // Crear un nuevo ArrayList a partir de la lista existente para mantener los mensajes antiguos
+
+        pool.update(poolBuilder);
+        return pool;
+    }
+
+    public HashMap<String, ArrayList<String>> buildMap() {
         HashMap<String, ArrayList<String>> mapa = new HashMap<>();
-        // Implementar lógica para construir el mapa
-        // Similar a la implementación para Offer, pero adaptada para Pool
+        // Implementar creacion de mapa de piscinas
         return mapa;
     }
 
