@@ -4,9 +4,12 @@ import java.net.URI;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +36,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
@@ -48,6 +52,30 @@ public class OfferRestController {
     private UserService userService;
 
     // ----------------------------------------------- GET -----------------------------------------------
+    @Operation(summary = "Get paginated offers.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Offers found", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = OfferDTO.class)) }),
+            @ApiResponse(responseCode = "404", description = "Offers not found, probably high page number supplied", content = @Content)
+    })
+    @GetMapping
+    public ResponseEntity<List<OfferDTO>> getOffers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        Page<Offer> offers = offerService.findAll(PageRequest.of(page, size));
+        List<OfferDTO> offersDTO = new ArrayList<>();
+
+        for (Offer o : offers) {
+            offersDTO.add(new OfferDTO(o));
+        }
+
+        if (offersDTO.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(offersDTO);
+    }
+
     @Operation(summary = "Get an offer by its ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Offer found", content = {
@@ -105,7 +133,7 @@ public class OfferRestController {
             @ApiResponse(responseCode = "400", description = "Bad request, invalid data in new offer", content = @Content),
             @ApiResponse(responseCode = "404", description = "Pool not found, probably invalid id supplied", content = @Content)
     })
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO, Principal principal) {
         if (principal != null) {
             Optional<Employer> eOP = userService.findEmployerByEmail(principal.getName());
