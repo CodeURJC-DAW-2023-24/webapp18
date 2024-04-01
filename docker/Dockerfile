@@ -8,6 +8,6 @@ RUN mvn -f /project/pom.xml clean package -DskipTests
 # PACKAGE STAGE
 FROM openjdk:23-slim
 WORKDIR /project
-COPY --from=build /project/target/*.jar /project
+COPY --from=build /project/target/*.jar /project/Application.jar
 EXPOSE 8443
-CMD ["java", "-jar", "/project/demo-webapp-18.jar"]
+CMD ["java", "-jar", "/project/Application.jar"]
