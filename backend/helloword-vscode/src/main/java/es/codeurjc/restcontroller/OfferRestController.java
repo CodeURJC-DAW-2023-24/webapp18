@@ -2,6 +2,7 @@ package es.codeurjc.restcontroller;
 
 import java.net.URI;
 import java.security.Principal;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -212,13 +213,39 @@ public class OfferRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Offer edited", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = OfferDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid data in changes", content = @Content),
             @ApiResponse(responseCode = "401", description = "You are not authorized, you are not the owner or the admin", content = @Content),
             @ApiResponse(responseCode = "404", description = "Offer not found, probably invalid id supplied", content = @Content)
     })
     @PutMapping("/{id}")
-    public String editOffer(@PathVariable int id) { // Only for admin and owner
-        // GEORGE MANIN YOU HAVE TO IMPLEMENT THIS MF PETITION :3
-        return "Se ha editado correctamente";
+    public ResponseEntity<OfferDTO> editOffer(@PathVariable int id, @RequestBody OfferDTO offerDTO, Principal principal) throws SQLException {
+        Optional<Offer> offerOptional = offerService.findById(id);
+        if (!offerOptional.isPresent())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Offer offer = offerOptional.get();
+
+        if (principal == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // Not logged in
+        String username = principal.getName();
+
+        Optional<Employer> employerOptional = userService.findEmployerByEmail(username);
+        if (!employerOptional.isPresent())
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // Not an employer
+        Employer employer = employerOptional.get();
+
+        if (!employer.isAdmin() && !employer.isOwner(offer))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // Not an admin or owner
+
+        try {
+            checkOfferDTO(offerDTO);
+        } catch (IllegalArgumentException exception) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Error-Message", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
+        }
+
+        updateOfferFromDTO(offer, offerDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(new OfferDTO(offer));
     }
 
     @Operation(summary = "Select lifeguard for an offer.")
@@ -356,6 +383,18 @@ public class OfferRestController {
                 .build();
         return offer;
     }
+
+    public Offer updateOfferFromDTO(Offer offer, OfferDTO offerDTO){
+        Offer.Builder offerBuilder = new Offer.Builder();
+        offerBuilder
+            .salary(offerDTO.getSalary())
+            .start(offerDTO.getStart())
+            .type(offerDTO.getType())
+            .description(offerDTO.getDescription());
+
+        offer.update(offerBuilder);
+        return offer;
+	}
 
     public HashMap<String, ArrayList<String>> buildMap(Offer offer) {
         HashMap<String, ArrayList<String>> mapa = new HashMap<>();
