@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import es.codeurjc.DTO.OfferDTO;
+import es.codeurjc.DTO.MessageDTO;
 import es.codeurjc.DTO.PoolDTO;
+import es.codeurjc.model.Message;
 import es.codeurjc.model.Pool;
+import es.codeurjc.service.MessageService;
 import es.codeurjc.service.PoolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,6 +39,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class PoolRestController {
     @Autowired
     private PoolService poolService;
+    private MessageService messageService;
 
     // ----------------------------------------------- GET -----------------------------------------------
     @Operation(summary = "Get all pools.")
@@ -74,6 +77,31 @@ public class PoolRestController {
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
+     // GET messages
+
+     @Operation(summary = "Get all messages of a pool by its ID.")
+     @ApiResponses(value = {
+             @ApiResponse(responseCode = "200", description = "Messages found", content = {
+                     @Content(mediaType = "application/json", schema = @Schema(implementation = MessageDTO.class)) }),
+             @ApiResponse(responseCode = "404", description = "Pool not found, probably invalid id supplied", content = @Content)
+     })
+     @GetMapping("/{poolId}/messages")
+     public ResponseEntity<List<MessageDTO>> getMessages(@PathVariable Long poolId) {
+         Optional<Pool> pool = poolService.findById(poolId);
+         if (!pool.isPresent()) {
+             return ResponseEntity.notFound().build();
+         }
+     
+         List<Message> messages = pool.get().getMessages();
+         List<MessageDTO> messageDTOs = new ArrayList<>();
+         for (Message message : messages) {
+             messageDTOs.add(new MessageDTO(message));
+         }
+         return ResponseEntity.ok().body(messageDTOs);
+     }
+      
+     
     // ----------------------------------------------- POST -----------------------------------------------
     @Operation(summary = "Create a new pool.")
     @ApiResponses(value = {
@@ -91,6 +119,35 @@ public class PoolRestController {
             .toUri();
         PoolDTO returnPoolDTO = new PoolDTO(pool);
         return ResponseEntity.created(location).body(returnPoolDTO);
+    }
+
+     // POST messages
+    @Operation(summary = "Add a new message to a pool by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Message added", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = MessageDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid data in messageDTO", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Pool not found, probably invalid id supplied", content = @Content)
+    })
+    @PostMapping("/{poolId}/messages")
+    public ResponseEntity<MessageDTO> addMessage(@PathVariable Long poolId, @RequestBody MessageDTO messageDTO) {
+        Optional<Pool> poolOptional = poolService.findById(poolId);
+        if (!poolOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Pool pool = poolOptional.get();
+        Message message = new Message(messageDTO.getAuthor(), messageDTO.getBody());
+        pool.addMessage(message);
+        messageService.save(message);
+        poolService.save(pool);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(message.getID())
+                .toUri();
+
+        return ResponseEntity.created(location).body(new MessageDTO(message));
     }
 
     // ----------------------------------------------- PUT -----------------------------------------------
@@ -138,6 +195,22 @@ public class PoolRestController {
         return ResponseEntity.noContent().build();
     }
 
+    // DELETE messages
+    @Operation(summary = "Delete a message from a pool by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Message deleted", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Message not found, probably invalid id supplied", content = @Content)
+    })
+    @DeleteMapping("/{poolId}/messages/{messageId}")
+    public ResponseEntity<Void> deleteMessage(@PathVariable Long poolId, @PathVariable Long messageId) {
+        Optional<Message> messageOptional = messageService.findById(messageId);
+        if (!messageOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        messageService.deleteById(messageId);
+        return ResponseEntity.noContent().build();
+    }
     // ------------------------------------------------- SERVICE --------------------------------------------
     public Pool poolFromDTO(PoolDTO poolDTO) {
         // Convertir el String de scheduleStart a LocalTime
