@@ -201,6 +201,7 @@ public class PoolRestController {
         }
 
         updatePoolFromDTO(pool, poolDTO);
+        poolService.save(pool);
         return ResponseEntity.status(HttpStatus.OK).body(new PoolDTO(pool));
     }
 

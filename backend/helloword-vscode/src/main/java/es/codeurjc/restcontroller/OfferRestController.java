@@ -245,6 +245,7 @@ public class OfferRestController {
         }
 
         updateOfferFromDTO(offer, offerDTO);
+        offerService.save(offer);
         return ResponseEntity.status(HttpStatus.OK).body(new OfferDTO(offer));
     }
 
