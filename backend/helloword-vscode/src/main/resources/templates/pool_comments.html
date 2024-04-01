@@ -4,14 +4,14 @@
         <a class="author" href="/profile?type=0&mail={{author}}">{{author}}:</a>
         <p class="body"> {{body}} </p>
     </data>
-    {{#owner}}
+    {{#hasOwner}}
     <div class="btn-cont">
         <form role="form" action='/pool/message/delete?id={{id}}' method="post">
             <input type ="hidden" name="_csrf" value="{{token}}"/>
             <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
         </form>
     </div>
-    {{/owner}}
+    {{/hasOwner}}
 </div>
 {{/messages}}
 {{^messages}}

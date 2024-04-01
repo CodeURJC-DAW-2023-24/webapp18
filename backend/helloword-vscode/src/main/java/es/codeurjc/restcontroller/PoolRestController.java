@@ -158,7 +158,7 @@ public class PoolRestController {
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(message.getID())
+                .buildAndExpand(message.getId())
                 .toUri();
 
         return ResponseEntity.created(location).body(new MessageDTO(message));
