@@ -1,10 +1,10 @@
 {{#offers}}
 <a href="/offer?id={{id}}">
     {{#pool.photoCheck}}
-    <img id="img-user" src="/pool/{{pool.id}}/image" >
+    <img src="/pool/{{pool.id}}/image" >
     {{/pool.photoCheck}}
     {{^pool.photoCheck}}
-    <img id="img-pool" src="{{pool.photo}}" >
+    <img src="{{pool.photo}}" >
     {{/pool.photoCheck}}
     <p>{{pool.direction}}</p>
     <p>{{salary}}€</p>

@@ -56,6 +56,6 @@ public class MapsController {
         model.addAttribute("address", address);
         model.addAttribute("offers", offers);
         model.addAttribute("alternative", "No hay ofertas");
-        return "offers_maps";
+        return "maps_offers";
     }
 }

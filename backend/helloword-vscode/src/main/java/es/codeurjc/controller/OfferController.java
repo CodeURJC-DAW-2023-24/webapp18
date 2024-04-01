@@ -51,7 +51,7 @@ public class OfferController {
         model.addAttribute("offers", offers);
         model.addAttribute("hasMore", offers.hasNext());
         model.addAttribute("alternative", "No hay ofertas");
-        return "offers";
+        return "offer_cards";
     }
 
     @GetMapping("/offer")
