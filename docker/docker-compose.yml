@@ -9,7 +9,7 @@ services:
     ports:
       - 8443:8443
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/pruebaBD
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost/pruebabd
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=rootpass
     depends_on:
@@ -20,4 +20,4 @@ services:
     restart: on-failure
     environment:
       - MYSQL_ROOT_PASSWORD=rootpass
-      - MYSQL_DATABASE=pruebaBD
+      - MYSQL_DATABASE=pruebabd
