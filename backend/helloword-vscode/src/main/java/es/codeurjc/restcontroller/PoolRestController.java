@@ -112,4 +112,39 @@ public class PoolRestController {
         poolService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    // ------------------------------------------------- SERVICE --------------------------------------------
+    
+    public Pool poolFromDTO(PoolDTO poolDTO) {
+        Pool pool = new Pool();
+    pool.setName(poolDTO.getName());
+    pool.setPhoto(poolDTO.getPhoto());
+    pool.setDirection(poolDTO.getDirection());
+    pool.setCapacity(poolDTO.getCapacity());
+    // Asignar otros atributos...
+
+    return pool;
+    }
+
+    public Pool updatePoolFromDTO(Pool pool, PoolDTO poolDTO) {
+        pool.setName(poolDTO.getName());
+        pool.setPhoto(poolDTO.getPhoto());
+        pool.setDirection(poolDTO.getDirection());
+        pool.setCapacity(poolDTO.getCapacity());
+        // Actualizar otros atributos...
+
+        return pool;
+    }
+
+    public HashMap<String, ArrayList<String>> buildMap(Pool pool) {
+        HashMap<String, ArrayList<String>> mapa = new HashMap<>();
+        // Implementar lógica para construir el mapa
+        // Similar a la implementación para Offer, pero adaptada para Pool
+        return mapa;
+    }
+
+    public boolean checkPoolDTO(PoolDTO poolDTO) {
+        // Implementar validaciones específicas para PoolDTO, si es necesario
+        return true;
+    }
 }
