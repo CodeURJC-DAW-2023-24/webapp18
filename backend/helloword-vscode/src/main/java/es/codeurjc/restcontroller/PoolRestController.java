@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,21 +48,24 @@ public class PoolRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pools found", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = PoolDTO.class)) }),
-            @ApiResponse(responseCode = "404", description = "Pools not found", content = @Content)
+            @ApiResponse(responseCode = "404", description = "Pools not found, probably high page number supplied", content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<PoolDTO>> getPools() {
-        Collection<Pool> pools = poolService.findAll();
-        List<PoolDTO> poolDTOs = new ArrayList<>();
+    public ResponseEntity<List<PoolDTO>> getPools(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        Page<Pool> pools = poolService.findAll(PageRequest.of(page, size));
+        List<PoolDTO> poolsDTO = new ArrayList<>();
 
         for (Pool pool : pools) {
-            poolDTOs.add(new PoolDTO(pool));
+            poolsDTO.add(new PoolDTO(pool));
         }
 
-        if (poolDTOs.isEmpty())
+        if (poolsDTO.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        return ResponseEntity.status(HttpStatus.OK).body(poolDTOs);
+        return ResponseEntity.status(HttpStatus.OK).body(poolsDTO);
     }
 
     @Operation(summary = "Get a pool by its ID.")
@@ -159,7 +164,7 @@ public class PoolRestController {
             @ApiResponse(responseCode = "404", description = "Pool not found, probably invalid id supplied", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<PoolDTO> updatePool(@PathVariable Long id, @RequestBody PoolDTO poolDTO) {
+    public ResponseEntity<PoolDTO> editPool(@PathVariable Long id, @RequestBody PoolDTO poolDTO) {
         Optional<Pool> poolOptional = poolService.findById(id);
         if (!poolOptional.isPresent())
             return ResponseEntity.notFound().build();
