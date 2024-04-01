@@ -4,7 +4,6 @@
   - Pedro Cristino Moreno - PedroCristino2020 - p.cristino.2020@alumnos.urjc.es
   - Jorge Sánchez Díaz - RisiGT - j.sanchezdi.2020@alumnos.ujrc.es 
   - Marcos del Valle Hontanar - MarcoDelValleH - m.delvalle.2020@alumnos.urjc.es
-  - Cristian Kim - cristianvictorkim - cv.kim.2023@alumnos.urjc.es
 
 
 ## Navegación 
@@ -71,21 +70,26 @@ Gráfica, implementar lo relacionado a pools y messages, las offer applyances, p
      
 ### Pedro:
 #### Tareas:
-Implementar lo relacionado a usuarios (employers y lifeguards), inicio de sesión, registrarse, perfil y seguridad.
+Implementar lo relacionado a usuarios (employers y lifeguards) en la API REST
 #### Commits: 
-  - Added employers and lifeguard databases
-  - works login and view your profile
-  - initialize database and management of added roles
-  - logout implementation and header improvement
-  - Added list of lifeguards and employers can remove them from accepted offers
+  - Added UserRestController (to check if it works)
+  - Setting passwords in the API works and improved put and post methods. Need to check if it works with images
+  - Added Get Offers and OffersAccepted and also Delete one of your offers or offersAccepted for lifeguards. For employers get offers and delete offer permanently
+  - Post, delete, put and get user images works. Added permissions to api user
+  - Added documentation of UserRestController with Open API
 #### Ficheros: 
-  - UserController
-  - Person
-  - Lifeguard
-  - Employer
-  - profile
+  - LifeguardRestController
+  - EmployerRestController
+  - LifeguardDTO
+  - EmployerDTO
+  - LoginrRestController
 
-### Cristian:
+### Nico:
+#### Tareas:
+#### Commits:
+#### Ficheros:
+
+### Adrián:
 #### Tareas:
 #### Commits:
 #### Ficheros:
