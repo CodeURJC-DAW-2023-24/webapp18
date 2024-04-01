@@ -106,7 +106,7 @@ public class OfferRestController {
                 Optional<Offer> offer = offerService.findById(id);
                 Employer e = eOP.get();
                 if (offer.isPresent()) {
-                    if (isOwner(offer.get(), e.getMail()) || isAdmin(e.getMail())) {
+                    if (e.isOwner(offer.get()) || e.isAdmin()) {
 
                         HashMap<String, ArrayList<String>> mapa = buildMap(offer.get());
                         return ResponseEntity.status(HttpStatus.OK).body(mapa);
@@ -139,30 +139,31 @@ public class OfferRestController {
             Optional<Employer> eOP = userService.findEmployerByEmail(principal.getName());
             if (eOP.isPresent()) {
                 Employer e = eOP.get();
-                if (isValid(offerDTO)) {
-                    Optional<Pool> pOP = poolService.findById(offerDTO.getPoolID());
-                    if (pOP.isPresent()) {
-                        Pool pool = pOP.get();
-                        Offer offer = offerFromDTO(offerDTO);
-                        offer.addEmployer(e);
-                        e.addOffer(offer);
-                        offerService.save(offer);
-                        userService.saveEmployer(e);
-                        pool.addOffer(offer);
-                        poolService.save(pool); // Error code missimg in data are incorect
-                        URI location = ServletUriComponentsBuilder.fromHttpUrl("https://localhost:8443")
-                                .path("/api/offers/{id}")
-                                .buildAndExpand(offer.getId())
-                                .toUri();
-                        OfferDTO returnOfferDTO = new OfferDTO(offer);
-                        return ResponseEntity.created(location).body(returnOfferDTO);
-                    } else {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-                    }
-                } else {
+                try {
+                    checkOfferDTO(offerDTO);
+                } catch (IllegalArgumentException exception) {
                     HttpHeaders headers = new HttpHeaders();
-                    headers.add("Error-Message", getErrorMessage(offerDTO));
+                    headers.add("Error-Message", exception.getMessage());
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
+                }
+                Optional<Pool> pOP = poolService.findById(offerDTO.getPoolID());
+                if (pOP.isPresent()) {
+                    Pool pool = pOP.get();
+                    Offer offer = offerFromDTO(offerDTO);
+                    offer.addEmployer(e);
+                    e.addOffer(offer);
+                    offerService.save(offer);
+                    userService.saveEmployer(e);
+                    pool.addOffer(offer);
+                    poolService.save(pool); // Error code missimg in data are incorect
+                    URI location = ServletUriComponentsBuilder.fromHttpUrl("https://localhost:8443")
+                            .path("/api/offers/{id}")
+                            .buildAndExpand(offer.getId())
+                            .toUri();
+                    OfferDTO returnOfferDTO = new OfferDTO(offer);
+                    return ResponseEntity.created(location).body(returnOfferDTO);
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
                 }
             } else
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -236,7 +237,7 @@ public class OfferRestController {
                 Optional<Offer> offer = offerService.findById(id);
                 Employer e = eOP.get();
                 if (offer.isPresent()) {
-                    if (isOwner(offer.get(), e.getMail()) || isAdmin(e.getMail())) {
+                    if (e.isOwner(offer.get()) || e.isAdmin()) {
                         if (nSelected < offer.get().getLifeguards().size()) {
                             Lifeguard l = offer.get().getLifeguards().get(nSelected);
                             offer.get().setLifeguard(l);
@@ -280,7 +281,7 @@ public class OfferRestController {
                 Optional<Offer> offer = offerService.findById(id);
                 Employer e = eOP.get();
                 if (offer.isPresent()) {
-                    if (isOwner(offer.get(), e.getMail()) || isAdmin(e.getMail())) {
+                    if (e.isOwner(offer.get()) || e.isAdmin()) {
                         offerService.deleteById(id);
                         return ResponseEntity.status(HttpStatus.OK).build();
                     } else {
@@ -313,7 +314,7 @@ public class OfferRestController {
                 Optional<Offer> offer = offerService.findById(id);
                 Employer e = eOP.get();
                 if (offer.isPresent()) {
-                    if (isOwner(offer.get(), e.getMail()) || isAdmin(e.getMail())) {
+                    if (e.isOwner(offer.get()) || e.isAdmin()) {
                         if (offer.get().getLifeguard() != null) {
                             Lifeguard l = offer.get().getLifeguard();
                             offer.get().setLifeguard(null);
@@ -356,14 +357,6 @@ public class OfferRestController {
         return offer;
     }
 
-    public boolean isOwner(Offer o, String n) {
-        return o.getEmployer().getMail().equals(n);
-    }
-
-    public boolean isAdmin(String n) {
-        return n.equals("admin"); // request.isuser in role (Admin)
-    }
-
     public HashMap<String, ArrayList<String>> buildMap(Offer offer) {
         HashMap<String, ArrayList<String>> mapa = new HashMap<>();
         if (offer.getLifeguard() != null) {
@@ -381,15 +374,9 @@ public class OfferRestController {
         return mapa;
     }
 
-    public boolean isValid(OfferDTO offerDTO) {
+    public boolean checkOfferDTO(OfferDTO offerDTO) {
         if (Integer.valueOf(Integer.valueOf(offerDTO.getSalary())) < 1300)
-            return false;
+            throw new IllegalArgumentException("No se puede introducir un salario menor al salario minimo");
         return true;
-    }
-
-    public String getErrorMessage(OfferDTO offerDTO) {
-        if (Integer.valueOf(Integer.valueOf(offerDTO.getSalary())) < 1300)
-            return "No se puede introducir un salario menor al salario minimo";
-        return "true";
     }
 }

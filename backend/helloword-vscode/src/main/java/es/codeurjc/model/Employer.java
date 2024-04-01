@@ -31,6 +31,10 @@ public class Employer extends Person{
         this.offers = new ArrayList<Offer>();
     }
 
+    public boolean isOwner(Offer offer){
+        return offers.contains(offer);
+    }
+
     public String getType(){
         return "employer";
     }
