@@ -73,8 +73,19 @@ Implementar lo relacionado a usuarios (employers y lifeguards) en la API REST
 
 ### Nico:
 #### Tareas:
+Implementar el RestController de Pool y sus dependencias
 #### Commits:
+  - Creation PoolDTO
+  - Creation PoolRestController
+  - Changes in PoolRestController to resemble code
+  - Added service on PoolRestController
+  - Added UriLocation in PoolRestController
 #### Ficheros:
+  - PoolRestController
+  - MessageDTO
+  - PoolDTO
+  - Pool
+  - Message
 
 ### Adrián:
 #### Tareas:
