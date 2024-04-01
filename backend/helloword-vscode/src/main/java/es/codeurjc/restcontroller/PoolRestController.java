@@ -1,5 +1,6 @@
 package es.codeurjc.restcontroller;
 
+import java.net.URI;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import es.codeurjc.DTO.OfferDTO;
 import es.codeurjc.DTO.PoolDTO;
 import es.codeurjc.model.Pool;
 import es.codeurjc.service.PoolService;
@@ -82,7 +85,12 @@ public class PoolRestController {
     public ResponseEntity<PoolDTO> createPool(@RequestBody PoolDTO poolDTO) {
         Pool pool = poolFromDTO(poolDTO);
         poolService.save(pool);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new PoolDTO(pool));
+        URI location = ServletUriComponentsBuilder.fromHttpUrl("https://localhost:8443")
+            .path("/api/pools/{id}")
+            .buildAndExpand(pool.getId())
+            .toUri();
+        PoolDTO returnPoolDTO = new PoolDTO(pool);
+        return ResponseEntity.created(location).body(returnPoolDTO);
     }
 
     // ----------------------------------------------- PUT -----------------------------------------------
