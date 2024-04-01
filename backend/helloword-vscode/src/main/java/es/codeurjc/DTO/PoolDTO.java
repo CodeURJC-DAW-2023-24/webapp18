@@ -14,6 +14,9 @@ public class PoolDTO {
     private String company;
     private String description;
 
+    public PoolDTO() {
+    }
+
     public PoolDTO(Pool pool) {
         this.id = pool.getId();
         this.name = pool.getName();

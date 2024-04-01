@@ -414,7 +414,7 @@ public class OfferRestController {
     }
 
     public boolean checkOfferDTO(OfferDTO offerDTO) {
-        if (Integer.valueOf(Integer.valueOf(offerDTO.getSalary())) < 1300)
+        if (offerDTO.getSalary() != null && Integer.valueOf(Integer.valueOf(offerDTO.getSalary())) < 1300)
             throw new IllegalArgumentException("No se puede introducir un salario menor al salario minimo");
         return true;
     }

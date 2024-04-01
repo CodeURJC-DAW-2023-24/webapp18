@@ -1,16 +1,18 @@
 package es.codeurjc.restcontroller;
 
 import java.net.URI;
+import java.security.Principal;
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,10 +28,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import es.codeurjc.DTO.MessageDTO;
 import es.codeurjc.DTO.PoolDTO;
+import es.codeurjc.model.Employer;
 import es.codeurjc.model.Message;
 import es.codeurjc.model.Pool;
 import es.codeurjc.service.MessageService;
 import es.codeurjc.service.PoolService;
+import es.codeurjc.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,10 +45,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class PoolRestController {
     @Autowired
     private PoolService poolService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
     private MessageService messageService;
 
     // ----------------------------------------------- GET -----------------------------------------------
-    @Operation(summary = "Get all pools.")
+    @Operation(summary = "Get paginated pools.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pools found", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = PoolDTO.class)) }),
@@ -156,32 +165,43 @@ public class PoolRestController {
     }
 
     // ----------------------------------------------- PUT -----------------------------------------------
-    @Operation(summary = "Update a pool by its ID.")
+    @Operation(summary = "Edit a pool by its ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Pool updated", content = {
+            @ApiResponse(responseCode = "200", description = "Pool edited", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = PoolDTO.class)) }),
             @ApiResponse(responseCode = "400", description = "Bad request, invalid data in changes", content = @Content),
+            @ApiResponse(responseCode = "401", description = "You are not authorized, you are not the admin", content = @Content),
             @ApiResponse(responseCode = "404", description = "Pool not found, probably invalid id supplied", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<PoolDTO> editPool(@PathVariable Long id, @RequestBody PoolDTO poolDTO) {
+    public ResponseEntity<PoolDTO> editPool(@PathVariable Long id, @RequestBody PoolDTO poolDTO, Principal principal) throws SQLException {
         Optional<Pool> poolOptional = poolService.findById(id);
         if (!poolOptional.isPresent())
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         Pool pool = poolOptional.get();
 
-        // Actualizar la pool con los datos del DTO
-        pool.setName(poolDTO.getName());
-        pool.setPhoto(poolDTO.getPhoto());
-        pool.setDirection(poolDTO.getDirection());
-        pool.setCapacity(poolDTO.getCapacity());
-        pool.setStart(LocalTime.parse(poolDTO.getScheduleStart())); // asumiendo que es un String con formato válido de hora
-        pool.setEnd(LocalTime.parse(poolDTO.getScheduleEnd())); // asumiendo que es un String con formato válido de hora
-        pool.setCompany(poolDTO.getCompany());
-        pool.setDescription(poolDTO.getDescription());
+        if (principal == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // Not logged in
+        String username = principal.getName();
 
-        poolService.save(pool);
-        return ResponseEntity.ok().body(new PoolDTO(pool));
+        Optional<Employer> employerOptional = userService.findEmployerByEmail(username);
+        if (!employerOptional.isPresent())
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // Not an employer
+        Employer employer = employerOptional.get();
+
+        if (!employer.isAdmin())
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // Not an admin
+
+        try {
+            checkPoolDTO(poolDTO);
+        } catch (IllegalArgumentException exception) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Error-Message", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
+        }
+
+        updatePoolFromDTO(pool, poolDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(new PoolDTO(pool));
     }
 
     // ----------------------------------------------- DELETE -----------------------------------------------
@@ -216,56 +236,70 @@ public class PoolRestController {
         messageService.deleteById(messageId);
         return ResponseEntity.noContent().build();
     }
+
     // ------------------------------------------------- SERVICE --------------------------------------------
     public Pool poolFromDTO(PoolDTO poolDTO) {
-        // Convertir el String de scheduleStart a LocalTime
-        LocalTime scheduleStart = LocalTime.parse(poolDTO.getScheduleStart(), DateTimeFormatter.ofPattern("HH:mm"));
-        // Convertir el String de scheduleEnd a LocalTime
-        LocalTime scheduleEnd = LocalTime.parse(poolDTO.getScheduleEnd(), DateTimeFormatter.ofPattern("HH:mm"));
-        
+        LocalTime scheduleStart = LocalTime.parse("12:00", DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime scheduleEnd = LocalTime.parse("20:00", DateTimeFormatter.ofPattern("HH:mm"));
+        if (poolDTO.getScheduleEnd() != null)
+            scheduleEnd = LocalTime.parse(poolDTO.getScheduleEnd(), DateTimeFormatter.ofPattern("HH:mm"));
+        if (poolDTO.getScheduleStart() != null)
+            scheduleStart = LocalTime.parse(poolDTO.getScheduleStart(), DateTimeFormatter.ofPattern("HH:mm"));
+
         Pool pool = new Pool.Builder()
-            .name(poolDTO.getName())
-            .photo(poolDTO.getPhoto())
-            .direction(poolDTO.getDirection())
-            .capacity(poolDTO.getCapacity())
-            .scheduleStart(scheduleStart) // Pasar el LocalTime al constructor
-            .scheduleEnd(scheduleEnd) // Pasar el LocalTime al constructor
-            .company(poolDTO.getCompany())
-            .description(poolDTO.getDescription())
-            .build();
+                .name(poolDTO.getName())
+                .photo(poolDTO.getPhoto())
+                .direction(poolDTO.getDirection())
+                .capacity(poolDTO.getCapacity())
+                .scheduleStart(scheduleStart)
+                .scheduleEnd(scheduleEnd)
+                .company(poolDTO.getCompany())
+                .description(poolDTO.getDescription())
+                .build();
         return pool;
     }
 
     public Pool updatePoolFromDTO(Pool pool, PoolDTO poolDTO) {
-        // Convertir el String de scheduleStart a LocalTime
-        LocalTime scheduleStart = LocalTime.parse(poolDTO.getScheduleStart(), DateTimeFormatter.ofPattern("HH:mm"));
-        // Convertir el String de scheduleEnd a LocalTime
-        LocalTime scheduleEnd = LocalTime.parse(poolDTO.getScheduleEnd(), DateTimeFormatter.ofPattern("HH:mm"));
-        
+        LocalTime scheduleStart = null;
+        LocalTime scheduleEnd = null;
+        if (poolDTO.getScheduleEnd() != null)
+            scheduleEnd = LocalTime.parse(poolDTO.getScheduleEnd(), DateTimeFormatter.ofPattern("HH:mm"));
+        if (poolDTO.getScheduleStart() != null)
+            scheduleStart = LocalTime.parse(poolDTO.getScheduleStart(), DateTimeFormatter.ofPattern("HH:mm"));
+
         Pool.Builder poolBuilder = new Pool.Builder();
         poolBuilder
             .name(poolDTO.getName())
             .photo(poolDTO.getPhoto())
             .direction(poolDTO.getDirection())
             .capacity(poolDTO.getCapacity())
-            .scheduleStart(scheduleStart) // Pasar el LocalTime al constructor
-            .scheduleEnd(scheduleEnd) // Pasar el LocalTime al constructor
+            .scheduleStart(scheduleStart)
+            .scheduleEnd(scheduleEnd)
             .company(poolDTO.getCompany())
-            .description(poolDTO.getDescription())
-            .messages(new ArrayList<>(pool.getMessages())); // Crear un nuevo ArrayList a partir de la lista existente para mantener los mensajes antiguos
+            .description(poolDTO.getDescription());
 
         pool.update(poolBuilder);
         return pool;
     }
 
-    public HashMap<String, ArrayList<String>> buildMap() {
-        HashMap<String, ArrayList<String>> mapa = new HashMap<>();
-        // Implementar creacion de mapa de piscinas
-        return mapa;
+    public boolean checkPoolDTO(PoolDTO poolDTO) {
+        try {
+            checkHourFormat(poolDTO.getScheduleStart());
+            checkHourFormat(poolDTO.getScheduleEnd());
+        } catch (IllegalArgumentException exception) {
+            throw new IllegalArgumentException(exception.getMessage());
+        }
+
+        return true;
     }
 
-    public boolean checkPoolDTO(PoolDTO poolDTO) {
-        // Implementar validaciones específicas para PoolDTO, si es necesario
+    public boolean checkHourFormat(String time) {
+        try {
+            if (time != null)
+                LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid time format: " + time);
+        }
         return true;
     }
 }
