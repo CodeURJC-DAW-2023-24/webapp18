@@ -1,5 +1,6 @@
 package es.codeurjc.service;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
+import es.codeurjc.model.Offer;
+import es.codeurjc.model.Message;
 import es.codeurjc.model.Person;
 import es.codeurjc.repository.EmployerRepository;
 import es.codeurjc.repository.LifeguardRepository;
@@ -47,6 +50,33 @@ public class UserService {
 	public Optional<Lifeguard> findLifeguardByEmail(String mail){
 		return lifeguardRepository.findByMail(mail);
 	}
+
+    public <T> boolean isAuthorized(Principal principal, T object) {
+        if (principal == null)
+            return false;  // Not logged in
+        String username = principal.getName();
+
+        Optional<Employer> employerOptional = findEmployerByEmail(username);
+        if (employerOptional.isPresent()) {
+            Employer employer = employerOptional.get();
+            if (employer.isAdmin())
+                return true;  // Is an admin
+            if ((object instanceof Offer) && (employer.isOwner((Offer) object)))
+                return true;  // Is the owner of the offer
+            if ((object instanceof Message) && (employer.isOwner((Message) object)))
+                return true;  // Is the owner of the message
+        }
+
+        Optional<Lifeguard> lifeguardOptional = findLifeguardByEmail(username);
+        if (lifeguardOptional.isPresent()) {
+            Lifeguard lifeguard = lifeguardOptional.get();
+            if ((object instanceof Message) && (lifeguard.isOwner((Message) object)))
+                return true;  // Is the owner of the message
+        }
+
+        return false;  // Not is an admin or the owner of the object
+    }
+
 	public void deleteUserByEmail(String mail){
 		Optional<Lifeguard> l = lifeguardRepository.findByMail(mail);
 		if(l.isPresent()) lifeguardRepository.deleteById(l.get().getId());

@@ -53,7 +53,7 @@ public class OfferRestController {
     private UserService userService;
 
     // ----------------------------------------------- GET -----------------------------------------------
-    @Operation(summary = "Get paginated offers.")
+    @Operation(summary = "Get paged offers.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Offers found", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = OfferDTO.class)) }),
@@ -101,28 +101,16 @@ public class OfferRestController {
     })
     @GetMapping("/{id}/lifeguards")
     public ResponseEntity<HashMap<String, ArrayList<String>>> getLifeguards(@PathVariable int id, Principal principal) {
-        if (principal != null) {
-            Optional<Employer> eOP = userService.findEmployerByEmail(principal.getName());
-            if (eOP.isPresent()) {
-                Optional<Offer> offer = offerService.findById(id);
-                Employer e = eOP.get();
-                if (offer.isPresent()) {
-                    if (e.isOwner(offer.get()) || e.isAdmin()) {
+        Optional<Offer> offerOptional = offerService.findById(id);
+        if (!offerOptional.isPresent()) 
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        Offer offer = offerOptional.get();
 
-                        HashMap<String, ArrayList<String>> mapa = buildMap(offer.get());
-                        return ResponseEntity.status(HttpStatus.OK).body(mapa);
-                    } else {
-                        HttpHeaders headers = new HttpHeaders();
-                        headers.add("Error-Message", "No eres propietario de esta oferta");
-                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).headers(headers).build();
-                    }
-                } else
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            } else
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } else
+        if (!userService.isAuthorized(principal, offer))
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
+        HashMap<String, ArrayList<String>> mapa = buildMap(offer);
+        return ResponseEntity.status(HttpStatus.OK).body(mapa);
     }
 
     // ----------------------------------------------- POST -----------------------------------------------
@@ -177,10 +165,10 @@ public class OfferRestController {
             @ApiResponse(responseCode = "200", description = "Offer found", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = OfferDTO.class)) }),
             @ApiResponse(responseCode = "401", description = "You are not authorized, you are not a lifeguard", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Conflict, you applyed more than once", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Conflict, you applied more than once", content = @Content),
             @ApiResponse(responseCode = "404", description = "Offer not found, probably invalid id supplied", content = @Content)
     })
-    @PostMapping("/{id}/lifeguards") // Only lifeguards not already applyed
+    @PostMapping("/{id}/lifeguards") // Only lifeguards not already applied
     public ResponseEntity<OfferDTO> newApply(@PathVariable int id, Principal principal) {
         if (principal != null) {
             Optional<Lifeguard> lOP = userService.findLifeguardByEmail(principal.getName());
@@ -221,20 +209,11 @@ public class OfferRestController {
     public ResponseEntity<OfferDTO> editOffer(@PathVariable int id, @RequestBody OfferDTO offerDTO, Principal principal) throws SQLException {
         Optional<Offer> offerOptional = offerService.findById(id);
         if (!offerOptional.isPresent())
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         Offer offer = offerOptional.get();
 
-        if (principal == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // Not logged in
-        String username = principal.getName();
-
-        Optional<Employer> employerOptional = userService.findEmployerByEmail(username);
-        if (!employerOptional.isPresent())
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // Not an employer
-        Employer employer = employerOptional.get();
-
-        if (!employer.isAdmin() && !employer.isOwner(offer))
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // Not an admin or owner
+        if (!userService.isAuthorized(principal, offer))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         try {
             checkOfferDTO(offerDTO);
@@ -259,39 +238,28 @@ public class OfferRestController {
     @PutMapping("/{id}/lifeguards/{nSelected}") // Only for admin and owner
     public ResponseEntity<HashMap<String, ArrayList<String>>> selectLifeguard(@PathVariable int id,
             @PathVariable int nSelected, Principal principal) {
-        if (principal != null) {
-            Optional<Employer> eOP = userService.findEmployerByEmail(principal.getName());
-            if (eOP.isPresent()) {
-                Optional<Offer> offer = offerService.findById(id);
-                Employer e = eOP.get();
-                if (offer.isPresent()) {
-                    if (e.isOwner(offer.get()) || e.isAdmin()) {
-                        if (nSelected < offer.get().getLifeguards().size()) {
-                            Lifeguard l = offer.get().getLifeguards().get(nSelected);
-                            offer.get().setLifeguard(l);
-                            offerService.save(offer.get());
-                            l.setofferAssigned(true);
-                            l.addOfferAccepted(offer.get());
-                            userService.saveLifeguard(l);
-                            HashMap<String, ArrayList<String>> mapa = buildMap(offer.get());
-                            return ResponseEntity.status(HttpStatus.OK).body(mapa);
+        Optional<Offer> offerOptional = offerService.findById(id);
+        if (!offerOptional.isPresent()) 
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        Offer offer = offerOptional.get();
 
-                        } else {
-                            HttpHeaders headers = new HttpHeaders();
-                            headers.add("Error-Message", "Selecciona un socorrista valido");
-                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
-                        }
-                    } else {
-                        HttpHeaders headers = new HttpHeaders();
-                        headers.add("Error-Message", "No eres propietario de esta oferta");
-                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).headers(headers).build();
-                    }
-                } else
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            } else
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } else
+        if (!userService.isAuthorized(principal, offer))
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        if (nSelected < offer.getLifeguards().size()) {
+            Lifeguard l = offer.getLifeguards().get(nSelected);
+            offer.setLifeguard(l);
+            offerService.save(offer);
+            l.setofferAssigned(true);
+            l.addOfferAccepted(offer);
+            userService.saveLifeguard(l);
+            HashMap<String, ArrayList<String>> mapa = buildMap(offer);
+            return ResponseEntity.status(HttpStatus.OK).body(mapa);
+        } else {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Error-Message", "Selecciona un socorrista valido");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
+        }
     }
 
     // ----------------------------------------------- DELETE -----------------------------------------------
@@ -303,26 +271,16 @@ public class OfferRestController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOffer(@PathVariable int id, Principal principal) { // Only for admin and owner
-        if (principal != null) {
-            Optional<Employer> eOP = userService.findEmployerByEmail(principal.getName());
-            if (eOP.isPresent()) {
-                Optional<Offer> offer = offerService.findById(id);
-                Employer e = eOP.get();
-                if (offer.isPresent()) {
-                    if (e.isOwner(offer.get()) || e.isAdmin()) {
-                        offerService.deleteById(id);
-                        return ResponseEntity.status(HttpStatus.OK).build();
-                    } else {
-                        HttpHeaders headers = new HttpHeaders();
-                        headers.add("Error-Message", "No eres propietario de esta oferta");
-                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).headers(headers).build();
-                    }
-                } else
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            } else
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } else
+        Optional<Offer> offerOptional = offerService.findById(id);
+        if (!offerOptional.isPresent()) 
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        Offer offer = offerOptional.get();
+
+        if (!userService.isAuthorized(principal, offer))
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        offerService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Operation(summary = "Unselect lifeguard of an offer.")
@@ -335,40 +293,29 @@ public class OfferRestController {
     @DeleteMapping("/{id}/lifeguards") // Only for admin and owner
     public ResponseEntity<HashMap<String, ArrayList<String>>> unselectLifeguard(@PathVariable int id,
             Principal principal) {
+        Optional<Offer> offerOptional = offerService.findById(id);
+        if (!offerOptional.isPresent()) 
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        Offer offer = offerOptional.get();
 
-        if (principal != null) {
-            Optional<Employer> eOP = userService.findEmployerByEmail(principal.getName());
-            if (eOP.isPresent()) {
-                Optional<Offer> offer = offerService.findById(id);
-                Employer e = eOP.get();
-                if (offer.isPresent()) {
-                    if (e.isOwner(offer.get()) || e.isAdmin()) {
-                        if (offer.get().getLifeguard() != null) {
-                            Lifeguard l = offer.get().getLifeguard();
-                            offer.get().setLifeguard(null);
-                            offerService.save(offer.get());
-                            l.setofferAssigned(false);
-                            l.deleteOfferAccepted(offer.get());
-                            userService.saveLifeguard(l);
-                            HashMap<String, ArrayList<String>> mapa = buildMap(offer.get());
-                            return ResponseEntity.status(HttpStatus.OK).body(mapa);
-                        } else {
-                            HttpHeaders headers = new HttpHeaders();
-                            headers.add("Error-Message", "No hay ningun socorrista seleccionado");
-                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
-                        }
-
-                    } else {
-                        HttpHeaders headers = new HttpHeaders();
-                        headers.add("Error-Message", "No eres propietario de esta oferta");
-                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).headers(headers).build();
-                    }
-                } else
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            } else
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } else
+        if (!userService.isAuthorized(principal, offer))
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        if (offer.getLifeguard() != null) {
+            Lifeguard l = offer.getLifeguard();
+            offer.setLifeguard(null);
+            offerService.save(offer);
+            l.setofferAssigned(false);
+            l.deleteOfferAccepted(offer);
+            userService.saveLifeguard(l);
+            HashMap<String, ArrayList<String>> mapa = buildMap(offer);
+            return ResponseEntity.status(HttpStatus.OK).body(mapa);
+        } else {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Error-Message", "No hay ningun socorrista seleccionado");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
+        }
+
 
     }
 

@@ -69,6 +69,10 @@ public abstract class Person {
         return roles.contains(role);
     }
 
+    public boolean isOwner(Message message){
+        return this.mail.equals(message.getAuthor());
+    }
+
     public abstract String getType();
 
     public Long getId() {

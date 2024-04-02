@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import es.codeurjc.DTO.MessageDTO;
 import es.codeurjc.DTO.PoolDTO;
-import es.codeurjc.model.Employer;
 import es.codeurjc.model.Message;
 import es.codeurjc.model.Pool;
 import es.codeurjc.service.MessageService;
@@ -53,7 +52,7 @@ public class PoolRestController {
     private MessageService messageService;
 
     // ----------------------------------------------- GET -----------------------------------------------
-    @Operation(summary = "Get paginated pools.")
+    @Operation(summary = "Get paged pools.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pools found", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = PoolDTO.class)) }),
@@ -177,20 +176,11 @@ public class PoolRestController {
     public ResponseEntity<PoolDTO> editPool(@PathVariable Long id, @RequestBody PoolDTO poolDTO, Principal principal) throws SQLException {
         Optional<Pool> poolOptional = poolService.findById(id);
         if (!poolOptional.isPresent())
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         Pool pool = poolOptional.get();
 
-        if (principal == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // Not logged in
-        String username = principal.getName();
-
-        Optional<Employer> employerOptional = userService.findEmployerByEmail(username);
-        if (!employerOptional.isPresent())
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // Not an employer
-        Employer employer = employerOptional.get();
-
-        if (!employer.isAdmin())
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // Not an admin
+        if (!userService.isAuthorized(principal, null))  // Pool must be an element of a employer
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         try {
             checkPoolDTO(poolDTO);
