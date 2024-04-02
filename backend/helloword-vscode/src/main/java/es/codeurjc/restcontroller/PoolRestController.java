@@ -199,33 +199,41 @@ public class PoolRestController {
     @Operation(summary = "Delete a pool by its ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Pool deleted", content = @Content),
+            @ApiResponse(responseCode = "401", description = "You are not authorized, you are not the admin", content = @Content),
             @ApiResponse(responseCode = "404", description = "Pool not found, probably invalid id supplied", content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePool(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePool(@PathVariable Long id, Principal principal) throws SQLException {
         Optional<Pool> poolOptional = poolService.findById(id);
         if (!poolOptional.isPresent())
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        if (!userService.isAuthorized(principal, null))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         poolService.deleteById(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    // DELETE messages
     @Operation(summary = "Delete a message from a pool by its ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Message deleted", content = @Content),
+            @ApiResponse(responseCode = "401", description = "You are not authorized, you are not the owner or the admin", content = @Content),
             @ApiResponse(responseCode = "404", description = "Message not found, probably invalid id supplied", content = @Content)
     })
     @DeleteMapping("/{poolId}/messages/{messageId}")
-    public ResponseEntity<Void> deleteMessage(@PathVariable Long poolId, @PathVariable Long messageId) {
+    public ResponseEntity<Void> deleteMessage(@PathVariable Long messageId, Principal principal) throws SQLException {
         Optional<Message> messageOptional = messageService.findById(messageId);
         if (!messageOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        Message message = messageOptional.get();
+
+        if (!userService.isAuthorized(principal, message))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         messageService.deleteById(messageId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     // ------------------------------------------------- SERVICE --------------------------------------------
