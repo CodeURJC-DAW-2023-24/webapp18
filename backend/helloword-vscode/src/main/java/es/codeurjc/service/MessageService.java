@@ -37,6 +37,10 @@ public class MessageService {
 		return messages.findById(id);
 	}
 
+	public Page<Message> findByPoolId(Long poolId, Pageable pageable) {
+		return messages.findByPoolId(poolId, pageable);
+	}
+
 	public void save(Message message) {
 		messages.save(message);
 	}

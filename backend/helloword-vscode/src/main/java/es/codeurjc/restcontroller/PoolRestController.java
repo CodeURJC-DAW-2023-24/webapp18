@@ -12,6 +12,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,30 +93,31 @@ public class PoolRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-     // GET messages
+    @Operation(summary = "Get all messages of a pool by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Messages found", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = MessageDTO.class)) }),
+            @ApiResponse(responseCode = "404", description = "Pool not found, probably invalid id supplied", content = @Content)
+    })
+    @GetMapping("/{id}/messages")
+    public ResponseEntity<List<MessageDTO>> getMessages(@PathVariable Long id,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "3") int size) {
 
-     @Operation(summary = "Get all messages of a pool by its ID.")
-     @ApiResponses(value = {
-             @ApiResponse(responseCode = "200", description = "Messages found", content = {
-                     @Content(mediaType = "application/json", schema = @Schema(implementation = MessageDTO.class)) }),
-             @ApiResponse(responseCode = "404", description = "Pool not found, probably invalid id supplied", content = @Content)
-     })
-     @GetMapping("/{poolId}/messages")
-     public ResponseEntity<List<MessageDTO>> getMessages(@PathVariable Long poolId) {
-         Optional<Pool> pool = poolService.findById(poolId);
-         if (!pool.isPresent()) {
-             return ResponseEntity.notFound().build();
-         }
-     
-         List<Message> messages = pool.get().getMessages();
-         List<MessageDTO> messageDTOs = new ArrayList<>();
-         for (Message message : messages) {
-             messageDTOs.add(new MessageDTO(message));
-         }
-         return ResponseEntity.ok().body(messageDTOs);
-     }
-      
-     
+        Optional<Pool> pool = poolService.findById(id);
+        if (!pool.isPresent())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<Message> messages = messageService.findByPoolId(id, pageable);
+        List<MessageDTO> messagesDTO = new ArrayList<>();
+        for (Message message : messages) {
+            messagesDTO.add(new MessageDTO(message));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(messagesDTO);
+    }
+
     // ----------------------------------------------- POST -----------------------------------------------
     @Operation(summary = "Create a new pool.")
     @ApiResponses(value = {
