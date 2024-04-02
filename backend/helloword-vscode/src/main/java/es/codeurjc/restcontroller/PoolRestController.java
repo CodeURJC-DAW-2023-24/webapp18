@@ -120,43 +120,57 @@ public class PoolRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Pool created", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = PoolDTO.class)) }),
-            @ApiResponse(responseCode = "400", description = "Bad request, invalid data in poolDTO", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid data in the body", content = @Content),
+            @ApiResponse(responseCode = "401", description = "You are not authorized, you are not the admin", content = @Content),
     })
     @PostMapping
-    public ResponseEntity<PoolDTO> createPool(@RequestBody PoolDTO poolDTO) {
+    public ResponseEntity<PoolDTO> createPool(@RequestBody PoolDTO poolDTO, Principal principal) throws SQLException {
+        if (!userService.isAuthorized(principal, null))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        if (!checkPoolDTO(poolDTO))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
         Pool pool = poolFromDTO(poolDTO);
         poolService.save(pool);
-        URI location = ServletUriComponentsBuilder.fromHttpUrl("https://localhost:8443")
-            .path("/api/pools/{id}")
-            .buildAndExpand(pool.getId())
-            .toUri();
-        PoolDTO returnPoolDTO = new PoolDTO(pool);
-        return ResponseEntity.created(location).body(returnPoolDTO);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(pool.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(new PoolDTO(pool));
     }
 
-     // POST messages
-    @Operation(summary = "Add a new message to a pool by its ID.")
+    @Operation(summary = "Add a new message to a pool.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Message added", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = MessageDTO.class)) }),
-            @ApiResponse(responseCode = "400", description = "Bad request, invalid data in messageDTO", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid data in the body", content = @Content),
+            @ApiResponse(responseCode = "401", description = "You are not authorized, you are not the admin", content = @Content),
             @ApiResponse(responseCode = "404", description = "Pool not found, probably invalid id supplied", content = @Content)
     })
-    @PostMapping("/{poolId}/messages")
-    public ResponseEntity<MessageDTO> addMessage(@PathVariable Long poolId, @RequestBody MessageDTO messageDTO) {
-        Optional<Pool> poolOptional = poolService.findById(poolId);
-        if (!poolOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
+    @PostMapping("/{id}/messages")
+    public ResponseEntity<MessageDTO> addMessage(@PathVariable Long id, @RequestBody MessageDTO messageDTO, Principal principal) throws SQLException {
+        if (principal == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
+        Optional<Pool> poolOptional = poolService.findById(id);
+        if (!poolOptional.isPresent())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         Pool pool = poolOptional.get();
-        Message message = new Message(messageDTO.getAuthor(), messageDTO.getBody());
+
+        if (messageDTO.getBody() == null || messageDTO.getBody().isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        Message message = new Message(principal.getName(), messageDTO.getBody());
         pool.addMessage(message);
         messageService.save(message);
-        poolService.save(pool);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{messageId}")
                 .buildAndExpand(message.getId())
                 .toUri();
 
