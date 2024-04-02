@@ -57,7 +57,7 @@ public class OfferRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Offers found", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = OfferDTO.class)) }),
-            @ApiResponse(responseCode = "404", description = "Offers not found, probably high page number supplied", content = @Content)
+            @ApiResponse(responseCode = "204", description = "Offers not found, probably high page number supplied", content = @Content)
     })
     @GetMapping
     public ResponseEntity<List<OfferDTO>> getOffers(
@@ -72,7 +72,7 @@ public class OfferRestController {
         }
 
         if (offersDTO.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         return ResponseEntity.status(HttpStatus.OK).body(offersDTO);
     }
@@ -116,7 +116,7 @@ public class OfferRestController {
     // ----------------------------------------------- POST -----------------------------------------------
     @Operation(summary = "Create an offer.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Offer created", content = {
+            @ApiResponse(responseCode = "201", description = "Offer created", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = OfferDTO.class)) }),
             @ApiResponse(responseCode = "401", description = "You are not authorized, you are not a an employer", content = @Content),
             @ApiResponse(responseCode = "400", description = "Bad request, invalid data in new offer", content = @Content),
@@ -162,7 +162,7 @@ public class OfferRestController {
 
     @Operation(summary = "Apply to an offer.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Offer found", content = {
+            @ApiResponse(responseCode = "200", description = "Offer applied", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = OfferDTO.class)) }),
             @ApiResponse(responseCode = "401", description = "You are not authorized, you are not a lifeguard", content = @Content),
             @ApiResponse(responseCode = "409", description = "Conflict, you applied more than once", content = @Content),
@@ -315,8 +315,6 @@ public class OfferRestController {
             headers.add("Error-Message", "No hay ningun socorrista seleccionado");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
         }
-
-
     }
 
     // ----------------------------------------------- SERVICE -----------------------------------------------

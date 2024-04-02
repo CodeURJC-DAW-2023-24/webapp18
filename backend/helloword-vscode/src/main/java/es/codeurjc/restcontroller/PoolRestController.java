@@ -58,7 +58,7 @@ public class PoolRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pools found", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = PoolDTO.class)) }),
-            @ApiResponse(responseCode = "404", description = "Pools not found, probably high page number supplied", content = @Content)
+            @ApiResponse(responseCode = "204", description = "Pools not found, probably high page number supplied", content = @Content)
     })
     @GetMapping
     public ResponseEntity<List<PoolDTO>> getPools(
@@ -73,7 +73,7 @@ public class PoolRestController {
         }
 
         if (poolsDTO.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         return ResponseEntity.status(HttpStatus.OK).body(poolsDTO);
     }
@@ -87,16 +87,17 @@ public class PoolRestController {
     @GetMapping("/{id}")
     public ResponseEntity<PoolDTO> getPool(@PathVariable Long id) {
         Optional<Pool> pool = poolService.findById(id);
-        if (pool.isPresent())
-            return ResponseEntity.status(HttpStatus.OK).body(new PoolDTO(pool.get()));
-        else
+        if (!pool.isPresent())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(new PoolDTO(pool.get()));
     }
 
     @Operation(summary = "Get all messages of a pool by its ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Messages found", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = MessageDTO.class)) }),
+            @ApiResponse(responseCode = "204", description = "Messages not found, probably high page number supplied", content = @Content),
             @ApiResponse(responseCode = "404", description = "Pool not found, probably invalid id supplied", content = @Content)
     })
     @GetMapping("/{id}/messages")
@@ -114,6 +115,9 @@ public class PoolRestController {
         for (Message message : messages) {
             messagesDTO.add(new MessageDTO(message));
         }
+
+        if (messagesDTO.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         return ResponseEntity.status(HttpStatus.OK).body(messagesDTO);
     }
