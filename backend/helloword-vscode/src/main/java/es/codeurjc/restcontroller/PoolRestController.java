@@ -195,6 +195,29 @@ public class PoolRestController {
         return ResponseEntity.status(HttpStatus.OK).body(new PoolDTO(pool));
     }
 
+    @Operation(summary = "Edit a message from a pool by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Message edited", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = PoolDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid data in changes", content = @Content),
+            @ApiResponse(responseCode = "401", description = "You are not authorized, you are not the owner or the admin", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Message not found, probably invalid id supplied", content = @Content)
+    })
+    @PutMapping("/{poolId}/messages/{messageId}")
+    public ResponseEntity<MessageDTO> editMessage(@PathVariable Long messageId, @RequestBody MessageDTO messageDTO, Principal principal) throws SQLException {
+        Optional<Message> messageOptional = messageService.findById(messageId);
+        if (!messageOptional.isPresent())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        Message message = messageOptional.get();
+
+        if (!userService.isAuthorized(principal, message))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        updateMessageFromDTO(message, messageDTO);
+        messageService.save(message);
+        return ResponseEntity.status(HttpStatus.OK).body(new MessageDTO(message));
+    }
+
     // ----------------------------------------------- DELETE -----------------------------------------------
     @Operation(summary = "Delete a pool by its ID.")
     @ApiResponses(value = {
@@ -279,6 +302,11 @@ public class PoolRestController {
 
         pool.update(poolBuilder);
         return pool;
+    }
+
+    public Message updateMessageFromDTO(Message message, MessageDTO messageDTO) {
+        message.setBody(messageDTO.getBody());
+        return message;
     }
 
     public boolean checkPoolDTO(PoolDTO poolDTO) {
