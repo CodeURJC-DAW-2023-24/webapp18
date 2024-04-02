@@ -25,19 +25,19 @@ El reparto de tareas tenía sentido en una fase inicial. Luego hicimos una lista
 
 ### Jorge:
 #### Tareas:
-Implementación de las ofertas, paginación, edición de usuario, google maps. Diseño de la página web. Refactorización de código.
+Implementación de los métodos GET y PUT de ofertas, piscinas y mensajes. Refactorización de código y pulir funcionalidades.
 #### Commits: 
-  - Applied builder pattern + Pool inside Offer
-  - Refactoring services and their connections with the database
-  - Implemented Google Maps
-  - Implemented edit user
-  - Implemented offers pagination
+  - Implemented getOffers for API REST
+  - Implemented editOffer for API REST
+  - Implemented editPool for API REST
+  - Created isAuthorized
+  - Checked authorization in delete Pool and Message
 #### Ficheros: 
-  - maps.js
-  - offers.js
-  - user_form.html
+  - OfferRestController.java
+  - PoolRestController.java
+  - Message.java
+  - MessageRepository.java
   - UserService.java
-  - UserController.java
      
 ### Marcos:
 #### Tareas:
