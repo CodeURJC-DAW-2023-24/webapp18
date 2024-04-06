@@ -1,0 +1,59 @@
+:root {
+    --main-color: rgb(0, 130, 254);
+    --main-color-light: rgb(50, 180, 214);
+    --main-color-dark: rgb(0, 116, 240);
+    --gradient: linear-gradient(160deg, var(--main-color-light), var(--main-color));
+    --gradient-inverse: linear-gradient(340deg, var(--main-color-light), var(--main-color));
+
+    --red: rgb(214, 12, 12);
+    --red-light: rgb(254, 62, 62);
+    --red-dark: rgb(202, 0, 0);
+    --gradient-red: linear-gradient(160deg, var(--red-light), var(--red-dark));
+    --gradient-red-inverse: linear-gradient(340deg, var(--red-light), var(--red-dark));
+
+    --second-color: white;
+    --third-color: #212529;
+    --logo-color: rgb(255, 87, 0);
+
+    --border-color: #ccc;
+    --background-color: #f0f0f0;
+    --subcontainer-color: #8ecbfd;
+    --subcontainer-text-color: #ffffff;
+}
+
+* {
+    font-family: "Fredoka";
+    font-size: 18px;
+}
+
+h1, h2, h3 {
+    font-family: "Yanone Kaffeesatz";
+    font-weight: bold;
+
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 45px;
+
+    margin: 0px;
+    margin-top: 7px; /*To compensate for the empty space in the font*/
+}
+
+h2 {
+    font-size: 35px;
+}
+
+h3 {
+    font-size: 30px;
+}
+
+body {
+    background-color: var(--background-color);
+}
+
+p {
+    text-align: left;
+    margin-right: 20px;
+    margin-left: 20px;
+}

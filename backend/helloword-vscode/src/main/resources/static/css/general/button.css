@@ -1,0 +1,81 @@
+.btn-cont {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin: 15px;
+}
+
+.btn-cont .btn {
+    margin: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
+    min-width: 110px;
+
+    border: 4px solid;
+    border-radius: 5px;
+
+    background-image: var(--gradient);
+    border-color: var(--main-color);
+    border-top-color: var(--main-color-light);
+    border-left-color: var(--main-color-light);
+
+    transition: background-image 0.2s;
+
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+.btn-cont .btn:hover {
+    background-image: var(--gradient-inverse);
+    border-top-color: var(--main-color-light);
+    border-left-color: var(--main-color-light);
+    color: white;
+}
+
+.btn-cont .btn:active {
+    border-color: var(--main-color);
+    border-bottom-color: var(--main-color-light);
+    border-right-color: var(--main-color-light);
+    color: white;
+}
+
+.btn-cont .btn-red {
+    background-image: var(--gradient-red);
+    border-color: var(--red);
+    border-top-color: var(--red-light);
+    border-left-color: var(--red-light);
+}
+
+.btn-cont .btn-red:hover {
+    background-image: var(--gradient-red-inverse);
+    border-top-color: var(--red-light);
+    border-left-color: var(--red-light);
+}
+
+.btn-cont .btn-red:active {
+    border-color: var(--red);
+    border-bottom-color: var(--red-light);
+    border-right-color: var(--red-light);
+}
+
+.top-container .btn {
+    background-color: var(--second-color);
+    color: var(--third-color);
+    border: transparent;
+
+    height: 49px;
+    display: flex;
+    align-items: center;
+}
+
+.top-container .btn:hover{
+    background-color: var(--main-color);
+    color: var(--second-color);
+}
+
+.top-container .btn:active{
+    background-color: var(--main-color);
+    color: var(--third-color);
+}
