@@ -26,22 +26,23 @@ public class SecurityConfiguration {
 	private JwtRequestFilter jwtRequestFilter;
 
 	@Autowired
-    public RepositoryUserDetailsService userDetailService;
+	public RepositoryUserDetailsService userDetailService;
 
 	@Autowired
-  	private UnauthorizedHandlerJwt unauthorizedHandlerJwt;
+	private UnauthorizedHandlerJwt unauthorizedHandlerJwt;
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+	AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
 		return authConfig.getAuthenticationManager();
 	}
+
 	@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
+	DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
 		authProvider.setUserDetailsService(userDetailService);
@@ -49,35 +50,35 @@ public class SecurityConfiguration {
 
 		return authProvider;
 	}
-	@Bean
-	@Order(1)
-	public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-		
+
+    @Bean
+    @Order(1)
+    SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
 		http.authenticationProvider(authenticationProvider());
-		
+
 		http
 			.securityMatcher("/api/**")
 			.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
-		
+
 		http
 			.authorizeHttpRequests(authorize -> authorize
-                    // PRIVATE ENDPOINTS
-  
+					// PRIVATE ENDPOINTS
+
 					// PUBLIC ENDPOINTS
 					.anyRequest().permitAll()
 			);
-		
-        // Disable Form login Authentication
-        http.formLogin(formLogin -> formLogin.disable());
 
-        // Disable CSRF protection (it is difficult to implement in REST APIs)
-        http.csrf(csrf -> csrf.disable());
+		// Disable Form login Authentication
+		http.formLogin(formLogin -> formLogin.disable());
 
-        // Disable Basic Authentication
-        http.httpBasic(httpBasic -> httpBasic.disable());
+		// Disable CSRF protection (it is difficult to implement in REST APIs)
+		http.csrf(csrf -> csrf.disable());
 
-        // Stateless session
-        http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		// Disable Basic Authentication
+		http.httpBasic(httpBasic -> httpBasic.disable());
+
+		// Stateless session
+		http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		// Add JWT Token filter
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -85,43 +86,46 @@ public class SecurityConfiguration {
 		return http.build();
 	}
 
-
 	@Bean
 	@Order(2)
-	public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
-		
+	SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
 		http.authenticationProvider(authenticationProvider());
-		
+
 		http
 			.authorizeHttpRequests(authorize -> authorize
 					// PUBLIC PAGES
 					.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 					.requestMatchers("/").permitAll()
-					.requestMatchers("/login").permitAll()
-					.requestMatchers("/pool").permitAll()
-					.requestMatchers("/offers/load").permitAll()
-					.requestMatchers("/loginerror").permitAll()
 					.requestMatchers("/error").permitAll()
-					.requestMatchers("/user/form").permitAll()
 					.requestMatchers("/message").permitAll()
-					.requestMatchers("/pool/message/add").permitAll()
+
+					.requestMatchers("/login").permitAll()
+					.requestMatchers("/loginerror").permitAll()
 					.requestMatchers("/profile").permitAll()
-					.requestMatchers("/pool/message/load").permitAll()
-					.requestMatchers("/pool/message/new").permitAll()
+
+					.requestMatchers("/user/form").permitAll()
 					.requestMatchers("/user/register").permitAll()
 					.requestMatchers("/user/register").permitAll()
 					.requestMatchers("/availableMail").permitAll()
-					.requestMatchers("/maps").permitAll()
-					.requestMatchers("/offer").permitAll()
-					.requestMatchers("/pieChart").permitAll()
-					.requestMatchers("/pool/*/image").permitAll()
-					.requestMatchers("/maps/offers").permitAll()
+
 					.requestMatchers("/offers").permitAll()
+					.requestMatchers("/offers/load").permitAll()
+					.requestMatchers("/offer").permitAll()
+
 					.requestMatchers("/pools").permitAll()
+					.requestMatchers("/pools/load").permitAll()
+					.requestMatchers("/pool").permitAll()
+					.requestMatchers("/pool/*/image").permitAll()
+					.requestMatchers("/pool/message/add").permitAll()
+					.requestMatchers("/pool/message/load").permitAll()
+					.requestMatchers("/pool/message/new").permitAll()
+
+					.requestMatchers("/maps").permitAll()
+					.requestMatchers("/maps/offers").permitAll()
+					.requestMatchers("/piechart").permitAll()
 
 					// PRIVATE PAGES
 					.anyRequest().authenticated()
-					
 			)
 			.formLogin(formLogin -> formLogin
 					.loginPage("/login")
@@ -137,5 +141,4 @@ public class SecurityConfiguration {
 
 		return http.build();
 	}
-
 }
