@@ -33,16 +33,14 @@ public class OfferController {
     @Autowired
     private UserService userService;
 
-    // -------------------------------------- MAIN --------------------------------------
-    @GetMapping("/")
+    @GetMapping("/offers")
     public String showOffers(Model model, HttpServletRequest request, Pageable page) {
         model.addAttribute("employer", request.isUserInRole("EMP"));
 
         // will be good implement the hasMore and nextPage attributes here
-        return "index";
+        return "offers";
     }
 
-    // -------------------------------------- OFFER --------------------------------------
     @GetMapping("/offers/load")
     public String loadOffers(HttpServletRequest request, Model model, @RequestParam("page") int pageNumber,
             @RequestParam("size") int size) {
@@ -147,12 +145,7 @@ public class OfferController {
         offerService.save(offer);
         userService.saveLifeguard(lifeguard);
 
-        model.addAttribute("offer", offer);
-        model.addAttribute("id", offer.getId());
-        model.addAttribute("admin", request.isUserInRole("ADMIN"));
-        model.addAttribute("lifeguard", false);
-        model.addAttribute("employer", request.isUserInRole("EMP"));
-        return "offer";
+        return "redirect:/offer?id=" + offer.getId();
     }
 
     @PostMapping("/offer/offered/set")
@@ -184,7 +177,7 @@ public class OfferController {
     @PostMapping("/offer/delete")
     public String offerDelete(@RequestParam("id") int id, Model model, HttpServletRequest request) {
         offerService.deleteById(id);
-        model.addAttribute("employer", request.isUserInRole("EMP"));
-        return "index";
+
+        return "redirect:/offers";
     }
 }

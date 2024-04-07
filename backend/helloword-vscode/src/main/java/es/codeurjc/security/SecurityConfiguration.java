@@ -97,7 +97,6 @@ public class SecurityConfiguration {
 					// PUBLIC PAGES
 					.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 					.requestMatchers("/").permitAll()
-					.requestMatchers("/index").permitAll()
 					.requestMatchers("/login").permitAll()
 					.requestMatchers("/pool").permitAll()
 					.requestMatchers("/offers/load").permitAll()
@@ -117,6 +116,8 @@ public class SecurityConfiguration {
 					.requestMatchers("/pieChart").permitAll()
 					.requestMatchers("/pool/*/image").permitAll()
 					.requestMatchers("/maps/offers").permitAll()
+					.requestMatchers("/offers").permitAll()
+					.requestMatchers("/pools").permitAll()
 
 					// PRIVATE PAGES
 					.anyRequest().authenticated()

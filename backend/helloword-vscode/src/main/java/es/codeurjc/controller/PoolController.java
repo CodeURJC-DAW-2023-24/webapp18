@@ -54,7 +54,7 @@ public class PoolController {
     public String deletePool(@RequestParam("id") int id, Model model, HttpServletRequest request) {
         poolService.deleteById(id);
         model.addAttribute("employer", request.isUserInRole("EMP"));
-        return "index";
+        return "redirect:/pools";
     }
 
     @GetMapping("/pool/message/load")
@@ -138,7 +138,7 @@ public class PoolController {
             pool.photoCheck = true;
         }
         poolService.save(pool);
-        return "index";
+        return "redirect:/pools";
     }
 
     @GetMapping("/pool/edit")

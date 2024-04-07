@@ -121,7 +121,7 @@ public class UserController {
         userService.deleteUserByEmail(mail);
         model.addAttribute("employer", request.isUserInRole("EMP"));
 
-        return "index";
+        return "redirect:/";
     }
 
     @GetMapping("/loged")

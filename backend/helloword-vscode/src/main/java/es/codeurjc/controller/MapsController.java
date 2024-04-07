@@ -29,7 +29,7 @@ public class MapsController {
     @Autowired
     private OfferRepository offerRepository;
 
-    @GetMapping("/maps")
+    @GetMapping("/")
     public String maps(Model model, HttpServletRequest request) {
         Boolean logged = request.getUserPrincipal() != null;
         model.addAttribute("logged", logged);
