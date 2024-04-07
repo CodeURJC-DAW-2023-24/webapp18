@@ -46,7 +46,7 @@ public class MapsController {
 
         Collection<Offer> offers = offerService.findAll();
         model.addAttribute("offers", offers);
-        return "maps";
+        return "index";
     }
 
     @GetMapping("/maps/offers")
