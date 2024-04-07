@@ -25,6 +25,27 @@ header a {
     height: 50px;
 }
 
+.dropdown button {
+    width: 64px;
+    margin-right: 10px;
+
+    background-color: var(--logo-color);
+    color: var(--second-color);
+    border: none;
+}
+
+.dropdown button:hover{
+    background-color: var(--second-color);
+    color: var(--logo-color);
+    border: none;
+}
+
+.dropdown-item:hover {
+    background-color: var(--logo-color);
+    color: var(--second-color);
+}
+
 .bi-person-fill {
-    font-size: 2em;
+    font-size: 2em;  /* width = 36px */
+    margin-left: 38px; /* (64 - 36) + 10 */
 }
