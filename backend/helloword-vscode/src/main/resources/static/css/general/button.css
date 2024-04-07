@@ -79,3 +79,18 @@
     background-color: var(--main-color);
     color: var(--third-color);
 }
+
+.bottom-right-button {
+    position: fixed;
+    bottom: 1%;
+    right: 2%;
+}
+
+.bottom-right-button > .btn {
+    min-width: 50px;
+    border-radius: 10px;
+}
+
+.bi-plus-circle {
+    font-size: 1.25em;
+}
