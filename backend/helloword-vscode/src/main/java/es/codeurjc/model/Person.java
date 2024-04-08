@@ -61,6 +61,18 @@ public abstract class Person {
         this.roles = List.of(roles);
     }
 
+    public boolean isAdmin(){
+        return hasRole("ADMIN");
+    }
+
+    public boolean hasRole(String role) {
+        return roles.contains(role);
+    }
+
+    public boolean isOwner(Message message){
+        return this.mail.equals(message.getAuthor());
+    }
+
     public abstract String getType();
 
     public Long getId() {

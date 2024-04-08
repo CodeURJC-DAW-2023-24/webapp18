@@ -17,26 +17,51 @@ public class Message {
     @ManyToOne
     private Pool pool;
 
-    String author;
-
-    String body;
+    private String author;
+    private String body;
+    private boolean hasOwner;
 
     public Message(){
     }
 
-    public Message(String a, String b){
-        super();
-        author = a;
-        body = b;
+    public Message(String author, String body){
+        this.author = author;
+        this.body = body;
     }
-    public long getID(){
+
+    public long getId(){
         return this.id;
+    }
+
+    public Pool getPool(){
+        return this.pool;
+    }
+
+    public String getAuthor(){
+        return this.author;
+    }
+
+    public String getBody(){
+        return this.body;
+    }
+
+    public boolean getOwner(){
+        return hasOwner;
     }
 
     public void setPool(Pool pool){
         this.pool = pool;
     }
-    public Pool getPool(){
-        return this.pool;
+
+    public void setAuthor(String author){
+        this.author = author;
+    }
+
+    public void setBody(String body){
+        this.body = body;
+    }
+
+    public void setOwner(boolean o){
+        hasOwner = o;
     }
 }

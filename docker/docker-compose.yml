@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  web:
+    image: adrimd1208/webapp18
+    restart: on-failure
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    ports:
+      - 8443:8443
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost/pruebabd
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpass
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0.36
+    restart: on-failure
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=pruebabd

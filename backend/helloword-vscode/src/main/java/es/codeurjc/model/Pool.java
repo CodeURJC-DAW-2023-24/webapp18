@@ -50,6 +50,7 @@ public class Pool{
         this.description = builder.description;
         this.messages = builder.messages;
         photoCheck=false;
+        this.offers = new ArrayList<>();
     }
 
     public void addMessage(Message message){
@@ -101,6 +102,31 @@ public class Pool{
     public Blob getPhotoUser() {
 		return photoA;
 	}
+
+    public void setName(String name){
+        this.name = name;
+    }
+    public void setDirection(String d){
+        this.direction = d;
+    }
+    public void setDescription(String d){
+        this.description = d;
+    }
+    public void setCapacity(int c){
+        this.capacity = c;
+    }
+    public void setStart(LocalTime l){
+        this.scheduleStart = l;
+    }
+    public void setEnd(LocalTime l){
+        this.scheduleEnd = l;
+    }
+    public void setCompany(String c){
+        this.company = c;
+    }
+    public void addOffer(Offer o){
+        this.offers.add(o);
+    }
     // Method to update pool data
     public void update(Builder builder) {
         if (builder.name != null) {
@@ -200,5 +226,8 @@ public class Pool{
 
     public void setPhoto(String string) {
         this.photo=string;
+    }
+    public void setOffersEmpty() {
+        this.offers = new ArrayList<Offer>();
     }
 }

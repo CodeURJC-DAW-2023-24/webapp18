@@ -52,7 +52,15 @@ public class UserController {
     public String profile(Model model, HttpServletRequest request, @RequestParam("type") int type,
             @RequestParam("mail") String m) {
         // CHECK USER LOGED OR NOT
-        model.addAttribute("loged", request.getUserPrincipal() != null);
+        Boolean loged = request.getUserPrincipal() != null;
+        model.addAttribute("loged", loged);
+
+        if (!loged) {
+            model.addAttribute("title", "Error");
+            model.addAttribute("message", "Debes iniciar sesión para acceder a tu perfil");
+            model.addAttribute("back", "/login");
+            return "feedback";
+        }
 
         // Here you must pass the ID of the person logged in when publishing the
         // referenced message.
@@ -113,7 +121,7 @@ public class UserController {
         userService.deleteUserByEmail(mail);
         model.addAttribute("employer", request.isUserInRole("EMP"));
 
-        return "index";
+        return "redirect:/";
     }
 
     @GetMapping("/loged")
@@ -124,7 +132,7 @@ public class UserController {
         model.addAttribute("title", "Sesión iniciada");
         model.addAttribute("message", "Has iniciado sesión correctamente");
         model.addAttribute("back", "/profile");
-        return "message";
+        return "feedback";
     }
 
     @GetMapping("/user/form")
@@ -148,7 +156,7 @@ public class UserController {
             model.addAttribute("title", "Error");
             model.addAttribute("message", messageForm);
             model.addAttribute("back", "javascript:history.back()");
-            return "message";
+            return "feedback";
         }
 
         model.addAttribute("title", "Éxito");
@@ -184,7 +192,7 @@ public class UserController {
                 break;
         }
 
-        return "message";
+        return "feedback";
     }
 
     @GetMapping("/user/{id}/image")
@@ -263,8 +271,11 @@ public class UserController {
 
     // -------------------------------------- LOGIN --------------------------------------
     @RequestMapping("/login")
-    public String login() {
-        return "login";
+    public String login(HttpServletRequest request) {
+        if (request.getUserPrincipal() != null)
+            return "redirect:/profile?type=1&mail=none";
+        else
+            return "login";
     }
 
     @RequestMapping("/loginerror")
@@ -273,6 +284,6 @@ public class UserController {
         model.addAttribute("message", "Credenciales inválidas");
         model.addAttribute("back", "/login");
 
-        return "message";
+        return "feedback";
     }
 }

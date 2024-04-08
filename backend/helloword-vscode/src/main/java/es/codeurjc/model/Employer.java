@@ -7,7 +7,6 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -30,6 +29,10 @@ public class Employer extends Person{
         super(name, surname, description, dni, mail, age, pass, phone, country, locality, province, direction, roles);
         this.company = company;
         this.offers = new ArrayList<Offer>();
+    }
+
+    public boolean isOwner(Offer offer){
+        return offers.contains(offer);
     }
 
     public String getType(){

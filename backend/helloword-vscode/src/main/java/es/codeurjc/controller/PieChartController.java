@@ -18,17 +18,11 @@ public class PieChartController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/pieChart")
+    @GetMapping("/piechart")
     public String showPieChart(Model model, HttpServletRequest request) {
-
-        //CHECK USER LOGED OR NOT
-        model.addAttribute("loged", request.getUserPrincipal() != null);
-
         //find the lifeguards, go through their skill lists and put them on a map. Fill the model with the map
 
         HashMap<String, Integer> mapa = fillAttitudes();
-        HashMap<String, Float> mapa2 = getDistribution(mapa);
-
 
         model.addAttribute("trust", mapa.get("Confianza"));
         model.addAttribute("attitude", mapa.get("Actitud positiva"));
@@ -36,7 +30,7 @@ public class PieChartController {
         model.addAttribute("comunication", mapa.get("Comunicación"));
         model.addAttribute("resolution", mapa.get("Resolución de problemas"));
         model.addAttribute("leadership", mapa.get("Liderazgo"));
-        return "pieChart";
+        return "pie_chart";
     }
 
     public HashMap<String, Integer> fillAttitudes() {

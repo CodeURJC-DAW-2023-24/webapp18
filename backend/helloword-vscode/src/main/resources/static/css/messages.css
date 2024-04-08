@@ -1,0 +1,39 @@
+.subcontainer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    row-gap: 10px;
+}
+
+.commentContainer {
+    background: var(--gradient-inverse);
+}
+
+.btn-cont, .body, /* These two are only for the margin */
+.commentContainer .btn, .message .btn {
+    min-width: 40px;
+    margin: 0;
+}
+
+.commentContainer input[type="text"] {
+    flex: 1;
+    max-width: 100%;
+    height: fit-content;
+
+    border: none;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.author {
+    width: fit-content;
+
+    text-decoration: none;
+    color: var(--main-color-dark);
+    font-weight: bold;
+}
+
+.author:hover{
+    color: white;
+}

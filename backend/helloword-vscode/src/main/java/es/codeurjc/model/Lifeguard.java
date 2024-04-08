@@ -1,12 +1,10 @@
 package es.codeurjc.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.sql.Blob;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -65,7 +63,7 @@ public class Lifeguard extends Person{
         return skills;
     }
 
-    public void setSkills(ArrayList<String> skills) {
+    public void setSkills(List<String> skills) {
         this.skills = skills;
     }
 
@@ -137,6 +135,10 @@ public class Lifeguard extends Person{
 	public void setImageUser(boolean imageUser){
 		this.imageUser = imageUser;
 	}
+    
+    public void initSkills(){
+		this.skills = new ArrayList<String>();
+	}
 
     public boolean getofferAssigned(){
 		return this.offerAssigned;
@@ -145,4 +147,12 @@ public class Lifeguard extends Person{
 	public void setofferAssigned(boolean offerAssigned){
 		this.offerAssigned = offerAssigned;
 	}
+
+    public List<Offer> getOffersAccepted() {
+        return this.offers_accepted;
+    }
+
+    public List<Offer> getOffers() {
+        return this.offers;
+    }
 }

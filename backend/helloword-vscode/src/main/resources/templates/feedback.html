@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{title}}</title>
+
+    {{> config}}
+
+    <link type="text/css" rel="stylesheet" href="/css/feedback.css" />
+</head>
+
+<body>
+    {{> header}}
+
+    <div class="container">
+        <p>{{message}}</p>
+        <div class="btn-cont">
+            <a href="{{back}}" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+        </div>
+    </div>
+</body>
+
+</html>

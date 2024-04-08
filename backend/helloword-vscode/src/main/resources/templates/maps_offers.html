@@ -1,0 +1,13 @@
+<h3>{{address}}</h3>
+{{#offers}}
+<section class="cards" id="offers">
+    <a href="/offer?id={{id}}">
+        <p>{{type}}</p>
+        <p>{{salary}}€</p>
+        <p>{{start}}</p>
+    </a>
+</section>
+{{/offers}}
+{{^offers}}
+<p>{{alternative}}</p>
+{{/offers}}

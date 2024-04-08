@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Formulario nueva piscina</title>
+
+    {{> config}}
+
+    <link type="text/css" rel="stylesheet" href="/css/form.css" />
+</head>
+
+<body>
+    {{> header}}
+
+    <div class="container">
+        {{#edit}}
+        <h2> Editar piscina {{pool.name}}</h2>
+        {{/edit}}
+        {{^edit}}
+        <h2>Nueva Piscina</h2>
+        {{/edit}}
+
+        {{^edit}}
+        <form role="form" action="/pool/add" method="post" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" class="form-control" name="name" placeholder="Piscina municipal Las Cumbres">
+            </div>
+
+            <div class="form-group">
+                <label for="dir">Dirección</label>
+                <input type="text" class="form-control" name="dir" placeholder="Móstoles, C/Rio Duero, 1">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descripción</label>
+                <textarea type="text" class="form-control" name="description" placeholder="Detalles relevantes de la piscina"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Aforo</label>
+                <input type="number" class="form-control" name="aforo" placeholder="20" min="0" max="1000">
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6 col-sm-12">
+                    <label for="start">Hora apertura</label>
+                    <input type="time" class="form-control text-uppercase" name="start" value="12:00">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                    <label for="start">Hora de cierre</label>
+                    <input type="time" class="form-control text-uppercase" name="close" value="21:00">
+                </div>
+                <div class="form-group">
+                    <label for="photoField">Foto de la piscina</label>
+                    <input type="file" class="form-control" name="photoField" id="photoField" accept=".jpeg, .png">
+                </div>
+    
+            </div>
+
+            <div class="btn-cont">
+                <button type="submit" class="btn"><i class="bi bi-download"></i> Guardar</button>
+                <a href="/" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
+            </div>
+
+            <input type ="hidden" name="_csrf" value="{{token}}"/>
+
+        </form>
+        {{/edit}}
+        {{#edit}}
+        <form role="form" action="/pool/edit" method="post" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" class="form-control" name="name" placeholder="Piscina municipal Las Cumbres">
+            </div>
+
+            <div class="form-group">
+                <label for="dir">Dirección</label>
+                <input type="text" class="form-control" name="dir" placeholder="Móstoles, C/Rio Duero, 1">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descripción</label>
+                <textarea type="text" class="form-control" name="description" placeholder="Detalles relevantes de la piscina"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Aforo</label>
+                <input type="number" class="form-control" name="aforo" placeholder="20" min="0" max="1000">
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6 col-sm-12">
+                    <label for="start">Hora apertura</label>
+                    <input type="time" class="form-control text-uppercase" name="start" value="12:00">
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                    <label for="start">Hora de cierre</label>
+                    <input type="time" class="form-control text-uppercase" name="close" value="21:00">
+                </div>
+                <div class="form-group">
+                    <label for="photoField">Foto de la piscina</label>
+                    <input type="file" class="form-control" name="photoField" id="photoField" accept=".jpeg, .png">
+                </div>
+    
+            </div>
+
+            <div class="btn-cont">
+                <button type="submit" class="btn"><i class="bi bi-download"></i> Guardar</button>
+                <a href="/" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
+            </div>
+
+            <input type ="hidden" name="_csrf" value="{{token}}"/>
+            <input type ="hidden" name="id" value="{{pool.id}}"/>
+
+        </form>
+        {{/edit}}
+    </div>
+</body>
+
+</html>
