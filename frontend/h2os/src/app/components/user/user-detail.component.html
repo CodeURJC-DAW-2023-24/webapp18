@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ficha de {{user.name}}</title>
+
+    {{> config}}
+
+    <link type="text/css" rel="stylesheet" href="/css/data.css" />
+</head>
+
+<body>
+    {{> header}}
+
+    <div class="data">
+        <main class="container container-main">
+            {{#user}}
+            <h2>{{name}} {{surname}}</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    {{#photo}}
+                    <img id="img-user" src="/user/{{id}}/image">
+                    {{/photo}}
+                    {{^photo}}
+                    <img id="img-user" src="/images/noPhotoUser.jpg">
+                    {{/photo}}
+                </div>
+
+                <div class="col-md-8">
+                    <p><strong>E-Mail:</strong> {{mail}}</p>
+                    <p><strong>DNI:</strong> {{dni}}</p>
+                    <p><strong>Edad:</strong> {{age}}</p>
+                    <p><strong>Teléfono:</strong> {{phone}}</p>
+                    <p><strong>Dirección:</strong> {{direction}}</p>
+                    <p><strong>Localidad:</strong> {{locality}} ({{province}}, {{country}})</p>
+
+                    {{#document}}
+                    <p><strong>Título de socorrismo</strong> {{document}}</p>
+                    {{/document}}
+                    {{#company}}
+                    <p><strong>Empresa:</strong> {{company}}</p>
+                    {{/company}}
+
+                    <p><strong>Descripción:</strong> {{description}}</p>
+
+                </div>
+                {{#lifeguard}}
+                <div class="subcontainer">
+                    <h3>Aptitudes</h3>
+                    <ul>
+                        {{#skills}}
+                        <li>{{.}}</li>
+                        {{/skills}}
+                        {{^skills}}
+                        <li>No hay aptitudes</li>
+                        {{/skills}}
+                    </ul>
+                </div>
+                {{/lifeguard}}
+            </div>
+            <div class="btn-cont">
+                {{#me}}
+                <a href="/user/{{mail}}/edit" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+                <form action="/logout" method="post">
+                    <input type="hidden" name="_csrf" value="{{token}}"/>
+                    <input type="submit" class="btn btn-red" value="Cerrar sesión"/>
+                </form>
+                {{/me}}
+                <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+            </div>
+
+            {{#admin}}
+            <form role="form" action='/profile/delete?id={{id}}' method="post">
+                <div class="btn-cont">
+                    <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
+                </div>
+                <input type ="hidden" name="_csrf" value="{{token}}"/>
+                <input type ="hidden" name="id" value="{{id}}"/>
+                <input type ="hidden" name="mail" value="{{mail}}"/>
+            </form>
+            {{/admin}}
+        </main>
+        {{#lifeguard}}
+        <div class="container container-additional">
+            <h3>Ofertas aplicadas</h3>
+            <div class="subcontainer">
+                <ul>
+                    {{#offersLifeguard}}
+                    <li><a href="offer?id={{id}}">Piscina: {{pool.name}} - Salario: {{salary}} - Inicio:{{start}}</a></li>
+                    {{/offersLifeguard}}
+                    {{^offersLifeguard}}
+                    <li>No hay candidaturas</li>
+                    {{/offersLifeguard}}
+                </ul>
+            </div>
+        </div>
+        {{/lifeguard}}
+        {{#employer}}
+        <div class="container container-additional">
+            <h3>Ofertas publicadas</h3>
+            <div class="subcontainer">
+                <ul>
+                    {{#offers}}
+                    <li><a href="offer?id={{id}}">Piscina: {{pool.name}} - Salario: {{salary}} - Inicio:{{start}}</a></li>
+                    {{/offers}}
+                    {{^offers}}
+                    <li>No has creado ninguna oferta</li>
+                    {{/offers}}
+                </ul>
+            </div>
+        </div>
+        {{/employer}}
+        {{/user}}
+    </div>
+</body>
+
+</html>
