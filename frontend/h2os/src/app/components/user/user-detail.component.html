@@ -1,117 +1,87 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Ficha de {{user.name}}</title>
-
-    {{> config}}
-
-    <link type="text/css" rel="stylesheet" href="/css/data.css" />
-</head>
-
-<body>
-    {{> header}}
-
-    <div class="data">
-        <main class="container container-main">
-            {{#user}}
-            <h2>{{name}} {{surname}}</h2>
+<div class="data">
+    <main class="container container-main">
+        <ng-container *ngIf="user">
+            <h2>{{user.name}} {{user.surname}}</h2>
             <div class="row">
                 <div class="col-md-4">
-                    {{#photo}}
-                    <img id="img-user" src="/user/{{id}}/image">
-                    {{/photo}}
-                    {{^photo}}
-                    <img id="img-user" src="/images/noPhotoUser.jpg">
-                    {{/photo}}
+                    <!--<img id="img-user" [src]="user.photo ? '/user/' + user.id + '/image' : '/images/noPhotoUser.jpg'" />-->
                 </div>
 
                 <div class="col-md-8">
-                    <p><strong>E-Mail:</strong> {{mail}}</p>
-                    <p><strong>DNI:</strong> {{dni}}</p>
-                    <p><strong>Edad:</strong> {{age}}</p>
-                    <p><strong>Teléfono:</strong> {{phone}}</p>
-                    <p><strong>Dirección:</strong> {{direction}}</p>
-                    <p><strong>Localidad:</strong> {{locality}} ({{province}}, {{country}})</p>
+                    <p><strong>E-Mail:</strong> {{user.mail}}</p>
+                    <p><strong>DNI:</strong> {{user.dni}}</p>
+                    <p><strong>Edad:</strong> {{user.age}}</p>
+                    <p><strong>Teléfono:</strong> {{user.phone}}</p>
+                    <p><strong>Dirección:</strong> {{user.direction}}</p>
+                    <p><strong>Localidad:</strong> {{user.locality}} ({{user.province}}, {{user.country}})</p>
 
-                    {{#document}}
-                    <p><strong>Título de socorrismo</strong> {{document}}</p>
-                    {{/document}}
-                    {{#company}}
-                    <p><strong>Empresa:</strong> {{company}}</p>
-                    {{/company}}
+                    <ng-container *ngIf="typeUser==='lifeguard'">
+                        <p><strong>Título de socorrismo</strong> {{lifeguard.document}}</p>
+                    </ng-container>
+                    <ng-container *ngIf="typeUser==='employer'">
+                        <p><strong>Empresa:</strong> {{employer.company}}</p>
+                    </ng-container>
 
-                    <p><strong>Descripción:</strong> {{description}}</p>
+                    <p><strong>Descripción:</strong> {{user.description}}</p>
 
                 </div>
-                {{#lifeguard}}
-                <div class="subcontainer">
-                    <h3>Aptitudes</h3>
-                    <ul>
-                        {{#skills}}
-                        <li>{{.}}</li>
-                        {{/skills}}
-                        {{^skills}}
-                        <li>No hay aptitudes</li>
-                        {{/skills}}
-                    </ul>
-                </div>
-                {{/lifeguard}}
+                <ng-container *ngIf="typeUser==='lifeguard'">
+                    <div class="subcontainer">
+                        <h3>Aptitudes</h3>
+                        <ul>
+                            <ng-container *ngFor="let skill of user.lifeguard.skills">
+                                <li>{{skill}}</li>
+                            </ng-container>
+                            <li *ngIf="!user.lifeguard.skills">No hay aptitudes</li>
+                        </ul>
+                    </div>
+                </ng-container>
             </div>
-            <div class="btn-cont">
-                {{#me}}
-                <a href="/user/{{mail}}/edit" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-                <form action="/logout" method="post">
-                    <input type="hidden" name="_csrf" value="{{token}}"/>
-                    <input type="submit" class="btn btn-red" value="Cerrar sesión"/>
-                </form>
-                {{/me}}
+            <!--<div class="btn-cont">
+                <ng-container *ngIf="me">
+                    <a [routerLink]="'/user/' + user.mail + '/edit'" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+                    <form action="/logout" method="post">
+                        <input type="submit" class="btn btn-red" value="Cerrar sesión" />
+                    </form>
+                </ng-container>
                 <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
-            </div>
+            </div>-->
 
-            {{#admin}}
-            <form role="form" action='/profile/delete?id={{id}}' method="post">
-                <div class="btn-cont">
-                    <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
-                </div>
-                <input type ="hidden" name="_csrf" value="{{token}}"/>
-                <input type ="hidden" name="id" value="{{id}}"/>
-                <input type ="hidden" name="mail" value="{{mail}}"/>
-            </form>
-            {{/admin}}
-        </main>
-        {{#lifeguard}}
+            <ng-container *ngIf="admin">
+                <form role="form" [action]="'/profile/delete?id=' + user.id" method="post">
+                    <div class="btn-cont">
+                        <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
+                    </div>
+                    <input type="hidden" name="id" value="{{user.id}}" />
+                    <input type="hidden" name="mail" value="{{user.mail}}" />
+                </form>
+            </ng-container>
+        </ng-container>
+    </main>
+    <ng-container *ngIf="user && typeUser==='lifeguard'">
         <div class="container container-additional">
             <h3>Ofertas aplicadas</h3>
             <div class="subcontainer">
                 <ul>
-                    {{#offersLifeguard}}
-                    <li><a href="offer?id={{id}}">Piscina: {{pool.name}} - Salario: {{salary}} - Inicio:{{start}}</a></li>
-                    {{/offersLifeguard}}
-                    {{^offersLifeguard}}
-                    <li>No hay candidaturas</li>
-                    {{/offersLifeguard}}
+                    <!--<ng-container *ngFor="let offer of user.lifeguard.offersLifeguard">
+                        <li><a [routerLink]="'offer?id=' + offer.id">Piscina: {{offer.pool.name}} - Salario: {{offer.salary}} - Inicio: {{offer.start}}</a></li>
+                    </ng-container>-->
+                    <li *ngIf="!user.lifeguard.offersLifeguard">No hay candidaturas</li>
                 </ul>
             </div>
         </div>
-        {{/lifeguard}}
-        {{#employer}}
+    </ng-container>
+    <ng-container *ngIf="user && typeUser==='employer'">
         <div class="container container-additional">
             <h3>Ofertas publicadas</h3>
             <div class="subcontainer">
                 <ul>
-                    {{#offers}}
-                    <li><a href="offer?id={{id}}">Piscina: {{pool.name}} - Salario: {{salary}} - Inicio:{{start}}</a></li>
-                    {{/offers}}
-                    {{^offers}}
-                    <li>No has creado ninguna oferta</li>
-                    {{/offers}}
+                    <!--<ng-container *ngFor="let offer of user.employer.offers">
+                        <li><a [routerLink]="'offer?id=' + offer.id">Piscina: {{offer.pool.name}} - Salario: {{offer.salary}} - Inicio: {{offer.start}}</a></li>
+                    </ng-container>-->
+                    <li *ngIf="!user.employer.offers">No has creado ninguna oferta</li>
                 </ul>
             </div>
         </div>
-        {{/employer}}
-        {{/user}}
-    </div>
-</body>
-
-</html>
+    </ng-container>
+</div>

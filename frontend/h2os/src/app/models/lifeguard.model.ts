@@ -4,9 +4,9 @@ import { Offer } from './offer.model';
 
 export interface Lifeguard extends Person {
   photo?: Blob;
-  imageUser: boolean;
-  document: string;
-  skills: string[];
+  imageUser?: boolean;
+  document?: string;
+  skills?: string[];
   pools: Pool[];
   offers_accepted: Offer[];
   offers: Offer[];
