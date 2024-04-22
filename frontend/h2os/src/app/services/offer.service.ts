@@ -6,14 +6,15 @@ import { Employer } from "../models/employer.model";
 import { Offer } from "../models/offer.model";
 import { Pool } from "../models/pool.model";
 
-const urlOffer = 'https://localhost:8443/api/offers'
+const urlOffer = '/api/offers'
 const urlEmployer = 'http://localhost:4200/offer/'
 
 @Injectable({ providedIn: 'root'})
 export class OfferService{
     constructor(private httpClient: HttpClient){}
 
-    getOffer(id: number): Observable<Offer>{
+    getOffer(id: number): Observable<Object>{
+        return this.httpClient.get(urlOffer+"/"+id)
         return this.httpClient.get<Offer>(urlOffer+"/"+id).pipe(
             catchError(error => this.handleError(error))
         ) as Observable<Offer>;

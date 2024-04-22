@@ -14,20 +14,20 @@
 <body>
 
     <div class="container">
-        <h2>Oferta en <a href="/pool?id={{pool.id}}">{{pool.name}}</a></h2>
+        <h2>Oferta en <a href="/pool?id={{poolID}}">{{poolName}}</a></h2>
 
         <div class="row">
-            <a class="col-lg-6 col-img" href="/pool?id={{pool.id}}">
+            <a class="col-lg-6 col-img" href="/pool?id={{poolID}}">
                 <div *ngIf="hasPhoto">
-                    <img id="img-user" src="/pool/{{pool.id}}/image" >
+                    <img id="img-user" src="/pool/{{poolID}}/image" >
 
                 </div>
                 <div *ngIf="!hasPhoto">
-                        <img id="img-pool" src="{{pool.photo}}" >
+                        <img id="img-pool" src="{{poolPhoto}}" >
                 </div>
             </a>
             <div class="col-lg-6 col-data">
-                <p><strong>Dirección:</strong> {{pool.direction}}</p>
+                <p><strong>Dirección:</strong> {{poolName}}</p>
                 <p><strong>Empleador:</strong> {{offer.employer.mail}}</p>
                 <p><strong>Tipo de contrato:</strong> {{offer.type}}</p>
                 <p><strong>Fecha de inicio:</strong> {{offer.start}}</p>

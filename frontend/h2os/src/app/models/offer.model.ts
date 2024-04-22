@@ -12,4 +12,6 @@ export interface Offer {
   start: string;
   type: string;
   description: string;
+  poolName: string;
+  poolID: number;
 }

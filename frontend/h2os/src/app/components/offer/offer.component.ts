@@ -20,19 +20,24 @@ export class OfferComponent{
     typeUser:string;
     admin: boolean;
     offer: Offer;
-    pool: Pool;
+    pool: String;
     hasPhoto: boolean;
     canApply: boolean;
+    poolName: string;
+    poolPhoto: string;
+    poolID: number;
     constructor(activatedRoute: ActivatedRoute, private service: OfferService){ // Set the permits
         let id = activatedRoute.snapshot.params['id'];
-        service.getOffer(id).subscribe(
-            offer => this.offer = offer,
+        service.getOffer(1).subscribe(
+            response => this.offer = response as Offer,
             error => console.error(error)
         );
+        console.log(this.offer);
         this.hasPhoto = false;
-        this.pool = this.offer.pool;
+        this.poolName = "Juan";
         this.edit = false
         this.canApply = false;
+        this.poolID = 99;
     }
 
     showApplyed(){
