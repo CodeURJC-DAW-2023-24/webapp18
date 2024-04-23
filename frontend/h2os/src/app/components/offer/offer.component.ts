@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OfferService } from '../../services/offer.service';
 import { CommonModule, NgIf } from '@angular/common';
 import { UserService } from '../../services/user.service';
+import { Applied } from '../../models/applied.model';
 
 @Component({
     selector: "offer",
@@ -67,15 +68,18 @@ export class OfferComponent{
     }
 
     showApplied(id: number|undefined){
-        let mapa: Map<string, string[]>
+        let mapa: Applied
         this.service.getApplied(id).subscribe(
             response => {
-                mapa = response as Map<string, string[]>;
-                const intermediate = mapa.get("Seleccionado");
-                if(intermediate){
-                    this.selected = intermediate[0];
+                console.log(response)
+            //    mapa = response as Map<string, string[]>;
+
+                if(mapa.Seleccionado!=null){
+                    this.selected = mapa.Seleccionado[0];
                 }
-                const intermediate2 = mapa.get("Propuestos");
+                else this.selected = "-1";
+                const intermediate2 = mapa.Propuestos;
+                console.log(intermediate2)
                 if(intermediate2){
                     this.appliedLg = intermediate2;
                 }
