@@ -5,7 +5,7 @@ import { Lifeguard } from './lifeguard.model';
 export interface Offer {
   id?: number;
   pool: Pool;
-  employer: Employer;
+  employer: string;
   lifeguard: Lifeguard;
   lifeguards: Lifeguard[];
   salary: string;

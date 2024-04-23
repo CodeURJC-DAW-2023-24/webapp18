@@ -6,10 +6,12 @@ import { Offer } from '../../models/offer.model';
 import { Pool } from '../../models/pool.model';
 import { ActivatedRoute } from '@angular/router';
 import { OfferService } from '../../services/offer.service';
+import { CommonModule, NgIf } from '@angular/common';
 
 @Component({
     selector: "offer",
-    templateUrl: './offer.component.html'
+    templateUrl: './offer.component.html',
+    styleUrls:['./offer.data.css','./offer.messages.css']
 })
 
 export class OfferComponent{
@@ -35,8 +37,8 @@ export class OfferComponent{
         console.log(this.offer);
         this.hasPhoto = false;
         this.poolName = "Juan";
-        this.edit = false
-        this.canApply = false;
+        this.edit = true
+        this.canApply = true;
         this.poolID = 99;
     }
 

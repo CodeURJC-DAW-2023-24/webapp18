@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html>
 
-<head>
-    <title>Oferta de trabajo</title>
-
-
-    <link type="text/css" rel="stylesheet" href="/css/data.css" />
-    <link type="text/css" rel="stylesheet" href="/css/messages.css" />
-
-    <script src="/js/poolMessages.js"></script>
-</head>
-
-<body>
 
     <div class="container">
         <h2>Oferta en <a href="/pool?id={{poolID}}">{{poolName}}</a></h2>
@@ -28,7 +15,7 @@
             </a>
             <div class="col-lg-6 col-data">
                 <p><strong>Dirección:</strong> {{poolName}}</p>
-                <p><strong>Empleador:</strong> {{offer.employer.mail}}</p>
+                <p><strong>Empleador:</strong> {{offer.employer}}</p>
                 <p><strong>Tipo de contrato:</strong> {{offer.type}}</p>
                 <p><strong>Fecha de inicio:</strong> {{offer.start}}</p>
                 <p><strong>Salario:</strong> {{offer.salary}}€</p>
@@ -59,6 +46,3 @@
 
         <div id="messageContainer"></div>
     </div>
-</body>
-
-</html>
