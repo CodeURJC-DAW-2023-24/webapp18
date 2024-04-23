@@ -26,11 +26,21 @@ export class OfferService{
     }
 
     applyToOffer(id: number | undefined){
-        return this.httpClient.post(urlOffer+"/"+id+"/"+urlLifeguards,"")
+        return this.httpClient.post(urlOffer+"/"+id+"/"+urlLifeguards,"").subscribe();
     }
 
     getApplied(id: number | undefined): Observable<Object>{
-        return this.httpClient.get(urlOffer+"/"+id+"/"+urlLifeguards)
+        return this.httpClient.get(urlOffer+"/"+id+"/lifeguards");
+    }
+
+    setLifeguard(idOffer: number | undefined, idLg: number | undefined){
+        this.httpClient.put(urlOffer+"/"+idOffer+"/lifeguards/"+idLg,"").subscribe();
+        return true
+    }
+
+    unSelectLifeguard(id: number | undefined){
+        this.httpClient.delete(urlOffer+"/"+id+"/lifeguards").subscribe();
+        return true
     }
 
     private handleError(error:any){

@@ -17,7 +17,7 @@ public class EmployerDTO {
     private String locality;
     private String province;
     private String direction;
-
+    private String type;
     private String company;
 
     public EmployerDTO(){
@@ -40,6 +40,7 @@ public class EmployerDTO {
         this.province = employer.getProvince();
         this.direction = employer.getDirection();
         this.company = employer.getCompany();
+        this.type = "e";
 
     }
 
@@ -96,6 +97,10 @@ public class EmployerDTO {
     
     public String getPhone() {
         return phone;
+    }
+    
+    public String getType() {
+        return type;
     }
     
     public String getCountry() {

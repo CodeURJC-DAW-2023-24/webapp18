@@ -17,7 +17,7 @@ public class LifeguardDTO{
     private String locality;
     private String province;
     private String direction;
-
+    private String type;
     private String document;
     private List<String> skills;
 
@@ -41,6 +41,7 @@ public class LifeguardDTO{
         this.direction = lifeguard.getDirection();
         this.document = lifeguard.getDocument();
         this.skills = lifeguard.getSkills();
+        this.type = "lg";
     }
 
     public Lifeguard toLifeguard() {
@@ -121,6 +122,9 @@ public class LifeguardDTO{
 
     public String getDocument() {
         return document;
+    }
+    public String getType() {
+        return type;
     }
 
     public List<String> getSkills() {

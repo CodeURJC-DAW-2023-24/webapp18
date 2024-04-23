@@ -3,10 +3,11 @@ import { Person } from '../../models/person.model';
 import { Lifeguard } from '../../models/lifeguard.model';
 import { Employer } from '../../models/employer.model';
 import { Offer } from '../../models/offer.model';
-import { Pool } from '../../models/pool.model';
+import { Me } from '../../models/me.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OfferService } from '../../services/offer.service';
 import { CommonModule, NgIf } from '@angular/common';
+import { UserService } from '../../services/user.service';
 
 @Component({
     selector: "offer",
@@ -15,6 +16,7 @@ import { CommonModule, NgIf } from '@angular/common';
 })
 
 export class OfferComponent{
+    me: Me;
     user: Person;
     lifeguard: Lifeguard;
     owner: Employer;
@@ -31,22 +33,40 @@ export class OfferComponent{
     applied: boolean;
     selected: string | undefined;
     appliedLg: string[];
-    constructor(activatedRoute: ActivatedRoute, private service: OfferService){ // Set the permits
+    constructor(activatedRoute: ActivatedRoute, private service: OfferService, private userService: UserService){ // Set the permits
         let id = activatedRoute.snapshot.params['id'];
-        service.getOffer(1).subscribe(
-            response => this.offer = response as Offer,
+        id = 1;
+        service.getOffer(id).subscribe(
+            response => {
+                this.offer = response as Offer;
+                this.hasPhoto = false;
+                this.poolName = this.offer.poolName;
+                this.poolID = this.offer.poolID;
+                this.applied = false;
+                userService.me().subscribe(
+                    response => {
+                        this.me = response as Me
+                        console.log(this.offer);
+                        console.log("hola")
+                        console.log(this.me);
+                        this.edit = (this.me.mail=="admin" || this.me.mail==this.offer.employer)
+                        this.canApply = this.me.type=="lg";
+                        this.applied = this.edit;
+                    },
+                    error => {
+                        this.me.mail = "-1"
+                        this.me.type = "-1"
+                    }
+                );
+            },
             error => console.error(error)
         );
-        console.log(this.offer);
-        this.hasPhoto = false;
-        this.poolName = "Juan";
-        this.edit = true
-        this.canApply = true;
-        this.poolID = 99;
-        this.applied = false;
+        
+        
+        
     }
 
-    showApplyed(id: number|undefined){
+    showApplied(id: number|undefined){
         let mapa: Map<string, string[]>
         this.service.getApplied(id).subscribe(
             response => {
@@ -73,10 +93,12 @@ export class OfferComponent{
         this.canApply = false;
     }
     setLifeguard(idOffer: number|undefined, idLg: number|undefined){
+        this.service.setLifeguard(idOffer,idLg);
+        this.applied = this.service.unSelectLifeguard(idOffer);
 
     }
     unSelectLifeguard(idOffer: number|undefined){
-
+        this.service.unSelectLifeguard(idOffer);
     }
     showApplied2(id: number|undefined){
         let mapa: Map<string, string[]>

@@ -13,15 +13,15 @@
         <form role="form" action="/login" method="post">
             <div class="form-group">
                 <label for="username">E-mail</label>
-                <input type="text" class="form-control" name="username" id="username" placeholder="example@gmail.com">
+                <input #mailInput type="text" class="form-control" name="username" id="username" placeholder="example@gmail.com">
             </div>
             <div class="form-group">
                 <label for="pass">Contraseña</label>
-                <input type="password" class="form-control" name="password" id="password" placeholder="1234">
+                <input #passwordInput type="password" class="form-control" name="password" id="password" placeholder="1234">
             </div>
 
             <div class="btn-cont">
-                <button type="submit" class="btn"><i class="bi bi-box-arrow-right"></i> Acceder</button>
+                <button (click) = login() class="btn"><i class="bi bi-box-arrow-right"></i> Acceder</button>
                 <a [routerLink]="['/']" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
             </div>
         </form>

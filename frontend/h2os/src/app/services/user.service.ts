@@ -75,6 +75,15 @@ export class UserService{
         );
     }
 
+
+    login(mail: string, pass: string){
+        const loginData = { username: mail, password: pass };
+        return this.httpClient.post("/api/auth/login", loginData).subscribe();
+    }
+    me(): Observable<Object>{
+        return this.httpClient.get("/api/auth/me");
+    }
+
     private handleError(error:any){
         console.error(error);
         return throwError("Server error ("+error.status+"):"+error.text())
