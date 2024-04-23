@@ -37,6 +37,9 @@
             </div>
             <div *ngIf="edit">
                 <input type="hidden" name="id" value="{{offer.id}}"/>
+                <button class="btn btn-blue" [routerLink]="['offerEdit']">
+                    <i class="bi bi-pencil"> Editar</i>
+                </button>
                 <button class="btn btn-red" (click)="deleteOffer()">
                     <i class="bi bi-trash"> Eliminar</i>
                 </button>
@@ -46,3 +49,5 @@
 
         <div id="messageContainer"></div>
     </div>
+
+    
