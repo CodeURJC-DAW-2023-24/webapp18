@@ -10,7 +10,7 @@ const appRoutes: Routes = [
     { path: 'login', component: UserLoginComponent },
     { path: 'user/form', component: UserFormComponent },
     { path: 'offers', component: OfferComponent},
-    { path: 'offerEdit', component: OfferEditComponent},
+    { path: 'offers/edit', component: OfferEditComponent},
     { path: 'profile', component: UserDetailComponent },
     { path: '', redirectTo: '', pathMatch: 'full' }
 ]

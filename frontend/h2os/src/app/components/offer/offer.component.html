@@ -21,26 +21,72 @@
                 <p><strong>Salario:</strong> {{offer.salary}}€</p>
                 <p><strong>Descripción:</strong> {{offer.description}}</p>
             </div>
-        </div>
+            <div *ngIf="applied">
 
+
+
+
+                <div *ngIf = "appliedLg.length !== 0;" class="subcontainer message" id="{{offer.id}}">
+                    <div *ngFor="let lifeguard of appliedLg">
+                    <data>
+                        <a class="author" href="/profile?type=0&mail={{lifeguard}}">{{lifeguard}}:</a>
+                        <p class="body"> CAMBIAR </p>
+                    </data>
+                    <div *ngIf= "lifeguard!==selected;">
+                
+                        <div class="btn-cont">
+                            <form role="form" action='/offer/offered/set' method="post">
+                                <input type ="hidden" name="lg" value="{{lifeguard}}"/>
+                                <input type ="hidden" name="ido" value="{{offer.id}}"/>
+                                <button type="submit" class="btn"><i class="bi bi-person-add"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                
+                    <div *ngIf= "lifeguard===selected;">
+                        <div class="btn-cont">
+                            <form role="form" action='/offer/offered/delete' method="post">
+                                <button type="submit" class="btn btn-red "><i class="bi bi-person-dash"></i></button>
+                                <input type ="hidden" name="lg" value="{{lifeguard}}"/>
+                                <input type ="hidden" name="ido" value="{{offer.id}}"/>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div *ngIf = "appliedLg.length === 0;" class="subcontainer message">
+                    <div class="message">No hay propuestas </div>
+                </div>
+
+
+
+
+
+
+
+
+            </div>
+        </div>
         <div class="btn-cont">
             <div *ngIf="canApply">
                 <form role="form" action='/offer/offered/new' method="post">
                     <input type ="hidden" name="id" value="{{offer.id}}"/>
-                    <button type = "submit" class="btn" >
+                    <button class="btn" (click)="apply(offer.id)" id = "applyButton">
                         <i class="bi bi-bookmark-fill"> Proponerse</i>
                     </button>
                 </form>
             </div>
             <div *ngIf="edit">
-                <button class="btn" (click)="showApplyed()" id="showButton">Ver propuestas</button>
+                <button class="btn" (click)="showApplied2(offer.id)" id="showButton">Ver propuestas</button>
             </div>
             <div *ngIf="edit">
                 <input type="hidden" name="id" value="{{offer.id}}"/>
-                <button class="btn btn-blue" [routerLink]="['offerEdit']">
-                    <i class="bi bi-pencil"> Editar</i>
+                <button class="btn btn-blue" [routerLink]="['edit']">
+                    
+                        <i class="bi bi-pencil"> </i>Editar
+                   
                 </button>
-                <button class="btn btn-red" (click)="deleteOffer()">
+                <button class="btn btn-red" (click)="deleteOffer(offer.id)">
                     <i class="bi bi-trash"> Eliminar</i>
                 </button>
         </div>

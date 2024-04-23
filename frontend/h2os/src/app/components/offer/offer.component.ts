@@ -4,7 +4,7 @@ import { Lifeguard } from '../../models/lifeguard.model';
 import { Employer } from '../../models/employer.model';
 import { Offer } from '../../models/offer.model';
 import { Pool } from '../../models/pool.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OfferService } from '../../services/offer.service';
 import { CommonModule, NgIf } from '@angular/common';
 
@@ -28,6 +28,9 @@ export class OfferComponent{
     poolName: string;
     poolPhoto: string;
     poolID: number;
+    applied: boolean;
+    selected: string | undefined;
+    appliedLg: string[];
     constructor(activatedRoute: ActivatedRoute, private service: OfferService){ // Set the permits
         let id = activatedRoute.snapshot.params['id'];
         service.getOffer(1).subscribe(
@@ -40,12 +43,45 @@ export class OfferComponent{
         this.edit = true
         this.canApply = true;
         this.poolID = 99;
+        this.applied = false;
     }
 
-    showApplyed(){
-        console.log("GG")
+    showApplyed(id: number|undefined){
+        let mapa: Map<string, string[]>
+        this.service.getApplied(id).subscribe(
+            response => {
+                mapa = response as Map<string, string[]>;
+                const intermediate = mapa.get("Seleccionado");
+                if(intermediate){
+                    this.selected = intermediate[0];
+                }
+                const intermediate2 = mapa.get("Propuestos");
+                if(intermediate2){
+                    this.appliedLg = intermediate2;
+                }
+                this.applied = true;
+
+            },
+            error => console.error(error)
+        );
     }
-    deleteOffer(){
-        console.log("GG")
+    deleteOffer(id: number|undefined){
+        this.service.deleteOffer(id);
+    }
+    apply(id: number|undefined){
+        this.service.applyToOffer(id);
+        this.canApply = false;
+    }
+    setLifeguard(idOffer: number|undefined, idLg: number|undefined){
+
+    }
+    unSelectLifeguard(idOffer: number|undefined){
+
+    }
+    showApplied2(id: number|undefined){
+        let mapa: Map<string, string[]>
+        this.selected = "s1";
+        this.appliedLg = ["s1","s2","s3"];
+        this.applied = true;
     }
 }

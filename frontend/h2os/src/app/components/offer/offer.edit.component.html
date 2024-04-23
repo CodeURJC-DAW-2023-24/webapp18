@@ -1,21 +1,8 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Formulario nuevos jugadores</title>
-
-    {{> config}}
-
-    <link type="text/css" rel="stylesheet" href="/css/form.css" />
-</head>
-
-<body>
-    {{> header}}
 
     <div class="container">
-        <h2>Nueva Oferta</h2>
+        <h2>Editar</h2>
 
-        <form role="form" action="/offer/add" method="post">
+        <form role="form">
             <div class="form-group">
                 <label for="direction">Dirección</label>
                 <input type="text" class="form-control" name="direction" placeholder="Móstoles, C/Velázquez 2">
@@ -53,22 +40,15 @@
                 <label for="pool-id">Piscina</label>
                 <select class="form-select" name="pool-id" id="pool-id" required>
                     <option value="0" selected hidden>Seleccione una de sus piscinas</option>
-                    {{#pools}}
-                    <option value="{{id}}">{{name}}</option>
-                    {{/pools}}
-                    {{^pools}}
-                    <option value="0" disabled>No hay piscinas disponibles</option>
-                    {{/pools}}
+                    <div *ngFor="let pool of pools; let i = index">
+                        <option value="{{i}}">{{pool.name}}</option>
+                      </div>
                 </select>
             </div>
 
             <div class="btn-cont">
-                <button type="submit" class="btn"><i class="bi bi-download"></i> Guardar</button>
+                <button (click)="editOffer()" class="btn"><i class="bi bi-download"></i> Guardar</button>
                 <a href="/" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
             </div>
-            <input type ="hidden" name="_csrf" value="{{token}}"/>
         </form>
     </div>
-</body>
-
-</html>

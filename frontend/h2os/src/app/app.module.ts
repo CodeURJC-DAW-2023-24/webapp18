@@ -10,9 +10,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserFormComponent } from './components/user/user-form.component';
 import { HeaderComponent } from './components/header/header.component';
 import { OfferComponent } from './components/offer/offer.component';
+import { OfferEditComponent } from './components/offer/offer.edit.component';
 
 @NgModule({
-  declarations: [AppComponent,UserLoginComponent,UserFormComponent, HeaderComponent, OfferComponent],
+  declarations: [AppComponent,UserLoginComponent,UserFormComponent, HeaderComponent, OfferComponent, OfferEditComponent],
   imports: [NgbModule, BrowserModule, FormsModule, HttpClientModule, routing],
   bootstrap: [AppComponent]
 })

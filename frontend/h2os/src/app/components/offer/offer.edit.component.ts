@@ -16,6 +16,7 @@ import { CommonModule, NgIf } from '@angular/common';
 
 export class OfferEditComponent{
    offer:Offer
+   pools: Pool[];
     constructor(activatedRoute: ActivatedRoute, private service: OfferService){ // Set the permits
         let id = activatedRoute.snapshot.params['id'];
         service.getOffer(1).subscribe(
@@ -25,6 +26,8 @@ export class OfferEditComponent{
         console.log(this.offer);
        
     }
+    editOffer(){
 
+    }
    
 }
