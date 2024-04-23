@@ -72,9 +72,9 @@ export class OfferComponent{
         this.service.getApplied(id).subscribe(
             response => {
                 console.log(response)
-            //    mapa = response as Map<string, string[]>;
+                mapa = response as Applied;
 
-                if(mapa.Seleccionado!=null){
+                if(mapa.Seleccionado!== null && mapa && mapa.Seleccionado){
                     this.selected = mapa.Seleccionado[0];
                 }
                 else this.selected = "-1";
@@ -99,10 +99,13 @@ export class OfferComponent{
     setLifeguard(idOffer: number|undefined, idLg: number|undefined){
         this.service.setLifeguard(idOffer,idLg);
         this.applied = this.service.unSelectLifeguard(idOffer);
+        this.applied = false;
 
     }
     unSelectLifeguard(idOffer: number|undefined){
         this.service.unSelectLifeguard(idOffer);
+        this.applied = false;
+
     }
     showApplied2(id: number|undefined){
         let mapa: Map<string, string[]>
