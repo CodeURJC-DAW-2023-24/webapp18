@@ -35,6 +35,7 @@ public class Pool{
     private LocalTime scheduleEnd;
     private String company;
     private String description;
+    private Blob defaultPhoto;
 
     public Pool(){}
 
@@ -126,6 +127,12 @@ public class Pool{
     }
     public void addOffer(Offer o){
         this.offers.add(o);
+    }
+    public void setDefaultPhoto(Blob p){
+        this.defaultPhoto = p;
+    }
+    public Blob getDefaultPhoto(){
+        return this.defaultPhoto;
     }
     // Method to update pool data
     public void update(Builder builder) {

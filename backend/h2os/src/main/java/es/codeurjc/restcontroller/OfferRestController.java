@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
@@ -91,6 +92,38 @@ public class OfferRestController {
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
+
+
+    @Operation(summary = "Get an offer´s photo by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Offer found", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = OfferDTO.class)) }),
+            @ApiResponse(responseCode = "404", description = "Offer not found, probably invalid id supplied", content = @Content)
+    })
+    @GetMapping("/{id}/photo")
+    public ResponseEntity<Object> getOfferPhoto(@PathVariable int id) throws SQLException {
+        Optional<Offer> offer = offerService.findById(id);
+        if (offer.isPresent()){
+            Pool pool = offer.get().getPool();
+            Object photo;
+            if(pool.photoCheck){
+                org.springframework.core.io.Resource file = new InputStreamResource(pool.getPhotoUser().getBinaryStream());
+
+                photo = file; 
+            }
+            else{ // Return default photo
+                org.springframework.core.io.Resource file = new InputStreamResource(pool.getDefaultPhoto().getBinaryStream());
+
+                photo = file;  //Defalut photo
+            } 
+            return ResponseEntity.status(HttpStatus.OK).body(photo);
+
+        }
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
 
     @Operation(summary = "View lifeguards who applied to an offer and the selected one.")
     @ApiResponses(value = {
@@ -352,10 +385,13 @@ public class OfferRestController {
         } else
             mapa.put("Seleccionado", null);
             ArrayList<String> l2 = new ArrayList<>();
+            ArrayList<String> l3 = new ArrayList<>();
         for (Lifeguard l : offer.getLifeguards()) {
             l2.add(l.getMail());
+            l3.add(l.getDescription());
         }
         mapa.put("Propuestos", l2);
+        mapa.put("Descripciones", l3);
         return mapa;
     }
 

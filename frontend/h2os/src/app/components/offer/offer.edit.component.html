@@ -10,7 +10,7 @@
 
             <div class="form-group">
                 <label for="description">Descripción</label>
-                <textarea type="text" class="form-control" name="description" placeholder="Detalles relevantes de la oferta"></textarea>
+                <textarea type="text" class="form-control" name="description" placeholder="Detalles relevantes de la oferta" [value] = "offer.description"></textarea>
             </div>
 
             <div class="row">
@@ -26,14 +26,14 @@
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="start">Fecha de inicio</label>
-                    <input type="date" class="form-control text-uppercase" name="start">
+                    <input type="date" class="form-control text-uppercase" name="start" [value]="dateF">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="salary">Salario</label>
-                <input type="range" class="form-range" name="salary" value="1200" min="60" max="5000" step="60" oninput="this.nextElementSibling.value = this.value">
-                <output for="price" id="outrange">1200</output>€
+                <input type="range" class="form-range" name="salary" [value]="offer.salary" min="60" max="5000" step="60" oninput="this.nextElementSibling.value = this.value">
+                <output for="price" id="outrange">{{offer.salary}}</output>€
             </div>
 
             <div class="form-group">

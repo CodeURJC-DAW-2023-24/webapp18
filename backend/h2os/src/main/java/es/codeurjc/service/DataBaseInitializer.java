@@ -1,7 +1,11 @@
 package es.codeurjc.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.time.LocalTime;
 
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -36,7 +40,7 @@ public class DataBaseInitializer {
 	private PasswordEncoder passwordEncoder;
 
     @PostConstruct
-    private void initDatabase() {
+    private void initDatabase() throws FileNotFoundException {
         Lifeguard l = new Lifeguard(
             "socorrista",
             "1",
@@ -92,7 +96,7 @@ public class DataBaseInitializer {
   
         }
 
-        public void init2() {
+        public void init2() throws FileNotFoundException {
 		Pool[] defaultPools = {
 			new Pool.Builder()
 				.name("Misco Jones")
@@ -135,6 +139,14 @@ public class DataBaseInitializer {
 		}
 
 		for (Pool pool : defaultPools) {
+            String route = "./backend/h2os/src/main/resources/static/images/default-image.jpg";
+            System.out.println("PRAPARANDO LA CARGA DE IMAGENES POR DEFECTO");
+            File file = new File(route);
+
+
+            FileInputStream fis = new FileInputStream(file);
+            System.out.println("FICHERO ENCONTRADO");
+            pool.setDefaultPhoto(BlobProxy.generateProxy(fis, file.length()));
 			poolRepository.save(pool);
 		}
 	}

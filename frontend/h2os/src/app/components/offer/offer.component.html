@@ -6,11 +6,7 @@
         <div class="row">
             <a class="col-lg-6 col-img" href="/pool?id={{poolID}}">
                 <div *ngIf="hasPhoto">
-                    <img id="img-user" src="/pool/{{poolID}}/image" >
-
-                </div>
-                <div *ngIf="!hasPhoto">
-                        <img id="img-pool" src="{{poolPhoto}}" >
+                    <img [src] = "photoURL" alt="Photo">
                 </div>
             </a>
             <div class="col-lg-6 col-data">
@@ -23,14 +19,11 @@
             </div>
             <div *ngIf="applied">
 
-
-
-
                 <div *ngIf = "appliedLg.length !== 0;" class="subcontainer message" id="{{offer.id}}">
                     <div *ngFor= "let lifeguard of appliedLg; let i = index">
                     <data>
                         <a class="author" href="/profile?type=0&mail={{lifeguard}}">{{lifeguard}}:</a>
-                        <p class="body"> CAMBIAR </p>
+                        <p class="body"> {{appliedLgDesc[i]}} </p>
                     </data>
                     <div *ngIf= "lifeguard!==selected;">
                 
@@ -46,7 +39,7 @@
                     </div>
                     </div>
                 </div>
-                <div *ngIf = "appliedLg.length === 0;" class="subcontainer message">
+                <div *ngIf = "appliedLg.length === 0 && applied;" class="subcontainer message">
                     <div class="message">No hay propuestas </div>
                 </div>
 
