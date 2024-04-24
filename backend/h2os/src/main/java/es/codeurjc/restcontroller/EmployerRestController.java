@@ -384,7 +384,7 @@ public class EmployerRestController {
 		if (employerDTO.getDni()!=null) employer.setDni(employerDTO.getDni());
 		if (employerDTO.getMail()!=null) employer.setMail(employerDTO.getMail());
 		if (employerDTO.getAge()!=null) employer.setAge(employerDTO.getAge());
-		if (employerDTO.getPass()!=null) employer.setPass(passwordEncoder.encode(employerDTO.getPass()));
+		if (employerDTO.getPass()!=null) employer.setPass((employerDTO.getPass()));
 		if (employerDTO.getPhone()!=null) employer.setPhone(employerDTO.getPhone());
 		if (employerDTO.getCountry()!=null) employer.setCountry(employerDTO.getCountry());
 		if (employerDTO.getLocality()!=null) employer.setLocality(employerDTO.getLocality());

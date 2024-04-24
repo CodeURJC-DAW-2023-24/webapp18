@@ -33,9 +33,14 @@ export class UserDetailComponent{
         if (id && (type === 'lifeguards')) {
             userService.getLifeguard(id).subscribe(
                 response => {this.lifeguard = response as Lifeguard;
+                    console.log(response);
+                    console.log(this.lifeguard);
                     this.typeUser='lifeguard';
                     this.lifeguardToPerson();
                     this.editUser='/lifeguards/edit/'+this.lifeguard.id
+                    console.log("LOG DE lifeguard"+this.lifeguard)
+                    console.log("LOG DE lifeguard"+this.lifeguard.imageUser)
+                    console.log("LOG DE lifeguard"+this.lifeguard.name)
                 },
                 error => console.error(error)
             );
@@ -50,6 +55,11 @@ export class UserDetailComponent{
             );
         }
     }
+
+    showImageLifeguard() {
+        console.log("*LOOOG DE FOTO"+this.lifeguard.imageUser);
+        return this.lifeguard.imageUser ? '/api/lifeguards' + this.lifeguard.id + '/photoUser' : '/assets/images/noPhotoUser.jpg';
+      }
 
     logout(){
         this.userService.logOut();

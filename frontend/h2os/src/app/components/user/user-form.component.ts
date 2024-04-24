@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Person } from '../../models/person.model';
 import { Lifeguard } from '../../models/lifeguard.model';
 import { Employer } from '../../models/employer.model';
@@ -24,10 +24,15 @@ export class UserFormComponent{
     problemsResolution:boolean;
     leadership:boolean;
 
+    @ViewChild("file")
+    file:any;
+
     constructor(activatedRoute: ActivatedRoute, private router:Router, private service: UserService) {
         let id = activatedRoute.snapshot.params['id'];
         let type : string | undefined;
         const routeSegments = activatedRoute.snapshot.url;
+        this.edit=false;
+        console.log("log 1" + this.edit)
 
         this.user = {mail:"",pass:"",roles:[]}
         this.lifeguard = {mail:"",pass:"",roles:[],skills:[]}
@@ -58,17 +63,19 @@ export class UserFormComponent{
               error => console.error(error)
             );
         }
+        console.log("log 2" + this.edit)
     }
 
     save() {
         if (this.typeUser==='lifeguard'){
             this.updateLifeguard();
+            console.log("log " + this.edit)
             this.service.addOrUpdateLifeguard(this.lifeguard).subscribe(
-            lifeguard => {
+            (lifeguard:any)=> {
                 if(this.edit){
-                    this.router.navigate(['/lifeguards/'+this.lifeguard.id]);
+                    this.uploadLifeguardImage(lifeguard);
                 }else{
-                    this.router.navigate(['/login']);
+                    this.uploadLifeguardImage(lifeguard);
                 }
              },
             error => console.error('Error creating new lifeguard: ' + error)
@@ -76,11 +83,11 @@ export class UserFormComponent{
         } else if (this.typeUser==='employer'){
             this.updateEmployer();
             this.service.addOrUpdateEmployer(this.employer).subscribe(
-            employer => { 
+            (employer:any) => { 
             if(this.edit){
-                this.router.navigate(['/employers/'+this.employer.id])
+                this.uploadEmployerImage(employer);
             }else{
-                this.router.navigate(['/login'])
+                this.uploadEmployerImage(employer);
             }},
             error => console.error('Error creating new employer: ' + error)
             );
@@ -95,6 +102,69 @@ export class UserFormComponent{
             this.employer.roles = roles;
         }
     }*/
+
+    private uploadLifeguardImage(lifeguard: Lifeguard): void {
+        const image = this.file.nativeElement.files[0];
+        if (image) {
+          let formData = new FormData();
+          formData.append("imageFile", image);
+          this.service.setLifeguardImage(lifeguard, formData).subscribe(
+            response => {
+                this.file.nativeElement.value = null;
+                if (this.edit){
+                    this.router.navigate(['/lifeguards/'+this.lifeguard.id])
+                }else{
+                    this.router.navigate(['/login']);
+                }
+            },
+            error => alert('Error uploading lifeguard image: ' + error)
+          );
+        } /*else if(this.removeImage){
+          this.service.deleteLifeguardImage(lifeguard).subscribe(
+            response => this.router.navigate(['/lifeguards/'+this.lifeguard.id]),
+            error => alert('Error deleting lifeguard image: ' + error)
+          );
+        }*/ else {
+            if (this.edit){
+                this.router.navigate(['/lifeguards/'+this.lifeguard.id])
+            }else{
+                this.router.navigate(['/login']);
+            }
+        }
+      }
+
+      private uploadEmployerImage(employer: Employer): void {
+        const image = this.file.nativeElement.files[0];
+        console.log("log 1")
+        if (image) {
+          console.log("log 2")
+          let formData = new FormData();
+          formData.append("imageFile", image);
+          this.service.setEmployerImage(employer, formData).subscribe(
+            response => {
+                //this.file.nativeElement.value = null;
+                if (this.edit){
+                    this.router.navigate(['/employers/'+this.employer.id])
+                }else{
+                    this.router.navigate(['/login']);
+                }
+            },
+            error => alert('Error uploading employer image: ' + error)
+          );
+        } /*else if(this.removeImage){
+          this.service.deleteEmployerImage(employer).subscribe(
+            response => this.router.navigate(['/employers/'+this.employer.id]),
+            error => alert('Error deleting employer image: ' + error)
+          );
+        }*/ else {
+            if (this.edit){
+                this.router.navigate(['/employers/'+this.employer.id])
+            }else{
+                this.router.navigate(['/login']);
+            };
+        }
+      }
+
 
     private updateSkills(){
         this.reliability = this.lifeguard.skills.includes("Confianza");

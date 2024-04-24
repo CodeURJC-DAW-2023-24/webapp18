@@ -19,6 +19,7 @@ public class EmployerDTO {
     private String direction;
     private String type;
     private String company;
+    private boolean imageCompany;
 
     public EmployerDTO(){
 
@@ -41,6 +42,7 @@ public class EmployerDTO {
         this.direction = employer.getDirection();
         this.company = employer.getCompany();
         this.type = "e";
+        this.imageCompany = employer.getImageCompany();
 
     }
 
@@ -59,6 +61,7 @@ public class EmployerDTO {
         employer.setProvince(this.province);
         employer.setDirection(this.direction);
         employer.setCompany(this.company);
+        employer.setImageCompany(this.imageCompany);
         return employer;
     }
 
@@ -121,6 +124,10 @@ public class EmployerDTO {
 
     public String getCompany() {
         return company;
+    }
+
+    public boolean getImageCompany(){
+        return imageCompany;
     }
 
 }

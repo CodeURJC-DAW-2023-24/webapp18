@@ -1,10 +1,3 @@
-<div *ngIf="!edit">
-    <h2>Nuevo usuario</h2>
-</div>
-<!--{{#edit}}
-<h2>Editar {{user.name}}</h2>
-{{/edit}}-->
-
 <div class="container">
     <div *ngIf="!edit">
         <h2>Nuevo usuario</h2>
@@ -82,17 +75,20 @@
         </div>
     </div>
 
-    <div class="row">
-        <div *ngIf="edit">
+    <div *ngIf="edit">
+        <div class="row">
             <div class="form-group col-md-12">
+                <label for="direction">Calle</label>
+                <input type="text" class="form-control" name="direction" placeholder="Introduzca su calle" [(ngModel)]="user.direction">
+            </div>
         </div>
-        <div *ngIf="!edit">
+    </div>
+    <div *ngIf="!edit">
+        <div class="row">
             <div class="form-group col-md-8">
-        </div>
-            <label for="direction">Calle</label>
-            <input type="text" class="form-control" name="direction" placeholder="Introduzca su calle" [(ngModel)]="user.direction">
-        </div>
-        <div *ngIf="!edit">
+                <label for="direction">Calle</label>
+                <input type="text" class="form-control" name="direction" placeholder="Introduzca su calle" [(ngModel)]="user.direction">
+            </div>
             <div class="form-group col-md-4">
                 <label for="typeUser">Tipo de usuario*</label>
                 <select class="form-select" name="typeUser" required [(ngModel)]="typeUser" (change)="showForm()">
@@ -103,12 +99,12 @@
             </div>
         </div>
     </div>
-
-    <!--
+ 
     <div class="form-group">
         <label for="photoField">Foto de perfil</label>
-        <input type="file" class="form-control" name="photoField" accept=".jpeg, .png" [(ngModel)]="lifeguard.photo">
-    </div>-->
+        <input #file type='file' name='imageFile' class="form-control" accept=".jpg, .jpeg" />
+        <!--<input type="file" class="form-control" name="photoField" accept=".jpeg, .png" [(ngModel)]="lifeguard.photo">-->
+    </div>
 
     <!-- Lifeguard -->
     <div class="form-group" id="lifeguard1" *ngIf="typeUser === 'lifeguard'">

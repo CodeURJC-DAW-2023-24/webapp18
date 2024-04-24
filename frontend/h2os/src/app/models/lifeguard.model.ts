@@ -3,7 +3,6 @@ import { Pool } from './pool.model';
 import { Offer } from './offer.model';
 
 export interface Lifeguard extends Person {
-  photo?: Blob;
   imageUser?: boolean;
   document?: string;
   skills: string[];

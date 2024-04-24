@@ -3,9 +3,18 @@
         <!--<ng-container *ngIf="user">-->
             <h2>{{user.name}} {{user.surname}}</h2>
             <div class="row">
-                <div class="col-md-4">
-                    <!--<img id="img-user" [src]="user.photo ? '/user/' + user.id + '/image' : '/images/noPhotoUser.jpg'" />-->
-                </div>
+                <ng-container *ngIf="user && typeUser==='lifeguard'">
+                    <div class="col-md-4">
+                        <!--<img id="img-user" [src]="lifeguard.imageUser ? '/api/lifeguards' + lifeguard.id + '/photoUser' : '/assets/images/noPhotoUser.jpg'" style="max-width: 100%; height: auto;" />-->
+                        <img id="img-user" [src]="showImageLifeguard()" style="max-width: 100%; height: auto;"/>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="user && typeUser==='employer'">
+                    <div class="col-md-4">
+                        <img id="img-user" [src]="employer.imageCompany ? '/api/employers' + employer.id + '/photoCompany' : '/assets/images/noPhotoUser.jpg'" style="max-width: 100%; height: auto;" />
+                    </div>
+                </ng-container>
 
                 <div class="col-md-8">
                     <p><strong>E-Mail:</strong> {{user.mail}}</p>

@@ -20,6 +20,7 @@ public class LifeguardDTO{
     private String type;
     private String document;
     private List<String> skills;
+    private boolean imageUser;
 
     public LifeguardDTO(){
 
@@ -42,6 +43,7 @@ public class LifeguardDTO{
         this.document = lifeguard.getDocument();
         this.skills = lifeguard.getSkills();
         this.type = "lg";
+        this.imageUser = lifeguard.getImageUser();
     }
 
     public Lifeguard toLifeguard() {
@@ -61,6 +63,7 @@ public class LifeguardDTO{
 
         lifeguard.setDocument(this.document);
         lifeguard.setSkills(this.skills);
+        lifeguard.setImageUser(imageUser);
         // lifeguard.setPools(this.pools);
         // lifeguard.setOffers_accepted(this.offers_accepted);
         // lifeguard.setOffers(this.offers);
@@ -129,6 +132,10 @@ public class LifeguardDTO{
 
     public List<String> getSkills() {
         return skills;
+    }
+
+    public boolean getImageUser(){
+        return imageUser;
     }
 
 }

@@ -60,6 +60,34 @@ export class UserService{
         }
     }
 
+    setLifeguardImage(lifeguard: Lifeguard, formData: FormData) {
+		return this.httpClient.post(urlLifeguard + "/"+ lifeguard.id + '/photoUser', formData)
+			.pipe(
+				catchError(error => this.handleError(error))
+			);
+	}
+
+	deleteLifeguardImage(lifeguard: Lifeguard) {
+		return this.httpClient.delete(urlLifeguard + "/" + lifeguard.id + '/photoUser')
+			.pipe(
+				catchError(error => this.handleError(error))
+			);
+	}
+
+    setEmployerImage(employer: Employer, formData: FormData) {
+		return this.httpClient.post(urlEmployer + "/" + employer.id + '/photoCompany', formData)
+			.pipe(
+				catchError(error => this.handleError(error))
+			);
+	}
+
+	deleteEmployerImage(employer: Employer) {
+		return this.httpClient.delete(urlEmployer + "/" + employer.id + '/photoCompany')
+			.pipe(
+				catchError(error => this.handleError(error))
+			);
+	}
+
     private addLifeguard(lifeguard: Lifeguard){
         return this.httpClient.post(urlLifeguard,lifeguard).pipe(
             catchError(error => this.handleError(error))
