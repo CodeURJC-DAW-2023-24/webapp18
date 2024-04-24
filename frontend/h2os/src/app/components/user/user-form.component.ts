@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Person } from '../../models/person.model';
 import { Lifeguard } from '../../models/lifeguard.model';
 import { Employer } from '../../models/employer.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -24,26 +24,39 @@ export class UserFormComponent{
     problemsResolution:boolean;
     leadership:boolean;
 
-    constructor(activatedRoute: ActivatedRoute, private service: UserService) {
+    constructor(activatedRoute: ActivatedRoute, private router:Router, private service: UserService) {
         let id = activatedRoute.snapshot.params['id'];
         let type : string | undefined;
         const routeSegments = activatedRoute.snapshot.url;
+
+        this.user = {mail:"",pass:"",roles:[]}
+        this.lifeguard = {mail:"",pass:"",roles:[],skills:[]}
+        this.employer = {mail:"",pass:"",roles:[]}
+
         if (routeSegments.length > 0) {
             const firstSegment = routeSegments[0];
             type = firstSegment.path;
         }
         if (id && (type === 'lifeguards')) {
             service.getLifeguard(id).subscribe(
-                lifeguard => this.lifeguard = lifeguard,
+                lifeguard => {this.lifeguard = lifeguard
+                    this.updateSkills();
+                    this.lifeguardToPerson();
+                    this.edit = true;
+                    this.typeUser='lifeguard'
+                },
                 error => console.error(error)
             );
             this.lifeguardToPerson();
         } else if (id && (type === 'employers')){
             service.getEmployer(id).subscribe(
-              employer => this.employer = employer,
+              employer => {this.employer = employer
+                this.employerToPerson();
+                this.edit = true;
+                this.typeUser='employer'
+              },
               error => console.error(error)
             );
-            this.employerToPerson();
         }
     }
 
@@ -51,17 +64,45 @@ export class UserFormComponent{
         if (this.typeUser==='lifeguard'){
             this.updateLifeguard();
             this.service.addOrUpdateLifeguard(this.lifeguard).subscribe(
-            lifeguard => { },
+            lifeguard => {
+                if(this.edit){
+                    this.router.navigate(['/lifeguards/'+this.lifeguard.id]);
+                }else{
+                    this.router.navigate(['/login']);
+                }
+             },
             error => console.error('Error creating new lifeguard: ' + error)
             );
         } else if (this.typeUser==='employer'){
             this.updateEmployer();
             this.service.addOrUpdateEmployer(this.employer).subscribe(
-            employer => { },
+            employer => { 
+            if(this.edit){
+                this.router.navigate(['/employers/'+this.employer.id])
+            }else{
+                this.router.navigate(['/login'])
+            }},
             error => console.error('Error creating new employer: ' + error)
             );
         }
-        window.history.back();
+    }
+
+    /*private setRoles(type:number,...roles: string[]): void {
+        if (type === 0){
+            this.lifeguard.roles = roles;
+        }
+        else{
+            this.employer.roles = roles;
+        }
+    }*/
+
+    private updateSkills(){
+        this.reliability = this.lifeguard.skills.includes("Confianza");
+        this.effort = this.lifeguard.skills.includes("Esfuerzo");
+        this.communication = this.lifeguard.skills.includes("Comunicacion");
+        this.attitude = this.lifeguard.skills.includes("Actitud positiva");
+        this.problemsResolution = this.lifeguard.skills.includes("Resolución de problemas");
+        this.leadership = this.lifeguard.skills.includes("Liderazgo");
     }
 
     private lifeguardToPerson(){
@@ -109,24 +150,63 @@ export class UserFormComponent{
         this.lifeguard.locality = this.user.locality;
         this.lifeguard.province = this.user.province;
         this.lifeguard.direction = this.user.direction;
-        if (this.reliability){
+
+        if (!this.reliability && this.lifeguard.skills?.includes("Confianza")){
+            const index = this.lifeguard.skills?.indexOf("Confianza");
+            if (index !== undefined && index !== -1) {
+                this.lifeguard.skills?.splice(index, 1);
+            }
+        }
+        if (!this.effort && this.lifeguard.skills?.includes("Esfuerzo")){
+            const index = this.lifeguard.skills?.indexOf("Esfuerzo");
+            if (index !== undefined && index !== -1) {
+                this.lifeguard.skills?.splice(index, 1);
+            }
+        }
+        if (!this.communication && this.lifeguard.skills?.includes("Comunicación")){
+            const index = this.lifeguard.skills?.indexOf("Comunicación");
+            if (index !== undefined && index !== -1) {
+                this.lifeguard.skills?.splice(index, 1);
+            }
+        }
+        if (!this.attitude && this.lifeguard.skills?.includes("Actitud positiva")){
+            const index = this.lifeguard.skills?.indexOf("Actitud positiva");
+            if (index !== undefined && index !== -1) {
+                this.lifeguard.skills?.splice(index, 1);
+            }
+        }
+        if (!this.problemsResolution && this.lifeguard.skills?.includes("Resolución de problemas")){
+            const index = this.lifeguard.skills?.indexOf("Resolución de problemas");
+            if (index !== undefined && index !== -1) {
+                this.lifeguard.skills?.splice(index, 1);
+            }
+        }
+        if (!this.leadership && this.lifeguard.skills?.includes("Liderazgo")){
+            const index = this.lifeguard.skills?.indexOf("Liderazgo");
+            if (index !== undefined && index !== -1) {
+                this.lifeguard.skills?.splice(index, 1);
+            }
+        }
+
+        if (this.reliability && !this.lifeguard.skills?.includes("Confianza")){
             this.lifeguard.skills?.push("Confianza")
         }
-        if (this.effort){
+        if (this.effort && !this.lifeguard.skills?.includes("Esfuerzo")){
             this.lifeguard.skills?.push("Esfuerzo")
         }
-        if (this.communication){
+        if (this.communication && !this.lifeguard.skills?.includes("Comunicación")){
             this.lifeguard.skills?.push("Comunicación")
         }
-        if (this.attitude){
+        if (this.attitude && !this.lifeguard.skills?.includes("Actitud positiva")){
             this.lifeguard.skills?.push("Actitud positiva")
         }
-        if (this.problemsResolution){
+        if (this.problemsResolution && !this.lifeguard.skills?.includes("Resolución de problemas")){
             this.lifeguard.skills?.push("Resolución de problemas")
         }
-        if (this.leadership){
+        if (this.leadership && !this.lifeguard.skills?.includes("Liderazgo")){
             this.lifeguard.skills?.push("Liderazgo")
         }
+        console.log(this.lifeguard.skills);
     }
 
     private updateEmployer(){
@@ -143,6 +223,7 @@ export class UserFormComponent{
         this.employer.province = this.user.province;
         this.employer.direction = this.user.direction;
     }
+    
 
     checkPassword(): void {
         const passInput: HTMLInputElement | null = document.getElementById("pass") as HTMLInputElement;

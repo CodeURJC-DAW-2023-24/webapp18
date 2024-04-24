@@ -5,7 +5,13 @@
 <h2>Editar {{user.name}}</h2>
 {{/edit}}-->
 
-<form role="form" action="/user/register" method="post" enctype="multipart/form-data">
+<div class="container">
+    <div *ngIf="!edit">
+        <h2>Nuevo usuario</h2>
+    </div>
+    <div *ngIf="edit">
+        <h2>Editar {{user.name}}</h2>
+    </div>
     <!--{{^edit}}
     <form role="form" action="/user/register" method="post" enctype="multipart/form-data">
     {{/edit}}-->
@@ -38,16 +44,18 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label for="mail">Correo electrónico*</label>
-            <input type="email" class="form-control" name="mail" placeholder="example@gmail.com" required [(ngModel)]="user.mail" (input)="checkMail()">
-            <div id="mailContent"></div>
-        </div>
-        <div class="form-group col-md-6">
-            <label for="pass">Contraseña*</label>
-            <input type="password" class="form-control" name="pass" placeholder="Introduzca su contraseña" required [(ngModel)]="user.pass" (input)="checkPassword()">
-            <div id="passContent"></div>
+    <div *ngIf="!edit">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="mail">Correo electrónico*</label>
+                <input type="email" class="form-control" name="mail" placeholder="example@gmail.com" required [(ngModel)]="user.mail" (input)="checkMail()">
+                <div id="mailContent"></div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="pass">Contraseña*</label>
+                <input type="password" class="form-control" name="pass" placeholder="Introduzca su contraseña" required [(ngModel)]="user.pass" (input)="checkPassword()">
+                <div id="passContent"></div>
+            </div>
         </div>
     </div>
 
@@ -75,24 +83,32 @@
     </div>
 
     <div class="row">
-        <div class="form-group col-md-8">
+        <div *ngIf="edit">
+            <div class="form-group col-md-12">
+        </div>
+        <div *ngIf="!edit">
+            <div class="form-group col-md-8">
+        </div>
             <label for="direction">Calle</label>
             <input type="text" class="form-control" name="direction" placeholder="Introduzca su calle" [(ngModel)]="user.direction">
         </div>
-        <div class="form-group col-md-4">
-            <label for="typeUser">Tipo de usuario*</label>
-            <select class="form-select" name="typeUser" required [(ngModel)]="typeUser" (change)="showForm()">
-                <option value="" disabled selected hidden>Elegir tipo de usuario</option>
-                <option value="lifeguard">Socorrista</option>
-                <option value="employer">Empleador</option>
-            </select>
+        <div *ngIf="!edit">
+            <div class="form-group col-md-4">
+                <label for="typeUser">Tipo de usuario*</label>
+                <select class="form-select" name="typeUser" required [(ngModel)]="typeUser" (change)="showForm()">
+                    <option value="" disabled selected hidden>Elegir tipo de usuario</option>
+                    <option value="lifeguard">Socorrista</option>
+                    <option value="employer">Empleador</option>
+                </select>
+            </div>
         </div>
     </div>
 
+    <!--
     <div class="form-group">
         <label for="photoField">Foto de perfil</label>
         <input type="file" class="form-control" name="photoField" accept=".jpeg, .png" [(ngModel)]="lifeguard.photo">
-    </div>
+    </div>-->
 
     <!-- Lifeguard -->
     <div class="form-group" id="lifeguard1" *ngIf="typeUser === 'lifeguard'">
@@ -141,4 +157,4 @@
         <button type="submit" (click)="save()" class="btn"><i class="bi bi-download"></i> Guardar</button>
         <a routerLink="/login" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
     </div>
-</form>
+</div>

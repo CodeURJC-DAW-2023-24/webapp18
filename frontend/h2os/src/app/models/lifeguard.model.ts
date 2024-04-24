@@ -6,9 +6,9 @@ export interface Lifeguard extends Person {
   photo?: Blob;
   imageUser?: boolean;
   document?: string;
-  skills?: string[];
-  pools: Pool[];
-  offers_accepted: Offer[];
-  offers: Offer[];
-  offerAssigned: boolean;
+  skills: string[];
+  pools?: Pool[];
+  offers_accepted?: Offer[];
+  offers?: Offer[];
+  offerAssigned?: boolean;
 }

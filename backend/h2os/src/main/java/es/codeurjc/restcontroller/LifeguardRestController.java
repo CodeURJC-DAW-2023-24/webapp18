@@ -127,6 +127,7 @@ public class LifeguardRestController {
 			Lifeguard lifeguard = lifeguardDTO.toLifeguard();
 			lifeguard.setPass(passwordEncoder.encode(lifeguard.getPass()));
 			lifeguard.setRoles("USER", "LIFE");
+			lifeguard.setofferAssigned(false);
 			lifeguardService.save(lifeguard);
 			return new ResponseEntity<>(lifeguard, HttpStatus.OK);
 		}else{
@@ -456,12 +457,13 @@ public class LifeguardRestController {
 		if (lifeguardDTO.getDni()!=null) lifeguard.setDni(lifeguardDTO.getDni());
 		if (lifeguardDTO.getMail()!=null) lifeguard.setMail(lifeguardDTO.getMail());
 		if (lifeguardDTO.getAge()!=null) lifeguard.setAge(lifeguardDTO.getAge());
-		if (lifeguardDTO.getPass()!=null) lifeguard.setPass(passwordEncoder.encode(lifeguardDTO.getPass()));
+		if (lifeguardDTO.getPass()!=null) lifeguard.setPass((lifeguardDTO.getPass()));
 		if (lifeguardDTO.getPhone()!=null) lifeguard.setPhone(lifeguardDTO.getPhone());
 		if (lifeguardDTO.getCountry()!=null) lifeguard.setCountry(lifeguardDTO.getCountry());
 		if (lifeguardDTO.getLocality()!=null) lifeguard.setLocality(lifeguardDTO.getLocality());
 		if (lifeguardDTO.getProvince()!=null) lifeguard.setProvince(lifeguardDTO.getProvince());
 		if (lifeguardDTO.getDocument()!=null) lifeguard.setDocument(lifeguardDTO.getDocument());
+		if (lifeguardDTO.getSkills()!=null) lifeguard.setSkills(lifeguardDTO.getSkills());
 		lifeguardService.save(lifeguard);
 	}
 }

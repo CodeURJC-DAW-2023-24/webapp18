@@ -50,6 +50,7 @@ export class OfferComponent{
                         console.log(this.offer);
                         console.log("hola")
                         console.log(this.me);
+                        console.log(this.me.mail);
                         this.edit = (this.me.mail=="admin" || this.me.mail==this.offer.employer)
                         this.canApply = this.me.type=="lg";
                         this.applied = this.edit;

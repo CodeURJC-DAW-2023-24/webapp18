@@ -148,8 +148,7 @@ public class UserService {
         String message1 = "";
         String message2 = "";
         String message3 = "";
-
-        if(!phone.equals("")){
+        if((phone!=null)&&(!phone.equals(""))){
             try {
                 phoneNum = Integer.parseInt(phone);
             } catch (NumberFormatException e) {
@@ -158,7 +157,7 @@ public class UserService {
             if (phoneNum < 0) message1 = "El teléfono debe ser un número positivo. ";
             if (String.valueOf(phoneNum).length() != 9) message1 = "El teléfono debe tener 9 cifras. ";
         }
-        if(!age.equals("")){
+        if((age!=null)&&(!age.equals(""))){
             try {
                 ageNum = Integer.parseInt(age);
             } catch (NumberFormatException e) {

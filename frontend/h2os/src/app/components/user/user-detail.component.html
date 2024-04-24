@@ -1,6 +1,6 @@
 <div class="data">
     <main class="container container-main">
-        <ng-container *ngIf="user">
+        <!--<ng-container *ngIf="user">-->
             <h2>{{user.name}} {{user.surname}}</h2>
             <div class="row">
                 <div class="col-md-4">
@@ -29,23 +29,21 @@
                     <div class="subcontainer">
                         <h3>Aptitudes</h3>
                         <ul>
-                            <ng-container *ngFor="let skill of user.lifeguard.skills">
+                            <ng-container *ngFor="let skill of lifeguard.skills">
                                 <li>{{skill}}</li>
                             </ng-container>
-                            <li *ngIf="!user.lifeguard.skills">No hay aptitudes</li>
+                            <li *ngIf="!lifeguard.skills">No hay aptitudes</li>
                         </ul>
                     </div>
                 </ng-container>
             </div>
-            <!--<div class="btn-cont">
-                <ng-container *ngIf="me">
-                    <a [routerLink]="'/user/' + user.mail + '/edit'" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-                    <form action="/logout" method="post">
-                        <input type="submit" class="btn btn-red" value="Cerrar sesión" />
-                    </form>
-                </ng-container>
+            <div class="btn-cont">
+                <!--<ng-container *ngIf="me">-->
+                        <a [routerLink]="editUser" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+                        <input type="submit" (click)="logout()" class="btn btn-red" value="Cerrar sesión" />
+                <!--</ng-container>-->
                 <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
-            </div>-->
+            </div>
 
             <ng-container *ngIf="admin">
                 <form role="form" [action]="'/profile/delete?id=' + user.id" method="post">
@@ -56,7 +54,7 @@
                     <input type="hidden" name="mail" value="{{user.mail}}" />
                 </form>
             </ng-container>
-        </ng-container>
+        <!--</ng-container>-->
     </main>
     <ng-container *ngIf="user && typeUser==='lifeguard'">
         <div class="container container-additional">
@@ -66,7 +64,7 @@
                     <!--<ng-container *ngFor="let offer of user.lifeguard.offersLifeguard">
                         <li><a [routerLink]="'offer?id=' + offer.id">Piscina: {{offer.pool.name}} - Salario: {{offer.salary}} - Inicio: {{offer.start}}</a></li>
                     </ng-container>-->
-                    <li *ngIf="!user.lifeguard.offersLifeguard">No hay candidaturas</li>
+                    <li *ngIf="!lifeguard.offers">No hay candidaturas</li>
                 </ul>
             </div>
         </div>
@@ -79,7 +77,7 @@
                     <!--<ng-container *ngFor="let offer of user.employer.offers">
                         <li><a [routerLink]="'offer?id=' + offer.id">Piscina: {{offer.pool.name}} - Salario: {{offer.salary}} - Inicio: {{offer.start}}</a></li>
                     </ng-container>-->
-                    <li *ngIf="!user.employer.offers">No has creado ninguna oferta</li>
+                    <li *ngIf="!employer.offers">No has creado ninguna oferta</li>
                 </ul>
             </div>
         </div>

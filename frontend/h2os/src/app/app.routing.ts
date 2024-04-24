@@ -11,7 +11,10 @@ const appRoutes: Routes = [
     { path: 'user/form', component: UserFormComponent },
     { path: 'offers', component: OfferComponent},
     { path: 'offers/edit', component: OfferEditComponent},
-    { path: 'profile', component: UserDetailComponent },
+    { path: 'lifeguards/:id', component: UserDetailComponent },
+    { path: 'employers/:id', component: UserDetailComponent },
+    { path: 'lifeguards/edit/:id', component: UserFormComponent },
+    { path: 'employers/edit/:id', component: UserFormComponent },
     { path: '', redirectTo: '', pathMatch: 'full' }
 ]
 

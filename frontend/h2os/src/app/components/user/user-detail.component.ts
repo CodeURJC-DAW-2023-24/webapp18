@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Person } from '../../models/person.model';
 import { Lifeguard } from '../../models/lifeguard.model';
 import { Employer } from '../../models/employer.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { Me } from '../../models/me.model';
 
 @Component({
     selector: "user-detail",
@@ -11,36 +12,48 @@ import { UserService } from '../../services/user.service';
 })
 
 export class UserDetailComponent{
+    me:Me;
     user: Person;
     lifeguard: Lifeguard;
     employer: Employer;
     edit:boolean;
     typeUser:string;
     admin: boolean;
+    editUser:string;
 
-    constructor(activatedRoute: ActivatedRoute, private service: UserService) {
+    constructor(activatedRoute: ActivatedRoute, private router:Router, private userService: UserService) {
         let id = activatedRoute.snapshot.params['id'];
         let type : string | undefined;
         const routeSegments = activatedRoute.snapshot.url;
+        this.user = {mail:"",pass:"",roles:[]}
         if (routeSegments.length > 0) {
             const firstSegment = routeSegments[0];
             type = firstSegment.path;
         }
         if (id && (type === 'lifeguards')) {
-            service.getLifeguard(id).subscribe(
-                lifeguard => this.lifeguard = lifeguard,
+            userService.getLifeguard(id).subscribe(
+                response => {this.lifeguard = response as Lifeguard;
+                    this.typeUser='lifeguard';
+                    this.lifeguardToPerson();
+                    this.editUser='/lifeguards/edit/'+this.lifeguard.id
+                },
                 error => console.error(error)
             );
-            this.typeUser='lifeguard';
-            this.lifeguardToPerson();
         } else if (id && (type === 'employers')){
-            service.getEmployer(id).subscribe(
-              employer => this.employer = employer,
+            userService.getEmployer(id).subscribe(
+              employer => {this.employer = employer
+                this.typeUser='employer';
+                this.employerToPerson();
+                this.editUser='/employers/edit/'+this.employer.id
+              },
               error => console.error(error)
             );
-            this.typeUser='employer';
-            this.employerToPerson();
         }
+    }
+
+    logout(){
+        this.userService.logOut();
+        this.router.navigate(['/']);
     }
 
     private lifeguardToPerson(){
