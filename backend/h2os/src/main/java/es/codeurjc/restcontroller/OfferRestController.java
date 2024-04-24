@@ -385,10 +385,13 @@ public class OfferRestController {
         } else
             mapa.put("Seleccionado", null);
             ArrayList<String> l2 = new ArrayList<>();
+            ArrayList<String> l3 = new ArrayList<>();
         for (Lifeguard l : offer.getLifeguards()) {
             l2.add(l.getMail());
+            l3.add(l.getDescription());
         }
         mapa.put("Propuestos", l2);
+        mapa.put("Descripciones", l3);
         return mapa;
     }
 

@@ -34,17 +34,20 @@ export class OfferComponent{
     applied: boolean;
     selected: string | undefined;
     appliedLg: string[];
+    appliedLgDesc: string[];
     photoURL: string;
     constructor(activatedRoute: ActivatedRoute, private service: OfferService, private userService: UserService){ // Set the permits
         let id = activatedRoute.snapshot.params['id'];
         id = 1;
+        this.applied = false;
+        this.appliedLg = []
+        this.appliedLgDesc= []
         service.getOffer(id).subscribe(
             response => {
                 this.offer = response as Offer;
                 this.hasPhoto = false;
                 this.poolName = this.offer.poolName;
                 this.poolID = this.offer.poolID;
-                this.applied = false;
                 userService.me().subscribe(
                     response => {
                         this.me = response as Me
@@ -53,7 +56,6 @@ export class OfferComponent{
                         console.log(this.me);
                         this.edit = (this.me.mail=="admin" || this.me.mail==this.offer.employer)
                         this.canApply = this.me.type=="lg";
-                        this.applied = this.edit;
                     },
                     error => {
                         this.me.mail = "-1"
@@ -93,6 +95,10 @@ export class OfferComponent{
                 console.log(intermediate2)
                 if(intermediate2){
                     this.appliedLg = intermediate2;
+                }
+                const intermediate3 = mapa.Descripciones;
+                if(intermediate3){
+                    this.appliedLgDesc = intermediate3;
                 }
                 this.applied = true;
 

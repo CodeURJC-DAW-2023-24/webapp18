@@ -17,17 +17,32 @@ import { CommonModule, NgIf } from '@angular/common';
 export class OfferEditComponent{
    offer:Offer
    pools: Pool[];
+   dateF: string;
     constructor(activatedRoute: ActivatedRoute, private service: OfferService){ // Set the permits
         let id = activatedRoute.snapshot.params['id'];
         service.getOffer(1).subscribe(
-            response => this.offer = response as Offer,
+            response => {
+                this.offer = response as Offer;
+                this.formatDate()
+            },
+
             error => console.error(error)
         );
         console.log(this.offer);
        
     }
     editOffer(){
-
+        // build json of new offer
+        // send petition to service
     }
+
+    formatDate() {
+        const parts = this.offer.start.split('/');
+        this.dateF = `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+      unformatDate(date: string): string {
+        const parts = this.offer.start.split('-');
+        return `${parts[0]}/${parts[1]}/${parts[2]}`;
+      }
    
 }
