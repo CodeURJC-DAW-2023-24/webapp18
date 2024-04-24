@@ -1,5 +1,7 @@
 package es.codeurjc.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.List;
@@ -158,6 +160,12 @@ public class PoolController {
         if (!photoField.isEmpty()) {
             pool.setPhotoUser(BlobProxy.generateProxy(photoField.getInputStream(), photoField.getSize()));
             pool.photoCheck = true;
+        }
+        else{
+            String route = "../resources/static/images/default-image.jpg";
+            File file = new File(route);
+            FileInputStream fis = new FileInputStream(file);
+            pool.setDefaultPhoto(BlobProxy.generateProxy(fis, file.length()));
         }
         poolService.save(pool);
         return "redirect:/pools";
