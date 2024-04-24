@@ -6,11 +6,7 @@
         <div class="row">
             <a class="col-lg-6 col-img" href="/pool?id={{poolID}}">
                 <div *ngIf="hasPhoto">
-                    <img id="img-user" src="/pool/{{poolID}}/image" >
-
-                </div>
-                <div *ngIf="!hasPhoto">
-                        <img id="img-pool" src="{{poolPhoto}}" >
+                    <img [src] = "photoURL" alt="Photo">
                 </div>
             </a>
             <div class="col-lg-6 col-data">

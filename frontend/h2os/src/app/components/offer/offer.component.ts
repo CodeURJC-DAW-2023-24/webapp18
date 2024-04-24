@@ -34,6 +34,7 @@ export class OfferComponent{
     applied: boolean;
     selected: string | undefined;
     appliedLg: string[];
+    photoURL: string;
     constructor(activatedRoute: ActivatedRoute, private service: OfferService, private userService: UserService){ // Set the permits
         let id = activatedRoute.snapshot.params['id'];
         id = 1;
@@ -62,6 +63,16 @@ export class OfferComponent{
             },
             error => console.error(error)
         );
+
+        service.getOfferPhoto(id).subscribe(
+            response => {
+                const blob = new Blob([(response as any).body], { type: 'image/jpeg' })
+                this.photoURL = URL.createObjectURL(blob)
+                this.hasPhoto = true;
+            },
+            error =>{
+                console.log("Error al cargar la foto")
+            })
         
         
         
