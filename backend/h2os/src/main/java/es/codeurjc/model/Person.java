@@ -73,6 +73,9 @@ public abstract class Person {
         return this.mail.equals(message.getAuthor());
     }
 
+    public String getAddress(){
+        return this.direction + ", " + this.locality + " (" + this.province + ", " + this.country + ")";
+    }
     public abstract String getType();
 
     public Long getId() {
