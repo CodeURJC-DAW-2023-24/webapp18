@@ -32,7 +32,7 @@
         </div>
         <div class="form-group col-md-6">
             <label for="age">Edad</label>
-            <input type="number" class="form-control" name="age" placeholder="Introduzca su edad" [(ngModel)]="user.age" (input)="checkAge()">
+            <input type="number" class="form-control" name="age" id="age" placeholder="Introduzca su edad" [(ngModel)]="user.age" (input)="checkAge()">
             <div id="ageContent" style="color:red"></div>
         </div>
     </div>
@@ -41,12 +41,12 @@
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="mail">Correo electrónico*</label>
-                <input type="email" class="form-control" name="mail" placeholder="example@gmail.com" required [(ngModel)]="user.mail" (input)="checkMail()">
+                <input type="email" class="form-control" name="mail" id="mail" placeholder="example@gmail.com" required [(ngModel)]="user.mail" (input)="checkMail()">
                 <div id="mailContent"></div>
             </div>
             <div class="form-group col-md-6">
                 <label for="pass">Contraseña*</label>
-                <input type="password" class="form-control" name="pass" placeholder="Introduzca su contraseña" required [(ngModel)]="user.pass" (input)="checkPassword()">
+                <input type="password" class="form-control" name="pass" id="pass" placeholder="Introduzca su contraseña" required [(ngModel)]="user.pass" (input)="checkPassword()">
                 <div id="passContent"></div>
             </div>
         </div>
@@ -55,7 +55,7 @@
     <div class="row">
         <div class="form-group col-md-6 col-sm-12">
             <label for="phone">Teléfono de contacto</label>
-            <input type="tel" class="form-control" name="phone" placeholder="Introduzca su número de teléfono" [(ngModel)]="user.phone" (input)="checkPhone()">
+            <input type="tel" class="form-control" name="phone" id="phone" placeholder="Introduzca su número de teléfono" [(ngModel)]="user.phone" (input)="checkPhone()">
             <div id="phoneContent" style="color:red"></div>
         </div>
         <div class="form-group col-md-6 col-sm-12">

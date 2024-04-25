@@ -166,7 +166,7 @@ public class EmployerRestController {
 	 )
 	})
     @PutMapping("/api/employers/{id}")
-	public ResponseEntity<Employer> updateEmployer(@PathVariable long id, @RequestBody EmployerDTO employerDTO, Principal principal) throws SQLException {
+	public ResponseEntity<EmployerDTO> updateEmployer(@PathVariable long id, @RequestBody EmployerDTO employerDTO, Principal principal) throws SQLException {
 		if(principal !=null){
 			if (employerService.existsById(id)) {
 
@@ -174,7 +174,7 @@ public class EmployerRestController {
 				Employer employer = employerService.findById(id).get();
 				if (messageForm.equals("") || (messageForm.equals("Correo ya en uso por otro empleado. ") && employerDTO.getMail().equals(employer.getMail()))) {
 					updateEmployerDTO(employerDTO, employer);
-					return new ResponseEntity<>(employer, HttpStatus.OK);
+					return new ResponseEntity<>(employerDTO, HttpStatus.OK);
 
 				}else{
 					HttpHeaders headers = new HttpHeaders();
