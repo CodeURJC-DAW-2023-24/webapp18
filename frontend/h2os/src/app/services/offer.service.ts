@@ -15,15 +15,10 @@ export class OfferService{
 
     getOffer(id: number): Observable<Object>{
         return this.httpClient.get(urlOffer+"/"+id);
-        return this.httpClient.get<Offer>(urlOffer+"/"+id).pipe(
-            catchError(error => this.handleError(error))
-        ) as Observable<Offer>;
     }
-    getOfferPhoto(id: number): Observable<Object>{
-        return this.httpClient.get(urlOffer+"/"+id+"/photo");
-        return this.httpClient.get<Offer>(urlOffer+"/"+id).pipe(
-            catchError(error => this.handleError(error))
-        ) as Observable<Offer>;
+    getOfferPhoto(id: number){
+        return this.httpClient.get(urlOffer+"/"+id+"/photo", { responseType: 'arraybuffer' });
+        
     }
 
     deleteOffer(id: number| undefined) {
