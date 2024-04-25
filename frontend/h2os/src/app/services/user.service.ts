@@ -88,6 +88,14 @@ export class UserService{
 			);
 	}
 
+    getLifeguardImage(lifeguard:Lifeguard) {
+        return this.httpClient.get(urlLifeguard + "/" + lifeguard.id + '/photoUser', { responseType: 'arraybuffer' })
+      }
+
+    getEmployerImage(employer:Employer) {
+        return this.httpClient.get(urlEmployer + "/" + employer.id + '/photoCompany', { responseType: 'arraybuffer' })
+    }
+
     private addLifeguard(lifeguard: Lifeguard){
         return this.httpClient.post(urlLifeguard,lifeguard).pipe(
             catchError(error => this.handleError(error))

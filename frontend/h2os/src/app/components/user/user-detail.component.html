@@ -6,7 +6,8 @@
                 <ng-container *ngIf="user && typeUser==='lifeguard'">
                     <div class="col-md-4">
                         <!--<img id="img-user" [src]="lifeguard.imageUser ? '/api/lifeguards' + lifeguard.id + '/photoUser' : '/assets/images/noPhotoUser.jpg'" style="max-width: 100%; height: auto;" />-->
-                        <img id="img-user" [src]="showImageLifeguard()" style="max-width: 100%; height: auto;"/>
+                        <img *ngIf="image"  [src]="imageUser" style="max-width: 100%; height: auto;" >
+                        <img *ngIf="!image" src="/assets/images/noPhotoUser.jpg" style="max-width: 100%; height: auto;">
                     </div>
                 </ng-container>
 

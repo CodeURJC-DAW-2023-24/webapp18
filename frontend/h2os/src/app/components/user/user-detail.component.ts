@@ -5,6 +5,7 @@ import { Employer } from '../../models/employer.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { Me } from '../../models/me.model';
+import { catchError } from 'rxjs';
 
 @Component({
     selector: "user-detail",
@@ -20,12 +21,15 @@ export class UserDetailComponent{
     typeUser:string;
     admin: boolean;
     editUser:string;
+    image:boolean | undefined;
+    imageUser: string | undefined;
 
     constructor(activatedRoute: ActivatedRoute, private router:Router, private userService: UserService) {
         let id = activatedRoute.snapshot.params['id'];
         let type : string | undefined;
         const routeSegments = activatedRoute.snapshot.url;
         this.user = {mail:"",pass:"",roles:[]}
+        this.image = false;
         if (routeSegments.length > 0) {
             const firstSegment = routeSegments[0];
             type = firstSegment.path;
@@ -38,9 +42,21 @@ export class UserDetailComponent{
                     this.typeUser='lifeguard';
                     this.lifeguardToPerson();
                     this.editUser='/lifeguards/edit/'+this.lifeguard.id
-                    console.log("LOG DE lifeguard"+this.lifeguard)
-                    console.log("LOG DE lifeguard"+this.lifeguard.imageUser)
-                    console.log("LOG DE lifeguard"+this.lifeguard.name)
+                    this.image = this.lifeguard.imageUser;
+                    if (this.image){
+                        userService.getLifeguardImage(this.lifeguard).subscribe(
+                            response =>{ if(response){
+                                console.log(this.image);
+                                const blob = new Blob([response], {type: 'image/jpeg'});
+                                this.imageUser = URL.createObjectURL(blob);
+                            }else{
+                                this.imageUser = undefined;
+                            }
+                            
+                        },
+                        error => {this.imageUser = undefined;}
+                        );
+                    }
                 },
                 error => console.error(error)
             );
@@ -49,7 +65,21 @@ export class UserDetailComponent{
               employer => {this.employer = employer
                 this.typeUser='employer';
                 this.employerToPerson();
-                this.editUser='/employers/edit/'+this.employer.id
+                this.editUser='/employers/edit/'+this.employer.id;
+                this.image = this.employer.imageCompany;
+                if (this.image){
+                    userService.getEmployerImage(this.employer).subscribe(
+                        response =>{ if(response){
+                            const blob = new Blob([response], {type: 'image/jpeg'});
+                            this.imageUser = URL.createObjectURL(blob);
+                        }else{
+                            this.imageUser = undefined;
+                        }
+                        
+                    },
+                    error => {this.imageUser = undefined;}
+                    );
+                }
               },
               error => console.error(error)
             );
