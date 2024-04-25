@@ -49,28 +49,26 @@ export class OfferComponent{
                 this.hasPhoto = false;
                 this.poolName = this.offer.poolName;
                 this.poolID = this.offer.poolID;
-                userService.me().subscribe(
-                    response => {
-                        this.me = response as Me
-                        console.log(this.offer);
-                        console.log("hola")
-                        console.log(this.me);
-                        console.log(this.me.mail);
-                        this.edit = (this.me.mail=="admin" || this.me.mail==this.offer.employer)
-                        this.canApply = this.me.type=="lg";
-                        service.getOfferPhoto(id).subscribe(
-                            response =>{ if(response){
-                                const blob = new Blob([response], { type: 'image/jpeg' })
-                                this.photoURL = URL.createObjectURL(blob)
-                                this.hasPhoto = true;
+                service.getOfferPhoto(id).subscribe(
+                    response =>{ if(response){
+                        const blob = new Blob([response], { type: 'image/jpeg' })
+                        this.photoURL = URL.createObjectURL(blob)
+                        this.hasPhoto = true;
 
-
-                                
+                        userService.me().subscribe(
+                            response => {
+                                this.me = response as Me
+                                console.log(this.offer);
+                                console.log("hola")
+                                console.log(this.me);
+                                console.log(this.me.mail);
+                                this.edit = (this.me.mail=="admin" || this.me.mail==this.offer.employer)
+                                this.canApply = this.me.type=="lg";
                                 userService.getLifeguardOffers(this.me.id).subscribe(
                                     response => {
                                         console.log(response)
                                         let lista = response as Offer[];
-
+        
                                         for(let offerA of lista){
                                             if(offerA.id==this.offer.id){
                                                 this.canApply = false
@@ -81,17 +79,21 @@ export class OfferComponent{
                                     error =>{ 
                                         console.log("Error al pedir las ofertas propuestas")}
                                 );
-                            }
+                                
                             },
-                            error =>{
-                                console.log("Error al cargar la foto")
-                            });
-                    },
-                    error => {
-                        this.me.mail = "-1"
-                        this.me.type = "-1"
+                            error => {
+                                this.me.mail = "-1"
+                                this.me.type = "-1"
+                            }
+                        );
+                        
+                        
                     }
-                );
+                    },
+                    error =>{
+                        console.log("Error al cargar la foto")
+                    });
+                
             },
             error => console.error(error)
         );
