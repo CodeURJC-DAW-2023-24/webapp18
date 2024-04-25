@@ -96,6 +96,9 @@ export class UserService{
         return this.httpClient.get(urlEmployer + "/" + employer.id + '/photoCompany', { responseType: 'arraybuffer' })
     }
 
+    getLifeguardOffers(id: number): Observable<Object>{
+        return this.httpClient.get(urlLifeguard+"/"+id+"/offers");
+    }
     private addLifeguard(lifeguard: Lifeguard){
         return this.httpClient.post(urlLifeguard,lifeguard).pipe(
             catchError(error => this.handleError(error))

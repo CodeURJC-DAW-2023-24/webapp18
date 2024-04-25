@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Person } from '../../models/person.model';
 import { Lifeguard } from '../../models/lifeguard.model';
 import { Employer } from '../../models/employer.model';
@@ -18,6 +18,12 @@ export class OfferEditComponent{
    offer:Offer
    pools: Pool[];
    dateF: string;
+   @ViewChild('description') descripcionInput: ElementRef;
+   @ViewChild('journey') journeySelect: ElementRef;
+   @ViewChild('date') dateInput: ElementRef;
+   @ViewChild('salary') salaryInput: ElementRef;
+   @ViewChild('poolN') poolInput: ElementRef;
+   
     constructor(activatedRoute: ActivatedRoute, private service: OfferService){ // Set the permits
         let id = activatedRoute.snapshot.params['id'];
         service.getOffer(1).subscribe(
@@ -32,17 +38,26 @@ export class OfferEditComponent{
        
     }
     editOffer(){
-        // build json of new offer
-        // send petition to service
+        console.log("Oferta antes")
+        console.log(JSON.stringify(this.offer))
+        this.offer.description = this.descripcionInput.nativeElement.value;
+        this.offer.type = this.journeySelect.nativeElement.value;
+        this.offer.start = this.unformatDate(this.dateInput.nativeElement.value);
+        this.offer.poolID = this.poolInput.nativeElement.value;
+        this.offer.salary = this.salaryInput.nativeElement.value;
+        console.log("Oferta despues")
+        console.log(JSON.stringify(this.offer))
+        this.service.editOffer(this.offer.id, this.offer)
     }
 
     formatDate() {
         const parts = this.offer.start.split('/');
         this.dateF = `${parts[2]}-${parts[1]}-${parts[0]}`;
       }
-      unformatDate(date: string): string {
-        const parts = this.offer.start.split('-');
-        return `${parts[0]}/${parts[1]}/${parts[2]}`;
+    unformatDate(date: string): string {
+        const parts = date.split('-');
+        return parts[2]+'/'+parts[1]+'/'+parts[0];
       }
+    
    
 }

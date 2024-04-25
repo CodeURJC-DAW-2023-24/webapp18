@@ -15,15 +15,10 @@ export class OfferService{
 
     getOffer(id: number): Observable<Object>{
         return this.httpClient.get(urlOffer+"/"+id);
-        return this.httpClient.get<Offer>(urlOffer+"/"+id).pipe(
-            catchError(error => this.handleError(error))
-        ) as Observable<Offer>;
     }
-    getOfferPhoto(id: number): Observable<Object>{
-        return this.httpClient.get(urlOffer+"/"+id+"/photo");
-        return this.httpClient.get<Offer>(urlOffer+"/"+id).pipe(
-            catchError(error => this.handleError(error))
-        ) as Observable<Offer>;
+    getOfferPhoto(id: number){
+        return this.httpClient.get(urlOffer+"/"+id+"/photo", { responseType: 'arraybuffer' });
+        
     }
 
     deleteOffer(id: number| undefined) {
@@ -34,7 +29,7 @@ export class OfferService{
     applyToOffer(id: number | undefined){
         return this.httpClient.post(urlOffer+"/"+id+"/"+urlLifeguards,"").subscribe();
     }
-
+    
     getApplied(id: number | undefined): Observable<Object>{
         return this.httpClient.get(urlOffer+"/"+id+"/lifeguards");
     }
@@ -49,6 +44,12 @@ export class OfferService{
         return true
     }
 
+    editOffer(id: number | undefined, offer: Offer){
+        const json = ""
+        console.log(JSON.stringify(offer))
+        this.httpClient.put(urlOffer+"/"+id, offer).subscribe();
+        return true
+    }
     private handleError(error:any){
         console.error(error);
         return throwError("Server error ("+error.status+"):"+error.text())

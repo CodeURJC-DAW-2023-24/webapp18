@@ -3,6 +3,7 @@ import { Person } from '../../models/person.model';
 import { Lifeguard } from '../../models/lifeguard.model';
 import { Employer } from '../../models/employer.model';
 import { Offer } from '../../models/offer.model';
+import { Pool } from '../../models/pool.model';
 import { Me } from '../../models/me.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OfferService } from '../../services/offer.service';
@@ -57,6 +58,34 @@ export class OfferComponent{
                         console.log(this.me.mail);
                         this.edit = (this.me.mail=="admin" || this.me.mail==this.offer.employer)
                         this.canApply = this.me.type=="lg";
+                        service.getOfferPhoto(id).subscribe(
+                            response =>{ if(response){
+                                const blob = new Blob([response], { type: 'image/jpeg' })
+                                this.photoURL = URL.createObjectURL(blob)
+                                this.hasPhoto = true;
+
+
+                                
+                                userService.getLifeguardOffers(this.me.id).subscribe(
+                                    response => {
+                                        console.log(response)
+                                        let lista = response as Offer[];
+
+                                        for(let offerA of lista){
+                                            if(offerA.id==this.offer.id){
+                                                this.canApply = false
+                                            }
+                                        }
+                        
+                                    },
+                                    error =>{ 
+                                        console.log("Error al pedir las ofertas propuestas")}
+                                );
+                            }
+                            },
+                            error =>{
+                                console.log("Error al cargar la foto")
+                            });
                     },
                     error => {
                         this.me.mail = "-1"
@@ -67,17 +96,9 @@ export class OfferComponent{
             error => console.error(error)
         );
 
-        service.getOfferPhoto(id).subscribe(
-            response => {
-                const blob = new Blob([(response as any).body], { type: 'image/jpeg' })
-                this.photoURL = URL.createObjectURL(blob)
-                this.hasPhoto = true;
-            },
-            error =>{
-                console.log("Error al cargar la foto")
-            })
         
         
+            
         
     }
 

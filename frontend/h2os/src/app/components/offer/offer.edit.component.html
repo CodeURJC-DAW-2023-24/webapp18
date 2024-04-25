@@ -3,43 +3,40 @@
         <h2>Editar</h2>
 
         <form role="form">
-            <div class="form-group">
-                <label for="direction">Dirección</label>
-                <input type="text" class="form-control" name="direction" placeholder="Móstoles, C/Velázquez 2">
-            </div>
+           
 
             <div class="form-group">
                 <label for="description">Descripción</label>
-                <textarea type="text" class="form-control" name="description" placeholder="Detalles relevantes de la oferta" [value] = "offer.description"></textarea>
+                <textarea #description type="text" class="form-control" name="description" placeholder="Detalles relevantes de la oferta" [value] = "offer.description"></textarea>
             </div>
 
             <div class="row">
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="type">Tipo de jornada</label>
-                    <select class="form-select" name="type">
-                        <option value="Puntual" selected>Puntual</option>
-                        <option value="Media jornada">Media jornada</option>
-                        <option value="Jornada completa">Jornada completa</option>
-                        <option value="Fines de semana">Fines de semana</option>
-                        <option value="Correturnos">Correturnos</option>
+                    <select #journey class="form-select" name="type">
+                        <option [value]="'Puntual'" selected>Puntual</option>
+                        <option [value]="'Media jornada'">Media jornada</option>
+                        <option [value]="'Jornada completa'">Jornada completa</option>
+                        <option [value]="'Fines de semana'">Fines de semana</option>
+                        <option [value]="'Correturnos'">Correturnos</option>
                     </select>
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                     <label for="start">Fecha de inicio</label>
-                    <input type="date" class="form-control text-uppercase" name="start" [value]="dateF">
+                    <input #date type="date" class="form-control text-uppercase" name="start" [value]="dateF">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="salary">Salario</label>
-                <input type="range" class="form-range" name="salary" [value]="offer.salary" min="60" max="5000" step="60" oninput="this.nextElementSibling.value = this.value">
+                <input #salary type="range" class="form-range" name="salary" [value]="offer.salary" min="60" max="5000" step="60" oninput="this.nextElementSibling.value = this.value">
                 <output for="price" id="outrange">{{offer.salary}}</output>€
             </div>
 
             <div class="form-group">
                 <label for="pool-id">Piscina</label>
-                <select class="form-select" name="pool-id" id="pool-id" required>
-                    <option value="0" selected hidden>Seleccione una de sus piscinas</option>
+                <select #poolN class="form-select" name="pool-id" id="pool-id" required>
+                    <option [value]="offer.poolID" selected hidden>Seleccione una de sus piscinas</option>
                     <div *ngFor="let pool of pools; let i = index">
                         <option value="{{i}}">{{pool.name}}</option>
                       </div>
