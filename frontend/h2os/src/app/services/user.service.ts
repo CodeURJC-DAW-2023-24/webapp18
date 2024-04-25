@@ -128,7 +128,7 @@ export class UserService{
 
         this.httpClient.post("/api/auth/login", { username: mail, password: pass }, { withCredentials: true })
             .subscribe(
-                (response) => this.reqIsLogged(),
+                (response) => {this.reqIsLogged()},
                 (error) => alert("Wrong credentials")
             );
 
@@ -158,7 +158,6 @@ export class UserService{
     logOut() {
         return this.httpClient.post('/api/auth/logout', { withCredentials: true })
             .subscribe((resp: any) => {
-                console.log("LOGOUT: Successfully");
                 this.logged = false;
                 if (this.typeUser==='lg'){
                     this.lifeguard = {mail:"",pass:"",roles:[],skills:[]}

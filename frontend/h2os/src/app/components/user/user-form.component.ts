@@ -4,6 +4,7 @@ import { Lifeguard } from '../../models/lifeguard.model';
 import { Employer } from '../../models/employer.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: "user-form",
@@ -27,12 +28,11 @@ export class UserFormComponent{
     @ViewChild("file")
     file:any;
 
-    constructor(activatedRoute: ActivatedRoute, private router:Router, private service: UserService) {
+    constructor(activatedRoute: ActivatedRoute, private router:Router, private service: UserService, private httpClient: HttpClient) {
         let id = activatedRoute.snapshot.params['id'];
         let type : string | undefined;
         const routeSegments = activatedRoute.snapshot.url;
         this.edit=false;
-        console.log("log 1" + this.edit)
 
         this.user = {mail:"",pass:"",roles:[]}
         this.lifeguard = {mail:"",pass:"",roles:[],skills:[]}
@@ -63,34 +63,51 @@ export class UserFormComponent{
               error => console.error(error)
             );
         }
-        console.log("log 2" + this.edit)
     }
 
     save() {
-        if (this.typeUser==='lifeguard'){
-            this.updateLifeguard();
-            console.log("log " + this.edit)
-            this.service.addOrUpdateLifeguard(this.lifeguard).subscribe(
-            (lifeguard:any)=> {
+        var message = this.checkForm(this.user.mail,this.user.age,this.user.phone)
+        if (message === ''){
+            if (this.typeUser==='lifeguard'){
+                this.updateLifeguard();
+                this.service.addOrUpdateLifeguard(this.lifeguard).subscribe(
+                (lifeguard:any)=> {
+                    if(this.edit){
+                        this.uploadLifeguardImage(lifeguard);
+                    }else{
+                        this.httpClient.post("/api/auth/login", { username: this.user.mail, password: this.user.pass }, { withCredentials: true }).subscribe(
+                        (response) => {this.uploadLifeguardImage(lifeguard);},
+                        (error) => alert("Wrong credentials")
+                        );
+                    }
+                },
+                error => {console.error('Error creating new lifeguard: ' + error)
+                    if (!this.edit){
+                        message = "Email en uso por otro usuario";
+                        this.router.navigate(['/user/message/'+message]);
+                        }
+                    }
+                );
+            } else if (this.typeUser==='employer'){
+                this.updateEmployer();
+                this.service.addOrUpdateEmployer(this.employer).subscribe(
+                (employer:any) => { 
                 if(this.edit){
-                    this.uploadLifeguardImage(lifeguard);
+                    this.uploadEmployerImage(employer);
                 }else{
-                    this.uploadLifeguardImage(lifeguard);
-                }
-             },
-            error => console.error('Error creating new lifeguard: ' + error)
-            );
-        } else if (this.typeUser==='employer'){
-            this.updateEmployer();
-            this.service.addOrUpdateEmployer(this.employer).subscribe(
-            (employer:any) => { 
-            if(this.edit){
-                this.uploadEmployerImage(employer);
-            }else{
-                this.uploadEmployerImage(employer);
-            }},
-            error => console.error('Error creating new employer: ' + error)
-            );
+                    this.httpClient.post("/api/auth/login", { username: this.user.mail, password: this.user.pass }, { withCredentials: true }).subscribe(
+                        (response) => {this.uploadEmployerImage(employer);},
+                        (error) => alert("Wrong credentials")
+                        );
+                }},
+                error => {console.error('Error creating new employer: ' + error)
+                    message = "Email en uso por otro usuario";
+                    this.router.navigate(['/user/message/'+message]); 
+                    }
+                );
+            }
+        }else{
+            this.router.navigate(['/user/message/'+message]);
         }
     }
 
@@ -110,6 +127,7 @@ export class UserFormComponent{
           formData.append("imageFile", image);
           this.service.setLifeguardImage(lifeguard, formData).subscribe(
             response => {
+                if (!this.edit){this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })};
                 this.file.nativeElement.value = null;
                 if (this.edit){
                     this.router.navigate(['/lifeguards/'+this.lifeguard.id])
@@ -117,7 +135,9 @@ export class UserFormComponent{
                     this.router.navigate(['/login']);
                 }
             },
-            error => alert('Error uploading lifeguard image: ' + error)
+            error => {
+                if (!this.edit){this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })};
+                alert('Error uploading lifeguard image: ' + error)}
           );
         } /*else if(this.removeImage){
           this.service.deleteLifeguardImage(lifeguard).subscribe(
@@ -125,6 +145,7 @@ export class UserFormComponent{
             error => alert('Error deleting lifeguard image: ' + error)
           );
         }*/ else {
+            if (!this.edit){this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })};
             if (this.edit){
                 this.router.navigate(['/lifeguards/'+this.lifeguard.id])
             }else{
@@ -135,21 +156,22 @@ export class UserFormComponent{
 
       private uploadEmployerImage(employer: Employer): void {
         const image = this.file.nativeElement.files[0];
-        console.log("log 1")
         if (image) {
-          console.log("log 2")
           let formData = new FormData();
           formData.append("imageFile", image);
           this.service.setEmployerImage(employer, formData).subscribe(
             response => {
                 //this.file.nativeElement.value = null;
+                if (!this.edit){this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })};
                 if (this.edit){
                     this.router.navigate(['/employers/'+this.employer.id])
                 }else{
                     this.router.navigate(['/login']);
                 }
             },
-            error => alert('Error uploading employer image: ' + error)
+            error => {
+                if (!this.edit){this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })};
+                alert('Error uploading employer image: ' + error)}
           );
         } /*else if(this.removeImage){
           this.service.deleteEmployerImage(employer).subscribe(
@@ -157,6 +179,7 @@ export class UserFormComponent{
             error => alert('Error deleting employer image: ' + error)
           );
         }*/ else {
+            if (!this.edit){this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })};
             if (this.edit){
                 this.router.navigate(['/employers/'+this.employer.id])
             }else{
@@ -276,7 +299,6 @@ export class UserFormComponent{
         if (this.leadership && !this.lifeguard.skills?.includes("Liderazgo")){
             this.lifeguard.skills?.push("Liderazgo")
         }
-        console.log(this.lifeguard.skills);
     }
 
     private updateEmployer(){
@@ -312,7 +334,6 @@ export class UserFormComponent{
                 message = "Contraseña segura";
                 color = "green";
             }
-    
             const messageDiv: HTMLElement | null = document.getElementById("passContent");
             if (messageDiv) {
                 messageDiv.innerHTML = message;
@@ -387,11 +408,52 @@ export class UserFormComponent{
         }
     }
 
-    showForm() {
-        //if (edit === 'true') {
-            //showForm();
-        //}
+    checkForm(mail: string, age: string | undefined, phone: string | undefined): string {
+        let phoneNum: number = 0;
+        let ageNum: number = 0;
+        let message1: string = "";
+        let message2: string = "";
+        let message3: string = "";
+        let message4: string = "";
+        let message5: string = "";
+    
+        if (phone && phone !== "") {
+            phoneNum = parseInt(phone);
+            if (isNaN(phoneNum)) {
+                message1 = "El teléfono debe ser un número. ";
+            } else if (phoneNum < 0) {
+                message1 = "El teléfono debe ser un número positivo. ";
+            } else if (phone.length !== 9) {
+                message1 = "El teléfono debe tener 9 cifras. ";
+            }
+        }
+    
+        if (age && age !== "") {
+            ageNum = parseInt(age);
+            if (isNaN(ageNum)) {
+                message2 = "La edad debe ser un número. ";
+            } else if (ageNum < 0) {
+                message2 = "La edad debe ser un número positivo. ";
+            } else if (ageNum % 1 !== 0) {
+                message2 = "La edad debe ser un número entero. ";
+            }
+        }
+    
+        if(!mail && !this.edit){
+            message3 = "Introduzca un email. ";
+        }
+        if ((!this.user.pass || this.user.pass === "") && !this.edit){
+            message4 = "Introduzca una contraseña. ";
+        }
 
+        if ((!this.typeUser)){
+            message5 = "Selecciona si eres socorrista o empleado. ";
+        }
+    
+        return message1 + message2 + message3 + message4 + message5;
+    }
+
+    showForm() {
         const selectedType = this.typeUser;
     
         const lifeguard1 = document.getElementById('lifeguard1');

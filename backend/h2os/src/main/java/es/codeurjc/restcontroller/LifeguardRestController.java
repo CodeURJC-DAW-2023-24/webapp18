@@ -164,14 +164,14 @@ public class LifeguardRestController {
 	 )
 	})
     @PutMapping("/api/lifeguards/{id}")
-	public ResponseEntity<Lifeguard> updateLifeguard(@PathVariable long id, @RequestBody LifeguardDTO lifeguardDTO, Principal principal) throws SQLException {
+	public ResponseEntity<LifeguardDTO> updateLifeguard(@PathVariable long id, @RequestBody LifeguardDTO lifeguardDTO, Principal principal) throws SQLException {
 		if(principal !=null){
 			if (lifeguardService.existsById(id)) {
 				String messageForm = userService.checkForm(lifeguardDTO.getMail(), lifeguardDTO.getAge(),lifeguardDTO.getPhone());
 				Lifeguard lifeguard = lifeguardService.findById(id).get();
 				if (messageForm.equals("") || (messageForm.equals("Correo ya en uso por otro socorrista. ") && lifeguardDTO.getMail().equals(lifeguard.getMail()))) {
 					updateLifeguardDTO(lifeguardDTO, lifeguard);
-					return new ResponseEntity<>(lifeguard, HttpStatus.OK);
+					return new ResponseEntity<>(lifeguardDTO, HttpStatus.OK);
 
 				}else{
 					HttpHeaders headers = new HttpHeaders();
