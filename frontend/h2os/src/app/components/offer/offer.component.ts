@@ -29,9 +29,9 @@ export class OfferComponent{
     pool: String;
     hasPhoto: boolean;
     canApply: boolean;
-    poolName: string;
+    poolName: string | undefined;
     poolPhoto: string;
-    poolID: number;
+    poolID: number | undefined;
     applied: boolean;
     selected: string | undefined;
     appliedLg: string[];

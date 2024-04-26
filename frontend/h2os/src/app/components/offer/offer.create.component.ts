@@ -7,56 +7,60 @@ import { Pool } from '../../models/pool.model';
 import { ActivatedRoute } from '@angular/router';
 import { OfferService } from '../../services/offer.service';
 import { CommonModule, NgIf } from '@angular/common';
+import { Me } from '../../models/me.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
     selector: "offerEdit",
-    templateUrl: './offer.edit.component.html',
+    templateUrl: './offer.create.component.html',
     styleUrls:['./offer.data.css','./offer.messages.css']
 })
 
-export class OfferEditComponent{
+export class OfferCreateComponent{
    offer:Offer
-   pools: Pool[];
+   pools: string[];
    dateF: string;
+   me: Me;
    @ViewChild('description') descripcionInput: ElementRef;
    @ViewChild('journey') journeySelect: ElementRef;
    @ViewChild('date') dateInput: ElementRef;
    @ViewChild('salary') salaryInput: ElementRef;
    @ViewChild('poolN') poolInput: ElementRef;
    errorFlagSalary: boolean
-    constructor(activatedRoute: ActivatedRoute, private service: OfferService){ // Set the permits
-        let id = activatedRoute.snapshot.params['id'];
-        this.errorFlagSalary = false
-        service.getOffer(1).subscribe(
+    constructor(activatedRoute: ActivatedRoute, private service: OfferService, private userService: UserService){ 
+        this.pools = ["Pisci", "Poya y webos"];
+        userService.me().subscribe(
             response => {
-                this.offer = response as Offer;
-                this.formatDate()
+                this.me = response as Me
+                
+                
+                
             },
-
-            error => console.error(error)
+            error => {
+                console.log("Auth error")
+            }
         );
-        console.log(this.offer);
        
     }
-    editOffer(){
-        console.log("Oferta antes")
+    saveOffer(){
+        this.offer = new Offer();
         console.log(JSON.stringify(this.offer))
         this.offer.description = this.descripcionInput.nativeElement.value;
+        this.offer.employer = this.me.mail;
         this.offer.type = this.journeySelect.nativeElement.value;
         this.offer.start = this.unformatDate(this.dateInput.nativeElement.value);
-        this.offer.poolID = this.poolInput.nativeElement.value;
+       // this.offer.poolID = this.poolInput.nativeElement.value;
+       this.offer.poolID = 1;
         this.offer.salary = this.salaryInput.nativeElement.value;
+        console.log(JSON.stringify(this.offer))
         if (this.isValid()){
         console.log("Oferta despues")
         console.log(JSON.stringify(this.offer))
-        this.service.editOffer(this.offer.id, this.offer)}
+        this.service.newOffer(this.offer)
+        }
     }
 
-    formatDate() {
-        if(this.offer.start == undefined) this.offer.start = "11/11/1111"
-        const parts = this.offer.start.split('/');
-        this.dateF = `${parts[2]}-${parts[1]}-${parts[0]}`;
-      }
+   
     unformatDate(date: string): string {
         const parts = date.split('-');
         return parts[2]+'/'+parts[1]+'/'+parts[0];

@@ -50,6 +50,10 @@ export class OfferService{
         this.httpClient.put(urlOffer+"/"+id, offer).subscribe();
         return true
     }
+    newOffer(offer: Offer){
+        this.httpClient.post(urlOffer, offer).subscribe();
+        return true
+    }
     private handleError(error:any){
         console.error(error);
         return throwError("Server error ("+error.status+"):"+error.text())

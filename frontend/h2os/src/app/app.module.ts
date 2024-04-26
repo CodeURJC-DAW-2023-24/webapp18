@@ -12,9 +12,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { OfferComponent } from './components/offer/offer.component';
 import { OfferEditComponent } from './components/offer/offer.edit.component';
 import { UserDetailComponent } from './components/user/user-detail.component';
+import { OfferCreateComponent } from './components/offer/offer.create.component';
 
 @NgModule({
-  declarations: [AppComponent,UserLoginComponent,UserFormComponent, UserDetailComponent, HeaderComponent, OfferComponent, OfferEditComponent],
+  declarations: [AppComponent,UserLoginComponent,UserFormComponent, UserDetailComponent, HeaderComponent, OfferComponent, OfferEditComponent, OfferCreateComponent],
   imports: [NgbModule, BrowserModule, FormsModule, HttpClientModule, routing],
   bootstrap: [AppComponent]
 })

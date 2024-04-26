@@ -1,0 +1,54 @@
+
+<div class="container">
+    <h2>Nueva oferta</h2>
+
+    <form role="form">
+       
+
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <textarea #description type="text" class="form-control" name="description" placeholder="Detalles relevantes de la oferta" ></textarea>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6 col-sm-12">
+                <label for="type">Tipo de jornada</label>
+                <select #journey class="form-select" name="type">
+                    <option [value]="'Puntual'" selected>Puntual</option>
+                    <option [value]="'Media jornada'">Media jornada</option>
+                    <option [value]="'Jornada completa'">Jornada completa</option>
+                    <option [value]="'Fines de semana'">Fines de semana</option>
+                    <option [value]="'Correturnos'">Correturnos</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6 col-sm-12">
+                <label for="start">Fecha de inicio</label>
+                <input #date type="date" class="form-control text-uppercase" name="start" >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="salary">Salario</label>
+            <input #salary type="range" class="form-range" name="salary"  min="60" max="5000" step="60" oninput="this.nextElementSibling.value = this.value">
+            <output for="price" id="outrange"></output>€
+            <div *ngIf="errorFlagSalary"> El salario debe superar el salario mínimo</div>
+        </div>
+
+        <div class="form-group">
+            <label for="pool-id">Piscina</label>
+            <select #poolN class="form-select" name="pool-id" id="pool-id" required>
+                <option  selected hidden>Seleccione una de sus piscinas</option>
+                <div *ngFor="let pool of pools; let i = index">
+                    <option value="{{i}}">{{pool}}</option>
+                  </div>
+            </select>
+        </div>
+
+        <div class="btn-cont">
+            <button (click)="saveOffer()" class="btn"><i class="bi bi-download"></i> Guardar</button>
+            <a href="/" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
+        </div>
+
+        
+    </form>
+</div>
