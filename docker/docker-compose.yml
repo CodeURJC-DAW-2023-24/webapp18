@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   web:
-    image: adrimd1208/webapp18
+    image: mdelvalle2020/webapp18
     restart: on-failure
     build:
       context: ../
@@ -9,7 +9,7 @@ services:
     ports:
       - 8443:8443
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost/pruebabd
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/pruebabd
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=rootpass
     depends_on:

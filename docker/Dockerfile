@@ -1,8 +1,8 @@
 # BUILD STAGE
 FROM maven:eclipse-temurin AS build 
 WORKDIR /project
-COPY backend/helloword-vscode/pom.xml /project/
-COPY backend/helloword-vscode/src/ /project/src
+COPY backend/h2os/pom.xml /project/
+COPY backend/h2os/src/ /project/src
 RUN mvn -f /project/pom.xml clean package -DskipTests
 
 # PACKAGE STAGE
