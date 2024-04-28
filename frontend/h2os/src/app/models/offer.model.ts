@@ -2,16 +2,29 @@ import { Pool } from './pool.model';
 import { Employer } from './employer.model';
 import { Lifeguard } from './lifeguard.model';
 
-export interface Offer {
+export class Offer {
   id?: number;
-  pool: Pool;
-  employer: string;
-  lifeguard: Lifeguard;
-  lifeguards: Lifeguard[];
-  salary: string;
-  start: string;
-  type: string;
-  description: string;
-  poolName: string;
-  poolID: number;
+  pool?: Pool;
+  employer?: string;
+  lifeguard?: Lifeguard;
+  lifeguards?: Lifeguard[];
+  salary?: string;
+  start?: string;
+  type?: string;
+  description?: string;
+  poolName?: string;
+  poolID?: number;
+
+  constructor() {
+    this.id = undefined;
+    this.pool = undefined;
+    this.employer = '';
+    this.lifeguard = undefined;
+    this.lifeguards = [];
+    this.salary = '';
+    this.start = '';
+    this.type = '';
+    this.description = '';
+    this.poolID = 0;
+}
 }
