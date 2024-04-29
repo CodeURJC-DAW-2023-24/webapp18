@@ -43,7 +43,7 @@ Implementación de los métodos GET y PUT de ofertas, piscinas y mensajes. Refac
 #### Tareas:
 RestController de la Grafica y de Offer 
 #### Commits: 
-  -[Cambios en la seguridad necesarios para el soporte de las peticiones rest](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/393193c2d27e96c866d223055feb222ddd8fa195)
+  - [Cambios en la seguridad necesarios para el soporte de las peticiones rest](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/393193c2d27e96c866d223055feb222ddd8fa195)
   - [Implementado el rest controller de la gráfica](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/fede9006a2786aac60c26ac1527cfd10ed0bdc72)
   - [Añadido el directorio DOT y offer DTO + implementación parcial del rest controller de offer](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/4266d87739f28db155053c1351d5dd24f5990680)
   - [Cambios en la inicialización de la base de datos](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/c0db575823d546f954b0c4b446d2ede93c6e1904)
