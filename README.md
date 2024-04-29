@@ -57,11 +57,11 @@ Implementación de las ofertas, paginación, edición de usuario, google maps. D
 #### Tareas:
 Gráfica, implementar lo relacionado a pools y messages, las offer applyances, privilegios de admin. 
 #### Commits: 
-  - Offer applying and checking added
-  - Graphic added
-  - Merge branch 'pruebaSecurity' into fase2
-  - Added form to create pools
-  - AddMessage and delete message now working through DB
+  - [Offer applying and checking added](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/ab07b9be3f03737aaa02bd75446cedaf6d69f917)
+  - [Graphic added](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/7e562666737ab5471b687abf588b777729bcf857)
+  - [Merge branch 'pruebaSecurity' into fase2](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/b642aca33493b114cef790bbf5caed46e3a392c0)
+  - [Added form to create pools](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/8f4728d92ef972f61f96e56bd8a4d403f8dd4131)
+  - [AddMessage and delete message now working through DB](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/7f3eab1b42a0488f37e94b2c2dab5419128d1df1)
 #### Ficheros: 
   - PoolController
   - PieController
@@ -85,10 +85,6 @@ Implementar lo relacionado a usuarios (employers y lifeguards), inicio de sesió
   - Employer
   - profile
 
-### Cristian:
-#### Tareas:
-#### Commits:
-#### Ficheros:
-     
+
 
 
