@@ -52,7 +52,7 @@ public class PoolRestController {
 
     @Autowired
     private MessageService messageService;
-/* 
+ 
     // ----------------------------------------------- GET -----------------------------------------------
     @Operation(summary = "Get paged pools.")
     @ApiResponses(value = {
@@ -224,8 +224,8 @@ public class PoolRestController {
             @ApiResponse(responseCode = "401", description = "You are not authorized, you are not the owner or the admin", content = @Content),
             @ApiResponse(responseCode = "404", description = "Message not found, probably invalid id supplied", content = @Content)
     })
-    @PutMapping("/{poolId}/messages/{messageId}")
-    public ResponseEntity<MessageDTO> editMessage(@PathVariable Long messageId, @RequestBody MessageDTO messageDTO, Principal principal) throws SQLException {
+    @PutMapping("/{id}/messages/{messageId}")
+    public ResponseEntity<MessageDTO> editMessage(@PathVariable Long id, @PathVariable Long messageId, @RequestBody MessageDTO messageDTO, Principal principal) throws SQLException {
         Optional<Message> messageOptional = messageService.findById(messageId);
         if (!messageOptional.isPresent())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -265,8 +265,8 @@ public class PoolRestController {
             @ApiResponse(responseCode = "401", description = "You are not authorized, you are not the owner or the admin", content = @Content),
             @ApiResponse(responseCode = "404", description = "Message not found, probably invalid id supplied", content = @Content)
     })
-    @DeleteMapping("/{poolId}/messages/{messageId}")
-    public ResponseEntity<Void> deleteMessage(@PathVariable Long messageId, Principal principal) throws SQLException {
+    @DeleteMapping("/{id}/messages/{messageId}")
+    public ResponseEntity<Void> deleteMessage(@PathVariable Long id, @PathVariable Long messageId, Principal principal) throws SQLException {
         Optional<Message> messageOptional = messageService.findById(messageId);
         if (!messageOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -349,5 +349,5 @@ public class PoolRestController {
             throw new IllegalArgumentException("Invalid time format: " + time);
         }
         return true;
-    }*/
+    }
 }

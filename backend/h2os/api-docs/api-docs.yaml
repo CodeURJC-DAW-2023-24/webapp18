@@ -6,6 +6,141 @@ servers:
 - url: http://localhost:8443
   description: Generated server url
 paths:
+  /api/pools/{id}:
+    get:
+      tags:
+      - pool-rest-controller
+      summary: Get a pool by its ID.
+      operationId: getPool
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Pool found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoolDTO'
+        "404":
+          description: "Pool not found, probably invalid id supplied"
+    put:
+      tags:
+      - pool-rest-controller
+      summary: Edit a pool by its ID.
+      operationId: editPool
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PoolDTO'
+        required: true
+      responses:
+        "200":
+          description: Pool edited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoolDTO'
+        "404":
+          description: "Pool not found, probably invalid id supplied"
+        "400":
+          description: "Bad request, invalid data in changes"
+        "401":
+          description: "You are not authorized, you are not the admin"
+    delete:
+      tags:
+      - pool-rest-controller
+      summary: Delete a pool by its ID.
+      operationId: deletePool
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Pool deleted
+        "404":
+          description: "Pool not found, probably invalid id supplied"
+        "401":
+          description: "You are not authorized, you are not the admin"
+  /api/pools/{id}/messages/{messageId}:
+    put:
+      tags:
+      - pool-rest-controller
+      summary: Edit a message from a pool by its ID.
+      operationId: editMessage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: messageId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageDTO'
+        required: true
+      responses:
+        "401":
+          description: "You are not authorized, you are not the owner or the admin"
+        "404":
+          description: "Message not found, probably invalid id supplied"
+        "200":
+          description: Message edited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoolDTO'
+        "400":
+          description: "Bad request, invalid data in changes"
+    delete:
+      tags:
+      - pool-rest-controller
+      summary: Delete a message from a pool by its ID.
+      operationId: deleteMessage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: messageId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "401":
+          description: "You are not authorized, you are not the owner or the admin"
+        "404":
+          description: "Message not found, probably invalid id supplied"
+        "204":
+          description: Message deleted
   /api/offers/{id}:
     get:
       tags:
@@ -20,14 +155,14 @@ paths:
           type: integer
           format: int32
       responses:
+        "404":
+          description: "Offer not found, probably invalid id supplied"
         "200":
           description: Offer found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/OfferDTO'
-        "404":
-          description: "Offer not found, probably invalid id supplied"
     put:
       tags:
       - offer-rest-controller
@@ -47,6 +182,8 @@ paths:
               $ref: '#/components/schemas/OfferDTO'
         required: true
       responses:
+        "404":
+          description: "Offer not found, probably invalid id supplied"
         "401":
           description: "You are not authorized, you are not the owner or the admin"
         "200":
@@ -57,8 +194,6 @@ paths:
                 $ref: '#/components/schemas/OfferDTO'
         "400":
           description: "Bad request, invalid data in changes"
-        "404":
-          description: "Offer not found, probably invalid id supplied"
     delete:
       tags:
       - offer-rest-controller
@@ -72,12 +207,12 @@ paths:
           type: integer
           format: int32
       responses:
-        "200":
-          description: Offer deleted
-        "401":
-          description: "You are not authorized, you are not the owner or the admin"
         "404":
           description: "Offer not found, probably invalid id supplied"
+        "401":
+          description: "You are not authorized, you are not the owner or the admin"
+        "200":
+          description: Offer deleted
   /api/offers/{id}/lifeguards/{nSelected}:
     put:
       tags:
@@ -98,6 +233,8 @@ paths:
           type: integer
           format: int32
       responses:
+        "404":
+          description: "Offer not found, probably invalid id supplied"
         "401":
           description: "You are not authorized, you are not the owner or the admin"
         "200":
@@ -106,8 +243,6 @@ paths:
             application/json:
               schema:
                 type: string
-        "404":
-          description: "Offer not found, probably invalid id supplied"
   /api/lifeguards/{id}:
     get:
       tags:
@@ -150,10 +285,6 @@ paths:
               $ref: '#/components/schemas/LifeguardDTO'
         required: true
       responses:
-        "400":
-          description: Data entered incorrectly.
-        "401":
-          description: You are not authorized
         "200":
           description: Lifeguard updated correctly. You can update only the fields
             you want
@@ -161,8 +292,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmployerDTO'
+        "401":
+          description: You are not authorized
         "404":
           description: "Lifeguard not found, probably invalid id supplied"
+        "400":
+          description: Data entered incorrectly.
     delete:
       tags:
       - lifeguard-rest-controller
@@ -179,10 +314,10 @@ paths:
       responses:
         "401":
           description: You are not authorized
-        "200":
-          description: Lifeguard deleted
         "404":
           description: "Lifeguard not found, probably invalid id supplied"
+        "200":
+          description: Lifeguard deleted
   /api/employers/{id}:
     get:
       tags:
@@ -197,14 +332,14 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: "Employer not found, probably invalid id supplied"
         "200":
           description: Found the employer
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmployerDTO'
-        "404":
-          description: "Employer not found, probably invalid id supplied"
     put:
       tags:
       - employer-rest-controller
@@ -225,6 +360,10 @@ paths:
               $ref: '#/components/schemas/EmployerDTO'
         required: true
       responses:
+        "404":
+          description: "Employer not found, probably invalid id supplied"
+        "401":
+          description: You are not authorized
         "200":
           description: Employer updated correctly. You can update only the fields
             you want
@@ -234,10 +373,6 @@ paths:
                 $ref: '#/components/schemas/EmployerDTO'
         "400":
           description: Data entered incorrectly.
-        "401":
-          description: You are not authorized
-        "404":
-          description: "Employer not found, probably invalid id supplied"
     delete:
       tags:
       - employer-rest-controller
@@ -252,12 +387,133 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: "Employer not found, probably invalid id supplied"
         "200":
           description: Employer deleted
         "401":
           description: You are not authorized
+  /api/pools:
+    get:
+      tags:
+      - pool-rest-controller
+      summary: Get paged pools.
+      operationId: getPools
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 5
+      responses:
+        "204":
+          description: "Pools not found, probably high page number supplied"
+        "200":
+          description: Pools found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoolDTO'
+    post:
+      tags:
+      - pool-rest-controller
+      summary: Create a new pool.
+      operationId: createPool
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PoolDTO'
+        required: true
+      responses:
+        "400":
+          description: "Bad request, invalid data in the body"
+        "201":
+          description: Pool created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoolDTO'
+        "401":
+          description: "You are not authorized, you are not the admin"
+  /api/pools/{id}/messages:
+    get:
+      tags:
+      - pool-rest-controller
+      summary: Get all messages of a pool by its ID.
+      operationId: getMessages
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 3
+      responses:
+        "204":
+          description: "Messages not found, probably high page number supplied"
+        "200":
+          description: Messages found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageDTO'
         "404":
-          description: "Employer not found, probably invalid id supplied"
+          description: "Pool not found, probably invalid id supplied"
+    post:
+      tags:
+      - pool-rest-controller
+      summary: Add a new message to a pool.
+      operationId: addMessage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageDTO'
+        required: true
+      responses:
+        "400":
+          description: "Bad request, invalid data in the body"
+        "201":
+          description: Message added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageDTO'
+        "404":
+          description: "Pool not found, probably invalid id supplied"
+        "401":
+          description: "You are not authorized, you are not the admin"
   /api/offers:
     get:
       tags:
@@ -300,6 +556,8 @@ paths:
               $ref: '#/components/schemas/OfferDTO'
         required: true
       responses:
+        "400":
+          description: "Bad request, invalid data in new offer"
         "401":
           description: "You are not authorized, you are not a an employer"
         "201":
@@ -310,8 +568,6 @@ paths:
                 $ref: '#/components/schemas/OfferDTO'
         "404":
           description: "Pool not found, probably invalid id supplied"
-        "400":
-          description: "Bad request, invalid data in new offer"
   /api/offers/{id}/lifeguards:
     get:
       tags:
@@ -326,6 +582,8 @@ paths:
           type: integer
           format: int32
       responses:
+        "404":
+          description: "Offer not found, probably invalid id supplied"
         "401":
           description: "You are not authorized, you are not the owner or the admin"
         "200":
@@ -334,8 +592,6 @@ paths:
             application/json:
               schema:
                 type: string
-        "404":
-          description: "Offer not found, probably invalid id supplied"
     post:
       tags:
       - offer-rest-controller
@@ -351,8 +607,6 @@ paths:
       responses:
         "401":
           description: "You are not authorized, you are not a lifeguard"
-        "409":
-          description: "Conflict, you applied more than once"
         "404":
           description: "Offer not found, probably invalid id supplied"
         "200":
@@ -361,6 +615,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OfferDTO'
+        "409":
+          description: "Conflict, you applied more than once"
     delete:
       tags:
       - offer-rest-controller
@@ -374,10 +630,10 @@ paths:
           type: integer
           format: int32
       responses:
-        "401":
-          description: "You are not authorized, you are not the owner or the admin"
         "404":
           description: "Offer not found, probably invalid id supplied"
+        "401":
+          description: "You are not authorized, you are not the owner or the admin"
         "200":
           description: Lifeguard unselected
           content:
@@ -397,14 +653,14 @@ paths:
               $ref: '#/components/schemas/LifeguardDTO'
         required: true
       responses:
-        "400":
-          description: Data entered incorrectly.
         "200":
           description: Lifeguard posted correctly
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LifeguardDTO'
+        "400":
+          description: Data entered incorrectly.
         "201":
           description: Created
           content:
@@ -425,12 +681,12 @@ paths:
           type: integer
           format: int64
       responses:
-        "200":
-          description: Found the user photo
-        "404":
-          description: That lifeguard does not have an user photo
         "400":
           description: "Data entered incorrectly, probably invalid id supplied"
+        "404":
+          description: That lifeguard does not have an user photo
+        "200":
+          description: Found the user photo
     post:
       tags:
       - lifeguard-rest-controller
@@ -455,12 +711,12 @@ paths:
                   type: string
                   format: binary
       responses:
+        "404":
+          description: "Data entered incorrectly, probably invalid id supplied"
         "401":
           description: You are not authorized
         "201":
           description: User photo posted correctly
-        "404":
-          description: "Data entered incorrectly, probably invalid id supplied"
     delete:
       tags:
       - lifeguard-rest-controller
@@ -475,12 +731,12 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: "Data entered incorrectly, probably invalid id supplied"
         "200":
           description: User photo deleted correctly
         "401":
           description: You are not authorized
-        "404":
-          description: "Data entered incorrectly, probably invalid id supplied"
   /api/employers:
     post:
       tags:
@@ -522,12 +778,12 @@ paths:
           type: integer
           format: int64
       responses:
+        "400":
+          description: "Data entered incorrectly, probably invalid id supplied"
         "404":
           description: That employer does not have a company photo
         "200":
           description: Found the company photo
-        "400":
-          description: "Data entered incorrectly, probably invalid id supplied"
     post:
       tags:
       - employer-rest-controller
@@ -552,12 +808,12 @@ paths:
                   type: string
                   format: binary
       responses:
-        "401":
-          description: You are not authorized
         "201":
           description: Company photo posted correctly
         "404":
           description: "Data entered incorrectly, probably invalid id supplied"
+        "401":
+          description: You are not authorized
     delete:
       tags:
       - employer-rest-controller
@@ -572,12 +828,12 @@ paths:
           type: integer
           format: int64
       responses:
-        "401":
-          description: You are not authorized
         "404":
           description: "Data entered incorrectly, probably invalid id supplied"
         "200":
           description: Company photo deleted correctly
+        "401":
+          description: You are not authorized
   /api/auth/refresh:
     post:
       tags:
@@ -669,14 +925,14 @@ paths:
           type: integer
           format: int32
       responses:
+        "404":
+          description: "Offer not found, probably invalid id supplied"
         "200":
           description: Offer found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/OfferDTO'
-        "404":
-          description: "Offer not found, probably invalid id supplied"
   /api/maps:
     get:
       tags:
@@ -707,12 +963,12 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: "Data entered incorrectly, probably invalid id supplied"
         "401":
           description: You are not authorized
         "200":
           description: Found the offer list of the lifeguard
-        "404":
-          description: "Data entered incorrectly, probably invalid id supplied"
   /api/lifeguards/{id}/offersAccepted:
     get:
       tags:
@@ -728,10 +984,10 @@ paths:
           type: integer
           format: int64
       responses:
-        "401":
-          description: You are not authorized
         "404":
           description: "Data entered incorrectly, probably invalid id supplied"
+        "401":
+          description: You are not authorized
         "200":
           description: Found the offers accepted list of the lifeguard
   /api/employers/{id}/offers:
@@ -749,12 +1005,12 @@ paths:
           type: integer
           format: int64
       responses:
-        "401":
-          description: You are not authorized
-        "404":
-          description: "Data entered incorrectly, probably invalid id supplied"
         "200":
           description: Found the offer list of the employer
+        "404":
+          description: "Data entered incorrectly, probably invalid id supplied"
+        "401":
+          description: You are not authorized
   /api/auth/me:
     get:
       tags:
@@ -762,6 +1018,12 @@ paths:
       summary: Get user profile
       operationId: me
       responses:
+        "200":
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LifeguardDTO'
         "404":
           description: "Not Found: User not found"
           content:
@@ -774,12 +1036,6 @@ paths:
             '*/*':
               schema:
                 type: object
-        "200":
-          description: User profile retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LifeguardDTO'
   /api/lifeguards/{id}/offersAccepted/{offerId}:
     delete:
       tags:
@@ -801,10 +1057,10 @@ paths:
           type: integer
           format: int64
       responses:
-        "401":
-          description: You are not authorized
         "200":
           description: Offer removed correctly
+        "401":
+          description: You are not authorized
         "404":
           description: "Data entered incorrectly, probably invalid id or offerId supplied"
   /api/lifeguards/{id}/offers/{offerId}:
@@ -828,10 +1084,10 @@ paths:
           type: integer
           format: int64
       responses:
-        "401":
-          description: You are not authorized
         "200":
           description: Offer removed correctly
+        "401":
+          description: You are not authorized
         "404":
           description: "Data entered incorrectly, probably invalid id or offerId supplied"
   /api/employers/{id}/offers/{offerId}:
@@ -855,14 +1111,47 @@ paths:
           type: integer
           format: int64
       responses:
-        "401":
-          description: You are not authorized
         "200":
           description: Offer deleted correctly
+        "401":
+          description: You are not authorized
         "404":
           description: "Data entered incorrectly, probably invalid id or offerId supplied"
 components:
   schemas:
+    PoolDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        photo:
+          type: string
+        direction:
+          type: string
+        capacity:
+          type: integer
+          format: int32
+        scheduleStart:
+          type: string
+        scheduleEnd:
+          type: string
+        company:
+          type: string
+        description:
+          type: string
+    MessageDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        author:
+          type: string
+        body:
+          type: string
     OfferDTO:
       type: object
       properties:
