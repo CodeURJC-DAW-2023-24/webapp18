@@ -52,7 +52,7 @@ public class PoolRestController {
 
     @Autowired
     private MessageService messageService;
-
+/* 
     // ----------------------------------------------- GET -----------------------------------------------
     @Operation(summary = "Get paged pools.")
     @ApiResponses(value = {
@@ -349,5 +349,5 @@ public class PoolRestController {
             throw new IllegalArgumentException("Invalid time format: " + time);
         }
         return true;
-    }
+    }*/
 }
