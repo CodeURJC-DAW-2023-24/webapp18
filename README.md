@@ -98,7 +98,9 @@ Implementar el RestController de Pool y sus dependencias
 ### socorrista: s1, s1
 
 
-# API REST documentation: Entre mvn verify y una movida rara:
+# Documentación de la API REST: 
+
+Se puede consultar pulsando [aquí](https://raw.githack.com/CodeURJC-DAW-2023-24/webapp18/fase4/backend/h2os/api-docs/index.html)
 
 # Instrucciones para desplegar la aplicación con docker
 1. Instalar docker.
