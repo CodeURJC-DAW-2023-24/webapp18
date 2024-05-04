@@ -14,6 +14,7 @@ export class Offer {
   description?: string;
   poolName?: string;
   poolID?: number;
+  image: string;
 
   constructor() {
     this.id = undefined;

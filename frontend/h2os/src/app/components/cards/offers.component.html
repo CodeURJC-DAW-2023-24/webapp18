@@ -1,0 +1,29 @@
+<main class="container">
+    <div class="top-container">
+        <h2>Ofertas de trabajo</h2>
+
+        <a class="btn" href="/">
+            <i class="bi bi-map-fill"></i>
+        </a>
+    </div>
+
+    <section class="cards" id="offers">
+        <div *ngFor="let offer of offers">
+            <a href="/offer?id={{offer.id}}">
+                <img src={{offer.image}} >
+                <p>{{offer.poolName}}</p>
+                <p>{{offer.salary}}€</p>
+            </a>
+        </div>
+    </section>
+
+    <div *ngIf="hasMore" class="btn-cont" id="load">
+        <button class="btn" (click)="loadOffers()">
+            <i class="bi bi-chevron-double-down"></i> Cargar más
+        </button>
+    </div>
+</main>
+
+<div class="btn-cont bottom-right-button">
+    <a href="/offers/add" class="btn" role="btn"><i class="bi bi-plus-circle"></i></a>
+</div>

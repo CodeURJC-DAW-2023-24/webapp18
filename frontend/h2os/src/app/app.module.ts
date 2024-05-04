@@ -13,10 +13,23 @@ import { OfferComponent } from './components/offer/offer.component';
 import { OfferEditComponent } from './components/offer/offer.edit.component';
 import { UserDetailComponent } from './components/user/user-detail.component';
 import { OfferCreateComponent } from './components/offer/offer.create.component';
+import { OffersComponent } from './components/cards/offers.component';
 
 @NgModule({
-  declarations: [AppComponent,UserLoginComponent,UserFormComponent, UserDetailComponent, HeaderComponent, OfferComponent, OfferEditComponent, OfferCreateComponent],
-  imports: [NgbModule, BrowserModule, FormsModule, HttpClientModule, routing],
+  declarations: [
+    AppComponent,
+    UserLoginComponent, UserFormComponent, UserDetailComponent,
+    HeaderComponent,
+    OfferComponent, OfferEditComponent, OfferCreateComponent, OffersComponent
+  ],
+  imports: [
+    CommonModule,
+    NgbModule,
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    routing
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
