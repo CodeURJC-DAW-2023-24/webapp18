@@ -35,13 +35,19 @@ public class DataBaseInitializer {
 
     @Autowired
     private PoolRepository poolRepository;
-    
+
     @Autowired
 	private PasswordEncoder passwordEncoder;
 
     @PostConstruct
     private void initDatabase() throws IOException {
-        Lifeguard l = new Lifeguard(
+        initUsers();
+        initPools();
+        initOffers();
+    }
+
+    private void initUsers() {
+        Lifeguard lifeguard = new Lifeguard(
             "socorrista",
             "1",
             "Socorrista inicializado",
@@ -56,9 +62,10 @@ public class DataBaseInitializer {
             "Calle Amargura",
             "Título de socorrismo A1",
             "USER","LIFE");
-        l.addSkill("Confianza");
-        l.addSkill("Esfuerzo");
-        Employer e = new Employer("empleador",
+        lifeguard.addSkill("Confianza");
+        lifeguard.addSkill("Esfuerzo");
+
+        Employer employer = new Employer("empleador",
             "1",
             "empleador inicializado",
             "56327548K",
@@ -72,9 +79,8 @@ public class DataBaseInitializer {
             "Calle Parque Bujaruelo",
             "Empresaurio",
             "USER","EMP");
-    	lifeguardRepository.save(l);
-        employerRepository.save(e);
-		employerRepository.save(new Employer(
+
+        Employer admin = new Employer(
             "Admin",
             "Jorge",
             "ADMIN inicializado",
@@ -88,15 +94,14 @@ public class DataBaseInitializer {
             "Madrid",
             "Calle Amargura",
             "Marcos Friki",
-            "USER", "ADMIN", "EMP")); 
-            System.out.println("USUARIOS INICIALIZADOS CORRECTAMENTE");
-        init2();
-        init3();
-       
-  
-        }
+            "USER", "ADMIN", "EMP");
 
-        public void init2() throws IOException {
+    	lifeguardRepository.save(lifeguard);
+        employerRepository.save(employer);
+		employerRepository.save(admin);
+    }
+
+    public void initPools() throws IOException {
 		Pool[] defaultPools = {
 			new Pool.Builder()
 				.name("Misco Jones")
@@ -127,35 +132,25 @@ public class DataBaseInitializer {
 			new Message("s1", "Mensaje 2.2")
 		};
 
-
-		int i = 0;
-		for (Message message : defaultMessages) {
-			if (i < defaultMessages.length / 2) {
-				defaultPools[0].addMessage(message);
-			} else {
-				defaultPools[1].addMessage(message);
-			}
-			i++;
+		for (int i = 0; i < defaultMessages.length; i++) {
+            Message message = defaultMessages[i];
+            defaultPools[i/2].addMessage(message);
 		}
 
 		for (Pool pool : defaultPools) {
             String route = "/static/images/default-image.jpg";
-            System.out.println("PRAPARANDO LA CARGA DE IMAGENES POR DEFECTO");
-
-
             Resource image = new ClassPathResource(route);
-            System.out.println("FICHERO ENCONTRADO");
             pool.setDefaultPhoto(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
 			poolRepository.save(pool);
 		}
 	}
 
+    public void initOffers() {
+        Pool pool = poolRepository.findById((long)1).get();
+        pool.setOffersEmpty();
+        Pool pool2 = poolRepository.findById((long)2).get();
+        pool2.setOffersEmpty();
 
-        public void init3() {
-            Pool pool = poolRepository.findById((long)1).get();
-            pool.setOffersEmpty();
-            Employer employer = employerRepository.findByMail("e1").get();
-            employer.setOffersEmpty();
         Offer[] defaultOffersData = {
             new Offer.Builder()
                 .pool(pool)
@@ -165,7 +160,7 @@ public class DataBaseInitializer {
                 .description("Descripcion 1")
                 .build(),
             new Offer.Builder()
-                .pool(pool)
+                .pool(pool2)
                 .salary("1500")
                 .start("Inicio 2")
                 .type("Fines de semana")
@@ -179,7 +174,7 @@ public class DataBaseInitializer {
                 .description("Descripción 3")
                 .build(),
             new Offer.Builder()
-                .pool(pool)
+                .pool(pool2)
                 .salary("2000")
                 .start("Inicio 4")
                 .type("Correturnos")
@@ -193,14 +188,20 @@ public class DataBaseInitializer {
                 .description("Descripción 5")
                 .build()
         };
+
+        Employer employer = employerRepository.findByMail("e1").get();
+        employer.setOffersEmpty();
+
         for (Offer offer : defaultOffersData) {
             offer.addEmployer(employer);
             employer.addOffer(offer);
-            System.out.println(employer.getOffers().size());
-            pool.addOffer(offer);
+
             offerRepository.save(offer);
-            poolRepository.save(pool);
             employerRepository.save(employer);
+
+            Pool poolOffer = offer.getPool();
+            poolOffer.addOffer(offer);
+            poolRepository.save(poolOffer);
         }
     }
 }
