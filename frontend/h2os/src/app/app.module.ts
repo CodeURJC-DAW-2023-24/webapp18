@@ -15,6 +15,7 @@ import { UserDetailComponent } from './components/user/user-detail.component';
 import { OfferCreateComponent } from './components/offer/offer.create.component';
 import { OffersComponent } from './components/cards/offers.component';
 import { PoolsComponent } from './components/cards/pools.component';
+import { PoolComponent } from './components/pool/pool.component';
 import { StadisticsComponent } from './components/stadistics/stadistics.component';
 import { GoogleChartsModule } from 'angular-google-charts';
 
@@ -24,7 +25,7 @@ import { GoogleChartsModule } from 'angular-google-charts';
     UserLoginComponent, UserFormComponent, UserDetailComponent,
     HeaderComponent,
     OfferComponent, OfferEditComponent, OfferCreateComponent, OffersComponent,
-    PoolsComponent,
+    PoolsComponent, PoolComponent,
     StadisticsComponent
   ],
   imports: [

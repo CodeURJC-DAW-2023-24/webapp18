@@ -8,6 +8,7 @@ import { UserMessageComponent } from './components/user/user-message.component';
 import { OfferCreateComponent } from './components/offer/offer.create.component';
 import { OffersComponent } from './components/cards/offers.component';
 import { PoolsComponent } from './components/cards/pools.component';
+import { PoolComponent } from './components/pool/pool.component';
 import { StadisticsComponent } from './components/stadistics/stadistics.component';
 
 const appRoutes: Routes = [
@@ -23,7 +24,7 @@ const appRoutes: Routes = [
     { path: 'offers/new', component: OfferCreateComponent },
     { path: 'employers/edit/:id', component: UserFormComponent },
     { path: 'user/message/:message', component: UserMessageComponent },
-    { path: 'pools/:id', redirectTo: '/pools', pathMatch: 'prefix' },
+    { path: 'pools/:id', component: PoolComponent},
     { path: 'stadistics', component: StadisticsComponent }
 ]
 
