@@ -13,7 +13,7 @@ import { UserService } from '../../services/user.service';
 @Component({
     selector: "offerEdit",
     templateUrl: './offer.create.component.html',
-    styleUrls: ['./offer.data.css', './offer.messages.css']
+    styleUrls: ['../../styles/data.css', '../../styles/messages.css']
 })
 
 export class OfferCreateComponent {

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 @Component({
     selector: "offerEdit",
     templateUrl: './offer.edit.component.html',
-    styleUrls: ['./offer.data.css', './offer.messages.css']
+    styleUrls: ['../../styles/data.css', '../../styles/messages.css']
 })
 
 export class OfferEditComponent {

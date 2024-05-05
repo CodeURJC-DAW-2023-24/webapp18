@@ -14,7 +14,7 @@ import { Applied } from '../../models/applied.model';
 @Component({
     selector: "offer",
     templateUrl: './offer.component.html',
-    styleUrls: ['./offer.data.css', './offer.messages.css']
+    styleUrls: ['../../styles/data.css', '../../styles/messages.css']
 })
 export class OfferComponent {
     me: Me;
