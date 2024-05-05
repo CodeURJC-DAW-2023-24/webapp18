@@ -27,31 +27,34 @@ export class OffersComponent implements OnInit {
   loadOffers() {
     this.service.getOffers(this.last_page, this.rowElements).subscribe(
       (offers: Offer[]) => {
-        if (offers) {
-          this.offers.push(...offers);
-          for (let offer of this.offers) {
-            this.service.getOfferImage(offer).subscribe(
-              (image) => {
-                offer.image = URL.createObjectURL(image);
-              },
-              (error) => {
-                console.log(error);
-              }
-            );
-          }
-          this.last_page++;
-          if (offers.length < this.rowElements) {
-            this.hasMore = false;
-          }
-        } else {
+        if (!offers) {
           this.hasMore = false;
+          return;
         }
+
+        for (let offer of offers) {
+          this.service.getOfferImage(offer).subscribe(
+            (image) => {
+              offer.image = URL.createObjectURL(image);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        }
+
+        this.offers.push(...offers);
+
+        if (offers.length < this.rowElements)
+          this.hasMore = false;
       },
       (error) => {
         console.log(error);
         this.hasMore = false;
       }
     );
+
+    this.last_page++;
   }
 
   updateRowElements() {

@@ -27,31 +27,34 @@ export class PoolsComponent implements OnInit {
   loadPools() {
     this.service.getPools(this.last_page, this.rowElements).subscribe(
       (pools: Pool[]) => {
-        if (pools) {
-          this.pools.push(...pools);
-          for (let pool of this.pools) {
-            this.service.getPoolImage(pool).subscribe(
-              (image) => {
-                pool.image = URL.createObjectURL(image);
-              },
-              (error) => {
-                console.log(error);
-              }
-            );
-          }
-          this.last_page++;
-          if (pools.length < this.rowElements) {
-            this.hasMore = false;
-          }
-        } else {
+        if (!pools) {
           this.hasMore = false;
+          return;
         }
+
+        for (let pool of pools) {
+          this.service.getPoolImage(pool).subscribe(
+            (image) => {
+              pool.image = URL.createObjectURL(image);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        }
+
+        this.pools.push(...pools);
+
+        if (pools.length < this.rowElements)
+          this.hasMore = false;
       },
       (error) => {
         console.log(error);
         this.hasMore = false;
       }
     );
+
+    this.last_page++;
   }
 
   updateRowElements() {
