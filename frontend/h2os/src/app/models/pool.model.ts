@@ -12,6 +12,6 @@ export interface Pool {
   company?: string;
   description?: string;
   messages?: Message[];
-  image?: boolean;
+  image?: string;
   offers?: Offer[];
 }
