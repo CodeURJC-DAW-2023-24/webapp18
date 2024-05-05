@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
-import { OffersService } from '../../services/offers.service';
+import { PaginationService } from '../../services/pagination.service';
 import { Offer } from '../../models/offer.model';
 
 @Component({
@@ -7,7 +7,6 @@ import { Offer } from '../../models/offer.model';
   templateUrl: './offers.component.html',
   styleUrl: './cards.css'
 })
-
 export class OffersComponent implements OnInit {
   offers: Offer[] = [];
   last_page: number = 0;
@@ -16,7 +15,7 @@ export class OffersComponent implements OnInit {
   rowElements: number;
 
   constructor(
-    private offersService: OffersService,
+    private service: PaginationService,
     private elementRef: ElementRef
   ) { }
 
@@ -26,12 +25,12 @@ export class OffersComponent implements OnInit {
   }
 
   loadOffers() {
-    this.offersService.getOffers(this.last_page, this.rowElements).subscribe(
+    this.service.getOffers(this.last_page, this.rowElements).subscribe(
       (offers: Offer[]) => {
         if (offers) {
           this.offers.push(...offers);
           for (let offer of this.offers) {
-            this.offersService.getImage(offer).subscribe(
+            this.service.getOfferImage(offer).subscribe(
               (image) => {
                 offer.image = URL.createObjectURL(image);
               },
