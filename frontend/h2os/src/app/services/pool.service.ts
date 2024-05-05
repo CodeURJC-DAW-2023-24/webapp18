@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable, throwError, catchError } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Pool } from "../models/pool.model";
+import { Message } from "../models/message.model";
 
 const urlPool = '/api/pools'
 
@@ -35,5 +36,18 @@ export class PoolService {
     private handleError(error: any) {
         console.error(error);
         return throwError("Server error (" + error.status + "):" + error.text())
+    }
+
+    getPoolMessages(id: number){
+        return this.httpClient.get(urlPool+"/"+id+"/messages")
+    }
+
+    deleteMessage(idPool: number, idMessage: number){
+        this.httpClient.delete(urlPool+"/"+idPool+"/messages/"+idMessage).subscribe()
+        return true;
+    }
+
+    newMessage(idPool: number, msg: Message){
+        this.httpClient.post(urlPool+"/"+idPool+"/messages",msg).subscribe()
     }
 }
