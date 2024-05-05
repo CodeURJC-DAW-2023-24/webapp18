@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -120,6 +122,23 @@ public class PoolRestController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         return ResponseEntity.status(HttpStatus.OK).body(messagesDTO);
+    }
+
+    @Operation(summary = "Get the photo of the pool by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Photo found", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = PoolDTO.class)) }),
+            @ApiResponse(responseCode = "404", description = "Photo not found, probably invalid pool id supplied", content = @Content)
+    })
+    @GetMapping("/{id}/photo")
+    public ResponseEntity<Object> getPoolPhoto(@PathVariable int id) throws SQLException {
+        Optional<Pool> poolOp = poolService.findById(id);
+        if (poolOp.isPresent()){
+            Pool pool = poolOp.get();
+            InputStreamResource photo = new InputStreamResource(pool.getPhotoBlob().getBinaryStream());
+            return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.IMAGE_JPEG).body(photo);
+        } else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     // ----------------------------------------------- POST -----------------------------------------------
