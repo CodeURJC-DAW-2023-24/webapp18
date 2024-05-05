@@ -44,9 +44,6 @@ export class OffersComponent implements OnInit {
         }
 
         this.offers.push(...offers);
-
-        if (offers.length < this.rowElements)
-          this.hasMore = false;
       },
       (error) => {
         console.log(error);
@@ -55,6 +52,17 @@ export class OffersComponent implements OnInit {
     );
 
     this.last_page++;
+
+    this.service.getOffers(this.last_page, this.rowElements).subscribe(
+      (offers: Offer[]) => {
+        if (!offers)
+          this.hasMore = false;
+      },
+      (error) => {
+        console.log(error);
+        this.hasMore = false;
+      }
+    );
   }
 
   updateRowElements() {

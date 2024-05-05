@@ -44,9 +44,6 @@ export class PoolsComponent implements OnInit {
         }
 
         this.pools.push(...pools);
-
-        if (pools.length < this.rowElements)
-          this.hasMore = false;
       },
       (error) => {
         console.log(error);
@@ -55,6 +52,17 @@ export class PoolsComponent implements OnInit {
     );
 
     this.last_page++;
+
+    this.service.getPools(this.last_page, this.rowElements).subscribe(
+      (pools: Pool[]) => {
+        if (!pools)
+          this.hasMore = false;
+      },
+      (error) => {
+        console.log(error);
+        this.hasMore = false;
+      }
+    );
   }
 
   updateRowElements() {

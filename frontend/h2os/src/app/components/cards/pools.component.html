@@ -14,6 +14,9 @@
                 <p>{{pool.direction}}</p>
             </a>
         </div>
+        <div *ngIf="pools.length === 0">
+            <p>No hay piscinas</p>
+        </div>
     </section>
 
     <div *ngIf="hasMore" class="btn-cont" id="load">

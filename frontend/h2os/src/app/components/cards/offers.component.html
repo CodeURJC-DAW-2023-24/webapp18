@@ -15,6 +15,9 @@
                 <p>{{offer.salary}}€</p>
             </a>
         </div>
+        <div *ngIf="offers.length === 0">
+            <p>No hay ofertas</p>
+        </div>
     </section>
 
     <div *ngIf="hasMore" class="btn-cont" id="load">
