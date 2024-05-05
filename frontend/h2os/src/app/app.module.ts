@@ -15,6 +15,8 @@ import { UserDetailComponent } from './components/user/user-detail.component';
 import { OfferCreateComponent } from './components/offer/offer.create.component';
 import { OffersComponent } from './components/cards/offers.component';
 import { PoolsComponent } from './components/cards/pools.component';
+import { StadisticsComponent } from './components/stadistics/stadistics.component';
+import { GoogleChartsModule } from 'angular-google-charts';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { PoolsComponent } from './components/cards/pools.component';
     UserLoginComponent, UserFormComponent, UserDetailComponent,
     HeaderComponent,
     OfferComponent, OfferEditComponent, OfferCreateComponent, OffersComponent,
-    PoolsComponent
+    PoolsComponent,
+    StadisticsComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +33,8 @@ import { PoolsComponent } from './components/cards/pools.component';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    routing
+    routing,
+    GoogleChartsModule,
   ],
   bootstrap: [AppComponent]
 })
