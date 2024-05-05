@@ -24,6 +24,7 @@ export class OfferComponent {
     edit: boolean;
     typeUser: string;
     admin: boolean;
+    id: number;
     offer: Offer;
     pool: String;
     canApply: boolean;
@@ -37,17 +38,18 @@ export class OfferComponent {
     photoURL: string;
 
     constructor(activatedRoute: ActivatedRoute, private service: OfferService, private userService: UserService) { // Set the permits
-        let id = activatedRoute.snapshot.params['id'];
-        id = 1;
+        activatedRoute.params.subscribe(params => {
+            this.id = params['id'];
+        });
         this.applied = false;
         this.appliedLg = []
         this.appliedLgDesc = []
-        service.getOffer(id).subscribe(
+        service.getOffer(this.id).subscribe(
             response => {
                 this.offer = response as Offer;
                 this.poolName = this.offer.poolName;
                 this.poolID = this.offer.poolID;
-                service.getOfferPhoto(id).subscribe(
+                service.getOfferPhoto(this.id).subscribe(
                     response => {
                         if (response) {
                             const blob = new Blob([response], { type: 'image/jpeg' })

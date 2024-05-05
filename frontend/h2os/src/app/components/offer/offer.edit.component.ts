@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 })
 
 export class OfferEditComponent {
+    id: number;
     offer: Offer
     pools: Pool[];
     dateF: string;
@@ -27,9 +28,11 @@ export class OfferEditComponent {
     errorFlagSalary: boolean
 
     constructor(activatedRoute: ActivatedRoute, private service: OfferService, private router: Router) { // Set the permits
-        let id = activatedRoute.snapshot.params['id'];
+        activatedRoute.params.subscribe(params => {
+            this.id = params['id'];
+        });
         this.errorFlagSalary = false
-        service.getOffer(1).subscribe(
+        service.getOffer(this.id).subscribe(
             response => {
                 this.offer = response as Offer;
                 this.formatDate()
