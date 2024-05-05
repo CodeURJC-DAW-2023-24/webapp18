@@ -3,9 +3,7 @@
 
     <div class="row">
         <a class="col-lg-6 col-img" href="/pool?id={{poolID}}">
-            <div *ngIf="hasPhoto">
-                <img [src]="photoURL" alt="Photo" style="width: 100%; height: auto;">
-            </div>
+            <img [src]="photoURL" alt="Photo" style="width: 100%; height: auto;">
         </a>
         <div class="col-lg-6 col-data">
             <p><strong>Dirección:</strong> {{poolName}}</p>
@@ -15,33 +13,8 @@
             <p><strong>Salario:</strong> {{offer.salary}}€</p>
             <p><strong>Descripción:</strong> {{offer.description}}</p>
         </div>
-
-        <div *ngIf="applied">
-            <div *ngIf="appliedLg.length !== 0;" class="subcontainer message" id="{{offer.id}}">
-                <div *ngFor="let lifeguard of appliedLg; let i = index">
-                    <data>
-                        <a class="author" href="/profile?type=0&mail={{lifeguard}}">{{lifeguard}}:</a>
-                        <p class="body"> {{appliedLgDesc[i]}} </p>
-                    </data>
-                    <div *ngIf="lifeguard!==selected;">
-                        <div class="btn-cont">
-                            <button class="btn" (click)="setLifeguard(offer.id,i)"><i
-                                    class="bi bi-person-add"></i></button>
-                        </div>
-                    </div>
-                    <div *ngIf="lifeguard===selected;">
-                        <div class="btn-cont">
-                            <button class="btn btn-red " (click)="unSelectLifeguard(offer.id)"><i
-                                    class="bi bi-person-dash"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="appliedLg.length === 0 && applied;" class="subcontainer message">
-                <div class="message">No hay propuestas </div>
-            </div>
-        </div>
     </div>
+
     <div class="btn-cont">
         <div *ngIf="canApply">
             <form role="form" action='/offer/offered/new' method="post">
@@ -51,23 +24,38 @@
                 </button>
             </form>
         </div>
-        <div *ngIf="edit">
-            <button class="btn" (click)="showApplied(offer.id)" id="showButton">Ver propuestas</button>
-        </div>
+
         <div *ngIf="edit">
             <input type="hidden" name="id" value="{{offer.id}}" />
+            <button class="btn" (click)="showApplied(offer.id)" id="showButton">Ver propuestas</button>
             <button class="btn btn-blue" [routerLink]="['edit']">
                 <i class="bi bi-pencil"> </i>Editar
-            </button>
-            <button class="btn btn-blue" [routerLink]="['newOffer']">
-                <i class="bi bi-pencil"> </i>Nuevo
             </button>
             <button class="btn btn-red" (click)="deleteOffer(offer.id)">
                 <i class="bi bi-trash"> Eliminar</i>
             </button>
         </div>
+
         <a href="/" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
     </div>
 
-    <div id="messageContainer"></div>
+    <div id="messageContainer">
+        <div *ngIf="applied && appliedLg.length !== 0" class="subcontainer message" id="{{offer.id}}">
+            <div *ngFor="let lifeguard of appliedLg; let i = index">
+                <data>
+                    <a class="author" href="/profile?type=0&mail={{lifeguard}}">{{lifeguard}}:</a>
+                    <p class="body"> {{appliedLgDesc[i]}} </p>
+                </data>
+                <div *ngIf="lifeguard!==selected;" class="btn-cont">
+                    <button class="btn" (click)="setLifeguard(offer.id,i)"><i class="bi bi-person-add"></i></button>
+                </div>
+                <div *ngIf="lifeguard===selected;" class="btn-cont">
+                    <button class="btn btn-red " (click)="unSelectLifeguard(offer.id)"><i class="bi bi-person-dash"></i></button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="applied && appliedLg.length === 0" class="subcontainer message" id="{{offer.id}}">
+            <div class="message">No hay propuestas </div>
+        </div>
+    </div>
 </div>
