@@ -11,7 +11,7 @@
         <div *ngFor="let offer of offers">
             <a [routerLink]="['/offers', offer.id]">
                 <img src={{offer.image}} >
-                <p>{{offer.poolName}}</p>
+                <p>{{offer.direction}}</p>
                 <p>{{offer.salary}}€</p>
             </a>
         </div>

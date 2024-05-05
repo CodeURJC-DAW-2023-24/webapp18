@@ -5,6 +5,7 @@ import { Lifeguard } from './lifeguard.model';
 export class Offer {
   id?: number;
   pool?: Pool;
+  direction?: String;
   employer?: string;
   lifeguard?: Lifeguard;
   lifeguards?: Lifeguard[];
@@ -19,6 +20,7 @@ export class Offer {
   constructor() {
     this.id = undefined;
     this.pool = undefined;
+    this.direction = '';
     this.employer = '';
     this.lifeguard = undefined;
     this.lifeguards = [];
