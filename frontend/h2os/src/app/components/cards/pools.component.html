@@ -1,0 +1,28 @@
+<main class="container">
+    <div class="top-container">
+        <h2>Piscinas</h2>
+
+        <a class="btn" href="/">
+            <i class="bi bi-map-fill"></i>
+        </a>
+    </div>
+
+    <section class="cards" id="pools">
+        <div *ngFor="let pool of pools">
+            <a href="/pool?id={{pool.id}}">
+                <img src={{pool.image}} >
+                <p>{{pool.direction}}</p>
+            </a>
+        </div>
+    </section>
+
+    <div *ngIf="hasMore" class="btn-cont" id="load">
+        <button class="btn" (click)="loadPools()">
+            <i class="bi bi-chevron-double-down"></i> Cargar más
+        </button>
+    </div>
+</main>
+
+<div class="btn-cont bottom-right-button">
+    <a href="/pools/add" class="btn" role="btn"><i class="bi bi-plus-circle"></i></a>
+</div>

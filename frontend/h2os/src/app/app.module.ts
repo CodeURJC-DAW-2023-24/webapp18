@@ -14,13 +14,15 @@ import { OfferEditComponent } from './components/offer/offer.edit.component';
 import { UserDetailComponent } from './components/user/user-detail.component';
 import { OfferCreateComponent } from './components/offer/offer.create.component';
 import { OffersComponent } from './components/cards/offers.component';
+import { PoolsComponent } from './components/cards/pools.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserLoginComponent, UserFormComponent, UserDetailComponent,
     HeaderComponent,
-    OfferComponent, OfferEditComponent, OfferCreateComponent, OffersComponent
+    OfferComponent, OfferEditComponent, OfferCreateComponent, OffersComponent,
+    PoolsComponent
   ],
   imports: [
     CommonModule,

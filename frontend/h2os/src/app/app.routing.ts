@@ -7,12 +7,14 @@ import { OfferEditComponent } from './components/offer/offer.edit.component';
 import { UserMessageComponent } from './components/user/user-message.component';
 import { OfferCreateComponent } from './components/offer/offer.create.component';
 import { OffersComponent } from './components/cards/offers.component';
+import { PoolsComponent } from './components/cards/pools.component';
 
 const appRoutes: Routes = [
     { path: 'login', component: UserLoginComponent },
     { path: 'user/form', component: UserFormComponent },
     //{ path: 'offers', component: OfferComponent},
     { path: 'offers', component: OffersComponent},
+    { path: 'pools', component: PoolsComponent},
     { path: 'offers/edit', component: OfferEditComponent},
     { path: 'lifeguards/:id', component: UserDetailComponent },
     { path: 'employers/:id', component: UserDetailComponent },

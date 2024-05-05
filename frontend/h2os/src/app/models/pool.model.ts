@@ -14,4 +14,5 @@ export interface Pool {
   messages: Message[];
   photoCheck: boolean;
   offers: Offer[];
+  image: string;
 }
