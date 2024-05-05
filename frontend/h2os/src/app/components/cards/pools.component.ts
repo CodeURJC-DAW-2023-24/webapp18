@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
-import { PoolsService } from '../../services/pools.service';
+import { PaginationService } from '../../services/pagination.service';
 import { Pool } from '../../models/pool.model';
 
 @Component({
@@ -15,7 +15,7 @@ export class PoolsComponent implements OnInit {
   rowElements: number;
 
   constructor(
-    private poolsService: PoolsService,
+    private service: PaginationService,
     private elementRef: ElementRef
   ) { }
 
@@ -25,12 +25,12 @@ export class PoolsComponent implements OnInit {
   }
 
   loadPools() {
-    this.poolsService.getPools(this.last_page, this.rowElements).subscribe(
+    this.service.getPools(this.last_page, this.rowElements).subscribe(
       (pools: Pool[]) => {
         if (pools) {
           this.pools.push(...pools);
           for (let pool of this.pools) {
-            this.poolsService.getImage(pool).subscribe(
+            this.service.getPoolImage(pool).subscribe(
               (image) => {
                 pool.image = URL.createObjectURL(image);
               },
