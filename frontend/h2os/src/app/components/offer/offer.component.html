@@ -1,8 +1,8 @@
 <div class="container">
-    <h2>Oferta en <a href="/pool?id={{poolID}}">{{poolName}}</a></h2>
+    <h2>Oferta en <a [routerLink]="['/pools', poolID]">{{poolName}}</a></h2>
 
     <div class="row">
-        <a class="col-lg-6 col-img" href="/pool?id={{poolID}}">
+        <a class="col-lg-6 col-img" [routerLink]="['/pools', poolID]">
             <img [src]="photoURL" alt="Photo" style="width: 100%; height: auto;">
         </a>
         <div class="col-lg-6 col-data">
@@ -36,7 +36,7 @@
             </button>
         </div>
 
-        <a href="/" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+        <a [routerLink]="['/offers']" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
     </div>
 
     <div id="messageContainer">

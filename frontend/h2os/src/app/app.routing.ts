@@ -12,16 +12,17 @@ import { PoolsComponent } from './components/cards/pools.component';
 const appRoutes: Routes = [
     { path: 'login', component: UserLoginComponent },
     { path: 'user/form', component: UserFormComponent },
-    //{ path: 'offers', component: OfferComponent},
     { path: 'offers', component: OffersComponent},
     { path: 'pools', component: PoolsComponent},
-    { path: 'offers/edit', component: OfferEditComponent},
+    { path: 'offers/:id', component: OfferComponent},
+    { path: 'offers/:id/edit', component: OfferEditComponent},
     { path: 'lifeguards/:id', component: UserDetailComponent },
     { path: 'employers/:id', component: UserDetailComponent },
     { path: 'lifeguards/edit/:id', component: UserFormComponent },
-    { path: 'offers/newOffer', component: OfferCreateComponent },
+    { path: 'offers/new', component: OfferCreateComponent },
     { path: 'employers/edit/:id', component: UserFormComponent },
     { path: 'user/message/:message', component: UserMessageComponent },
+    { path: 'pools/:id', redirectTo: '/pools', pathMatch: 'prefix' }
 ]
 
 export const routing = RouterModule.forRoot(appRoutes);

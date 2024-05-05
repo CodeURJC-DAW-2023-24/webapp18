@@ -2,14 +2,14 @@
     <div class="top-container">
         <h2>Piscinas</h2>
 
-        <a class="btn" href="/">
+        <a class="btn" [routerLink]="['/']">
             <i class="bi bi-map-fill"></i>
         </a>
     </div>
 
     <section class="cards" id="pools">
         <div *ngFor="let pool of pools">
-            <a href="/pool?id={{pool.id}}">
+            <a [routerLink]="['/pools', pool.id]">
                 <img src={{pool.image}} >
                 <p>{{pool.direction}}</p>
             </a>
@@ -24,5 +24,5 @@
 </main>
 
 <div class="btn-cont bottom-right-button">
-    <a href="/pools/add" class="btn" role="btn"><i class="bi bi-plus-circle"></i></a>
+    <a [routerLink]="['/pools/new']" class="btn" role="btn"><i class="bi bi-plus-circle"></i></a>
 </div>
