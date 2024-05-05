@@ -28,6 +28,7 @@ public class Pool{
     public boolean photoCheck;
     private String name;
     private String photo;
+    private Blob defaultPhoto;
     private Blob photoA;
     private String direction;
     private int capacity;
@@ -35,12 +36,10 @@ public class Pool{
     private LocalTime scheduleEnd;
     private String company;
     private String description;
-    private Blob defaultPhoto;
 
     public Pool(){}
 
     public Pool(Builder builder){
-        super();
         this.name = builder.name;
         this.photo = builder.photo;
         this.direction = builder.direction;
@@ -51,7 +50,7 @@ public class Pool{
         this.description = builder.description;
         this.messages = builder.messages;
         photoCheck=false;
-        this.offers = new ArrayList<>();
+        this.offers = new ArrayList<Offer>();
     }
 
     public void addMessage(Message message){
@@ -63,13 +62,30 @@ public class Pool{
         this.messages.remove(index);
     }
 
+    public void addOffer(Offer o){
+        this.offers.add(o);
+    }
+
+    public void setOffersEmpty() {
+        this.offers = new ArrayList<Offer>();
+    }
+
     // Getters
+    public long getId(){
+        return this.id;
+    }
     public String getName(){
         return this.name;
     }
     public String getPhoto(){
         return this.photo;
     }
+    public Blob getDefaultPhoto(){
+        return this.defaultPhoto;
+    }
+    public Blob getPhotoUser() {
+		return photoA;
+	}
     public String getDirection(){
         return this.direction;
     }
@@ -94,19 +110,20 @@ public class Pool{
     public Message getMessage(int index){
         return messages.get(index);
     }
-    public long getId(){
-        return this.id;
+
+    // Setters
+    public void setName(String name){
+        this.name = name;
+    }
+    public void setPhoto(String string) {
+        this.photo=string;
+    }
+    public void setDefaultPhoto(Blob p){
+        this.defaultPhoto = p;
     }
     public void setPhotoUser(Blob photo) {
 		this.photoA = photo;
 	}
-    public Blob getPhotoUser() {
-		return photoA;
-	}
-
-    public void setName(String name){
-        this.name = name;
-    }
     public void setDirection(String d){
         this.direction = d;
     }
@@ -125,15 +142,7 @@ public class Pool{
     public void setCompany(String c){
         this.company = c;
     }
-    public void addOffer(Offer o){
-        this.offers.add(o);
-    }
-    public void setDefaultPhoto(Blob p){
-        this.defaultPhoto = p;
-    }
-    public Blob getDefaultPhoto(){
-        return this.defaultPhoto;
-    }
+
     // Method to update pool data
     public void update(Builder builder) {
         if (builder.name != null) {
@@ -163,7 +172,6 @@ public class Pool{
         if (builder.messages != null) {
             this.messages = builder.messages;
         }
-
     }
 
     // Builder class to build Pool type objects
@@ -224,17 +232,9 @@ public class Pool{
         }
 
         public Pool build() {
-            if (this.messages == null) {
+            if (this.messages == null)
                 this.messages = new ArrayList<>();
-            }
             return new Pool(this);
         }
-    }
-
-    public void setPhoto(String string) {
-        this.photo=string;
-    }
-    public void setOffersEmpty() {
-        this.offers = new ArrayList<Offer>();
     }
 }
