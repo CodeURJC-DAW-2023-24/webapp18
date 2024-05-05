@@ -22,12 +22,7 @@
 
             <div class="row">
                 <a class="col-lg-6">
-                    {{#hasPhoto}}
-                    <img id="img-user" src="/pool/{{id}}/image" alt="{{direction}}">
-                    {{/hasPhoto}}
-                    {{^hasPhoto}}
-                    <img id="img-pool" src="{{photo}}" alt="{{direction}}">
-                    {{/hasPhoto}}
+                    <img id="img-pool" src="/pool/{{id}}/image" alt="{{direction}}">
                 </a>
                 <div class="col-lg-6">
                     <p><strong>Dirección:</strong> {{direction}}</p>

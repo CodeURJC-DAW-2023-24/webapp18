@@ -55,12 +55,7 @@ public class OfferController {
     @GetMapping("/offer")
     public String offer(@RequestParam("id") int id, Model model, HttpServletRequest request) {
         Offer offer = offerService.findById(id).get();
-        Pool pool = offer.getPool();
 
-        if (pool.getPhotoUser() != null)
-            model.addAttribute("hasPhoto", true);
-        else
-            model.addAttribute("hasPhoto", false);
         model.addAttribute("offer", offer);
         model.addAttribute("id", offer.getId());
         model.addAttribute("admin", request.isUserInRole("ADMIN"));

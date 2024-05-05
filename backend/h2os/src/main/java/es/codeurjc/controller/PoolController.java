@@ -1,7 +1,5 @@
 package es.codeurjc.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.List;
@@ -64,10 +62,6 @@ public class PoolController {
         Optional<Pool> pool = poolService.findById(id);
         if (pool.isPresent()) {
             model.addAttribute("pool", pool.get());
-            if (pool.get().getPhotoUser() != null)
-                model.addAttribute("hasPhoto", true);
-            else
-                model.addAttribute("hasPhoto", false);
         }
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
         model.addAttribute("logged", request.isUserInRole("EMP") || request.isUserInRole("LIFE"));
@@ -113,7 +107,6 @@ public class PoolController {
         pool.addMessage(message);
         messageService.save(message);
         poolService.save(pool);
-        model.addAttribute("hasPhoto", pool.photoCheck);
         model.addAttribute("pool", pool);
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
         return "pool";
@@ -126,7 +119,6 @@ public class PoolController {
         messageService.deleteById(id);
 
         model.addAttribute("pool", pool);
-        model.addAttribute("hasPhoto", pool.photoCheck);
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
         return "pool";
 
@@ -158,14 +150,7 @@ public class PoolController {
                 .description(description)
                 .build();
         if (!photoField.isEmpty()) {
-            pool.setPhotoUser(BlobProxy.generateProxy(photoField.getInputStream(), photoField.getSize()));
-            pool.photoCheck = true;
-        }
-        else{
-            String route = "../resources/static/images/default-image.jpg";
-            File file = new File(route);
-            FileInputStream fis = new FileInputStream(file);
-            pool.setDefaultPhoto(BlobProxy.generateProxy(fis, file.length()));
+            pool.setPhotoBlob(BlobProxy.generateProxy(photoField.getInputStream(), photoField.getSize()));
         }
         poolService.save(pool);
         return "redirect:/pools";
@@ -194,8 +179,7 @@ public class PoolController {
         Pool pool = poolService.findById(id).get();
         pool.setPhoto("/images/default-image.jpg");
         if (!photoField.isEmpty()) {
-            pool.setPhotoUser(BlobProxy.generateProxy(photoField.getInputStream(), photoField.getSize()));
-            pool.photoCheck = true;
+            pool.setPhotoBlob(BlobProxy.generateProxy(photoField.getInputStream(), photoField.getSize()));
         }
         if ("".equals(aforo + ""))
             pool.setCapacity(20);
@@ -208,7 +192,6 @@ public class PoolController {
         pool.setEnd(close);
         pool.setName(name);
         poolService.save(pool);
-        model.addAttribute("hasPhoto", pool.photoCheck);
         model.addAttribute("pool", pool);
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
         return "pool";
@@ -217,12 +200,12 @@ public class PoolController {
     @GetMapping("/pool/{id}/image")
     public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
         Optional<Pool> pool = poolService.findById(id);
-        if (pool.isPresent() && pool.get().getPhotoUser() != null) {
+        if (pool.isPresent() && pool.get().getPhotoBlob() != null) {
 
-            Resource file = new InputStreamResource(pool.get().getPhotoUser().getBinaryStream());
+            Resource file = new InputStreamResource(pool.get().getPhotoBlob().getBinaryStream());
 
             return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                    .contentLength(pool.get().getPhotoUser().length()).body(file);
+                    .contentLength(pool.get().getPhotoBlob().length()).body(file);
 
         } else {
             return ResponseEntity.notFound().build();

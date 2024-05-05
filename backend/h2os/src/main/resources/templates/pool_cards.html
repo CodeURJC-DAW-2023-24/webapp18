@@ -1,11 +1,6 @@
 {{#pools}}
 <a href="/pool?id={{id}}">
-    {{#photoCheck}}
-    <img src="/pool/{{id}}/image" >
-    {{/photoCheck}}
-    {{^photoCheck}}
-    <img src="{{photo}}" >
-    {{/photoCheck}}
+    <img src="/pool/{{id}}/image" alt="{{direction}}">
     <p>{{direction}}</p>
 </a>
 {{/pools}}

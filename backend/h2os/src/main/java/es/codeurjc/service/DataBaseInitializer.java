@@ -1,11 +1,8 @@
 package es.codeurjc.service;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.time.LocalTime;
 
-import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -105,7 +102,6 @@ public class DataBaseInitializer {
 		Pool[] defaultPools = {
 			new Pool.Builder()
 				.name("Misco Jones")
-				.photo("/images/default-image.jpg")
 				.direction("Calle Timanfaya (Alcorcón)")
 				.capacity(10)
 				.scheduleStart(LocalTime.of(12, 30))
@@ -115,7 +111,7 @@ public class DataBaseInitializer {
 				.build(),
 			new Pool.Builder()
 				.name("Piscina municipal Las Cumbres")
-				.photo("https://lh3.googleusercontent.com/p/AF1QipMXXW-IjqZkpx8EfwA_Nw_ALJQZfMAWdjhnT4Xh=s1360-w1360-h1020-rw")
+				.photo("static/images/las-cumbres-image.jpg")
 				.direction("C/Rio Duero, 1 (Móstoles)")
 				.capacity(18)
 				.scheduleStart(LocalTime.of(11, 0))
@@ -138,9 +134,6 @@ public class DataBaseInitializer {
 		}
 
 		for (Pool pool : defaultPools) {
-            String route = "/static/images/default-image.jpg";
-            Resource image = new ClassPathResource(route);
-            pool.setDefaultPhoto(BlobProxy.generateProxy(image.getInputStream(), image.contentLength()));
 			poolRepository.save(pool);
 		}
 	}

@@ -1,9 +1,14 @@
 package es.codeurjc.model;
 
+import java.io.IOException;
 import java.sql.Blob;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.engine.jdbc.BlobProxy;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -25,11 +30,9 @@ public class Pool{
 
     @OneToMany(mappedBy = "pool", cascade = CascadeType.ALL)
     private List<Message> messages;
-    public boolean photoCheck;
     private String name;
     private String photo;
-    private Blob defaultPhoto;
-    private Blob photoA;
+    private Blob photoBlob;
     private String direction;
     private int capacity;
     private LocalTime scheduleStart;
@@ -42,6 +45,7 @@ public class Pool{
     public Pool(Builder builder){
         this.name = builder.name;
         this.photo = builder.photo;
+        this.photoBlob = builder.photoBlob;
         this.direction = builder.direction;
         this.capacity = builder.capacity;
         this.scheduleStart = builder.scheduleStart;
@@ -49,7 +53,6 @@ public class Pool{
         this.company = builder.company;
         this.description = builder.description;
         this.messages = builder.messages;
-        photoCheck=false;
         this.offers = new ArrayList<Offer>();
     }
 
@@ -80,11 +83,8 @@ public class Pool{
     public String getPhoto(){
         return this.photo;
     }
-    public Blob getDefaultPhoto(){
-        return this.defaultPhoto;
-    }
-    public Blob getPhotoUser() {
-		return photoA;
+    public Blob getPhotoBlob() {
+		return this.photoBlob;
 	}
     public String getDirection(){
         return this.direction;
@@ -118,12 +118,9 @@ public class Pool{
     public void setPhoto(String string) {
         this.photo=string;
     }
-    public void setDefaultPhoto(Blob p){
-        this.defaultPhoto = p;
+    public void setPhotoBlob(Blob photo) {
+        this.photoBlob = photo;
     }
-    public void setPhotoUser(Blob photo) {
-		this.photoA = photo;
-	}
     public void setDirection(String d){
         this.direction = d;
     }
@@ -150,6 +147,9 @@ public class Pool{
         }
         if (builder.photo != null) {
             this.photo = builder.photo;
+        }
+        if (builder.photoBlob != null) {
+            this.photoBlob = builder.photoBlob;
         }
         if (builder.direction != null) {
             this.direction = builder.direction;
@@ -178,6 +178,7 @@ public class Pool{
     public static class Builder {
         private String name;
         private String photo;
+        private Blob photoBlob;
         private String direction;
         private Integer capacity;
         private LocalTime scheduleStart;
@@ -193,6 +194,20 @@ public class Pool{
 
         public Builder photo(String photo) {
             this.photo = photo;
+
+            Resource image = new ClassPathResource(this.photo);
+            try {
+                Blob photoBlob = BlobProxy.generateProxy(image.getInputStream(), image.contentLength());
+                photoBlob(photoBlob);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return this;
+        }
+
+        public Builder photoBlob(Blob photoBlob) {
+            this.photoBlob = photoBlob;
             return this;
         }
 
@@ -234,6 +249,8 @@ public class Pool{
         public Pool build() {
             if (this.messages == null)
                 this.messages = new ArrayList<>();
+            if (this.photo == null)
+                photo("static/images/default-image.jpg");
             return new Pool(this);
         }
     }

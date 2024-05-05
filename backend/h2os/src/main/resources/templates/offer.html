@@ -21,12 +21,7 @@
 
         <div class="row">
             <a class="col-lg-6 col-img" href="/pool?id={{pool.id}}">
-                {{#hasPhoto}}
-                <img id="img-user" src="/pool/{{pool.id}}/image" >
-                {{/hasPhoto}}
-                {{^hasPhoto}}
-                <img id="img-pool" src="{{pool.photo}}" >
-                {{/hasPhoto}}
+                <img id="img-pool" src="/pool/{{pool.id}}/image" alt="{{pool.direction}}">
             </a>
             <div class="col-lg-6 col-data">
                 <p><strong>Dirección:</strong> {{pool.direction}}</p>
