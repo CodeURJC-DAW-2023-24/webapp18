@@ -50,9 +50,8 @@ export class OfferService {
         return true
     }
 
-    newOffer(offer: Offer) {
-        this.httpClient.post(urlOffer, offer).subscribe();
-        return true
+    newOffer(offer: Offer): Observable<Object>{
+        return this.httpClient.post(urlOffer, offer);
     }
 
     private handleError(error: any) {

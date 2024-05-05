@@ -54,6 +54,7 @@ export class OfferEditComponent {
             console.log("Oferta despues")
             console.log(JSON.stringify(this.offer))
             this.service.editOffer(this.offer.id, this.offer)
+            this.router.navigate([`/offer/` + this.offer.id], { replaceUrl: true })
         }
     }
 

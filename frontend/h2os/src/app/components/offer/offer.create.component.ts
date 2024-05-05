@@ -4,7 +4,7 @@ import { Lifeguard } from '../../models/lifeguard.model';
 import { Employer } from '../../models/employer.model';
 import { Offer } from '../../models/offer.model';
 import { Pool } from '../../models/pool.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OfferService } from '../../services/offer.service';
 import { CommonModule, NgIf } from '@angular/common';
 import { Me } from '../../models/me.model';
@@ -26,8 +26,9 @@ export class OfferCreateComponent {
     @ViewChild('date') dateInput: ElementRef;
     @ViewChild('salary') salaryInput: ElementRef;
     @ViewChild('poolN') poolInput: ElementRef;
-    errorFlagSalary: boolean
-    constructor(activatedRoute: ActivatedRoute, private service: OfferService, private userService: UserService) {
+    errorFlagSalary: boolean;
+    errorFlagDate: boolean;
+    constructor(activatedRoute: ActivatedRoute, private service: OfferService, private userService: UserService, private router: Router) {
         this.pools = ["Pisci", "Poya y webos"];
         userService.me().subscribe(
             response => {
@@ -53,7 +54,15 @@ export class OfferCreateComponent {
         if (this.isValid()) {
             console.log("Oferta despues")
             console.log(JSON.stringify(this.offer))
-            this.service.newOffer(this.offer)
+            this.service.newOffer(this.offer).subscribe(
+                response => {
+                    this.offer = response as Offer;
+                    this.router.navigateByUrl(`/offer/` + this.offer.id, { replaceUrl: true });
+                },
+                error => {
+                    console.log("Error al guardar la nueva oferta")
+                }
+            );
         }
     }
 
@@ -72,6 +81,17 @@ export class OfferCreateComponent {
             this.errorFlagSalary = true
             return false
         }
+
+        if (!this.isValidDate(date2)) {
+            this.errorFlagDate = true;
+            return false
+        }
         return true
+    }
+
+    isValidDate(date: String) {
+        const parts = date.split('/');
+        if (parts[0] == "undefined" || parts[1] == "undefined" || parts[2] == "undefined") return false;
+        return true;
     }
 }
