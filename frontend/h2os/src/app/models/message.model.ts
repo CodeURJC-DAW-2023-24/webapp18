@@ -1,9 +1,11 @@
 import { Pool } from './pool.model';
 
-export interface Message {
-  id?: number;
-  pool: Pool;
+export class Message {
+  id: number;
   author: string;
   body: string;
-  hasOwner: boolean;
+
+  constructor(body: string){
+    this.body = body;
+  }
 }

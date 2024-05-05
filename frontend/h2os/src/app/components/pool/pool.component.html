@@ -22,23 +22,47 @@
     </div>
 </div>
 
-<div *ngIf="logged" class="container container-additional">
+<div class="container container-additional">
     <h3>Comentarios</h3>
     <div *ngIf="logged">
         <form role="form" action='/pool/message/add' method="post">
             <input type="hidden" name="id" value="{{id}}" />
             <div class="subcontainer commentContainer">
-                <input type="text" id="commentInput" name="commentInput" placeholder="Deja tu opinión" />
+                <input #bodyMessage type="text" id="commentInput" name="commentInput" placeholder="Deja tu opinión" />
                 <div class="btn-cont">
-                    <button type="submit" class="btn">
+                    <button  class="btn" (click) = "addComment()">
                         <i class="bi bi-send-fill"></i>
                     </button>
                 </div>
             </div>
         </form>
     </div>
-    <div id="messageContainer"></div>
-    <div class="btn-cont" id="showButton">
-        <button class="btn" (click)="showComments(id)">Ver comentarios</button>
+    <div id="messageContainer" *ngIf="!showMessagesFlag">
+        <div *ngIf="messages.length>0">
+            <div *ngFor= "let msg of messages; let i = index">
+                <div class="subcontainer message" id="message-{{id}}">
+                    <data>
+                        <a class="author" >{{authors[i]}}:</a>
+                        <p class="body"> {{msg}} </p>
+                    </data>
+                    <div *ngIf="owner[i]">
+                    <div class="btn-cont">
+                        <form role="form" >
+                        
+                            <button (click) = deleteComment(i) class="btn btn-red "><i class="bi bi-trash"></i></button>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="messages.length == 0">
+            <div class="subcontainer message">
+                <div class="body"> No hay comentarios </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-cont" id="showButton" *ngIf="showMessagesFlag">
+        <button class="btn" (click)="showMessages()">Ver comentarios</button>
     </div>
 </div>

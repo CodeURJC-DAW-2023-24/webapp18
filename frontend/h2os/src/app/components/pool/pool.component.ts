@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Person } from '../../models/person.model';
 import { Lifeguard } from '../../models/lifeguard.model';
 import { Employer } from '../../models/employer.model';
@@ -7,6 +7,8 @@ import { Me } from '../../models/me.model';
 import { ActivatedRoute } from '@angular/router';
 import { PoolService } from '../../services/pool.service';
 import { UserService } from '../../services/user.service';
+import { Message } from '../../models/message.model';
+
 
 @Component({
     selector: "pool",
@@ -14,6 +16,11 @@ import { UserService } from '../../services/user.service';
     styleUrls: ['../../styles/data.css', '../../styles/messages.css']
 })
 export class PoolComponent {
+    authors: String[];
+    messages: String[];
+    owner: boolean[];
+    messagesIDs: number[];
+    showMessagesFlag: boolean;
     me: Me;
     admin: boolean;
     logged: boolean;
@@ -26,8 +33,14 @@ export class PoolComponent {
     capacity: number | undefined;
     description: string | undefined;
     photoURL: string;
+    @ViewChild('bodyMessage') bodyMessage: ElementRef;
 
     constructor(activatedRoute: ActivatedRoute, private service: PoolService, private userService: UserService) {
+        this.showMessagesFlag = true;
+        this.authors = []
+        this.owner = []
+        this.messages = []
+        this.messagesIDs = []
         activatedRoute.params.subscribe(params => {
             this.id = params['id'];
         });
@@ -73,7 +86,50 @@ export class PoolComponent {
         this.service.deletePool(id);
     }
 
-    showComments(id: number | undefined) {
-        // TODO
+    showMessages(){
+        let map: Message[];
+        this.showMessagesFlag = false;
+        this.service.getPoolMessages(this.id).subscribe(
+            response => {
+                map = response as Message[];
+
+                for (let i = 0; i < map.length; i++) {
+                    let msg = map[i]
+                    console.log(msg)
+                    this.authors.push(msg.author);
+                    this.messages.push(msg.body);
+                    this.owner.push(msg.author==this.me.mail);
+                    this.messagesIDs.push(msg.id);
+                  }
+
+
+            },
+            error => {
+                console.log("Failed to load pool messages.")
+            }
+        );
     }
+
+    deleteComment(idM: number){
+        this.showMessagesFlag = true;
+      
+        this.service.deleteMessage(this.id,this.messagesIDs[idM])
+        this.authors = []
+        this.owner = []
+        this.messages = []
+        this.messagesIDs = []
+    }
+
+    addComment(){
+       
+        this.showMessagesFlag = true;
+        let msg = this.bodyMessage.nativeElement.value;
+        let form = new Message(msg);
+        this.service.newMessage(this.id, form)
+        this.authors = []
+        this.owner = []
+        this.messages = []
+        this.messagesIDs = []
+    }
+
 }
