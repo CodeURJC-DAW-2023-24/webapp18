@@ -9,6 +9,14 @@ const urlPool = '/api/pools'
 export class PoolService {
     constructor(private httpClient: HttpClient) { }
 
+    addOrUpdatePool(pool: Pool){
+        if (!pool.id){
+            return this.addPool(pool);
+        } else{
+            return this.updatePool(pool);
+        }
+    }
+
     getPool(id: number): Observable<Object> {
         return this.httpClient.get(urlPool + "/" + id);
     }
@@ -30,6 +38,25 @@ export class PoolService {
 
     newPool(pool: Pool): Observable<Object>{
         return this.httpClient.post(urlPool, pool);
+    }
+
+    setPoolPhoto(pool: Pool, formData: FormData) {
+        return this.httpClient.post(urlPool + "/"+ pool.id + '/photo', formData)
+                .pipe(
+                    catchError(error => this.handleError(error))
+                );
+    }
+
+    private addPool(pool: Pool){
+        return this.httpClient.post(urlPool,pool).pipe(
+            catchError(error => this.handleError(error))
+        );
+    }
+
+    private updatePool(pool:Pool){
+        return this.httpClient.put(urlPool+"/"+pool.id,pool).pipe(
+            catchError(error => this.handleError(error))
+        );
     }
 
     private handleError(error: any) {

@@ -18,6 +18,7 @@ import { PoolsComponent } from './components/cards/pools.component';
 import { PoolComponent } from './components/pool/pool.component';
 import { StadisticsComponent } from './components/stadistics/stadistics.component';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { PoolFormComponent } from './components/pools/pool-form.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { GoogleChartsModule } from 'angular-google-charts';
     HeaderComponent,
     OfferComponent, OfferEditComponent, OfferCreateComponent, OffersComponent,
     PoolsComponent, PoolComponent,
-    StadisticsComponent
+    StadisticsComponent, PoolFormComponent
   ],
   imports: [
     CommonModule,
