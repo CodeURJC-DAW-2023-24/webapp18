@@ -67,7 +67,8 @@ export class OffersComponent implements OnInit {
 
   updateRowElements() {
     const cards = this.elementRef.nativeElement.querySelector('.cards');
-    this.rowElements = Math.floor(cards.offsetWidth / this.cardWidth);
+    const total = Math.floor(cards.offsetWidth / this.cardWidth);
+    this.rowElements = Math.max(2, Math.min(5, total));  // Between 2 and 5 cards
   }
 
   @HostListener('window:resize', ['$event'])
