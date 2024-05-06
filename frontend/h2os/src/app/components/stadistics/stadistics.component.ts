@@ -27,33 +27,53 @@ export class StadisticsComponent{
     // PieChart parameters
     title: string;
     type: ChartType;
-    data: (string | number)[][];
+    data: (string | number) [][];
     columnNames: string[];
     public options: { title: string; colors: string[]; is3D: boolean; };
     width: number;
     height: number;
-
     ngOnInit(): void {
+        this.title = 'Estadisticas de los socorristas';
+        this.type = ChartType["PieChart"];
+        this.width = 550;
+        this.height = 400;
+        this.data = [
+            ['Confianza',     0],
+            ['Esfuerzo',      0],
+            ['Comunicación', 0],
+            ['Actitud positiva', 0],
+            ['Resolucion', 0],
+            ['Liderazgo',   0]
+          ];
         this.service.getPieChart().subscribe(
-            pieChart => {
-                this.pieChart = pieChart as Map<String, number>;
+            response => {
+                let aux1 = response as any
+                this.pieChart = new Map<String, number>;
+                for (const key in aux1) {
+                    if (response.hasOwnProperty(key)) {
+                        this.pieChart.set(key, aux1[key]);
+                    }
+                }
+                
+                console.log(this.pieChart)
+                
+                
+                this.data = [
+                    ['Confianza',     this.pieChart.get("Confianza")|| 0],
+                    ['Esfuerzo',      this.pieChart.get("Esfuerzo")||0],
+                    ['Comunicación',  this.pieChart.get("Comunicación")||0],
+                    ['Actitud positiva', this.pieChart.get("Actitud positiva")||0],
+                    ['Resolucion',    this.pieChart.get( "Resolución de problemas")||0],
+                    ['Liderazgo',    this.pieChart.get("Liderazgo")||0]
+                  ];
+
+
+                
             },
             error => {
                 console.error(error)
             }
         );
-        this.title = 'Lifeguard stadistics';
-        this.type = ChartType["PieChart"];
-        this.data = [
-          ['Confianza',     this.pieChart.get("trust")],
-          ['Esfuerzo',      this.pieChart.get("effort")],
-          ['Comunicación',  this.pieChart.get("comunication")],
-          ['Actitud positiva', this.pieChart.get("attitude")],
-          ['Resolucion',    this.pieChart.get("resolution")],
-          ['Liderazgo',    this.pieChart.get("leadership")]
-
-        ];
-        this.width = 550;
-        this.height = 400;
+       
     }
 }

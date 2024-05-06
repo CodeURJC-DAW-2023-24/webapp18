@@ -3,14 +3,14 @@ import { Observable, throwError, catchError } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { withInMemoryScrolling } from "@angular/router";
 
-const urlPieChart = '/api/piechart'
+const urlPieChart = '/api/pieChart'
 
 @Injectable({ providedIn: 'root' })
 export class StadisticsService {
     constructor(private httpClient: HttpClient){}
 
     getPieChart(): Observable<Object> {
-        return this.httpClient.get(urlPieChart);
+        return this.httpClient.get(urlPieChart+"/");
     }
 }
 
