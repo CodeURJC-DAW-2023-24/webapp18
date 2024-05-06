@@ -8,7 +8,7 @@ public class SPAController {
 
     @GetMapping({ "/new/**/{path:[^\\.]*}", "/{path:new[^\\.]*}","/new/" })
         public String redirect() {
-        return "forward:../frontend/h2os/src/index.html";
+        return "forward:/new/index.html";
     }
 
 }
