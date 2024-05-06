@@ -46,8 +46,6 @@
             {{/lifeguard}}
             {{#canEdit}}
             <button class="btn" onclick="showOffered('{{offer.id}}')" id="showButton">Ver propuestas</button>
-            {{/canEdit}}
-            {{#admin}}
             <form role="form" action='/offer/delete' method="post">
                 <input type="hidden" name="id" value="{{offer.id}}"/>
                 <input type="hidden" name="_csrf" value="{{token}}"/>
@@ -55,7 +53,12 @@
                     <i class="bi bi-trash"> Eliminar</i>
                 </button>
             </form>
-            {{/admin}}
+
+            <a href="/offer/edit?id={{id}}" class="btn" role="button">
+                <i class="bi bi-pencil"></i> Editar
+            </a>
+            {{/canEdit}}
+
             <a href="/" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
         </div>
 

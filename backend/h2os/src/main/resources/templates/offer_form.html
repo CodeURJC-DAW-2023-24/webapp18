@@ -15,7 +15,13 @@
     <div class="container">
         <h2>Nueva Oferta</h2>
 
+        {{^edit}}
         <form role="form" action="/offer/add" method="post">
+        {{/edit}}
+        {{#edit}}
+        <form role="form" action="/offer/edit" method="post">
+        {{/edit}}
+            
             <div class="form-group">
                 <label for="direction">Dirección</label>
                 <input type="text" class="form-control" name="direction" placeholder="Móstoles, C/Velázquez 2">
@@ -67,6 +73,7 @@
                 <a href="/" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
             </div>
             <input type ="hidden" name="_csrf" value="{{token}}"/>
+            <input type ="hidden" name="id" value="{{id}}"/>
         </form>
     </div>
 </body>
