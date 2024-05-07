@@ -198,4 +198,35 @@ public class OfferController {
         model.addAttribute("employer", request.isUserInRole("EMP"));
         return "index";
     }
+
+    @GetMapping("/offer/edit")
+    public String offerEdit(@RequestParam("id") int id, Model model, HttpServletRequest request) {
+        model.addAttribute("id", id);
+        model.addAttribute("edit", true);
+        return "offer_form";
+    }
+
+    @PostMapping("/offer/edit")
+    public String updateOffer(Model model, HttpServletRequest request,
+            @RequestParam("id") int id,
+            @RequestParam("pool-id") int poolId,
+            @RequestParam("description") String description,
+            @RequestParam("type") String type,
+            @RequestParam("salary") String salary) {
+        try {
+            offerService.checkOffer(request);
+        } catch (Exception e) {
+            return offerService.showError(model, e.getMessage());
+        }
+
+        Offer offer = offerService.findById(id).get();
+        Offer.Builder builder = new Offer.Builder()
+            .description(description)
+            .type(type)
+            .salary(salary);
+        offer.update(builder);
+        offerService.save(offer);
+
+        return "redirect:/offer/added";
+    }
 }
