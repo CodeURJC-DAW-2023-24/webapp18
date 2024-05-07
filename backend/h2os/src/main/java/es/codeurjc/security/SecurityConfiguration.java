@@ -128,6 +128,8 @@ public class SecurityConfiguration {
                     .requestMatchers("/v3/**").permitAll()
                     .requestMatchers("/swagger-ui/**").permitAll()
 					
+					// Frontend petitions
+					.requestMatchers("/new/**").permitAll()
 
 					// PRIVATE PAGES
 					.anyRequest().authenticated()
