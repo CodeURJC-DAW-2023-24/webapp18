@@ -55,9 +55,7 @@ export class StadisticsComponent{
                     }
                 }
                 
-                console.log(this.pieChart)
-                
-                
+                            
                 this.data = [
                     ['Confianza',     this.pieChart.get("Confianza")|| 0],
                     ['Esfuerzo',      this.pieChart.get("Esfuerzo")||0],
