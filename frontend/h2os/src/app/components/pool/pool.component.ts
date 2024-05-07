@@ -95,7 +95,6 @@ export class PoolComponent {
 
                 for (let i = 0; i < map.length; i++) {
                     let msg = map[i]
-                    console.log(msg)
                     this.authors.push(msg.author);
                     this.messages.push(msg.body);
                     this.owner.push(msg.author==this.me.mail);
@@ -124,12 +123,14 @@ export class PoolComponent {
        
         this.showMessagesFlag = true;
         let msg = this.bodyMessage.nativeElement.value;
+        this.bodyMessage.nativeElement.value = "";
         let form = new Message(msg);
         this.service.newMessage(this.id, form)
         this.authors = []
         this.owner = []
         this.messages = []
         this.messagesIDs = []
+        this.showMessages()
     }
 
 }

@@ -31,8 +31,6 @@ export class PoolService {
     }
 
     editPool(id: number | undefined, pool: Pool) {
-        const json = ""
-        console.log(JSON.stringify(pool))
         this.httpClient.put(urlPool + "/" + id, pool).subscribe();
         return true
     }
