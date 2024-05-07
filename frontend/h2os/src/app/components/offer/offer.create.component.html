@@ -38,10 +38,10 @@
         <div class="form-group">
             <label for="pool-id">Piscina</label>
             <select #poolN class="form-select" name="pool-id" id="pool-id" required>
-                <option  selected hidden>Seleccione una de sus piscinas</option>
-                <div *ngFor="let pool of pools; let i = index">
-                    <option value="{{i}}">{{pool}}</option>
-                  </div>
+                <option [value]="offer.poolID" selected hidden>Seleccione una de sus piscinas</option>
+              
+                    <option *ngFor="let pool of pools; let i = index" value="{{i}}" [selected]="i===0">{{pool.name}} </option>
+                 
             </select>
         </div>
 

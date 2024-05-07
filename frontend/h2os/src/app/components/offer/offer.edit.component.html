@@ -34,16 +34,6 @@
                 <div *ngIf="errorFlagSalary" style="color: red;"> El salario debe superar el salario mínimo</div>
             </div>
 
-            <div class="form-group">
-                <label for="pool-id">Piscina</label>
-                <select #poolN class="form-select" name="pool-id" id="pool-id" required>
-                    <option [value]="offer.poolID" selected hidden>Seleccione una de sus piscinas</option>
-                    <div *ngFor="let pool of pools; let i = index">
-                        <option value="{{i}}">{{pool.name}}</option>
-                      </div>
-                </select>
-            </div>
-
             <div class="btn-cont">
                 <button (click)="editOffer()" class="btn"><i class="bi bi-download"></i> Guardar</button>
                 <a [routerLink]="['/offers', offer.id]" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>

@@ -9,6 +9,7 @@ import { OfferService } from '../../services/offer.service';
 import { CommonModule, NgIf } from '@angular/common';
 import { Me } from '../../models/me.model';
 import { UserService } from '../../services/user.service';
+import { PaginationService } from '../../services/pagination.service';
 
 @Component({
     selector: "offerEdit",
@@ -18,7 +19,7 @@ import { UserService } from '../../services/user.service';
 
 export class OfferCreateComponent {
     offer: Offer
-    pools: string[];
+    pools: Pool[];
     dateF: string;
     me: Me;
     @ViewChild('description') descripcionInput: ElementRef;
@@ -28,11 +29,13 @@ export class OfferCreateComponent {
     @ViewChild('poolN') poolInput: ElementRef;
     errorFlagSalary: boolean;
     errorFlagDate: boolean;
-    constructor(activatedRoute: ActivatedRoute, private service: OfferService, private userService: UserService, private router: Router) {
-        this.pools = ["Pisci", "Poya y webos"];
+    constructor(activatedRoute: ActivatedRoute, private service: OfferService, private userService: UserService, private pageService: PaginationService, private router: Router) {
+        this.pools = []
+        this.loadPools()
         userService.me().subscribe(
             response => {
                 this.me = response as Me
+                
             },
             error => {
                 console.log("Auth error")
@@ -48,7 +51,7 @@ export class OfferCreateComponent {
         this.offer.type = this.journeySelect.nativeElement.value;
         this.offer.start = this.unformatDate(this.dateInput.nativeElement.value);
         // this.offer.poolID = this.poolInput.nativeElement.value;
-        this.offer.poolID = 1;
+        this.offer.poolID = this.pools[this.poolInput.nativeElement.value].id;
         this.offer.salary = this.salaryInput.nativeElement.value;
         console.log(JSON.stringify(this.offer))
         if (this.isValid()) {
@@ -57,7 +60,7 @@ export class OfferCreateComponent {
             this.service.newOffer(this.offer).subscribe(
                 response => {
                     this.offer = response as Offer;
-                    this.router.navigateByUrl(`/offer/` + this.offer.id, { replaceUrl: true });
+                    this.router.navigateByUrl(`/offers/` + this.offer.id, { replaceUrl: true });
                 },
                 error => {
                     console.log("Error al guardar la nueva oferta")
@@ -94,4 +97,22 @@ export class OfferCreateComponent {
         if (parts[0] == "undefined" || parts[1] == "undefined" || parts[2] == "undefined") return false;
         return true;
     }
+
+    loadPools() {
+        this.pageService.getPools(0, 100).subscribe(
+          (pools: Pool[]) => {
+            if (!pools) {
+        
+              return;
+            }
+    
+            for (let pool of pools) {
+              this.pools.push(pool)
+            }
+            
+            console.log(this.pools)
+          }
+     
+        );
+      }
 }

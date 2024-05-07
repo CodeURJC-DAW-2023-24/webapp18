@@ -24,7 +24,6 @@ export class OfferEditComponent {
     @ViewChild('journey') journeySelect: ElementRef;
     @ViewChild('date') dateInput: ElementRef;
     @ViewChild('salary') salaryInput: ElementRef;
-    @ViewChild('poolN') poolInput: ElementRef;
     errorFlagSalary: boolean
 
     constructor(activatedRoute: ActivatedRoute, private service: OfferService, private router: Router) { // Set the permits
@@ -48,13 +47,12 @@ export class OfferEditComponent {
         this.offer.description = this.descripcionInput.nativeElement.value;
         this.offer.type = this.journeySelect.nativeElement.value;
         this.offer.start = this.unformatDate(this.dateInput.nativeElement.value);
-        this.offer.poolID = this.poolInput.nativeElement.value;
         this.offer.salary = this.salaryInput.nativeElement.value;
         if (this.isValid()) {
             console.log("Oferta despues")
             console.log(JSON.stringify(this.offer))
             this.service.editOffer(this.offer.id, this.offer)
-            this.router.navigate([`/offer/` + this.offer.id], { replaceUrl: true })
+            this.router.navigate(['/offers/',this.offer.id], { replaceUrl: true })
         }
     }
 
@@ -73,7 +71,6 @@ export class OfferEditComponent {
         let desc = this.descripcionInput.nativeElement.value;
         let type2 = this.journeySelect.nativeElement.value;
         let date2 = this.unformatDate(this.dateInput.nativeElement.value);
-        let id = this.poolInput.nativeElement.value;
         let salary2 = this.salaryInput.nativeElement.value;
         if (salary2 < 1300) {
             this.errorFlagSalary = true
