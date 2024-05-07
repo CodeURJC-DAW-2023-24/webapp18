@@ -107,6 +107,7 @@ public class PoolController {
         pool.addMessage(message);
         messageService.save(message);
         poolService.save(pool);
+        model.addAttribute("logged", true);
         model.addAttribute("pool", pool);
         model.addAttribute("admin", request.isUserInRole("ADMIN"));
         return "pool";
