@@ -18,8 +18,8 @@ export class UserService{
     constructor(private httpClient: HttpClient){
         this.lifeguard = {mail:"",pass:"",roles:[],skills:[]}
         this.employer = {mail:"",pass:"",roles:[]}
+        this.reqIsLogged();
     }
-
     getLifeguards(): Observable<Lifeguard[]>{
         return this.httpClient.get<Lifeguard[]>(urlLifeguard).pipe(
             catchError(error => this.handleError(error))

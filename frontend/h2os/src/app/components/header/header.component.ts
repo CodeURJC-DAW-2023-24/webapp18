@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { Me } from '../../models/me.model';
 
@@ -8,26 +8,19 @@ import { Me } from '../../models/me.model';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
-  me:Me;
-  loginOrProfile: string;
+export class HeaderComponent {
 
-  constructor(private activatedRoute: ActivatedRoute, private userService: UserService) { }
+  constructor(private activatedRoute: ActivatedRoute, private userService: UserService, private router: Router) { }
 
-  ngOnInit(): void {
-    this.userService.me().subscribe(
-      response => {
-        this.me = response as Me;
-        if (this.me.type === 'lg') {
-          this.loginOrProfile = 'lifeguards/' + this.me.id;
-        } else {
-          this.loginOrProfile = 'employers/' + this.me.id;
-        }
-      },
-      error => {
-        this.loginOrProfile = 'login';
+  profile() {
+    if(this.userService.isLogged()) {
+      if(this.userService.typeUser == "lg"){
+        this.router.navigate(["lifeguards", this.userService.lifeguard.id]);
+      } else {
+        this.router.navigate(["employers", this.userService.employer.id]);
       }
-    );
-
+    } else {
+      this.router.navigate(["login"]);
+    }
   }
 }
