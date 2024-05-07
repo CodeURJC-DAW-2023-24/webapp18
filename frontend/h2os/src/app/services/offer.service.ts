@@ -44,8 +44,6 @@ export class OfferService {
     }
 
     editOffer(id: number | undefined, offer: Offer) {
-        const json = ""
-        console.log(JSON.stringify(offer))
         this.httpClient.put(urlOffer + "/" + id, offer).subscribe();
         return true
     }

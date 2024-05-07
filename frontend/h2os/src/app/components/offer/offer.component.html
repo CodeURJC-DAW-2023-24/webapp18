@@ -1,11 +1,11 @@
 <div class="container">
     <h2>Oferta en <a [routerLink]="['/pools', poolID]">{{poolName}}</a></h2>
 
-    <div class="row">
+    <div *ngIf="offerLoaded" class="row">
         <a class="col-lg-6 col-img" [routerLink]="['/pools', poolID]">
             <img [src]="photoURL" alt="Photo" style="width: 100%; height: auto;">
         </a>
-        <div class="col-lg-6 col-data">
+        <div *ngIf="offerLoaded"class="col-lg-6 col-data">
             <p><strong>Dirección:</strong> {{offer.direction}}</p>
             <p><strong>Empleador:</strong> {{offer.employer}}</p>
             <p><strong>Tipo de contrato:</strong> {{offer.type}}</p>

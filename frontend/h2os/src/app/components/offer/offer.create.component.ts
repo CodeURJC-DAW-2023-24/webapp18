@@ -45,7 +45,6 @@ export class OfferCreateComponent {
 
     saveOffer() {
         this.offer = new Offer();
-        console.log(JSON.stringify(this.offer))
         this.offer.description = this.descripcionInput.nativeElement.value;
         this.offer.employer = this.me.mail;
         this.offer.type = this.journeySelect.nativeElement.value;
@@ -53,10 +52,7 @@ export class OfferCreateComponent {
         // this.offer.poolID = this.poolInput.nativeElement.value;
         this.offer.poolID = this.pools[this.poolInput.nativeElement.value].id;
         this.offer.salary = this.salaryInput.nativeElement.value;
-        console.log(JSON.stringify(this.offer))
         if (this.isValid()) {
-            console.log("Oferta despues")
-            console.log(JSON.stringify(this.offer))
             this.service.newOffer(this.offer).subscribe(
                 response => {
                     this.offer = response as Offer;
@@ -110,7 +106,6 @@ export class OfferCreateComponent {
               this.pools.push(pool)
             }
             
-            console.log(this.pools)
           }
      
         );

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { Person } from '../../models/person.model';
 import { Lifeguard } from '../../models/lifeguard.model';
 import { Employer } from '../../models/employer.model';
@@ -37,7 +37,9 @@ export class OfferComponent {
     appliedLgDesc: string[];
     photoURL: string;
 
+    offerLoaded: boolean
     constructor(activatedRoute: ActivatedRoute, private service: OfferService, private userService: UserService) { // Set the permits
+        this.offerLoaded = false;
         activatedRoute.params.subscribe(params => {
             this.id = params['id'];
         });
@@ -54,19 +56,14 @@ export class OfferComponent {
                         if (response) {
                             const blob = new Blob([response], { type: 'image/jpeg' })
                             this.photoURL = URL.createObjectURL(blob)
-
+                            this.offerLoaded = true;
                             userService.me().subscribe(
                                 response => {
                                     this.me = response as Me
-                                    console.log(this.offer);
-                                    console.log("hola")
-                                    console.log(this.me);
-                                    console.log(this.me.mail);
                                     this.edit = (this.me.mail == "admin" || this.me.mail == this.offer.employer)
                                     this.canApply = this.me.type == "lg";
                                     userService.getLifeguardOffers(this.me.id).subscribe(
                                         response => {
-                                            console.log(response)
                                             let lista = response as Offer[];
 
                                             for (let offerA of lista) {
@@ -99,7 +96,6 @@ export class OfferComponent {
         let mapa: Applied
         this.service.getApplied(id).subscribe(
             response => {
-                console.log(response)
                 mapa = response as Applied;
 
                 if (mapa.Seleccionado !== null && mapa && mapa.Seleccionado) {
@@ -107,7 +103,6 @@ export class OfferComponent {
                 }
                 else this.selected = "-1";
                 const intermediate2 = mapa.Propuestos;
-                console.log(intermediate2)
                 if (intermediate2) {
                     this.appliedLg = intermediate2;
                 }

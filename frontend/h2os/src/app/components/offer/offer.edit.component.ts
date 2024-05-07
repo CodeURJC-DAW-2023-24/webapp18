@@ -25,8 +25,9 @@ export class OfferEditComponent {
     @ViewChild('date') dateInput: ElementRef;
     @ViewChild('salary') salaryInput: ElementRef;
     errorFlagSalary: boolean
-
+    loaded: boolean;
     constructor(activatedRoute: ActivatedRoute, private service: OfferService, private router: Router) { // Set the permits
+        this.loaded =  false;
         activatedRoute.params.subscribe(params => {
             this.id = params['id'];
         });
@@ -35,24 +36,20 @@ export class OfferEditComponent {
             response => {
                 this.offer = response as Offer;
                 this.formatDate()
+                this.loaded = true
             },
             error => console.error(error)
         );
-        console.log(this.offer);
     }
 
     editOffer() {
-        console.log("Oferta antes")
-        console.log(JSON.stringify(this.offer))
         this.offer.description = this.descripcionInput.nativeElement.value;
         this.offer.type = this.journeySelect.nativeElement.value;
         this.offer.start = this.unformatDate(this.dateInput.nativeElement.value);
         this.offer.salary = this.salaryInput.nativeElement.value;
         if (this.isValid()) {
-            console.log("Oferta despues")
-            console.log(JSON.stringify(this.offer))
             this.service.editOffer(this.offer.id, this.offer)
-            this.router.navigate(['/offers/',this.offer.id], { replaceUrl: true })
+            this.router.navigate(['/offers/',this.offer.id], { replaceUrl: false })
         }
     }
 
