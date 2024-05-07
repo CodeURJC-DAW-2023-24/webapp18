@@ -18,6 +18,7 @@ const appRoutes: Routes = [
     { path: 'offers', component: OffersComponent},
     { path: 'pools', component: PoolsComponent},
     { path: 'offers/new', component: OfferCreateComponent },
+    { path: 'pools/new', component: PoolFormComponent },
     { path: 'offers/:id', component: OfferComponent},
     { path: 'offers/:id/edit', component: OfferEditComponent},
     { path: 'lifeguards/:id', component: UserDetailComponent },
