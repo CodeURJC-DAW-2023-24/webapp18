@@ -30,6 +30,7 @@ import es.codeurjc.service.PoolService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+
 @Controller
 public class PoolController {
     @Autowired
@@ -220,5 +221,13 @@ public class PoolController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("/pool/{id}/image")
+    public String postMethodName(@RequestParam("id") int id, Model model, HttpServletRequest request) {
+        Pool pool = poolService.findById(id).get();
+        model.addAttribute("photo", pool);
+        return "pool";
+    }
+    
 
 }
