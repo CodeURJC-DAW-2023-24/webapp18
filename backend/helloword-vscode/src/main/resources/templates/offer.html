@@ -4,80 +4,65 @@
 <head>
     <title>Oferta de trabajo</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{> config}}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css?family=Fredoka|Yanone+Kaffeesatz" rel="stylesheet" type="text/css">
-
-    <link type="text/css" rel="stylesheet" href="/css/general.css" />
     <link type="text/css" rel="stylesheet" href="/css/data.css" />
-    <link type="text/css" rel="stylesheet" href="/css/pp.css" />
+    <link type="text/css" rel="stylesheet" href="/css/messages.css" />
+
     <script src="/js/poolMessages.js"></script>
 </head>
 
 <body>
     {{> header}}
 
-    <div class="data">
-        <div class="container">
-            {{#offer}}
-            <h2>Oferta en <a href="/pool?id={{pool.id}}">{{pool.name}}</a></h2>
+    <div class="container">
+        {{#offer}}
+        <h2>Oferta en <a href="/pool?id={{pool.id}}">{{pool.name}}</a></h2>
 
-            <div class="row">
-                <a class="col-lg-6 col-img" href="/pool?id={{pool.id}}">
-                    {{#hasPhoto}}
-                    <img id="img-user" src="/pool/{{pool.id}}/image" >
-                    {{/hasPhoto}}
-                    {{^hasPhoto}}
-                    <img id="img-pool" src="{{pool.photo}}" >
-                    {{/hasPhoto}}
-                </a>
-                <div class="col-lg-6 col-data">
-                    <p><strong>Dirección:</strong> {{pool.direction}}</p>
-                    <p><strong>Empresa:</strong> {{pool.company}}</p>
-                    <p><strong>Tipo de contrato:</strong> {{type}}</p>
-                    <p><strong>Fecha de inicio:</strong> {{start}}</p>
-                    <p><strong>Salario:</strong> {{salary}}€</p>
-                </div>
+        <div class="row">
+            <a class="col-lg-6 col-img" href="/pool?id={{pool.id}}">
+                <img id="img-pool" src="/pool/{{pool.id}}/image" alt="{{pool.direction}}">
+            </a>
+            <div class="col-lg-6 col-data">
+                <p><strong>Dirección:</strong> {{pool.direction}}</p>
+                <p><strong>Empleador:</strong> {{employer.mail}}</p>
+                <p><strong>Tipo de contrato:</strong> {{type}}</p>
+                <p><strong>Fecha de inicio:</strong> {{start}}</p>
+                <p><strong>Salario:</strong> {{salary}}€</p>
+                <p><strong>Descripción:</strong> {{description}}</p>
             </div>
-            <p><strong>Descripción:</strong> {{description}}</p>
-            {{/offer}}
+        </div>
+        {{/offer}}
 
+        <div class="btn-cont">
             {{#lifeguard}}
             <form role="form" action='/offer/offered/new' method="post">
-                <div class="btn-cont">
-                    <button type = "submit" class="btn" >
-                        <i class="btn">Proponerse</i>
-                    </button>
-                </div>
                 <input type ="hidden" name="id" value="{{offer.id}}"/>
                 <input type ="hidden" name="_csrf" value="{{token}}"/>
+                <button type = "submit" class="btn" >
+                    <i class="bi bi-bookmark-fill"> Proponerse</i>
+                </button>
             </form>
             {{/lifeguard}}
-            <div class="btn-cont">
-                {{#canEdit}}
-                <button class="btn" onclick="showOffered('{{offer.id}}')" id="showButton">Ver propuestas</button>
-                {{/canEdit}}
-                {{#admin}}
-                <form role="form" action='/offer/delete' method="post">
-                    <div class="btn-cont">
-                        <button type = "submit" class="btn" >
-                            <i class="bi bi-trash">Eliminar</i>
-                        </button>
-                    </div>
-                    <input type ="hidden" name="id" value="{{offer.id}}"/>
-                    <input type ="hidden" name="_csrf" value="{{token}}"/>
-                </form>
-                {{/admin}}
-                <a href="/" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
-            </div>
+            {{#canEdit}}
+            <button class="btn" onclick="showOffered('{{offer.id}}')" id="showButton">Ver propuestas</button>
+            <form role="form" action='/offer/delete' method="post">
+                <input type="hidden" name="id" value="{{offer.id}}"/>
+                <input type="hidden" name="_csrf" value="{{token}}"/>
+                <button type="submit" class="btn btn-red" >
+                    <i class="bi bi-trash"> Eliminar</i>
+                </button>
+            </form>
 
-            <div id="messageContainer"></div>
-            
+            <a href="/offer/edit?id={{id}}" class="btn" role="button">
+                <i class="bi bi-pencil"></i> Editar
+            </a>
+            {{/canEdit}}
 
+            <a href="/" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
         </div>
+
+        <div id="messageContainer"></div>
     </div>
 </body>
 
