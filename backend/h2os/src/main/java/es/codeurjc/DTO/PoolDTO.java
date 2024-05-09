@@ -6,7 +6,6 @@ public class PoolDTO {
 
     private Long id;
     private String name;
-    private String photo;
     private String direction;
     private int capacity;
     private String scheduleStart;
@@ -20,7 +19,6 @@ public class PoolDTO {
     public PoolDTO(Pool pool) {
         this.id = pool.getId();
         this.name = pool.getName();
-        this.photo = pool.getPhoto();
         this.direction = pool.getDirection();
         this.capacity = pool.getCapacity();
         this.scheduleStart = pool.getScheduleStart().toString();
@@ -38,9 +36,6 @@ public class PoolDTO {
         return name;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
 
     public String getDirection() {
         return direction;

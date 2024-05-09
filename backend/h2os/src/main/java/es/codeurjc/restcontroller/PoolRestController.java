@@ -310,7 +310,6 @@ public class PoolRestController {
 
         Pool pool = new Pool.Builder()
                 .name(poolDTO.getName())
-                .photo(poolDTO.getPhoto())
                 .direction(poolDTO.getDirection())
                 .capacity(poolDTO.getCapacity())
                 .scheduleStart(scheduleStart)
@@ -332,7 +331,6 @@ public class PoolRestController {
         Pool.Builder poolBuilder = new Pool.Builder();
         poolBuilder
             .name(poolDTO.getName())
-            .photo(poolDTO.getPhoto())
             .direction(poolDTO.getDirection())
             .capacity(poolDTO.getCapacity())
             .scheduleStart(scheduleStart)
