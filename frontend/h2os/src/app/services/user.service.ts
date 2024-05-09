@@ -60,6 +60,20 @@ export class UserService{
         }
     }
 
+    deleteLifeguard(lifeguard:Lifeguard) {
+		return this.httpClient.delete(urlLifeguard + "/" + lifeguard.id)
+			.pipe(
+				catchError(error => this.handleError(error))
+			);
+	}
+
+    deleteEmployer(employer:Employer) {
+		return this.httpClient.delete(urlEmployer + "/" + employer.id)
+			.pipe(
+				catchError(error => this.handleError(error))
+			);
+	}
+
     setLifeguardImage(lifeguard: Lifeguard, formData: FormData) {
 		return this.httpClient.post(urlLifeguard + "/"+ lifeguard.id + '/photoUser', formData)
 			.pipe(
@@ -90,7 +104,7 @@ export class UserService{
 
     getLifeguardImage(lifeguard:Lifeguard) {
         return this.httpClient.get(urlLifeguard + "/" + lifeguard.id + '/photoUser', { responseType: 'arraybuffer' })
-      }
+    }
 
     getEmployerImage(employer:Employer) {
         return this.httpClient.get(urlEmployer + "/" + employer.id + '/photoCompany', { responseType: 'arraybuffer' })
@@ -99,6 +113,11 @@ export class UserService{
     getLifeguardOffers(id: number): Observable<Object>{
         return this.httpClient.get(urlLifeguard+"/"+id+"/offers");
     }
+
+    getEmployerOffers(id: number): Observable<Object>{
+        return this.httpClient.get(urlEmployer+"/"+id+"/offers");
+    }
+
     private addLifeguard(lifeguard: Lifeguard){
         return this.httpClient.post(urlLifeguard,lifeguard).pipe(
             catchError(error => this.handleError(error))
@@ -137,6 +156,7 @@ export class UserService{
     private reqIsLogged() {
         this.httpClient.get('/api/auth/me', { withCredentials: true }).subscribe(
             (response:any) => {
+                console.log("RESPONSE"+response.type);
                 if (response.type==='lg'){
                     this.lifeguard = response as Lifeguard;
                     this.typeUser = "lg";
@@ -180,7 +200,7 @@ export class UserService{
         }else if (this.typeUser==='e'){
             return this.employer && this.employer.roles.indexOf('ADMIN') !== -1;
         }else{
-            return null;
+            return false;
         }
     }
 
@@ -204,6 +224,14 @@ export class UserService{
 
     me(): Observable<Object>{
         return this.httpClient.get("/api/auth/me");
+    }
+
+    getCurrentLifeguard(): Lifeguard{
+        return this.lifeguard
+    }
+
+    getCurrentEmployer(): Employer{
+        return this.employer
     }
 
     private handleError(error:any){

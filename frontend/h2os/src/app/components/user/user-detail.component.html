@@ -48,21 +48,24 @@
                 </ng-container>
             </div>
             <div class="btn-cont">
-                <!--<ng-container *ngIf="me">-->
+                <ng-container *ngIf="!otherUser || admin">
                         <a [routerLink]="editUser" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+                    <ng-container *ngIf="!otherUser">
                         <input type="submit" (click)="logout()" class="btn btn-red" value="Cerrar sesión" />
-                <!--</ng-container>-->
+                    </ng-container>
+                </ng-container>
                 <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
             </div>
 
             <ng-container *ngIf="admin">
-                <form role="form" [action]="'/profile/delete?id=' + user.id" method="post">
                     <div class="btn-cont">
-                        <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
+                        <ng-container *ngIf="typeUser==='lifeguard'">
+                            <button type="submit" (click)="deleteLifeguard()" class="btn btn-red "><i class="bi bi-trash"></i></button>
+                        </ng-container>
+                        <ng-container *ngIf="typeUser==='employer'">
+                            <button type="submit" (click)="deleteEmployer()" class="btn btn-red "><i class="bi bi-trash"></i></button>
+                        </ng-container>
                     </div>
-                    <input type="hidden" name="id" value="{{user.id}}" />
-                    <input type="hidden" name="mail" value="{{user.mail}}" />
-                </form>
             </ng-container>
         <!--</ng-container>-->
     </main>
@@ -71,9 +74,9 @@
             <h3>Ofertas aplicadas</h3>
             <div class="subcontainer">
                 <ul>
-                    <!--<ng-container *ngFor="let offer of user.lifeguard.offersLifeguard">
-                        <li><a [routerLink]="'offer?id=' + offer.id">Piscina: {{offer.pool.name}} - Salario: {{offer.salary}} - Inicio: {{offer.start}}</a></li>
-                    </ng-container>-->
+                    <ng-container *ngFor="let offer of lifeguard.offers">
+                        <li><a [routerLink]="'/offers/' + offer.id">Piscina: {{offer.pool?.name}} - Salario: {{offer.salary}} - Inicio: {{offer.start}}</a></li>
+                    </ng-container>
                     <li *ngIf="!lifeguard.offers">No hay candidaturas</li>
                 </ul>
             </div>
@@ -84,9 +87,9 @@
             <h3>Ofertas publicadas</h3>
             <div class="subcontainer">
                 <ul>
-                    <!--<ng-container *ngFor="let offer of user.employer.offers">
-                        <li><a [routerLink]="'offer?id=' + offer.id">Piscina: {{offer.pool.name}} - Salario: {{offer.salary}} - Inicio: {{offer.start}}</a></li>
-                    </ng-container>-->
+                    <ng-container *ngFor="let offer of employer.offers">
+                        <li><a [routerLink]="'/offers/' + offer.id">Piscina: {{offer.pool?.name}} - Salario: {{offer.salary}} - Inicio: {{offer.start}}</a></li>
+                    </ng-container>
                     <li *ngIf="!employer.offers">No has creado ninguna oferta</li>
                 </ul>
             </div>

@@ -20,6 +20,7 @@ export class UserDetailComponent{
     edit:boolean;
     typeUser:string;
     admin: boolean;
+    otherUser: boolean;
     editUser:string;
     image:boolean | undefined;
     imageUser: string | undefined;
@@ -30,6 +31,7 @@ export class UserDetailComponent{
         const routeSegments = activatedRoute.snapshot.url;
         this.user = {mail:"",pass:"",roles:[]}
         this.image = false;
+        this.otherUser = false;
         if (routeSegments.length > 0) {
             const firstSegment = routeSegments[0];
             type = firstSegment.path;
@@ -39,8 +41,21 @@ export class UserDetailComponent{
                 response => {this.lifeguard = response as Lifeguard;
                     this.typeUser='lifeguard';
                     this.lifeguardToPerson();
+                    this.userService.me().subscribe(
+                        (response:any)=>{
+                            this.otherUser = response.mail !== this.lifeguard.mail;
+                            this.admin = response.mail === "admin";
+                            },
+                        (error:any) => {}
+                    );                                     
                     this.editUser='/lifeguards/edit/'+this.lifeguard.id
                     this.image = this.lifeguard.imageUser;
+                    userService.getLifeguardOffers(id).subscribe(
+                        (response:any) => {
+                            this.lifeguard.offers = response;
+                        },
+                        (error:any) =>{}
+                    )
                     if (this.image){
                         userService.getLifeguardImage(this.lifeguard).subscribe(
                             response =>{ if(response){
@@ -64,6 +79,19 @@ export class UserDetailComponent{
                 this.employerToPerson();
                 this.editUser='/employers/edit/'+this.employer.id;
                 this.image = this.employer.imageCompany;
+                this.userService.me().subscribe(
+                    (response:any)=>{
+                        this.otherUser = response.mail !== this.employer.mail;
+                        this.admin = response.mail === "admin";
+                        },
+                    (error:any) => {}
+                ); 
+                userService.getEmployerOffers(id).subscribe(
+                    (response:any) => {
+                        this.employer.offers = response;
+                    },
+                    (error:any) =>{}
+                )
                 if (this.image){
                     userService.getEmployerImage(this.employer).subscribe(
                         response =>{ if(response){
@@ -86,7 +114,25 @@ export class UserDetailComponent{
     //Obsolet
     showImageLifeguard() {
         return this.lifeguard.imageUser ? '/api/lifeguards' + this.lifeguard.id + '/photoUser' : '/assets/images/noPhotoUser.jpg';
-      }
+    }
+
+    deleteLifeguard(){
+        this.userService.deleteLifeguard(this.lifeguard).subscribe(
+            response => {
+                this.router.navigate(['/']);
+            },
+            error => console.error(error)
+        )
+    }
+
+    deleteEmployer(){
+        this.userService.deleteEmployer(this.employer).subscribe(
+            response => {
+                this.router.navigate(['/']);
+            },
+            error => console.error(error)
+        )
+    }
 
     logout(){
         this.userService.logOut();
