@@ -1,5 +1,6 @@
 package es.codeurjc.restcontroller;
 
+import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
 import java.sql.SQLException;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -27,13 +29,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import es.codeurjc.DTO.MessageDTO;
 import es.codeurjc.DTO.PoolDTO;
+import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Message;
 import es.codeurjc.model.Pool;
+import es.codeurjc.repository.PoolRepository;
 import es.codeurjc.service.MessageService;
 import es.codeurjc.service.PoolService;
 import es.codeurjc.service.UserService;
@@ -48,6 +53,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class PoolRestController {
     @Autowired
     private PoolService poolService;
+
+    @Autowired
+    private PoolRepository poolRepository;
 
     @Autowired
     private UserService userService;
@@ -202,6 +210,42 @@ public class PoolRestController {
 
         return ResponseEntity.created(location).body(new MessageDTO(message));
     }
+
+    @Operation(summary = "Post a new photo of a pool by id")
+	@ApiResponses(value = {
+	 @ApiResponse(
+	 responseCode = "201",
+	 description = "Pool photo posted correctly",
+	 content = @Content
+	 ),
+	 @ApiResponse(
+	 responseCode = "404",
+	 description = "Data entered incorrectly, probably invalid id supplied",
+	 content = @Content
+	 ),	 
+	 @ApiResponse(
+	 responseCode = "401",
+	 description = "You are not authorized",
+	 content = @Content
+	 )
+	})
+    @PostMapping("/{id}/photo")
+	public ResponseEntity<Object> uploadPhoto(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal)
+			throws IOException {
+		if(principal !=null){
+			if (poolRepository.existsById(id)) {
+				Pool pool = poolRepository.findById(id).orElseThrow();
+
+				URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+
+				//lifeguard.setImageUser(true); JORGE NO TIENES UN BOOLEAN EN POOL, TIENES UN STRING QUE NO SE PARA QUE LO USAS.
+				pool.setPhotoBlob(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+				poolService.save(pool);
+
+				return ResponseEntity.created(location).build();
+			}else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	}
 
     // ----------------------------------------------- PUT -----------------------------------------------
     @Operation(summary = "Edit a pool by its ID.")
