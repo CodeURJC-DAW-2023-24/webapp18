@@ -36,7 +36,7 @@ export class OfferComponent {
     appliedLg: string[];
     appliedLgDesc: string[];
     photoURL: string;
-
+    lgIds: string[];
     offerLoaded: boolean
     constructor(activatedRoute: ActivatedRoute, private service: OfferService, private userService: UserService) { // Set the permits
         this.offerLoaded = false;
@@ -46,6 +46,7 @@ export class OfferComponent {
         this.applied = false;
         this.appliedLg = []
         this.appliedLgDesc = []
+        this.lgIds = []
         service.getOffer(this.id).subscribe(
             response => {
                 this.offer = response as Offer;
@@ -109,6 +110,10 @@ export class OfferComponent {
                 const intermediate3 = mapa.Descripciones;
                 if (intermediate3) {
                     this.appliedLgDesc = intermediate3;
+                }
+                const intermediate4 = mapa.Ids;
+                if (intermediate4) {
+                    this.lgIds = intermediate4;
                 }
                 this.applied = true;
             },
