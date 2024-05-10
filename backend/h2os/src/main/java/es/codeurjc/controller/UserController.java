@@ -61,6 +61,7 @@ public class UserController {
             model.addAttribute("back", "/login");
             return "feedback";
         }
+        model.addAttribute("admin2", request.isUserInRole("ADMIN"));
 
         // Here you must pass the ID of the person logged in when publishing the
         // referenced message.
@@ -68,7 +69,7 @@ public class UserController {
             String mail = request.getUserPrincipal().getName();
 
             model.addAttribute("me", true);
-
+            model.addAttribute("admin", false);
             Optional<Employer> employer = employerRepository.findByMail(mail);
             Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
             Collection<Offer> offers = offerService.findAll();
@@ -105,10 +106,12 @@ public class UserController {
             if (employer.isPresent()) {
                 Employer employerCast = employer.get();
                 model.addAttribute("user", employerCast);
+                model.addAttribute("employer", request.isUserInRole("USER"));
 
             } else if (lifeguard.isPresent()) {
                 Lifeguard lifeguardCast = lifeguard.get();
                 model.addAttribute("user", lifeguardCast);
+                model.addAttribute("lifeguard", request.isUserInRole("USER"));
             }
         }
 
@@ -265,8 +268,14 @@ public class UserController {
 		    }
             lifeguardRepository.save(lifeguard.get());
         }
-
+        if  (request.isUserInRole("ADMIN")){
+            if ((employer.isPresent()) && (employer.get().getMail().equals("admin"))){
+                return "redirect:/profile?type=1&mail="+mail;
+            }
+            return "redirect:/profile?type=0&mail="+mail;
+        } else{
         return "redirect:/profile?type=1&mail="+mail;
+        }
     }
 
     // -------------------------------------- LOGIN --------------------------------------

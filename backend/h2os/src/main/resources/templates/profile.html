@@ -69,15 +69,20 @@
                 <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
             </div>
 
-            {{#admin}}
+            {{#admin2}}
             <form role="form" action='/profile/delete?id={{id}}' method="post">
                 <div class="btn-cont">
+                    {{^me}}
+                    <a href="/user/{{mail}}/edit" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+                    {{/me}}
                     <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
                 </div>
                 <input type ="hidden" name="_csrf" value="{{token}}"/>
                 <input type ="hidden" name="id" value="{{id}}"/>
                 <input type ="hidden" name="mail" value="{{mail}}"/>
             </form>
+            {{/admin2}}
+            {{#admin}}
             {{/admin}}
         </main>
         {{#lifeguard}}
@@ -95,6 +100,7 @@
             </div>
         </div>
         {{/lifeguard}}
+
         {{#employer}}
         <div class="container container-additional">
             <h3>Ofertas publicadas</h3>
