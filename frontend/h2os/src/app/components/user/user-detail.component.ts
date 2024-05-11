@@ -132,7 +132,7 @@ export class UserDetailComponent{
 
     logout(){
         this.userService.logout().subscribe(
-            _ => this.router.navigate(['/']),
+            _ => this.router.navigate(['login']),
             error => console.error(error)
         );
     }
