@@ -2,9 +2,6 @@ package es.codeurjc.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -25,10 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
-import es.codeurjc.model.Offer;
 import es.codeurjc.repository.EmployerRepository;
 import es.codeurjc.repository.LifeguardRepository;
-import es.codeurjc.service.OfferService;
 import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -42,77 +37,38 @@ public class UserController {
     private LifeguardRepository lifeguardRepository;
 
     @Autowired
-    private OfferService offerService;
-
-    @Autowired
     private UserService userService;
 
     // -------------------------------------- PROFILE ------------------------------------------
     @GetMapping("/profile")
-    public String profile(Model model, HttpServletRequest request, @RequestParam("type") int type,
-            @RequestParam("mail") String m) {
-        // CHECK USER LOGED OR NOT
-        Boolean loged = request.getUserPrincipal() != null;
-        model.addAttribute("loged", loged);
+    public String profile(Model model, HttpServletRequest request, @RequestParam("mail") String mail) {
 
-        if (!loged) {
+        if (request.getUserPrincipal() == null) {
             model.addAttribute("title", "Error");
             model.addAttribute("message", "Debes iniciar sesión para acceder a tu perfil");
             model.addAttribute("back", "/login");
             return "feedback";
         }
-        model.addAttribute("admin2", request.isUserInRole("ADMIN"));
 
-        // Here you must pass the ID of the person logged in when publishing the
-        // referenced message.
-        if (type == 1) {
-            String mail = request.getUserPrincipal().getName();
+        String userMail = request.getUserPrincipal().getName();
+        Boolean isMe = userMail.equals(mail);
+        Boolean isAdmin = request.isUserInRole("ADMIN");
+        model.addAttribute("me", isMe);
+        model.addAttribute("iamAdmin", isAdmin);
+        model.addAttribute("canSeeOffers", isMe || isAdmin);
 
-            model.addAttribute("me", true);
-            model.addAttribute("admin", false);
-            Optional<Employer> employer = employerRepository.findByMail(mail);
-            Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(mail);
-            Collection<Offer> offers = offerService.findAll();
-            if (employer.isPresent()) {
-                Employer employerCast = employer.get();
-                employerCast.setOffersEmpty();
-                for (Offer offer : offers) {
-                    if (offer.getPool().getCompany().equals(employerCast.getCompany())) {
-                        employerCast.addOffer(offer);
-                    }
-                }
-                employerRepository.save(employerCast);
-                model.addAttribute("user", employerCast);
-                model.addAttribute("employer", request.isUserInRole("USER"));
-
-            } else if (lifeguard.isPresent()) {
-                Lifeguard lifeguardCast = lifeguard.get();
-                model.addAttribute("user", lifeguardCast);
-                model.addAttribute("lifeguard", request.isUserInRole("USER"));
-                List<Offer> offersLifeguard = new ArrayList<Offer>();
-                for (Offer offer : offers) {
-                    if (offer.getLifeguard() != null
-                            && offer.getLifeguard().getMail().equals(lifeguardCast.getMail())) {
-                        offersLifeguard.add(offer);
-                    }
-                }
-                model.addAttribute("offersLifeguard", offersLifeguard);
-            }
-        } else if (type == 0) {
-            model.addAttribute("admin", request.isUserInRole("ADMIN"));
-            Optional<Employer> employer = employerRepository.findByMail(m);
-            Optional<Lifeguard> lifeguard = lifeguardRepository.findByMail(m);
-            model.addAttribute("me", false);
-            if (employer.isPresent()) {
-                Employer employerCast = employer.get();
-                model.addAttribute("user", employerCast);
-                model.addAttribute("employer", request.isUserInRole("USER"));
-
-            } else if (lifeguard.isPresent()) {
-                Lifeguard lifeguardCast = lifeguard.get();
-                model.addAttribute("user", lifeguardCast);
-                model.addAttribute("lifeguard", request.isUserInRole("USER"));
-            }
+        Optional<Employer> employerOp = employerRepository.findByMail(mail);
+        Optional<Lifeguard> lifeguardOp = lifeguardRepository.findByMail(mail);
+        if (employerOp.isPresent()) {
+            Employer employer = employerOp.get();
+            model.addAttribute("employer", request.isUserInRole("USER"));
+            model.addAttribute("user", employer);
+            model.addAttribute("canSeeOffers", true);
+        }
+        if (lifeguardOp.isPresent()) {
+            Lifeguard lifeguard = lifeguardOp.get();
+            model.addAttribute("lifeguard", request.isUserInRole("USER"));
+            model.addAttribute("user", lifeguard);
         }
 
         return "profile";
@@ -268,21 +224,17 @@ public class UserController {
 		    }
             lifeguardRepository.save(lifeguard.get());
         }
-        if  (request.isUserInRole("ADMIN")){
-            if ((employer.isPresent()) && (employer.get().getMail().equals("admin"))){
-                return "redirect:/profile?type=1&mail="+mail;
-            }
-            return "redirect:/profile?type=0&mail="+mail;
-        } else{
-        return "redirect:/profile?type=1&mail="+mail;
-        }
+
+        return "redirect:/profile?&mail="+mail;
     }
 
     // -------------------------------------- LOGIN --------------------------------------
     @RequestMapping("/login")
     public String login(HttpServletRequest request) {
-        if (request.getUserPrincipal() != null)
-            return "redirect:/profile?type=1&mail=none";
+        if (request.getUserPrincipal() != null) {
+            String mail = request.getUserPrincipal().getName();
+            return "redirect:/profile?mail="+mail;
+        }
         else
             return "login";
     }

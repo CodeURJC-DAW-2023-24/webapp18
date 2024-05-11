@@ -137,12 +137,12 @@ public class SecurityConfiguration {
 			.formLogin(formLogin -> formLogin
 					.loginPage("/login")
 					.failureUrl("/loginerror")
-					.defaultSuccessUrl("/")
+					.defaultSuccessUrl("/login")
 					.permitAll()
 			)
 			.logout(logout -> logout
 					.logoutUrl("/logout")
-					.logoutSuccessUrl("/")
+					.logoutSuccessUrl("/login")
 					.permitAll()
 			);
 
