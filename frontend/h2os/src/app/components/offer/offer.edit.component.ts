@@ -48,8 +48,10 @@ export class OfferEditComponent {
         this.offer.start = this.unformatDate(this.dateInput.nativeElement.value);
         this.offer.salary = this.salaryInput.nativeElement.value;
         if (this.isValid()) {
-            this.service.editOffer(this.offer.id, this.offer)
-            this.router.navigate(['/offers/',this.offer.id], { replaceUrl: false })
+            this.service.editOffer(this.offer.id, this.offer).subscribe(
+                _ => this.router.navigate(['/offers', this.offer.id]),
+                _error => console.log("Error al editar la oferta")
+            )
         }
     }
 

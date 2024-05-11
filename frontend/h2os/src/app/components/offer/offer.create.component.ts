@@ -56,11 +56,9 @@ export class OfferCreateComponent {
             this.service.newOffer(this.offer).subscribe(
                 response => {
                     this.offer = response as Offer;
-                    this.router.navigateByUrl(`/offers/` + this.offer.id, { replaceUrl: true });
+                    this.router.navigate(['/offers', this.offer.id]);
                 },
-                error => {
-                    console.log("Error al guardar la nueva oferta")
-                }
+                _error => console.log("Error al guardar la nueva oferta")
             );
         }
     }

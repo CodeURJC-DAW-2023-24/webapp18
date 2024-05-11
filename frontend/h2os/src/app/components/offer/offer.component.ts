@@ -38,7 +38,7 @@ export class OfferComponent {
     photoURL: string;
     lgIds: string[];
     offerLoaded: boolean
-    constructor(activatedRoute: ActivatedRoute, private service: OfferService, private userService: UserService) { // Set the permits
+    constructor(activatedRoute: ActivatedRoute, private router: Router, private service: OfferService, private userService: UserService) { // Set the permits
         this.offerLoaded = false;
         activatedRoute.params.subscribe(params => {
             this.id = params['id'];
@@ -122,7 +122,10 @@ export class OfferComponent {
     }
 
     deleteOffer(id: number | undefined) {
-        this.service.deleteOffer(id);
+        this.service.deleteOffer(id).subscribe(
+            _ => this.router.navigate(['/offers']),
+            _error => console.log("Error al borrar la oferta")
+        );
     }
 
     apply(id: number | undefined) {

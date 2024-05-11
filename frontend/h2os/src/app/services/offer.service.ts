@@ -22,7 +22,7 @@ export class OfferService {
     }
 
     deleteOffer(id: number | undefined) {
-        this.httpClient.delete(urlOffer + "/" + id).subscribe();
+        return this.httpClient.delete(urlOffer + "/" + id);
     }
 
     applyToOffer(id: number | undefined) {
@@ -44,8 +44,7 @@ export class OfferService {
     }
 
     editOffer(id: number | undefined, offer: Offer) {
-        this.httpClient.put(urlOffer + "/" + id, offer).subscribe();
-        return true
+        return this.httpClient.put(urlOffer + "/" + id, offer);
     }
 
     newOffer(offer: Offer): Observable<Object>{
