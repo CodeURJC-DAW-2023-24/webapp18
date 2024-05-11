@@ -118,25 +118,23 @@ export class UserDetailComponent{
 
     deleteLifeguard(){
         this.userService.deleteLifeguard(this.lifeguard).subscribe(
-            response => {
-                this.router.navigate(['/']);
-            },
+            _ => this.router.navigate(['/']),
             error => console.error(error)
         )
     }
 
     deleteEmployer(){
         this.userService.deleteEmployer(this.employer).subscribe(
-            response => {
-                this.router.navigate(['/']);
-            },
+            _ => this.router.navigate(['/']),
             error => console.error(error)
         )
     }
 
     logout(){
-        this.userService.logOut();
-        this.router.navigate(['/']);
+        this.userService.logout().subscribe(
+            _ => this.router.navigate(['/']),
+            error => console.error(error)
+        );
     }
 
     private lifeguardToPerson(){

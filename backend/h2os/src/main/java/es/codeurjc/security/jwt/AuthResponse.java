@@ -5,6 +5,8 @@ public class AuthResponse {
 	private Status status;
 	private String message;
 	private String error;
+	private String type;
+	private Long id;
 
 	public enum Status {
 		SUCCESS, FAILURE
@@ -46,6 +48,22 @@ public class AuthResponse {
 
 	public void setError(String error) {
 		this.error = error;
+	}
+
+	public String getType() {
+		return this.type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	@Override

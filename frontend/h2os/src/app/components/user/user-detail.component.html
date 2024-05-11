@@ -51,7 +51,7 @@
                 <ng-container *ngIf="!otherUser || admin">
                         <a [routerLink]="editUser" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
                     <ng-container *ngIf="!otherUser">
-                        <input type="submit" (click)="logout()" class="btn btn-red" value="Cerrar sesión" />
+                        <button (click)="logout()" class="btn btn-red">Cerrar sesión</button>
                     </ng-container>
                 </ng-container>
                 <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
@@ -60,10 +60,10 @@
             <ng-container *ngIf="admin">
                     <div class="btn-cont">
                         <ng-container *ngIf="typeUser==='lifeguard'">
-                            <button type="submit" (click)="deleteLifeguard()" class="btn btn-red "><i class="bi bi-trash"></i></button>
+                            <button (click)="deleteLifeguard()" class="btn btn-red "><i class="bi bi-trash"></i></button>
                         </ng-container>
                         <ng-container *ngIf="typeUser==='employer'">
-                            <button type="submit" (click)="deleteEmployer()" class="btn btn-red "><i class="bi bi-trash"></i></button>
+                            <button (click)="deleteEmployer()" class="btn btn-red "><i class="bi bi-trash"></i></button>
                         </ng-container>
                     </div>
             </ng-container>

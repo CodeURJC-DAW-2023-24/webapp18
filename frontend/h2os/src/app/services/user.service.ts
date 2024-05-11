@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
-import { Observable, throwError, catchError } from "rxjs";
+import { Observable, throwError, catchError, tap, take } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Lifeguard } from "../models/lifeguard.model";
 import { Employer } from "../models/employer.model";
-import { Person } from "../models/person.model";
+import { LoginResponse } from "../models/login-response.model";
 
 const urlLifeguard = '/api/lifeguards'
 const urlEmployer = '/api/employers'
@@ -143,14 +143,16 @@ export class UserService{
     }
 
 
-    login(mail: string, pass: string) {
-
-        this.httpClient.post("/api/auth/login", { username: mail, password: pass }, { withCredentials: true })
-            .subscribe(
-                (response) => {this.reqIsLogged()},
-                (error) => alert("Wrong credentials")
-            );
-
+    login(mail: string, pass: string): Observable<LoginResponse> {
+        return this.httpClient.post("/api/auth/login", { username: mail, password: pass }, { withCredentials: true })
+            .pipe(
+                take(1),
+                tap(_ => this.reqIsLogged()),
+                catchError(error => {
+                    alert("Wrong credentials");
+                    return this.handleError(error)
+                })
+            ) as Observable<LoginResponse>
     }
 
     private reqIsLogged() {
@@ -175,19 +177,20 @@ export class UserService{
 
     }
 
-    logOut() {
-        return this.httpClient.post('/api/auth/logout', { withCredentials: true })
-            .subscribe((resp: any) => {
-                this.logged = false;
-                if (this.typeUser==='lg'){
-                    this.lifeguard = {mail:"",pass:"",roles:[],skills:[]}
-                    this.typeUser = "";
-                }else if (this.typeUser==='e'){
-                    this.employer = {mail:"",pass:"",roles:[]}
-                    this.typeUser = "";
-                }
-            });
+    logout() {
+        this.logged = false;
+        if (this.typeUser === 'lg') {
+            this.lifeguard = { mail: "", pass: "", roles: [], skills: [] }
+            this.typeUser = "";
+        } else if (this.typeUser === 'e') {
+            this.employer = { mail: "", pass: "", roles: [] }
+            this.typeUser = "";
+        }
 
+        return this.httpClient.post('/api/auth/logout', { withCredentials: true })
+            .pipe(
+                catchError(error => this.handleError(error))
+            )
     }
 
     isLogged() {

@@ -1,5 +1,7 @@
 package es.codeurjc.security.jwt;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import es.codeurjc.model.Employer;
+import es.codeurjc.model.Lifeguard;
+import es.codeurjc.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,14 +31,16 @@ public class UserLoginService {
 	private UserDetailsService userDetailsService;
 
 	@Autowired
+    private UserService userService;
+
+	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 
 	@Autowired
 	private JwtCookieManager cookieUtil;
 
-	public ResponseEntity<AuthResponse> login(LoginRequest loginRequest, String encryptedAccessToken, String 
-			encryptedRefreshToken) {
-		
+	public ResponseEntity<AuthResponse> login(LoginRequest loginRequest, String encryptedAccessToken, String encryptedRefreshToken) {
+
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -41,9 +48,25 @@ public class UserLoginService {
 
 		String accessToken = SecurityCipher.decrypt(encryptedAccessToken);
 		String refreshToken = SecurityCipher.decrypt(encryptedRefreshToken);
-		
+
 		String username = loginRequest.getUsername();
 		UserDetails user = userDetailsService.loadUserByUsername(username);
+
+		Optional<Lifeguard> lifeguardOp = userService.findLifeguardByEmail(username);
+		Optional<Employer> employerOp = userService.findEmployerByEmail(username);
+
+		Long id = null;
+		String type = null;
+        if (lifeguardOp.isPresent()) {
+			Lifeguard lifeguard = lifeguardOp.get();
+			type = lifeguard.getType();
+			id = lifeguard.getId();
+		}
+		if (employerOp.isPresent()) {
+			Employer employer = employerOp.get();
+			type = employer.getType();
+			id = employer.getId();
+		}
 
 		Boolean accessTokenValid = jwtTokenProvider.validateToken(accessToken);
 		Boolean refreshTokenValid = jwtTokenProvider.validateToken(refreshToken);
@@ -70,8 +93,12 @@ public class UserLoginService {
 			addRefreshTokenCookie(responseHeaders, newRefreshToken);
 		}
 
-		AuthResponse loginResponse = new AuthResponse(AuthResponse.Status.SUCCESS,
+		AuthResponse loginResponse = new AuthResponse(
+				AuthResponse.Status.SUCCESS,
 				"Auth successful. Tokens are created in cookie.");
+		loginResponse.setType(type);
+		loginResponse.setId(id);
+
 		return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
 	}
 
