@@ -92,16 +92,20 @@
             {{/employer}}
 
             {{#canSeeOffers}}
-            <div class="subcontainer">
-                <ul>
-                    {{#offers}}
-                    <li><a href="offer?id={{id}}">Piscina: {{pool.name}} - Salario: {{salary}} - Inicio:{{start}}</a></li>
-                    {{/offers}}
-                    {{^offers}}
-                    <li>No has creado ninguna oferta</li>
-                    {{/offers}}
-                </ul>
-            </div>
+                {{#offers}}
+                <div class="subcontainer">
+                    <p>
+                        <a href="offer?id={{id}}">{{pool.name}}</a> ({{salary}}€) <br>
+                        <span>Tipo</span>: {{type}} <br>
+                        <span>Inicio</span>: {{start}}
+                    </p>
+                </div>
+                {{/offers}}
+                {{^offers}}
+                <div class="subcontainer">
+                    <p>No hay ofertas</p>
+                </div>
+                {{/offers}}
             {{/canSeeOffers}}
             {{^canSeeOffers}}
             <p style="text-align: center;">No puedes ver las candidaturas de otro usuario</p>

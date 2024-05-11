@@ -93,6 +93,24 @@ p {
     color: var(--main-color-dark);
 }
 
+.subcontainer p {
+    margin-bottom: 0;
+}
+
+.subcontainer a {
+    text-decoration: none;
+    color: var(--main-color-dark);
+    font-weight: bold;
+}
+
+.subcontainer a:hover {
+    color: var(--logo-color);
+}
+
+.subcontainer span {
+    color: var(--main-color-dark);
+}
+
 .top-container {
     display: flex;
     align-items: center;

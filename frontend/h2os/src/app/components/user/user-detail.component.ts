@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { Me } from '../../models/me.model';
 import { catchError } from 'rxjs';
+import { Offer } from '../../models/offer.model';
 
 @Component({
     selector: "user-detail",
@@ -24,6 +25,7 @@ export class UserDetailComponent{
     editUser:string;
     image:boolean | undefined;
     imageUser: string | undefined;
+    offers: Offer[] = [];
 
     constructor(activatedRoute: ActivatedRoute, private router:Router, private userService: UserService) {
         let id = activatedRoute.snapshot.params['id'];
@@ -31,7 +33,7 @@ export class UserDetailComponent{
         const routeSegments = activatedRoute.snapshot.url;
         this.user = {mail:"",pass:"",roles:[]}
         this.image = false;
-        this.otherUser = false;
+        this.otherUser = true;
         if (routeSegments.length > 0) {
             const firstSegment = routeSegments[0];
             type = firstSegment.path;
@@ -52,7 +54,7 @@ export class UserDetailComponent{
                     this.image = this.lifeguard.imageUser;
                     userService.getLifeguardOffers(id).subscribe(
                         (response:any) => {
-                            this.lifeguard.offers = response;
+                            this.offers = response;
                         },
                         (error:any) =>{}
                     )
@@ -88,7 +90,7 @@ export class UserDetailComponent{
                 ); 
                 userService.getEmployerOffers(id).subscribe(
                     (response:any) => {
-                        this.employer.offers = response;
+                        this.offers = response;
                     },
                     (error:any) =>{}
                 )
