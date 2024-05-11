@@ -4,7 +4,7 @@ import { Lifeguard } from '../../models/lifeguard.model';
 import { Employer } from '../../models/employer.model';
 import { Pool } from '../../models/pool.model';
 import { Me } from '../../models/me.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PoolService } from '../../services/pool.service';
 import { UserService } from '../../services/user.service';
 import { Message } from '../../models/message.model';
@@ -35,7 +35,7 @@ export class PoolComponent {
     photoURL: string;
     @ViewChild('bodyMessage') bodyMessage: ElementRef;
 
-    constructor(activatedRoute: ActivatedRoute, private service: PoolService, private userService: UserService) {
+    constructor(activatedRoute: ActivatedRoute, private router: Router, private service: PoolService, private userService: UserService) {
         this.showMessagesFlag = true;
         this.authors = []
         this.owner = []
@@ -83,7 +83,10 @@ export class PoolComponent {
     }
 
     deletePool(id: number | undefined) {
-        this.service.deletePool(id);
+        this.service.deletePool(id).subscribe(
+            _ => this.router.navigate(['/pools']),
+            error => console.error("Error deleting the pool: " + error)
+        );
     }
 
     showMessages(){

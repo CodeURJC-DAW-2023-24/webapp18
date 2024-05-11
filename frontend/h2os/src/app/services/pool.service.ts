@@ -27,7 +27,7 @@ export class PoolService {
     }
 
     deletePool(id: number | undefined) {
-        this.httpClient.delete(urlPool + "/" + id).subscribe();
+        return this.httpClient.delete(urlPool + "/" + id);
     }
 
     editPool(id: number | undefined, pool: Pool) {

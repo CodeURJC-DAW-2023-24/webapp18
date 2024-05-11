@@ -28,8 +28,7 @@ const appRoutes: Routes = [
     { path: 'user/message/:message', component: UserMessageComponent },
     { path: 'pools/:id', component: PoolComponent},
     { path: 'stadistics', component: StadisticsComponent },
-    { path: 'pool/form', component: PoolFormComponent },
-    { path: 'pool/edit/:id', component: PoolFormComponent }
+    { path: 'pools/:id/edit', component: PoolFormComponent }
 ]
 
 export const routing = RouterModule.forRoot(appRoutes);

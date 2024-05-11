@@ -14,8 +14,8 @@
     </div>
 
     <div *ngIf="admin" class="btn-cont">
-        <a [routerLink]="['/pools/edit', id]" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-        <button class="btn btn-red" (click)="deletePool(id)" [routerLink]="['/pools']">
+        <a [routerLink]="['edit']" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+        <button class="btn btn-red" (click)="deletePool(id)">
             <i class="bi bi-trash"></i> Eliminar
         </button>
         <a [routerLink]="['/pools']" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>

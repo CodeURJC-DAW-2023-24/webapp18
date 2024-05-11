@@ -45,11 +45,15 @@ export class PoolFormComponent{
 
     save() {
         this.service.addOrUpdatePool(this.pool).subscribe(
-        (pool:any)=> {
-            this.uploadPoolImage(pool);               
-        },
-        error => {console.error('Error creating new pool: ' + error)
-            this.router.navigate(['/'])
+            response => {
+                this.pool = response as Pool;
+                this.uploadPoolImage(this.pool);
+                console.log(this.pool.id);
+                this.router.navigate(['/pools', this.pool.id]);
+            },
+            error => {
+                console.error('Error creating/updating the pool: ' + error)
+                this.router.navigate(['/pools'])
             }
         );
     }
@@ -62,11 +66,9 @@ export class PoolFormComponent{
           formData.append("imageFile", image);
           this.service.setPoolPhoto(pool, formData).subscribe(
             response => {
-                this.router.navigate(['/']);
+                console.log('Pool image uploaded successfully');
             },
-            error => {
-                alert('Error uploading pool image: ' + error);
-                this.router.navigate(['/']);}
+            error => alert('Error uploading pool image: ' + error)
           );
         } 
         else {
