@@ -4,7 +4,7 @@ import { UserFormComponent } from './components/user/user-form.component';
 import { UserDetailComponent } from './components/user/user-detail.component';
 import { OfferComponent } from './components/offer/offer.component';
 import { OfferEditComponent } from './components/offer/offer.edit.component';
-import { UserMessageComponent } from './components/user/user-message.component';
+import { UserMessageComponent } from './components/message/message.component';
 import { OfferCreateComponent } from './components/offer/offer.create.component';
 import { OffersComponent } from './components/cards/offers.component';
 import { PoolsComponent } from './components/cards/pools.component';
@@ -25,7 +25,7 @@ const appRoutes: Routes = [
     { path: 'employers/:id', component: UserDetailComponent },
     { path: 'lifeguards/edit/:id', component: UserFormComponent },
     { path: 'employers/edit/:id', component: UserFormComponent },
-    { path: 'user/message/:message', component: UserMessageComponent },
+    { path: 'message/:message', component: UserMessageComponent },
     { path: 'pools/:id', component: PoolComponent},
     { path: 'stadistics', component: StadisticsComponent },
     { path: 'pools/:id/edit', component: PoolFormComponent }
