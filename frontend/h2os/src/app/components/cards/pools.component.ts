@@ -1,6 +1,8 @@
 import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { PaginationService } from '../../services/pagination.service';
 import { Pool } from '../../models/pool.model';
+import { UserService } from '../../services/user.service';
+import { Me } from '../../models/me.model';
 
 @Component({
   selector: "pools",
@@ -13,15 +15,29 @@ export class PoolsComponent implements OnInit {
   hasMore: boolean = true;
   cardWidth: number = 250 + 2 * 20;
   rowElements: number;
+  canAdd: boolean = false;
+  me: Me;
 
   constructor(
     private service: PaginationService,
+    private userService: UserService,
     private elementRef: ElementRef
   ) { }
 
   ngOnInit(): void {
     this.updateRowElements();
     this.loadPools();
+    this.checkUser();
+  }
+
+  private checkUser() {
+    this.userService.me().subscribe(
+      response => {
+        this.me = response as Me;
+        this.canAdd = (this.me.mail == "admin");
+      },
+      _error => console.log("Error al obtener el usuario")
+    );
   }
 
   loadPools() {

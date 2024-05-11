@@ -1,6 +1,8 @@
 import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { PaginationService } from '../../services/pagination.service';
 import { Offer } from '../../models/offer.model';
+import { UserService } from '../../services/user.service';
+import { Me } from '../../models/me.model';
 
 @Component({
   selector: "offers",
@@ -13,15 +15,29 @@ export class OffersComponent implements OnInit {
   hasMore: boolean = true;
   cardWidth: number = 250 + 2 * 20;
   rowElements: number;
+  canAdd: boolean = false;
+  me: Me;
 
   constructor(
     private service: PaginationService,
+    private userService: UserService,
     private elementRef: ElementRef
   ) { }
 
   ngOnInit(): void {
     this.updateRowElements();
     this.loadOffers();
+    this.checkUser();
+  }
+
+  private checkUser() {
+    this.userService.me().subscribe(
+      response => {
+        this.me = response as Me;
+        this.canAdd = (this.me.type == "e");
+      },
+      _error => console.log("Error al obtener el usuario")
+    );
   }
 
   loadOffers() {
@@ -65,7 +81,7 @@ export class OffersComponent implements OnInit {
     );
   }
 
-  updateRowElements() {
+  private updateRowElements() {
     const cards = this.elementRef.nativeElement.querySelector('.cards');
     const total = Math.floor(cards.offsetWidth / this.cardWidth);
     this.rowElements = Math.max(2, Math.min(5, total));  // Between 2 and 5 cards

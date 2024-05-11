@@ -26,6 +26,6 @@
     </div>
 </main>
 
-<div class="btn-cont bottom-right-button">
-    <a [routerLink]="['/pools/new']" class="btn" role="btn"><i class="bi bi-plus-circle"></i></a>
+<div *ngIf="canAdd" class="btn-cont bottom-right-button">
+    <a [routerLink]="['new']" class="btn" role="btn"><i class="bi bi-plus-circle"></i></a>
 </div>
