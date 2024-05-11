@@ -1,98 +1,82 @@
 <div class="data">
     <main class="container container-main">
-        <!--<ng-container *ngIf="user">-->
-            <h2>{{user.name}} {{user.surname}}</h2>
-            <div class="row">
-                <ng-container *ngIf="user && typeUser==='lifeguard'">
-                    <div class="col-md-4">
-                        <!--<img id="img-user" [src]="lifeguard.imageUser ? '/api/lifeguards' + lifeguard.id + '/photoUser' : '/assets/images/noPhotoUser.jpg'" style="max-width: 100%; height: auto;" />-->
-                        <img *ngIf="image"  [src]="imageUser" style="max-width: 100%; height: auto;" >
-                        <img *ngIf="!image" src="/assets/images/noPhotoUser.jpg" style="max-width: 100%; height: auto;">
-                    </div>
-                </ng-container>
-
-                <ng-container *ngIf="user && typeUser==='employer'">
-                    <div class="col-md-4">
-                        <img id="img-user" [src]="employer.imageCompany ? '/api/employers' + employer.id + '/photoCompany' : '/assets/images/noPhotoUser.jpg'" style="max-width: 100%; height: auto;" />
-                    </div>
-                </ng-container>
-
-                <div class="col-md-8">
-                    <p><strong>E-Mail:</strong> {{user.mail}}</p>
-                    <p><strong>DNI:</strong> {{user.dni}}</p>
-                    <p><strong>Edad:</strong> {{user.age}}</p>
-                    <p><strong>Teléfono:</strong> {{user.phone}}</p>
-                    <p><strong>Dirección:</strong> {{user.direction}}</p>
-                    <p><strong>Localidad:</strong> {{user.locality}} ({{user.province}}, {{user.country}})</p>
-
-                    <ng-container *ngIf="typeUser==='lifeguard'">
-                        <p><strong>Título de socorrismo</strong> {{lifeguard.document}}</p>
-                    </ng-container>
-                    <ng-container *ngIf="typeUser==='employer'">
-                        <p><strong>Empresa:</strong> {{employer.company}}</p>
-                    </ng-container>
-
-                    <p><strong>Descripción:</strong> {{user.description}}</p>
-
-                </div>
-                <ng-container *ngIf="typeUser==='lifeguard'">
-                    <div class="subcontainer">
-                        <h3>Aptitudes</h3>
-                        <ul>
-                            <ng-container *ngFor="let skill of lifeguard.skills">
-                                <li>{{skill}}</li>
-                            </ng-container>
-                            <li *ngIf="!lifeguard.skills">No hay aptitudes</li>
-                        </ul>
-                    </div>
-                </ng-container>
-            </div>
-            <div class="btn-cont">
-                <ng-container *ngIf="!otherUser || admin">
-                        <a [routerLink]="editUser" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-                    <ng-container *ngIf="!otherUser">
-                        <button (click)="logout()" class="btn btn-red">Cerrar sesión</button>
-                    </ng-container>
-                </ng-container>
-                <a href="javascript:history.back()" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+        <h2>{{user.name}} {{user.surname}}</h2>
+        <div class="row">
+            <div *ngIf="user && typeUser==='lifeguard'" class="col-md-4">
+                <img *ngIf="image"  [src]="imageUser" style="max-width: 100%; height: auto;" >
+                <img *ngIf="!image" src="/assets/images/noPhotoUser.jpg" style="max-width: 100%; height: auto;">
             </div>
 
-            <ng-container *ngIf="admin">
-                    <div class="btn-cont">
-                        <ng-container *ngIf="typeUser==='lifeguard'">
-                            <button (click)="deleteLifeguard()" class="btn btn-red "><i class="bi bi-trash"></i></button>
-                        </ng-container>
-                        <ng-container *ngIf="typeUser==='employer'">
-                            <button (click)="deleteEmployer()" class="btn btn-red "><i class="bi bi-trash"></i></button>
-                        </ng-container>
-                    </div>
+            <div *ngIf="user && typeUser==='employer'" class="col-md-4">
+                <img id="img-user" [src]="employer.imageCompany ? '/api/employers' + employer.id + '/photoCompany' : '/assets/images/noPhotoUser.jpg'" style="max-width: 100%; height: auto;" />
+            </div>
+
+            <div class="col-md-8">
+                <p><strong>E-Mail:</strong> {{user.mail}}</p>
+                <p><strong>DNI:</strong> {{user.dni}}</p>
+                <p><strong>Edad:</strong> {{user.age}}</p>
+                <p><strong>Teléfono:</strong> {{user.phone}}</p>
+                <p><strong>Dirección:</strong> {{user.direction}}</p>
+                <p><strong>Localidad:</strong> {{user.locality}} ({{user.province}}, {{user.country}})</p>
+
+                <p *ngIf="typeUser==='lifeguard'"><strong>Título de socorrismo</strong> {{lifeguard.document}}</p>
+                <p *ngIf="typeUser==='employer'"><strong>Empresa:</strong> {{employer.company}}</p>
+
+                <p><strong>Descripción:</strong> {{user.description}}</p>
+            </div>
+        </div>
+
+        <div *ngIf="typeUser==='lifeguard'" class="subcontainer">
+            <h3>Aptitudes</h3>
+            <ul>
+                <ng-container *ngFor="let skill of lifeguard.skills">
+                    <li>{{skill}}</li>
+                </ng-container>
+                <li *ngIf="!lifeguard.skills">No hay aptitudes</li>
+            </ul>
+        </div>
+
+        <div class="btn-cont">
+            <ng-container *ngIf="!otherUser || admin">
+                <a [routerLink]="editUser" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+                <button *ngIf="!otherUser" (click)="logout()" class="btn btn-red">Cerrar sesión</button>
             </ng-container>
-        <!--</ng-container>-->
+            <a [routerLink]="['/']" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+        </div>
+
+        <div *ngIf="admin" class="btn-cont">
+            <button *ngIf="typeUser==='lifeguard'" (click)="deleteLifeguard()" class="btn btn-red ">
+                <i class="bi bi-trash"></i>
+            </button>
+            <button *ngIf="typeUser==='employer'" (click)="deleteEmployer()" class="btn btn-red ">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
     </main>
-    <ng-container *ngIf="user && typeUser==='lifeguard'">
-        <div class="container container-additional">
-            <h3>Ofertas aplicadas</h3>
-            <div class="subcontainer">
-                <ul>
-                    <ng-container *ngFor="let offer of lifeguard.offers">
-                        <li><a [routerLink]="'/offers/' + offer.id">Piscina: {{offer.pool?.name}} - Salario: {{offer.salary}} - Inicio: {{offer.start}}</a></li>
-                    </ng-container>
-                    <li *ngIf="!lifeguard.offers">No hay candidaturas</li>
-                </ul>
-            </div>
+
+    <div *ngIf="user && lifeguard" class="container container-additional">
+        <h3>Ofertas aplicadas</h3>
+
+        <div class="subcontainer">
+            <ul *ngIf="lifeguard.offers && lifeguard.offers.length >= 1">
+                <li *ngFor="let offer of lifeguard.offers">
+                    <a [routerLink]="'/offers/' + offer.id">Piscina: {{offer.pool?.name}} - Salario: {{offer.salary}} - Inicio: {{offer.start}}</a>
+                </li>
+            </ul>
+            <p *ngIf="lifeguard.offers?.length === 0">No hay candidaturas</p>
         </div>
-    </ng-container>
-    <ng-container *ngIf="user && typeUser==='employer'">
-        <div class="container container-additional">
-            <h3>Ofertas publicadas</h3>
-            <div class="subcontainer">
-                <ul>
-                    <ng-container *ngFor="let offer of employer.offers">
-                        <li><a [routerLink]="'/offers/' + offer.id">Piscina: {{offer.pool?.name}} - Salario: {{offer.salary}} - Inicio: {{offer.start}}</a></li>
-                    </ng-container>
-                    <li *ngIf="!employer.offers">No has creado ninguna oferta</li>
-                </ul>
-            </div>
+    </div>
+
+    <div *ngIf="user && employer" class="container container-additional">
+        <h3>Ofertas publicadas</h3>
+
+        <div class="subcontainer">
+            <ul *ngIf="employer.offers && employer.offers.length > 0">
+                <li *ngFor="let offer of employer.offers">
+                    <a [routerLink]="'/offers/' + offer.id">Piscina: {{offer.pool?.name}} - Salario: {{offer.salary}} - Inicio: {{offer.start}}</a>
+                </li>
+            </ul>
+            <p *ngIf="employer.offers?.length === 0">No has creado ninguna oferta</p>
         </div>
-    </ng-container>
+    </div>
 </div>

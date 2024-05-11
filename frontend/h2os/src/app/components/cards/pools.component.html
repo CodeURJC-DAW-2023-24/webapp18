@@ -9,8 +9,8 @@
 
     <section class="cards" id="pools">
         <div *ngFor="let pool of pools">
-            <a [routerLink]="['/pools', pool.id]">
-                <img src={{pool.image}} >
+            <a [routerLink]="[pool.id]">
+                <img src={{pool.image}}>
                 <p>{{pool.direction}}</p>
             </a>
         </div>

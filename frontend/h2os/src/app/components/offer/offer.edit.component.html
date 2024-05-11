@@ -1,42 +1,43 @@
+<div class="container">
+    <h2>Editar oferta en {{offer.poolName}}</h2>
 
-    <div class="container">
-        <h2>Editar</h2>
-
-        <form role="form">
-           
-
-            <div *ngIf="loaded" class="form-group">
-                <label for="description">Descripción</label>
-                <textarea #description type="text" class="form-control" name="description" placeholder="Detalles relevantes de la oferta" [value] = "offer.description"></textarea>
+    <form role="form">
+        <div class="row">
+            <div class="form-group col-md-6 col-sm-12">
+                <label for="type">Tipo de jornada</label>
+                <select #journey class="form-select" name="type">
+                    <option [value]="'Puntual'" selected>Puntual</option>
+                    <option [value]="'Media jornada'">Media jornada</option>
+                    <option [value]="'Jornada completa'">Jornada completa</option>
+                    <option [value]="'Fines de semana'">Fines de semana</option>
+                    <option [value]="'Correturnos'">Correturnos</option>
+                </select>
             </div>
-
-            <div class="row">
-                <div class="form-group col-md-6 col-sm-12">
-                    <label for="type">Tipo de jornada</label>
-                    <select #journey class="form-select" name="type">
-                        <option [value]="'Puntual'" selected>Puntual</option>
-                        <option [value]="'Media jornada'">Media jornada</option>
-                        <option [value]="'Jornada completa'">Jornada completa</option>
-                        <option [value]="'Fines de semana'">Fines de semana</option>
-                        <option [value]="'Correturnos'">Correturnos</option>
-                    </select>
-                </div>
-                <div *ngIf="loaded" class="form-group col-md-6 col-sm-12">
-                    <label for="start">Fecha de inicio</label>
-                    <input #date type="date" class="form-control text-uppercase" name="start" [value]="dateF">
-                </div>
+            <div *ngIf="loaded" class="form-group col-md-6 col-sm-12">
+                <label for="start">Fecha de inicio</label>
+                <input #date type="date" class="form-control text-uppercase" name="start" [value]="dateF">
             </div>
+        </div>
 
-            <div *ngIf="loaded" class="form-group">
-                <label for="salary">Salario</label>
-                <input #salary type="range" class="form-range" name="salary" [value]="offer.salary" min="60" max="5000" step="60" oninput="this.nextElementSibling.value = this.value">
-                <output for="price" id="outrange">{{offer.salary}}</output>€
-                <div *ngIf="errorFlagSalary" style="color: red;"> El salario debe superar el salario mínimo</div>
-            </div>
+        <div *ngIf="loaded" class="form-group">
+            <label for="description">Descripción</label>
+            <textarea #description type="text" class="form-control" name="description" placeholder="Detalles relevantes de la oferta" [value]="offer.description"></textarea>
+        </div>
 
-            <div *ngIf="loaded" class="btn-cont">
-                <button (click)="editOffer()" class="btn"><i class="bi bi-download"></i> Guardar</button>
-                <a [routerLink]="['/offers', offer.id]" class="btn btn-red" role="button"><i class="bi bi-x-lg"></i> Cancelar</a>
-            </div>
-        </form>
-    </div>
+        <div *ngIf="loaded" class="form-group">
+            <label for="salary">Salario</label>
+            <input #salary type="range" class="form-range" name="salary" [value]="offer.salary" min="60" max="5000" step="60" oninput="this.nextElementSibling.value = this.value">
+            <output for="price" id="outrange">{{offer.salary}}</output>€
+            <div *ngIf="errorFlagSalary" style="color: red;"> El salario debe superar el salario mínimo</div>
+        </div>
+
+        <div *ngIf="loaded" class="btn-cont">
+            <button (click)="editOffer()" class="btn">
+                <i class="bi bi-download"></i> Guardar
+            </button>
+            <a [routerLink]="['/offers', offer.id]" class="btn btn-red" role="button">
+                <i class="bi bi-x-lg"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>

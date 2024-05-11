@@ -1,68 +1,59 @@
-<div class="container container-main">
-    <h2>{{name}}</h2>
+<div class="data">
+    <div class="container container-main">
+        <h2>{{name}}</h2>
 
-    <div class="row">
-        <a class="col-lg-6">
-            <img id="img-pool" [src]="photoURL" alt="{{direction}}">
-        </a>
-        <div class="col-lg-6">
-            <p><strong>Dirección:</strong> {{direction}}</p>
-            <p><strong>Horario:</strong> {{scheduleStart}}-{{scheduleEnd}}</p>
-            <p><strong>Aforo:</strong> {{capacity}} personas</p>
-            <p><strong>Descripción:</strong> {{description}}</p>
+        <div class="row">
+            <a class="col-lg-6">
+                <img id="img-pool" [src]="photoURL" alt="{{direction}}">
+            </a>
+            <div class="col-lg-6">
+                <p><strong>Dirección:</strong> {{direction}}</p>
+                <p><strong>Horario:</strong> {{scheduleStart}}-{{scheduleEnd}}</p>
+                <p><strong>Aforo:</strong> {{capacity}} personas</p>
+                <p><strong>Descripción:</strong> {{description}}</p>
+            </div>
+        </div>
+
+        <div *ngIf="admin" class="btn-cont">
+            <a [routerLink]="['edit']" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
+            <button class="btn btn-red" (click)="deletePool(id)">
+                <i class="bi bi-trash"></i> Eliminar
+            </button>
+            <a [routerLink]="['/pools']" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
         </div>
     </div>
 
-    <div *ngIf="admin" class="btn-cont">
-        <a [routerLink]="['edit']" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-        <button class="btn btn-red" (click)="deletePool(id)">
-            <i class="bi bi-trash"></i> Eliminar
-        </button>
-        <a [routerLink]="['/pools']" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
-    </div>
-</div>
-
-<div class="container container-additional">
-    <h3>Comentarios</h3>
-    <div *ngIf="logged">
-        <form role="form" action='/pool/message/add' method="post">
-            <input type="hidden" name="id" value="{{id}}" />
-            <div class="subcontainer commentContainer">
-                <input #bodyMessage type="text" id="commentInput" name="commentInput" placeholder="Deja tu opinión" />
-                <div class="btn-cont">
-                    <button  class="btn" (click) = "addComment()">
-                        <i class="bi bi-send-fill"></i>
-                    </button>
-                </div>
+    <div class="container container-additional">
+        <h3>Comentarios</h3>
+        <div *ngIf="logged" class="subcontainer commentContainer">
+            <input #bodyMessage type="text" id="commentInput" name="commentInput" placeholder="Deja tu opinión" />
+            <div class="btn-cont">
+                <button class="btn" (click)="addComment()">
+                    <i class="bi bi-send-fill"></i>
+                </button>
             </div>
-        </form>
-    </div>
-    <div id="messageContainer" *ngIf="!showMessagesFlag">
-        <div *ngIf="messages.length>0">
-            <div *ngFor= "let msg of messages; let i = index">
-                <div class="subcontainer message" id="message-{{id}}">
+        </div>
+
+        <div *ngIf="showMessagesFlag" class="btn-cont" id="showButton">
+            <button class="btn" (click)="showMessages()">Ver comentarios</button>
+        </div>
+        <div *ngIf="!showMessagesFlag" id="messageContainer">
+            <div *ngIf="messages.length > 0">
+                <div *ngFor="let msg of messages; let i = index" class="subcontainer message" id="message-{{id}}">
                     <data>
-                        <a class="author" >{{authors[i]}}:</a>
+                        <a class="author">{{authors[i]}}:</a>
                         <p class="body"> {{msg}} </p>
                     </data>
-                    <div *ngIf="owner[i]">
-                    <div class="btn-cont">
-                        <form role="form" >
-                        
-                            <button (click) = deleteComment(i) class="btn btn-red "><i class="bi bi-trash"></i></button>
-                        </form>
+                    <div *ngIf="owner[i]" class="btn-cont">
+                        <button (click)="deleteComment(i)" class="btn btn-red "><i class="bi bi-trash"></i></button>
                     </div>
                 </div>
+            </div>
+            <div *ngIf="messages.length == 0">
+                <div class="subcontainer message">
+                    <p class="body"> No hay comentarios </p>
                 </div>
             </div>
         </div>
-        <div *ngIf="messages.length == 0">
-            <div class="subcontainer message">
-                <div class="body"> No hay comentarios </div>
-            </div>
-        </div>
-    </div>
-    <div class="btn-cont" id="showButton" *ngIf="showMessagesFlag">
-        <button class="btn" (click)="showMessages()">Ver comentarios</button>
     </div>
 </div>

@@ -17,7 +17,7 @@
 
     <div class="btn-cont">
         <div *ngIf="canApply">
-            <form role="form" action='/offer/offered/new' method="post">
+            <form role="form">
                 <input type="hidden" name="id" value="{{offer.id}}" />
                 <button class="btn" (click)="apply(offer.id)" id="applyButton">
                     <i class="bi bi-bookmark-fill"> Proponerse</i>
@@ -26,17 +26,20 @@
         </div>
 
         <div *ngIf="edit">
-            <input type="hidden" name="id" value="{{offer.id}}" />
-            <button class="btn" (click)="showApplied(offer.id)" id="showButton">Ver propuestas</button>
+            <button class="btn" (click)="showApplied(offer.id)" id="showButton">
+                <i class="bi bi-eye-fill"></i> Propuestas
+            </button>
             <button class="btn btn-blue" [routerLink]="['edit']">
-                <i class="bi bi-pencil"> </i>Editar
+                <i class="bi bi-pencil"></i> Editar
             </button>
             <button class="btn btn-red" (click)="deleteOffer(offer.id)">
                 <i class="bi bi-trash"> Eliminar</i>
             </button>
         </div>
 
-        <a [routerLink]="['/offers']" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+        <a [routerLink]="['/offers']" class="btn" role="button">
+            <i class="bi bi-box-arrow-left"></i> Volver
+        </a>
     </div>
 
     <div id="messageContainer">
@@ -55,7 +58,7 @@
             </div>
         </div>
         <div *ngIf="applied && appliedLg.length === 0" class="subcontainer message" id="{{offer.id}}">
-            <div class="message">No hay propuestas </div>
+            <div class="message">No hay propuestas</div>
         </div>
     </div>
 </div>

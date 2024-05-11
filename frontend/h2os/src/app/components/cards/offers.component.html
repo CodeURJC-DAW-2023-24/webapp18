@@ -9,8 +9,8 @@
 
     <section class="cards" id="offers">
         <div *ngFor="let offer of offers">
-            <a [routerLink]="['/offers', offer.id]">
-                <img src={{offer.image}} >
+            <a [routerLink]="[offer.id]">
+                <img src={{offer.image}}>
                 <p>{{offer.direction}}</p>
                 <p>{{offer.salary}}€</p>
             </a>

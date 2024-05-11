@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UserFormComponent{
     user: Person;
+    id: number;
     lifeguard: Lifeguard;
     employer: Employer;
     edit:boolean;
@@ -29,7 +30,7 @@ export class UserFormComponent{
     file:any;
 
     constructor(activatedRoute: ActivatedRoute, private router:Router, private service: UserService, private httpClient: HttpClient) {
-        let id = activatedRoute.snapshot.params['id'];
+        this.id = activatedRoute.snapshot.params['id'];
         let type : string | undefined;
         const routeSegments = activatedRoute.snapshot.url;
         this.edit=false;
@@ -42,8 +43,8 @@ export class UserFormComponent{
             const firstSegment = routeSegments[0];
             type = firstSegment.path;
         }
-        if (id && (type === 'lifeguards')) {
-            service.getLifeguard(id).subscribe(
+        if (this.id && (type === 'lifeguards')) {
+            service.getLifeguard(this.id).subscribe(
                 lifeguard => {this.lifeguard = lifeguard
                     this.updateSkills();
                     this.lifeguardToPerson();
@@ -53,8 +54,8 @@ export class UserFormComponent{
                 error => console.error(error)
             );
             this.lifeguardToPerson();
-        } else if (id && (type === 'employers')){
-            service.getEmployer(id).subscribe(
+        } else if (this.id && (type === 'employers')){
+            service.getEmployer(this.id).subscribe(
               employer => {this.employer = employer
                 this.employerToPerson();
                 this.edit = true;
