@@ -8,9 +8,9 @@ import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: "user-form",
-    templateUrl: './user-form.component.html'
+    templateUrl: './user-form.component.html',
+    styleUrl: '../../styles/form.css'
 })
-
 export class UserFormComponent{
     user: Person;
     lifeguard: Lifeguard;

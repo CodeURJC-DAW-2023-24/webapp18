@@ -1,0 +1,19 @@
+form {
+    text-align: left;
+    margin: 20px;
+    margin-bottom: 0px;
+}
+
+.form-group label {
+    margin-top: 15px;
+    font-weight: bold;
+    color: var(--main-color);
+}
+
+.form-range::-webkit-slider-runnable-track {
+    background-color: #f0f0f0f0;
+}
+
+.form-range::-webkit-slider-thumb {
+    background-color: var(--main-color);
+}

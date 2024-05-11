@@ -14,9 +14,8 @@ import { PaginationService } from '../../services/pagination.service';
 @Component({
     selector: "offerEdit",
     templateUrl: './offer.create.component.html',
-    styleUrls: ['../../styles/data.css', '../../styles/messages.css']
+    styleUrls: ['../../styles/data.css', '../../styles/messages.css', '../../styles/form.css']
 })
-
 export class OfferCreateComponent {
     offer: Offer
     pools: Pool[];

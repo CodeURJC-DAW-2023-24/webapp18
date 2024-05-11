@@ -12,9 +12,8 @@ import { Router } from '@angular/router';
 @Component({
     selector: "offerEdit",
     templateUrl: './offer.edit.component.html',
-    styleUrls: ['../../styles/data.css', '../../styles/messages.css']
+    styleUrls: ['../../styles/data.css', '../../styles/messages.css', '../../styles/form.css']
 })
-
 export class OfferEditComponent {
     id: number;
     offer: Offer

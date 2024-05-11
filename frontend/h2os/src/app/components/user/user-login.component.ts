@@ -6,7 +6,8 @@ import { ViewChild, ElementRef } from '@angular/core';
 
 @Component({
     selector: "login",
-    templateUrl: './user-login.component.html'
+    templateUrl: './user-login.component.html',
+    styleUrl: '../../styles/form.css'
 })
 export class UserLoginComponent{
     @ViewChild('passwordInput') passwordInput: ElementRef;

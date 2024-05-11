@@ -6,9 +6,9 @@ import { PoolService } from '../../services/pool.service';
 
 @Component({
     selector: "pool-form",
-    templateUrl: './pool-form.component.html'
+    templateUrl: './pool-form.component.html',
+    styleUrl: '../../styles/form.css'
 })
-
 export class PoolFormComponent{
     pool:Pool;
     edit:boolean;

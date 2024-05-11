@@ -9,9 +9,9 @@ import { catchError } from 'rxjs';
 
 @Component({
     selector: "user-detail",
-    templateUrl: './user-detail.component.html'
+    templateUrl: './user-detail.component.html',
+    styleUrl: '../../styles/data.css'
 })
-
 export class UserDetailComponent{
     me:Me;
     user: Person;
