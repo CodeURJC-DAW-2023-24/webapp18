@@ -19,7 +19,7 @@
 ![image](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/e28fbed3-cf45-4144-907c-b3614b940f9c)
 
 
-## Participación de miembros
+## Participación de miembros (FASE 3)
 
 El reparto de tareas tenía sentido en una fase inicial. Luego hicimos una lista de cosas pendientes y cada uno ibamos realizando tareas sin ningun criterio de reparto en especial. 
 
@@ -91,11 +91,49 @@ Implementar el RestController de Pool y sus dependencias
 #### Tareas:
 #### Commits:
 #### Ficheros:
-     
+
+
 ## Usuarios de ejemplo (nombre de usuario y contraseña)
 ### administrador: admin, admin
 ### empleador: e1,e1
 ### socorrista: s1, s1
+
+
+## Participación de miembros (FASE 4)
+
+### Jorge:
+#### Tareas:
+#### Commits: 
+#### Ficheros: 
+     
+### Marcos:
+#### Tareas: 
+#### Commits: 
+#### Ficheros: 
+
+     
+### Pedro:
+#### Tareas:
+Implementar lo relacionado a usuarios (employers y lifeguards) en el frontend
+#### Commits: 
+  - Initialized Angular web, doesnt work
+  - implemented user-detail and user-form. I haven't tried if it works
+  - profile and user_form works correctly (photo not implemented yet). You need to reload to update header
+  - upload photo completed and form improved
+  - implemented pool form
+#### Ficheros: 
+  - user.service.ts
+  - user-detail.component.ts
+  - user-form.component.ts
+  - user-login.component.ts
+  - pool-form.component.ts
+
+### Adrián:
+#### Tareas:
+#### Commits:
+#### Ficheros:
+
+## Diagrama de clases y templates de la SPA:
 
 
 # Documentación de la API REST: 
