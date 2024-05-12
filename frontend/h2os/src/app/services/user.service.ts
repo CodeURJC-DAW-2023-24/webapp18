@@ -164,7 +164,6 @@ export class UserService{
     private reqIsLogged() {
         this.httpClient.get('/api/auth/me', { withCredentials: true }).subscribe(
             (response:any) => {
-                console.log("RESPONSE"+response.type);
                 if (response.type==='lg'){
                     this.lifeguard = response as Lifeguard;
                     this.typeUser = "lg";

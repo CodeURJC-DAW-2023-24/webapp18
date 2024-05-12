@@ -28,7 +28,6 @@ export class GeocodingService {
   getLocation(term: string): Observable<GeocoderResponse> {
     const parsedTerm = term.replace(/ /g, '+');
     const url = `https://maps.google.com/maps/api/geocode/json?address=${parsedTerm}&key=${environment.googleApiKey}`;
-    console.log(url);
     return this.http.get<GeocoderResponse>(url);
   }
 }

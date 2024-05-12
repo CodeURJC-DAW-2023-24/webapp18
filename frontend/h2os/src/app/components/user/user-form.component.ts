@@ -79,9 +79,7 @@ export class UserFormComponent{
     save() {
         var message = this.checkForm(this.user.mail,this.user.age,this.user.phone)
         if (message === ''){
-            console.log("COLOR"+this.color);
             if (this.color === 'green'){
-                console.log("COLOR2"+this.color);
                 if (this.typeUser==='lifeguard'){
                     this.updateLifeguard();
                     this.service.addOrUpdateLifeguard(this.lifeguard).subscribe(

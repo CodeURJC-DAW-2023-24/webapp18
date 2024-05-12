@@ -124,7 +124,6 @@ public class UserController {
         String typeUser = request.getParameter("typeUser");
         switch (typeUser) {
             case "employer":
-            System.out.println(request);
                 Employer employer = userService.createEmployer(request);
                 if (!photoField.isEmpty()) {
                     employer.setPhotoCompany(BlobProxy.generateProxy(photoField.getInputStream(), photoField.getSize()));
