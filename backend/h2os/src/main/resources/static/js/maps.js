@@ -37,7 +37,7 @@ async function checkUserAddress(userAddressElement) {
         const location = await localizateAddress(userAddress);
         center = location;
     } catch (error) {
-        alert('Could not find the provided user location.');
+        alert('Could not find the provided user location: ' + userAddress + '.\nThe map will be centered at the URJC location');
     }
 
     return center;
@@ -49,7 +49,7 @@ async function setMarkers(center, addressList) {
 
     const home = setMarker(center, 'HOME', homeIcon);
     home.addListener('click', function() {
-        window.location.href = '/profile?type=1&mail=none';  // We need to improve the URL profile (no types, no mails)
+        window.location.href = '/login';
     });
     bounds.extend(home.getPosition());
 
