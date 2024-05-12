@@ -7,7 +7,6 @@ import java.sql.Blob;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
@@ -28,10 +27,10 @@ public class Lifeguard extends Person{
     @ManyToMany
     private List<Pool> pools;
 
-    @OneToMany(mappedBy = "lifeguard", cascade = CascadeType.ALL) //many problems
+    @OneToMany(mappedBy = "lifeguard")
     private List<Offer> offers_accepted;
 
-    @ManyToMany(mappedBy = "lifeguards", cascade = CascadeType.ALL) //many problems
+    @ManyToMany(mappedBy = "lifeguards")
     private List<Offer> offers;
 
     private Boolean offerAssigned;
@@ -162,5 +161,9 @@ public class Lifeguard extends Person{
 
     public void clearOffersAccepted(){
         this.offers_accepted = new ArrayList<Offer>();
+    }
+
+    public void setOffersEmpty() {
+        this.offers = new ArrayList<Offer>();
     }
 }

@@ -196,6 +196,17 @@ public class DataBaseInitializer {
             poolOffer.addOffer(offer);
             poolRepository.save(poolOffer);
         }
+
+        Lifeguard lifeguard = lifeguardRepository.findByMail("s1").get();
+        lifeguard.setOffersEmpty();
+
+        for (Offer offer : defaultOffersData) {
+            offer.addOffered(lifeguard);
+            lifeguard.addOffer(offer);
+
+            lifeguardRepository.save(lifeguard);
+            offerRepository.save(offer);
+        }
     }
 }
 
