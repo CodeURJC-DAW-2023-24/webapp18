@@ -3,6 +3,7 @@ import { Pool } from '../../models/pool.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { PoolService } from '../../services/pool.service';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: "pool-form",
@@ -47,9 +48,15 @@ export class PoolFormComponent{
         this.service.addOrUpdatePool(this.pool).subscribe(
             response => {
                 this.pool = response as Pool;
-                this.uploadPoolImage(this.pool);
-                console.log(this.pool.id);
-                this.router.navigate(['/pools', this.pool.id]);
+                this.uploadPoolImage(this.pool).subscribe(
+                    _ => {
+                        this.router.navigate(['/pools', this.pool.id]);
+                    },
+                    error => {
+                        alert('Error uploading pool image: ' + error);
+                        this.router.navigate(['/pools', this.pool.id]);
+                    }
+                );
             },
             error => {
                 console.error('Error creating/updating the pool: ' + error)
@@ -59,21 +66,19 @@ export class PoolFormComponent{
     }
 
 
-      private uploadPoolImage(pool: Pool): void {
+    private uploadPoolImage(pool: Pool) {
         const image = this.file.nativeElement.files[0];
-        if (image) {
-          let formData = new FormData();
-          formData.append("imageFile", image);
-          this.service.setPoolPhoto(pool, formData).subscribe(
-            response => {
-                console.log('Pool image uploaded successfully');
-            },
-            error => alert('Error uploading pool image: ' + error)
-          );
-        } 
-        else {
-                this.router.navigate(['/']);
-            };
-        }
+
+        if (!image)
+            return new Observable(observer => {
+                observer.next();
+                observer.complete();
+            });
+
+        let formData = new FormData();
+        formData.append("imageFile", image);
+
+        return this.service.setPoolPhoto(pool, formData)
+    }
 
 }

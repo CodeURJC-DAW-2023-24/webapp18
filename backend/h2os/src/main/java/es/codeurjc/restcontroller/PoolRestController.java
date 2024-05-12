@@ -35,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import es.codeurjc.DTO.MessageDTO;
 import es.codeurjc.DTO.PoolDTO;
-import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Message;
 import es.codeurjc.model.Pool;
 import es.codeurjc.repository.PoolRepository;
@@ -212,40 +211,27 @@ public class PoolRestController {
     }
 
     @Operation(summary = "Post a new photo of a pool by id")
-	@ApiResponses(value = {
-	 @ApiResponse(
-	 responseCode = "201",
-	 description = "Pool photo posted correctly",
-	 content = @Content
-	 ),
-	 @ApiResponse(
-	 responseCode = "404",
-	 description = "Data entered incorrectly, probably invalid id supplied",
-	 content = @Content
-	 ),	 
-	 @ApiResponse(
-	 responseCode = "401",
-	 description = "You are not authorized",
-	 content = @Content
-	 )
-	})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Pool photo posted correctly", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Data entered incorrectly, probably invalid id supplied", content = @Content),
+            @ApiResponse(responseCode = "401", description = "You are not authorized", content = @Content)
+    })
     @PostMapping("/{id}/photo")
-	public ResponseEntity<Object> uploadPhoto(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal)
-			throws IOException {
-		if(principal !=null){
-			if (poolRepository.existsById(id)) {
-				Pool pool = poolRepository.findById(id).orElseThrow();
+    public ResponseEntity<Object> uploadPhoto(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal) throws IOException {
+        if (principal == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-				URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        if (!poolRepository.existsById(id))
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-				//lifeguard.setImageUser(true); JORGE NO TIENES UN BOOLEAN EN POOL, TIENES UN STRING QUE NO SE PARA QUE LO USAS.
-				pool.setPhotoBlob(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
-				poolService.save(pool);
+        Pool pool = poolRepository.findById(id).orElseThrow();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 
-				return ResponseEntity.created(location).build();
-			}else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-	}
+        pool.setPhotoBlob(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
+        poolService.save(pool);
+
+        return ResponseEntity.created(location).build();
+    }
 
     // ----------------------------------------------- PUT -----------------------------------------------
     @Operation(summary = "Edit a pool by its ID.")
