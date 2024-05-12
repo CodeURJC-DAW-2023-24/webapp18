@@ -13,6 +13,10 @@ import { OfferComponent } from './components/offer/offer.component';
 import { OfferEditComponent } from './components/offer/offer.edit.component';
 import { UserDetailComponent } from './components/user/user-detail.component';
 import { OfferCreateComponent } from './components/offer/offer.create.component';
+import { MapsComponent } from './components/maps/maps.component';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { OffersComponent } from './components/cards/offers.component';
 import { PoolsComponent } from './components/cards/pools.component';
 import { PoolComponent } from './components/pool/pool.component';
@@ -27,16 +31,26 @@ import { PoolFormComponent } from './components/pools/pool-form.component';
     HeaderComponent,
     OfferComponent, OfferEditComponent, OfferCreateComponent, OffersComponent,
     PoolsComponent, PoolComponent,
-    StadisticsComponent, PoolFormComponent
+    StadisticsComponent, PoolFormComponent,
+    MapsComponent
   ],
   imports: [
     CommonModule,
     NgbModule,
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     routing,
     GoogleChartsModule,
+    GoogleMapsModule,
+    ToastrModule.forRoot({
+      preventDuplicates: false,
+      progressBar: true,
+      countDuplicates: true,
+      extendedTimeOut: 3000,
+      positionClass: 'toast-bottom-right',
+    }),
   ],
   bootstrap: [AppComponent]
 })

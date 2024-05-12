@@ -1,0 +1,21 @@
+<h3>{{ address }}</h3>
+
+<ng-container *ngIf="offers && offers.length > 0; else noOffers">
+    <section class="cards" id="offers">
+        <a *ngFor="let offer of offers" [routerLink]="['/offers', offer.id]">
+            <p>{{ offer.type }}</p>
+            <p>{{ offer.salary }}€</p>
+            <p>{{ offer.start }}</p>
+        </a>
+    </section>
+</ng-container>
+<ng-template #noOffers>
+    <p>{{ alternative }}</p>
+</ng-template>
+
+<div id="distances" style="display:none;">
+    <ng-container *ngFor="let pool of pools">
+        <div id="pool-{{ pool.id }}">{{ pool.direction }}</div>
+    </ng-container>
+    <div id="user">{{ user?.direction }}</div>
+</div>

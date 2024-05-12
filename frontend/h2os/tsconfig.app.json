@@ -3,12 +3,16 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "typeRoots": ["node_modules/@types"],
+    "types": ["googlemaps"],
   },
   "files": [
     "src/main.ts"
   ],
   "include": [
     "src/**/*.d.ts"
-  ]
+  ],
+  "typeRoots": ["node_modules/@types"],
+  "types": ["googlemaps"],
+  "strictPropertyInitialization": false
 }
