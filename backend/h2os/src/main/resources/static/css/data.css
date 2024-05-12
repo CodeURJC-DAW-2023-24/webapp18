@@ -29,6 +29,20 @@ a:hover {
     color: var(--main-color-light);
 }
 
+.subcontainer.offer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    row-gap: 10px;
+}
+
+.subcontainer.offer i {
+    text-align: center;
+    margin: 20px;
+    font-size: 2em;
+}
+
 @media screen and (min-width: 1690px){ /* (900 + 600 + 20) * 100 / 90 */
     .data {
         display: flex;

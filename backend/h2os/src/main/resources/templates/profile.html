@@ -93,12 +93,15 @@
 
             {{#canSeeOffers}}
                 {{#offers}}
-                <div class="subcontainer">
+                <div class="subcontainer offer">
                     <p>
                         <a href="offer?id={{id}}">{{pool.name}}</a> ({{salary}}€) <br>
                         <span>Tipo</span>: {{type}} <br>
                         <span>Inicio</span>: {{start}}
                     </p>
+                    {{#accepted}}
+                    <i class="bi bi-check-circle-fill"></i>
+                    {{/accepted}}
                 </div>
                 {{/offers}}
                 {{^offers}}

@@ -47,7 +47,11 @@ public class Offer {
         this.description = builder.description;
         this.lifeguards = new ArrayList<>();
     }
-    
+
+    public boolean isAccepted() {
+        return this.lifeguard != null;
+    }
+
     // Getters
     public Long getId() {
         return id;

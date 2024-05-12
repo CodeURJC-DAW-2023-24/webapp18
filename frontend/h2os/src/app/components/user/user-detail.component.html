@@ -62,13 +62,13 @@
             <p style="text-align: center;">No puedes ver las candidaturas de otro usuario</p>
         </div>
         <ng-template #offers_cont>
-            <div *ngFor="let offer of offers" class="subcontainer">
+            <div *ngFor="let offer of offers" class="subcontainer offer">
                 <p>
                     <a [routerLink]="'/offers/' + offer.id">{{offer.poolName}}</a> ({{offer.salary}}€) <br>
                     <span>Tipo</span>: {{offer.type}} <br>
                     <span>Inicio</span>: {{offer.start}}
-                    <i class="bi bi-check-circle-fill" id="check" *ngIf="offerAccepted(offer)"></i>
                 </p>
+                <i class="bi bi-check-circle-fill" *ngIf="offerAccepted(offer)"></i>
             </div>
             <div *ngIf="offers?.length === 0" class="subcontainer">
                 <p>No hay ofertas</p>
