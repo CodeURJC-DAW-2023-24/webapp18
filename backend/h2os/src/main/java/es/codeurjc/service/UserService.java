@@ -17,6 +17,7 @@ import es.codeurjc.model.Message;
 import es.codeurjc.model.Person;
 import es.codeurjc.repository.EmployerRepository;
 import es.codeurjc.repository.LifeguardRepository;
+import es.codeurjc.repository.OfferRepository;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
@@ -27,6 +28,9 @@ public class UserService {
 
 	@Autowired
 	private LifeguardRepository lifeguardRepository;
+
+    @Autowired
+    private OfferRepository offerRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -78,8 +82,24 @@ public class UserService {
     }
 
 	public void deleteUserByEmail(String mail){
-		Optional<Lifeguard> l = lifeguardRepository.findByMail(mail);
-		if(l.isPresent()) lifeguardRepository.deleteById(l.get().getId());
+		Optional<Lifeguard> l2 = lifeguardRepository.findByMail(mail);
+		if(l2.isPresent()){
+            Lifeguard l = l2.get();
+			List<Offer> offers= l.getOffers();
+			for (Offer offer: offers){
+				offer.deleteOffered(l);
+				offerRepository.save(offer);
+			}
+			l.clearOffers();
+			List<Offer> offers_accepted= l.getOffersAccepted();
+			for (Offer offer: offers_accepted){
+				offer.setLifeguard(null);
+				offerRepository.save(offer);
+			}
+			l.clearOffersAccepted();
+			lifeguardRepository.save(l);
+            lifeguardRepository.deleteById(l.getId());
+        }
 		Optional<Employer> e = employerRepository.findByMail(mail);
 		if(e.isPresent()) employerRepository.deleteById(e.get().getId());
 
