@@ -19,13 +19,13 @@
     margin-bottom: 20px;
 }
 
-h2 a {
+a {
     color: inherit;
     text-decoration: none;
     font: inherit;
 }
 
-h2 a:hover {
+a:hover {
     color: var(--main-color-light);
 }
 

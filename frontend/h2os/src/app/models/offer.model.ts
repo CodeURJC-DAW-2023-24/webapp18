@@ -7,6 +7,7 @@ export class Offer {
   pool?: Pool;
   direction?: String;
   employer?: string;
+  employerID?: number;
   lifeguard?: Lifeguard;
   lifeguards?: Lifeguard[];
   salary?: string;
@@ -22,6 +23,7 @@ export class Offer {
     this.pool = undefined;
     this.direction = '';
     this.employer = '';
+    this.employerID = 0;
     this.lifeguard = undefined;
     this.lifeguards = [];
     this.salary = '';

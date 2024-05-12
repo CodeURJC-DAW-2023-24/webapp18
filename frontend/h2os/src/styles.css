@@ -97,13 +97,13 @@ p {
     margin-bottom: 0;
 }
 
-.subcontainer a {
+.subcontainer p a {
     text-decoration: none;
     color: var(--main-color-dark);
     font-weight: bold;
 }
 
-.subcontainer a:hover {
+.subcontainer p a:hover {
     color: var(--logo-color);
 }
 

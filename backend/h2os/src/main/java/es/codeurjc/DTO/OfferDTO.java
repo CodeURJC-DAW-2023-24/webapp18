@@ -13,6 +13,7 @@ public class OfferDTO {
     private String start;
     private String description;
     private String employer;
+    private Long employerID;
     // private String poolPic;
 
     public OfferDTO(Offer offer){
@@ -25,6 +26,7 @@ public class OfferDTO {
         this.start = offer.getStart();
         this.description = offer.getDescription();
         this.employer = offer.getEmployer().getMail();
+        this.employerID = offer.getEmployer().getId();
         // this.poolPic = offer.getPool().getPhotoUser(); ill end this when the rest is done
     }
 
@@ -65,5 +67,9 @@ public class OfferDTO {
 
     public String getEmployer() {
         return this.employer;
+    }
+
+    public Long getEmployerID() {
+        return this.employerID;
     }
 }
