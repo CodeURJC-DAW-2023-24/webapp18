@@ -20,6 +20,12 @@ export class UserService{
         this.employer = {mail:"",pass:"",roles:[]}
     }
 
+    getMails():Observable<String[]>{
+        return this.httpClient.get<String[]>("/api/mails").pipe(
+            catchError(error=>this.handleError(error))
+        ) as Observable<String[]>;
+    }
+
     getLifeguards(): Observable<Lifeguard[]>{
         return this.httpClient.get<Lifeguard[]>(urlLifeguard).pipe(
             catchError(error => this.handleError(error))

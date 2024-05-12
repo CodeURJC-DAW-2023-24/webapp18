@@ -101,6 +101,11 @@ public class Offer {
         this.employer = e;
     }
 
+    public void deleteOffered(Lifeguard l){
+        int ind = this.lifeguards.indexOf(l);
+        this.lifeguards.remove(ind);
+    }
+
     // Method to update offer data
     public void update(Builder builder) {
         if (builder.pool != null) {

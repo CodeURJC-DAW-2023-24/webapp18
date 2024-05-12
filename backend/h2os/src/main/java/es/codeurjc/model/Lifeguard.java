@@ -155,4 +155,12 @@ public class Lifeguard extends Person{
     public List<Offer> getOffers() {
         return this.offers;
     }
+
+    public void clearOffers(){
+        this.offers = new ArrayList<Offer>();
+    }
+
+    public void clearOffersAccepted(){
+        this.offers_accepted = new ArrayList<Offer>();
+    }
 }

@@ -33,6 +33,7 @@ import es.codeurjc.DTO.OfferDTO;
 import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Offer;
 import es.codeurjc.repository.LifeguardRepository;
+import es.codeurjc.service.OfferService;
 import es.codeurjc.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -48,6 +49,7 @@ public class LifeguardRestController {
     @Autowired
     private LifeguardRepository lifeguardService;
 
+	@Autowired OfferService offerService;
 	@Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -97,6 +99,20 @@ public class LifeguardRestController {
         if(principal !=null){
 			Optional<Lifeguard> lifeguard = lifeguardService.findById(id);
 			if (lifeguard.isPresent()){
+				Lifeguard l = lifeguard.get();
+				List<Offer> offers= l.getOffers();
+				for (Offer offer: offers){
+					offer.deleteOffered(l);
+					offerService.save(offer);
+				}
+				l.clearOffers();
+				List<Offer> offers_accepted= l.getOffersAccepted();
+				for (Offer offer: offers_accepted){
+					offer.setLifeguard(null);
+					offerService.save(offer);
+				}
+				l.clearOffersAccepted();
+				lifeguardService.save(l);
 				lifeguardService.deleteById(id);
 				return ResponseEntity.status(HttpStatus.OK).build();
 			}else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

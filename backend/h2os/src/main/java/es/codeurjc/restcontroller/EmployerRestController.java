@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,8 +31,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import es.codeurjc.DTO.EmployerDTO;
 import es.codeurjc.DTO.OfferDTO;
 import es.codeurjc.model.Employer;
+import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Offer;
 import es.codeurjc.repository.EmployerRepository;
+import es.codeurjc.repository.LifeguardRepository;
 import es.codeurjc.service.OfferService;
 import es.codeurjc.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,6 +53,9 @@ public class EmployerRestController {
 
     @Autowired
     private EmployerRepository employerService;
+
+	@Autowired
+	private LifeguardRepository lifeguardService;
 
 	@Autowired
     private PasswordEncoder passwordEncoder;
@@ -376,6 +382,45 @@ public class EmployerRestController {
 			}
 		}else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
+
+	@Operation(summary = "Get a list of email addresses")
+	@ApiResponses(value = {
+    @ApiResponse(
+        responseCode = "200",
+        description = "List of email addresses retrieved successfully",
+        content = @Content(mediaType = "application/json")
+    )
+	})
+	@GetMapping("/api/mails")
+	public ResponseEntity<List<String>> getMails() {
+		List<String> mails = new ArrayList<String>();
+		long i = 1;
+		long j = 1;
+		boolean done = true;
+		while (done){
+			boolean emp = false;
+			boolean life = false;
+			Optional<Employer> employerOptional = employerService.findById(i);
+			if (employerOptional.isPresent()) {
+				mails.add(employerOptional.get().getMail());
+				i = i+1;
+			}else{
+				emp = true;
+			}
+			Optional<Lifeguard> lifeguardOptional = lifeguardService.findById(j);
+			if (lifeguardOptional.isPresent()) {
+				mails.add(lifeguardOptional.get().getMail());
+				j = j+1;
+			}else{
+				life = true;
+			}
+			if (emp && life){
+				done = false;
+			}
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(mails);
+	}
+	
 
     public void updateEmployerDTO(EmployerDTO employerDTO, Employer employer){
 		if (employerDTO.getName()!=null) employer.setName(employerDTO.getName());

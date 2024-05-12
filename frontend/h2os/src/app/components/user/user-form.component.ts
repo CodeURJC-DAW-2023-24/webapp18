@@ -18,6 +18,9 @@ export class UserFormComponent{
     employer: Employer;
     edit:boolean;
     typeUser:string;
+    mails:string[];
+    message:string;
+    color:string;
 
     reliability:boolean;
     effort:boolean;
@@ -38,6 +41,13 @@ export class UserFormComponent{
         this.user = {mail:"",pass:"",roles:[]}
         this.lifeguard = {mail:"",pass:"",roles:[],skills:[]}
         this.employer = {mail:"",pass:"",roles:[]}
+
+        this.service.getMails().subscribe(
+            (response:any)=>{
+                this.mails = response;
+            },
+            error=>{console.error(error)}
+        )
 
         if (routeSegments.length > 0) {
             const firstSegment = routeSegments[0];
@@ -69,46 +79,53 @@ export class UserFormComponent{
     save() {
         var message = this.checkForm(this.user.mail,this.user.age,this.user.phone)
         if (message === ''){
-            if (this.typeUser==='lifeguard'){
-                this.updateLifeguard();
-                this.service.addOrUpdateLifeguard(this.lifeguard).subscribe(
-                (lifeguard:any)=> {
+            console.log("COLOR"+this.color);
+            if (this.color === 'green'){
+                console.log("COLOR2"+this.color);
+                if (this.typeUser==='lifeguard'){
+                    this.updateLifeguard();
+                    this.service.addOrUpdateLifeguard(this.lifeguard).subscribe(
+                    (lifeguard:any)=> {
+                        if(this.edit){
+                            this.uploadLifeguardImage(lifeguard);
+                        }else{
+                            this.httpClient.post("/api/auth/login", { username: this.user.mail, password: this.user.pass }, { withCredentials: true }).subscribe(
+                            (response) => {this.uploadLifeguardImage(lifeguard);},
+                            (error) => alert("Wrong credentials")
+                            );
+                        }
+                    },
+                    error => {console.error('Error creating new lifeguard: ' + error)
+                        if (!this.edit){
+                            message = "Email en uso por otro usuario";
+                            this.router.navigate(['/message/'+message]);
+                            }
+                        }
+                    );
+                } else if (this.typeUser==='employer'){
+                    this.updateEmployer();
+                    this.service.addOrUpdateEmployer(this.employer).subscribe(
+                    (employer:any) => { 
                     if(this.edit){
-                        this.uploadLifeguardImage(lifeguard);
+                        this.uploadEmployerImage(employer);
                     }else{
                         this.httpClient.post("/api/auth/login", { username: this.user.mail, password: this.user.pass }, { withCredentials: true }).subscribe(
-                        (response) => {this.uploadLifeguardImage(lifeguard);},
-                        (error) => alert("Wrong credentials")
-                        );
-                    }
-                },
-                error => {console.error('Error creating new lifeguard: ' + error)
-                    if (!this.edit){
+                            (response) => {this.uploadEmployerImage(employer);},
+                            (error) => alert("Wrong credentials")
+                            );
+                    }},
+                    error => {console.error('Error creating new employer: ' + error)
                         message = "Email en uso por otro usuario";
-                        this.router.navigate(['/user/message/'+message]);
+                        this.router.navigate(['/message/'+message]); 
                         }
-                    }
-                );
-            } else if (this.typeUser==='employer'){
-                this.updateEmployer();
-                this.service.addOrUpdateEmployer(this.employer).subscribe(
-                (employer:any) => { 
-                if(this.edit){
-                    this.uploadEmployerImage(employer);
-                }else{
-                    this.httpClient.post("/api/auth/login", { username: this.user.mail, password: this.user.pass }, { withCredentials: true }).subscribe(
-                        (response) => {this.uploadEmployerImage(employer);},
-                        (error) => alert("Wrong credentials")
-                        );
-                }},
-                error => {console.error('Error creating new employer: ' + error)
-                    message = "Email en uso por otro usuario";
-                    this.router.navigate(['/user/message/'+message]); 
-                    }
-                );
+                    );
+                }
+            }else{
+                message = "Email en uso."
+                this.router.navigate(['/message/'+message]);
             }
         }else{
-            this.router.navigate(['/user/message/'+message]);
+            this.router.navigate(['/message/'+message]);
         }
     }
 
@@ -393,19 +410,18 @@ export class UserFormComponent{
         const mailInput: HTMLInputElement | null = document.getElementById("mail") as HTMLInputElement;
         if (mailInput) {
             const mail: string = mailInput.value;
-    
-            fetch(`/availableMail?mail=${mail}`)
-                .then((response: Response) => response.json())
-                .then((responseObj: { available: boolean }) => {
-                    let message: string = responseObj.available ? "Email disponible" : "Email no disponible";
-                    let color: string = responseObj.available ? "green" : "red";
-    
-                    const messageDiv: HTMLElement | null = document.getElementById("mailContent");
-                    if (messageDiv) {
-                        messageDiv.innerHTML = message;
-                        messageDiv.style.color = color;
-                    }
-                });
+            if (this.mails.includes(mail)) {
+                this.message = "Email no disponible";
+                this.color = "red";
+            } else {
+                this.message = "Email disponible";
+                this.color = "green";
+            }
+            const messageDiv: HTMLElement | null = document.getElementById("mailContent");
+            if (messageDiv) {
+                messageDiv.innerHTML = this.message;
+                messageDiv.style.color = this.color;
+            }
         }
     }
 
