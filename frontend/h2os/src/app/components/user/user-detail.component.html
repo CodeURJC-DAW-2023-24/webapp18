@@ -42,16 +42,15 @@
                 <a [routerLink]="editUser" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
                 <button *ngIf="!otherUser" (click)="logout()" class="btn btn-red">Cerrar sesión</button>
             </ng-container>
+            <ng-container *ngIf="admin && otherUser">
+                <button *ngIf="lifeguard" (click)="deleteLifeguard()" class="btn btn-red ">
+                    <i class="bi bi-trash"></i>
+                </button>
+                <button *ngIf="employer" (click)="deleteEmployer()" class="btn btn-red ">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </ng-container>
             <a [routerLink]="['/']" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
-        </div>
-
-        <div *ngIf="admin" class="btn-cont">
-            <button *ngIf="typeUser==='lifeguard'" (click)="deleteLifeguard()" class="btn btn-red ">
-                <i class="bi bi-trash"></i>
-            </button>
-            <button *ngIf="typeUser==='employer'" (click)="deleteEmployer()" class="btn btn-red ">
-                <i class="bi bi-trash"></i>
-            </button>
         </div>
     </main>
 
@@ -59,7 +58,7 @@
         <h3 *ngIf="lifeguard">Ofertas aplicadas</h3>
         <h3 *ngIf="employer">Ofertas publicadas</h3>
 
-        <div *ngIf="lifeguard && otherUser; else offers_cont">
+        <div *ngIf="lifeguard && otherUser && !admin; else offers_cont">
             <p style="text-align: center;">No puedes ver las candidaturas de otro usuario</p>
         </div>
         <ng-template #offers_cont>
