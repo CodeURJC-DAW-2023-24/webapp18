@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { Lifeguard } from "../models/lifeguard.model";
 import { Employer } from "../models/employer.model";
 import { LoginResponse } from "../models/login-response.model";
+import { Offer } from "../models/offer.model";
 
 const urlLifeguard = '/api/lifeguards'
 const urlEmployer = '/api/employers'
@@ -36,6 +37,12 @@ export class UserService{
         return this.httpClient.get<Lifeguard>(urlLifeguard+"/"+id).pipe(
             catchError(error => this.handleError(error))
         ) as Observable<Lifeguard>
+    }
+
+    getOffersAccepted(id:number):Observable<Offer[]>{
+        return this.httpClient.get<Offer[]>(urlLifeguard+"/"+id+"/offersAccepted").pipe(
+            catchError(error => this.handleError(error))
+        ) as Observable<Offer[]>
     }
 
     addOrUpdateLifeguard(lifeguard: Lifeguard){

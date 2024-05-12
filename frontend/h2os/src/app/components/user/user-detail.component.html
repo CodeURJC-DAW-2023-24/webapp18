@@ -67,6 +67,7 @@
                     <a [routerLink]="'/offers/' + offer.id">{{offer.poolName}}</a> ({{offer.salary}}€) <br>
                     <span>Tipo</span>: {{offer.type}} <br>
                     <span>Inicio</span>: {{offer.start}}
+                    <i class="bi bi-check-circle-fill" id="check" *ngIf="offerAccepted(offer)"></i>
                 </p>
             </div>
             <div *ngIf="offers?.length === 0" class="subcontainer">

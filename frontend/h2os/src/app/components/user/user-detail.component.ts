@@ -26,6 +26,7 @@ export class UserDetailComponent{
     image:boolean | undefined;
     imageUser: string | undefined;
     offers: Offer[] = [];
+    offersAccepted: Offer[] = [];
 
     constructor(activatedRoute: ActivatedRoute, private router:Router, private userService: UserService) {
         let id = activatedRoute.snapshot.params['id'];
@@ -39,6 +40,12 @@ export class UserDetailComponent{
             type = firstSegment.path;
         }
         if (id && (type === 'lifeguards')) {
+            this.userService.getOffersAccepted(id).subscribe(
+                (response:any)=>{
+                    this.offersAccepted = response;
+                },
+                error=>{console.error(error)}
+            );
             userService.getLifeguard(id).subscribe(
                 response => {this.lifeguard = response as Lifeguard;
                     this.typeUser='lifeguard';
@@ -111,6 +118,16 @@ export class UserDetailComponent{
               error => console.error(error)
             );
         }
+    }
+
+    offerAccepted(offer: Offer):boolean|void{
+        let check = false
+            for (let o of this.offersAccepted){
+                if (o.id === offer.id){
+                    check = true
+                }
+            }
+        return check;
     }
 
     //Obsolet
