@@ -52,6 +52,10 @@ public class Offer {
         return this.lifeguard != null;
     }
 
+    public void resetLifeguards() {
+        this.lifeguards = new ArrayList<>();
+    }
+
     // Getters
     public Long getId() {
         return id;
@@ -120,6 +124,9 @@ public class Offer {
         }
         if (builder.start != null) {
             this.start = builder.start;
+        }
+        if (builder.type != null) {
+            this.type = builder.type;
         }
         if (builder.description != null) {
             this.description = builder.description;

@@ -108,6 +108,10 @@ public class Lifeguard extends Person{
         this.offers.add(offer);
     }
 
+    public void deleteOffer(Offer offer) {
+        this.offers.remove(offer);
+    }
+
     public void addOfferAccepted(Offer offer) {
         if (this.offers_accepted == null) {
             this.offers_accepted = new ArrayList<>();

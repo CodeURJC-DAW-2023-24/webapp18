@@ -1,6 +1,7 @@
 package es.codeurjc.controller;
 
 import java.util.List;
+import java.time.LocalDate;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,18 +56,17 @@ public class OfferController {
     @GetMapping("/offer")
     public String offer(@RequestParam("id") int id, Model model, HttpServletRequest request) {
         Offer offer = offerService.findById(id).get();
+        String username = request.getUserPrincipal().getName();
 
         model.addAttribute("offer", offer);
         model.addAttribute("id", offer.getId());
-        model.addAttribute("admin", request.isUserInRole("ADMIN"));
-        model.addAttribute("employer", request.isUserInRole("EMP"));
         model.addAttribute("lifeguard",
-                request.isUserInRole("LIFE") && !offer.isOffered(request.getUserPrincipal().getName())
-                        && !request.getUserPrincipal().getName().equals("admin"));
+                request.isUserInRole("LIFE") && !offer.isOffered(username)
+                        && !username.equals("admin"));
 
         boolean flag = false;
         if (offer.getEmployer() != null && request.getUserPrincipal() != null)
-            flag = offer.getEmployer().getMail().equals(request.getUserPrincipal().getName());
+            flag = offer.getEmployer().getMail().equals(username);
         model.addAttribute("canEdit", request.isUserInRole("ADMIN") || flag);
 
         return "offer";
@@ -75,14 +75,19 @@ public class OfferController {
     @GetMapping("/offer/add")
     public String newOffer(Model model, HttpServletRequest request) {
         Collection<Pool> pools = poolService.findAll();
+        LocalDate date = LocalDate.now();
+
         model.addAttribute("pools", pools);
+        model.addAttribute("salary", 1200);
+        model.addAttribute("start", date);
+
         return "offer_form";
     }
 
     @PostMapping("/offer/add")
     public String addOffer(Model model, HttpServletRequest request) {
         try {
-            offerService.checkOffer(request);
+            offerService.checkOfferRequest(request, true);
         } catch (Exception e) {
             return offerService.showError(model, e.getMessage());
         }
@@ -99,14 +104,51 @@ public class OfferController {
         pool.addOffer(offer);
         poolService.save(pool);
 
-        return "redirect:/offer/added";
+        return "redirect:/offer/added?id=" + offer.getId();
     }
 
     @GetMapping("/offer/added")
-    public String addedOffer(Model model, HttpServletRequest request) {
+    public String addedOffer(@RequestParam("id") int id, Model model, HttpServletRequest request) {
         model.addAttribute("title", "Oferta añadida");
         model.addAttribute("message", "Oferta añadida correctamente. ¡Gracias por confiar en nosotros!");
-        model.addAttribute("back", "/");
+        model.addAttribute("back", "/offer?id=" + id);
+        return "feedback";
+    }
+
+    @GetMapping("/offer/edit")
+    public String editOffer(@RequestParam("id") int id, Model model, HttpServletRequest request) {
+        Offer offer = offerService.findById(id).get();
+        String start = offerService.formattedDate(offer.getStart());
+
+        model.addAttribute("offer", offer);
+        model.addAttribute("start", start);
+        model.addAttribute("salary", offer.getSalary());
+        model.addAttribute("edit", true);
+        return "offer_form";
+    }
+
+    @PostMapping("/offer/edit")
+    public String updateOffer(@RequestParam("id") int id, Model model, HttpServletRequest request) {
+        try {
+            offerService.checkOfferRequest(request, false);
+        } catch (Exception e) {
+            return offerService.showError(model, e.getMessage());
+        }
+
+        Offer offer = offerService.findById(id).get();
+
+        offerService.updateOffer(offer, request);
+        offerService.resetOffer(offer);
+        offerService.save(offer);
+
+        return "redirect:/offer/edited?id=" + offer.getId();
+    }
+
+    @GetMapping("/offer/edited")
+    public String editedOffer(@RequestParam("id") int id, Model model, HttpServletRequest request) {
+        model.addAttribute("title", "Oferta actualizada");
+        model.addAttribute("message", "Oferta actualizada correctamente.");
+        model.addAttribute("back", "/offer?id=" + id);
         return "feedback";
     }
 
