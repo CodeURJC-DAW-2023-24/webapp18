@@ -7,6 +7,7 @@ import { UserService } from '../../services/user.service';
 import { Me } from '../../models/me.model';
 import { catchError } from 'rxjs';
 import { Offer } from '../../models/offer.model';
+import { MessageService } from '../../services/message.service';
 
 @Component({
     selector: "user-detail",
@@ -28,7 +29,7 @@ export class UserDetailComponent{
     offers: Offer[] = [];
     offersAccepted: Offer[] = [];
 
-    constructor(activatedRoute: ActivatedRoute, private router:Router, private userService: UserService) {
+    constructor(activatedRoute: ActivatedRoute, private router:Router, private userService: UserService, private messageService: MessageService){
         let id = activatedRoute.snapshot.params['id'];
         let type : string | undefined;
         const routeSegments = activatedRoute.snapshot.url;
@@ -79,7 +80,7 @@ export class UserDetailComponent{
                         );
                     }
                 },
-                error => console.error(error)
+                error => this.messageService.showFatalError("Usuario no encontrado")
             );
         } else if (id && (type === 'employers')){
             userService.getEmployer(id).subscribe(
@@ -115,7 +116,7 @@ export class UserDetailComponent{
                     );
                 }
               },
-              error => console.error(error)
+              error => this.messageService.showFatalError("Usuario no encontrado")
             );
         }
     }

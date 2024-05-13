@@ -11,6 +11,10 @@ export class MessageService {
         this.showMessage(message, "javascript:history.back()");
     }
 
+    showFatalError(message: string): void {
+        this.showMessage(message, "/");
+    }
+
     showMessage(message: string, back: string) {
         const navigationExtras: NavigationExtras = {
             state: {

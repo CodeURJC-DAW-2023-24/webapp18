@@ -45,7 +45,7 @@ public class UserController {
 
         if (request.getUserPrincipal() == null) {
             model.addAttribute("title", "Error");
-            model.addAttribute("message", "Debes iniciar sesión para acceder a tu perfil");
+            model.addAttribute("message", "Debes iniciar sesión para acceder a los perfiles");
             model.addAttribute("back", "/login");
             return "feedback";
         }
@@ -65,10 +65,16 @@ public class UserController {
             model.addAttribute("user", employer);
             model.addAttribute("canSeeOffers", true);
         }
-        if (lifeguardOp.isPresent()) {
+        else if (lifeguardOp.isPresent()) {
             Lifeguard lifeguard = lifeguardOp.get();
             model.addAttribute("lifeguard", request.isUserInRole("USER"));
             model.addAttribute("user", lifeguard);
+        }
+        else {
+            model.addAttribute("title", "Error");
+            model.addAttribute("message", "Usuario no encontrado");
+            model.addAttribute("back", "/");
+            return "feedback";
         }
 
         return "profile";
