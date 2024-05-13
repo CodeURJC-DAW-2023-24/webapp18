@@ -43,8 +43,8 @@
     </div>
 
     <div id="messageContainer">
-        <div *ngIf="applied && appliedLg.length !== 0" class="subcontainer message" id="{{offer.id}}">
-            <div *ngFor="let lifeguard of appliedLg; let i = index">
+        <div *ngIf="applied && appliedLg.length !== 0" id="{{offer.id}}">
+            <div *ngFor="let lifeguard of appliedLg; let i = index" class="subcontainer message">
                 <data>
                     <a class="author" [routerLink]="['/lifeguards/',lgIds[i]]">{{lifeguard}}:</a>
                     <p class="body"> {{appliedLgDesc[i]}} </p>
