@@ -5,6 +5,7 @@ import { Employer } from '../../models/employer.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { HttpClient } from '@angular/common/http';
+import { MessageService } from '../../services/message.service';
 
 @Component({
     selector: "user-form",
@@ -32,7 +33,7 @@ export class UserFormComponent{
     @ViewChild("file")
     file:any;
 
-    constructor(activatedRoute: ActivatedRoute, private router:Router, private service: UserService, private httpClient: HttpClient) {
+    constructor(activatedRoute: ActivatedRoute, private router:Router, private service: UserService, private httpClient: HttpClient, private messageService: MessageService) {
         this.id = activatedRoute.snapshot.params['id'];
         let type : string | undefined;
         const routeSegments = activatedRoute.snapshot.url;
@@ -77,53 +78,49 @@ export class UserFormComponent{
     }
 
     save() {
-        var message = this.checkForm(this.user.mail,this.user.age,this.user.phone)
-        if (message === ''){
-            if (this.color === 'green'){
-                if (this.typeUser==='lifeguard'){
-                    this.updateLifeguard();
-                    this.service.addOrUpdateLifeguard(this.lifeguard).subscribe(
-                    (lifeguard:any)=> {
-                        if(this.edit){
-                            this.uploadLifeguardImage(lifeguard);
-                        }else{
-                            this.httpClient.post("/api/auth/login", { username: this.user.mail, password: this.user.pass }, { withCredentials: true }).subscribe(
-                            (response) => {this.uploadLifeguardImage(lifeguard);},
-                            (error) => alert("Wrong credentials")
-                            );
-                        }
-                    },
-                    error => {console.error('Error creating new lifeguard: ' + error)
-                        if (!this.edit){
-                            message = "Email en uso por otro usuario";
-                            this.router.navigate(['/message/'+message]);
-                            }
-                        }
-                    );
-                } else if (this.typeUser==='employer'){
-                    this.updateEmployer();
-                    this.service.addOrUpdateEmployer(this.employer).subscribe(
-                    (employer:any) => { 
-                    if(this.edit){
-                        this.uploadEmployerImage(employer);
-                    }else{
+        var message = this.checkForm(this.user.mail, this.user.age, this.user.phone)
+        if (message !== '')
+            this.messageService.showError(message);
+
+        if (this.color !== 'green')
+            this.messageService.showError("Email en uso por otro usuario.");
+
+        if (this.typeUser === 'lifeguard') {
+            this.updateLifeguard();
+            this.service.addOrUpdateLifeguard(this.lifeguard).subscribe(
+                (lifeguard: any) => {
+                    if (this.edit) {
+                        this.uploadLifeguardImage(lifeguard);
+                    } else {
                         this.httpClient.post("/api/auth/login", { username: this.user.mail, password: this.user.pass }, { withCredentials: true }).subscribe(
-                            (response) => {this.uploadEmployerImage(employer);},
-                            (error) => alert("Wrong credentials")
-                            );
-                    }},
-                    error => {console.error('Error creating new employer: ' + error)
-                        message = "Email en uso por otro usuario";
-                        this.router.navigate(['/message/'+message]); 
-                        }
-                    );
+                            _response => this.uploadLifeguardImage(lifeguard),
+                            _error => this.messageService.showError("Credenciales inválidas")
+                        );
+                    }
+                },
+                _error => {
+                    if (!this.edit)
+                        this.messageService.showError("Email en uso por otro usuario");
                 }
-            }else{
-                message = "Email en uso."
-                this.router.navigate(['/message/'+message]);
-            }
-        }else{
-            this.router.navigate(['/message/'+message]);
+            );
+        } else if (this.typeUser === 'employer') {
+            this.updateEmployer();
+            this.service.addOrUpdateEmployer(this.employer).subscribe(
+                (employer: any) => {
+                    if (this.edit) {
+                        this.uploadEmployerImage(employer);
+                    } else {
+                        this.httpClient.post("/api/auth/login", { username: this.user.mail, password: this.user.pass }, { withCredentials: true }).subscribe(
+                            _response => this.uploadEmployerImage(employer),
+                            _error => this.messageService.showError("Credenciales inválidas")
+                        );
+                    }
+                },
+                _error => {
+                    if (!this.edit)
+                        this.messageService.showError("Email en uso por otro usuario");
+                }
+            );
         }
     }
 
@@ -426,46 +423,37 @@ export class UserFormComponent{
     checkForm(mail: string, age: string | undefined, phone: string | undefined): string {
         let phoneNum: number = 0;
         let ageNum: number = 0;
-        let message1: string = "";
-        let message2: string = "";
-        let message3: string = "";
-        let message4: string = "";
-        let message5: string = "";
-    
+
         if (phone && phone !== "") {
             phoneNum = parseInt(phone);
-            if (isNaN(phoneNum)) {
-                message1 = "El teléfono debe ser un número. ";
-            } else if (phoneNum < 0) {
-                message1 = "El teléfono debe ser un número positivo. ";
-            } else if (phone.length !== 9) {
-                message1 = "El teléfono debe tener 9 cifras. ";
-            }
-        }
-    
-        if (age && age !== "") {
-            ageNum = parseInt(age);
-            if (isNaN(ageNum)) {
-                message2 = "La edad debe ser un número. ";
-            } else if (ageNum < 0) {
-                message2 = "La edad debe ser un número positivo. ";
-            } else if (ageNum % 1 !== 0) {
-                message2 = "La edad debe ser un número entero. ";
-            }
-        }
-    
-        if(!mail && !this.edit){
-            message3 = "Introduzca un email. ";
-        }
-        if ((!this.user.pass || this.user.pass === "") && !this.edit){
-            message4 = "Introduzca una contraseña. ";
+            if (isNaN(phoneNum))
+                return "El teléfono debe ser un número. ";
+            else if (phoneNum < 0)
+                return "El teléfono debe ser un número positivo. ";
+            else if (phone.length !== 9)
+                return "El teléfono debe tener 9 cifras. ";
         }
 
-        if ((!this.typeUser)){
-            message5 = "Selecciona si eres socorrista o empleado. ";
+        if (age && age !== "") {
+            ageNum = parseInt(age);
+            if (isNaN(ageNum))
+                return "La edad debe ser un número. ";
+            else if (ageNum < 0)
+                return "La edad debe ser un número positivo. ";
+            else if (ageNum % 1 !== 0)
+                return "La edad debe ser un número entero. "
         }
-    
-        return message1 + message2 + message3 + message4 + message5;
+
+        if (!mail && !this.edit)
+            return "Introduzca un email. ";
+
+        if ((!this.user.pass || this.user.pass === "") && !this.edit)
+            return "Introduzca una contraseña. ";
+
+        if (!this.typeUser)
+            return "Selecciona si eres socorrista o empleado. ";
+
+        return "";
     }
 
     showForm() {

@@ -23,6 +23,7 @@ import { PoolComponent } from './components/pool/pool.component';
 import { StadisticsComponent } from './components/stadistics/stadistics.component';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { PoolFormComponent } from './components/pools/pool-form.component';
+import { MessageComponent } from './components/message/message.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { PoolFormComponent } from './components/pools/pool-form.component';
     OfferComponent, OfferEditComponent, OfferCreateComponent, OffersComponent,
     PoolsComponent, PoolComponent,
     StadisticsComponent, PoolFormComponent,
-    MapsComponent
+    MapsComponent,
+    MessageComponent
   ],
   imports: [
     CommonModule,
