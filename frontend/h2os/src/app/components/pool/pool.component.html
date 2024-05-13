@@ -44,7 +44,7 @@
                         <a class="author">{{authors[i]}}:</a>
                         <p class="body"> {{msg}} </p>
                     </data>
-                    <div *ngIf="owner[i]" class="btn-cont">
+                    <div *ngIf="owner[i] || admin" class="btn-cont">
                         <button (click)="deleteComment(i)" class="btn btn-red "><i class="bi bi-trash"></i></button>
                     </div>
                 </div>

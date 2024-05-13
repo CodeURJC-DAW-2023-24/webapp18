@@ -3,12 +3,12 @@
         <h2>{{user.name}} {{user.surname}}</h2>
         <div class="row">
             <div *ngIf="user && typeUser==='lifeguard'" class="col-md-4">
-                <img *ngIf="image"  id="img-user" [src]="imageUser" >
+                <img *ngIf="image" id="img-user" [src]="imageUser">
                 <img *ngIf="!image" id="img-user" src="/assets/images/noPhotoUser.jpg">
             </div>
 
             <div *ngIf="user && typeUser==='employer'" class="col-md-4">
-                <img *ngIf="image"  id="img-user" [src]="imageUser" >
+                <img *ngIf="image" id="img-user" [src]="imageUser">
                 <img *ngIf="!image" id="img-user" src="/assets/images/noPhotoUser.jpg">
             </div>
 
@@ -20,7 +20,7 @@
                 <p><strong>Dirección:</strong> {{user.direction}}</p>
                 <p><strong>Localidad:</strong> {{user.locality}} ({{user.province}}, {{user.country}})</p>
 
-                <p *ngIf="typeUser==='lifeguard'"><strong>Título de socorrismo</strong> {{lifeguard.document}}</p>
+                <p *ngIf="typeUser==='lifeguard'"><strong>Título de socorrismo:</strong> {{lifeguard.document}}</p>
                 <p *ngIf="typeUser==='employer'"><strong>Empresa:</strong> {{employer.company}}</p>
 
                 <p><strong>Descripción:</strong> {{user.description}}</p>
@@ -33,7 +33,7 @@
                 <ng-container *ngFor="let skill of lifeguard.skills">
                     <li>{{skill}}</li>
                 </ng-container>
-                <li *ngIf="!lifeguard.skills">No hay aptitudes</li>
+                <li *ngIf="lifeguard.skills?.length == 0">No hay aptitudes</li>
             </ul>
         </div>
 

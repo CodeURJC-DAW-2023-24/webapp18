@@ -244,7 +244,7 @@ public class UserController {
             return "login";
     }
 
-    @RequestMapping("/loginerror")
+    @RequestMapping("/login/error")
     public String loginerror(Model model) {
         model.addAttribute("title", "Error");
         model.addAttribute("message", "Credenciales inválidas");

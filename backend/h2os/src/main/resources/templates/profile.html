@@ -35,7 +35,7 @@
                     <p><strong>Localidad:</strong> {{locality}} ({{province}}, {{country}})</p>
 
                     {{#document}}
-                    <p><strong>Título de socorrismo</strong> {{document}}</p>
+                    <p><strong>Título de socorrismo:</strong> {{document}}</p>
                     {{/document}}
                     {{#company}}
                     <p><strong>Empresa:</strong> {{company}}</p>
@@ -64,8 +64,8 @@
                 {{#me}}
                 <a href="/user/{{mail}}/edit" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
                 <form action="/logout" method="post">
-                    <input type="hidden" name="_csrf" value="{{token}}"/>
-                    <input type="submit" class="btn btn-red" value="Cerrar sesión"/>
+                    <input type="hidden" name="_csrf" value="{{token}}" />
+                    <input type="submit" class="btn btn-red" value="Cerrar sesión" />
                 </form>
                 {{/me}}
                 {{#iamAdmin}}
@@ -73,9 +73,9 @@
                 <a href="/user/{{mail}}/edit" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
                 <form role="form" action='/profile/delete?id={{id}}' method="post">
                     <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
-                    <input type ="hidden" name="_csrf" value="{{token}}"/>
-                    <input type ="hidden" name="id" value="{{id}}"/>
-                    <input type ="hidden" name="mail" value="{{mail}}"/>
+                    <input type="hidden" name="_csrf" value="{{token}}" />
+                    <input type="hidden" name="id" value="{{id}}" />
+                    <input type="hidden" name="mail" value="{{mail}}" />
                 </form>
                 {{/me}}
                 {{/iamAdmin}}
