@@ -56,7 +56,7 @@ public class OfferController {
     @GetMapping("/offer")
     public String offer(@RequestParam("id") int id, Model model, HttpServletRequest request) {
         Offer offer = offerService.findById(id).get();
-        String username = request.getUserPrincipal().getName();
+        String username = request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : null;
 
         model.addAttribute("offer", offer);
         model.addAttribute("id", offer.getId());
