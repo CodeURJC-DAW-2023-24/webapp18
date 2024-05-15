@@ -14,17 +14,21 @@
 
     <main class="container">
       <div class="top-container">
-        {{#logged}}
-          <a class="btn" id="filter-btn" onclick="filterByDistance()" style="margin-right: -49px;">
-            <i class="bi bi-funnel-fill"></i>
-          </a>
-        {{/logged}}
+          <div class="left-cont">
+              {{#logged}}
+              <a class="btn" onclick="filterByDistance()">
+                  <i class="bi bi-funnel-fill"></i>
+              </a>
+              {{/logged}}
+          </div>
 
-        <h2>Mapa de ofertas</h2>
+          <h2>Mapa de ofertas</h2>
 
-        <a class="btn" href="/offers">
-          <i class="bi bi-grid-fill"></i>
-        </a>
+          <div class="right-cont">
+              <a class="btn" href="/offers">
+                  <i class="bi bi-grid-fill"></i>
+              </a>
+          </div>
       </div>
 
       <section id="map"></section>

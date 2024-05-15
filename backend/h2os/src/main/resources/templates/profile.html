@@ -15,7 +15,43 @@
     {{#user}}
     <div class="data">
         <main class="container container-main">
-            <h2>{{name}} {{surname}}</h2>
+            <div class="top-container">
+                <div class="left-cont">
+                    <a href="/" class="btn" role="button">
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+                </div>
+
+                <h2>{{name}}</h2>
+
+                <div class="right-cont">
+                {{#me}}
+                <a href="/user/{{mail}}/edit" class="btn" role="button">
+                    <i class="bi bi-pencil-fill"></i>
+                </a>
+                <form action="/logout" method="post">
+                    <input type="hidden" name="_csrf" value="{{token}}"/>
+                    <button type="submit" class="btn btn-red">
+                        <i class="bi bi-box-arrow-left"></i>
+                    </button>
+                </form>
+                {{/me}}
+                {{#iamAdmin}} {{^me}}
+                <a href="/user/{{mail}}/edit" class="btn" role="button">
+                    <i class="bi bi-pencil-fill"></i>
+                </a>
+                <form role="form" action='/profile/delete?id={{id}}' method="post">
+                    <button type="submit" class="btn btn-red">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                    <input type="hidden" name="_csrf" value="{{token}}" />
+                    <input type="hidden" name="id" value="{{id}}" />
+                    <input type="hidden" name="mail" value="{{mail}}" />
+                </form>
+                {{/me}} {{/iamAdmin}}
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-4">
                     {{#photo}}
@@ -60,27 +96,6 @@
             </div>
             {{/lifeguard}}
 
-            <div class="btn-cont">
-                {{#me}}
-                <a href="/user/{{mail}}/edit" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-                <form action="/logout" method="post">
-                    <input type="hidden" name="_csrf" value="{{token}}" />
-                    <input type="submit" class="btn btn-red" value="Cerrar sesión" />
-                </form>
-                {{/me}}
-                {{#iamAdmin}}
-                {{^me}}
-                <a href="/user/{{mail}}/edit" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-                <form role="form" action='/profile/delete?id={{id}}' method="post">
-                    <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
-                    <input type="hidden" name="_csrf" value="{{token}}" />
-                    <input type="hidden" name="id" value="{{id}}" />
-                    <input type="hidden" name="mail" value="{{mail}}" />
-                </form>
-                {{/me}}
-                {{/iamAdmin}}
-                <a href="/" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
-            </div>
         </main>
 
         <div class="container container-additional">

@@ -8,6 +8,7 @@
 
 .commentContainer {
     background: var(--gradient-inverse);
+    gap: 10%;
 }
 
 .btn-cont, .body, /* These two are only for the margin */

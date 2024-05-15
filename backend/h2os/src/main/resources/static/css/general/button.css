@@ -65,9 +65,12 @@
     color: var(--third-color);
     border: transparent;
 
-    height: 49px;
+    height: 45px;
+    width: 45px;
+
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .top-container .btn:hover{
@@ -78,6 +81,11 @@
 .top-container .btn:active{
     background-color: var(--main-color);
     color: var(--third-color);
+}
+
+.top-container .btn-red:hover,
+.top-container .btn-red:active{
+    background-color: var(--red);
 }
 
 .bottom-right-button {

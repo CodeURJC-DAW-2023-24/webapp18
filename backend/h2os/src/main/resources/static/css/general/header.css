@@ -14,11 +14,16 @@ header {
     z-index: 1;
 }
 
-header a {
-    height: 100%;
+
+header a, header a:hover{
+    color: var(--second-color);
+    text-decoration: none;
+}
+
+.logo-cont {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
 }
 
 #header-img {
@@ -46,6 +51,5 @@ header a {
 }
 
 .bi-person-fill {
-    font-size: 2em;  /* width = 36px */
-    margin-left: 38px; /* (64 - 36) + 10 */
+    font-size: 2em;
 }

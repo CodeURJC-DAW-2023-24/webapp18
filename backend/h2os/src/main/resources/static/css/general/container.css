@@ -22,7 +22,6 @@
     color: var(--subcontainer-text-color);
 
     display: grid;
-    gap: 10%;
     align-items: center;
 }
 
@@ -56,12 +55,27 @@
 }
 
 .top-container .bi {
-    font-size: 1.25em;  /* width = 49px */
+    font-size: 1.25em;
 }
 
 .top-container h2 {
+    flex: 3;
     text-align: center;
-    flex-grow: 1;
     margin: 0 10px;
-    margin-left: 59px;  /* (10 + 49) */
+}
+
+.right-cont,
+.left-cont {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1;
+    gap: 10px;
+}
+
+.right-cont {
+    justify-content: flex-end;
+}
+
+.left-cont {
+    justify-content: flex-start;
 }

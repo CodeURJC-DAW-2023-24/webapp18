@@ -17,7 +17,39 @@
 
     <div class="container">
         {{#offer}}
-        <h2>Oferta en <a href="/pool?id={{pool.id}}">{{pool.name}}</a></h2>
+        <div class="top-container">
+            <div class="left-cont">
+                <a href="/offers" class="btn" role="button">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+            </div>
+
+            <h2>Oferta en <a href="/pool?id={{pool.id}}">{{pool.name}}</a></h2>
+
+            <div class="right-cont">
+            {{#lifeguard}}
+            <form role="form" action='/offer/offered/new' method="post">
+                <input type ="hidden" name="id" value="{{offer.id}}"/>
+                <input type ="hidden" name="_csrf" value="{{token}}"/>
+                <button type = "submit" class="btn" >
+                    <i class="bi bi-bookmark-fill">
+                </button>
+            </form>
+            {{/lifeguard}}
+            {{#canEdit}}
+            <a href="/offer/edit?id={{id}}" class="btn" role="button">
+                <i class="bi bi-pencil-fill"></i>
+            </a>
+            <form role="form" action='/offer/delete' method="post">
+                <input type="hidden" name="id" value="{{offer.id}}"/>
+                <input type="hidden" name="_csrf" value="{{token}}"/>
+                <button type="submit" class="btn btn-red">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+            </form>
+            {{/canEdit}}
+            </div>
+        </div>
 
         <div class="row">
             <a class="col-lg-6 col-img" href="/pool?id={{pool.id}}">
@@ -34,29 +66,13 @@
         </div>
         {{/offer}}
 
+        {{#canEdit}}
         <div class="btn-cont">
-            {{#lifeguard}}
-            <form role="form" action='/offer/offered/new' method="post">
-                <input type ="hidden" name="id" value="{{offer.id}}"/>
-                <input type ="hidden" name="_csrf" value="{{token}}"/>
-                <button type = "submit" class="btn" >
-                    <i class="bi bi-bookmark-fill"> Proponerse</i>
-                </button>
-            </form>
-            {{/lifeguard}}
-            {{#canEdit}}
-            <button class="btn" onclick="showOffered('{{offer.id}}')" id="showButton">Ver propuestas</button>
-            <a href="/offer/edit?id={{id}}" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-            <form role="form" action='/offer/delete' method="post">
-                <input type="hidden" name="id" value="{{offer.id}}"/>
-                <input type="hidden" name="_csrf" value="{{token}}"/>
-                <button type="submit" class="btn btn-red" >
-                    <i class="bi bi-trash"> Eliminar</i>
-                </button>
-            </form>
-            {{/canEdit}}
-            <a href="/offers" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
+            <button class="btn" onclick="showOffered('{{offer.id}}')" id="showButton">
+                <bi class="bi bi-eye-fill"></bi> Propuestas
+            </button>
         </div>
+        {{/canEdit}}
 
         <div id="messageContainer"></div>
     </div>
