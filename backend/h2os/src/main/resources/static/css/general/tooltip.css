@@ -1,0 +1,30 @@
+tool-tip {
+    position: absolute;
+    z-index: 1;
+
+    color: black;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: .5rem 1rem;
+    font-size: .8rem;
+    white-space: nowrap;
+
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    opacity: 0;
+    transition: opacity .3s ease;
+    pointer-events: none;
+    user-select: none;
+}
+
+:has(> tool-tip) {
+    position: relative;
+}
+
+:has(> tool-tip):hover tool-tip{
+    opacity: 1;
+    transition-delay: 0.5s;
+}

@@ -20,7 +20,7 @@
         <div class="top-container">
             <div class="left-cont">
                 <a href="/offers" class="btn" role="button">
-                    <i class="bi bi-arrow-left"></i>
+                    <i class="bi bi-arrow-left"></i><tool-tip>Volver</tool-tip>
                 </a>
             </div>
 
@@ -32,19 +32,19 @@
                 <input type ="hidden" name="id" value="{{offer.id}}"/>
                 <input type ="hidden" name="_csrf" value="{{token}}"/>
                 <button type = "submit" class="btn" >
-                    <i class="bi bi-bookmark-fill">
+                    <i class="bi bi-bookmark-fill"><tool-tip>Aplicar</tool-tip></i>
                 </button>
             </form>
             {{/lifeguard}}
             {{#canEdit}}
             <a href="/offer/edit?id={{id}}" class="btn" role="button">
-                <i class="bi bi-pencil-fill"></i>
+                <i class="bi bi-pencil-fill"></i><tool-tip>Editar oferta</tool-tip>
             </a>
             <form role="form" action='/offer/delete' method="post">
                 <input type="hidden" name="id" value="{{offer.id}}"/>
                 <input type="hidden" name="_csrf" value="{{token}}"/>
                 <button type="submit" class="btn btn-red">
-                    <i class="bi bi-trash-fill"></i>
+                    <i class="bi bi-trash-fill"></i><tool-tip>Borrar oferta</tool-tip>
                 </button>
             </form>
             {{/canEdit}}

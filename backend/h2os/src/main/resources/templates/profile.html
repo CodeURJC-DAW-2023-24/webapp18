@@ -18,7 +18,7 @@
             <div class="top-container">
                 <div class="left-cont">
                     <a href="/" class="btn" role="button">
-                        <i class="bi bi-arrow-left"></i>
+                        <i class="bi bi-arrow-left"></i><tool-tip>Volver</tool-tip>
                     </a>
                 </div>
 
@@ -27,22 +27,22 @@
                 <div class="right-cont">
                 {{#me}}
                 <a href="/user/{{mail}}/edit" class="btn" role="button">
-                    <i class="bi bi-pencil-fill"></i>
+                    <i class="bi bi-pencil-fill"></i><tool-tip>Editar</tool-tip>
                 </a>
                 <form action="/logout" method="post">
                     <input type="hidden" name="_csrf" value="{{token}}"/>
                     <button type="submit" class="btn btn-red">
-                        <i class="bi bi-box-arrow-left"></i>
+                        <i class="bi bi-box-arrow-left"></i><tool-tip>Cerrar sesión</tool-tip>
                     </button>
                 </form>
                 {{/me}}
                 {{#iamAdmin}} {{^me}}
                 <a href="/user/{{mail}}/edit" class="btn" role="button">
-                    <i class="bi bi-pencil-fill"></i>
+                    <i class="bi bi-pencil-fill"></i><tool-tip>Editar</tool-tip>
                 </a>
                 <form role="form" action='/profile/delete?id={{id}}' method="post">
                     <button type="submit" class="btn btn-red">
-                        <i class="bi bi-trash-fill"></i>
+                        <i class="bi bi-trash-fill"></i><tool-tip>Borrar usuario</tool-tip>
                     </button>
                     <input type="hidden" name="_csrf" value="{{token}}" />
                     <input type="hidden" name="id" value="{{id}}" />
