@@ -13,16 +13,12 @@
     </div>
 
     <section class="cards" id="offers">
-        <div *ngFor="let offer of offers">
-            <a [routerLink]="[offer.id]">
-                <img src={{offer.image}}>
-                <p>{{offer.direction}}</p>
-                <p>{{offer.salary}}€</p>
-            </a>
-        </div>
-        <div *ngIf="offers.length === 0">
-            <p>No hay ofertas</p>
-        </div>
+        <a *ngFor="let offer of offers" [routerLink]="[offer.id]">
+            <img src={{offer.image}}>
+            <p>{{offer.direction}}</p>
+            <p>{{offer.salary}}€</p>
+        </a>
+        <p *ngIf="offers.length === 0">No hay ofertas</p>
     </section>
 
     <div *ngIf="hasMore" class="btn-cont" id="load">

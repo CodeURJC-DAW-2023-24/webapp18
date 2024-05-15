@@ -13,15 +13,11 @@
     </div>
 
     <section class="cards" id="pools">
-        <div *ngFor="let pool of pools">
-            <a [routerLink]="[pool.id]">
-                <img src={{pool.image}}>
-                <p>{{pool.direction}}</p>
-            </a>
-        </div>
-        <div *ngIf="pools.length === 0">
-            <p>No hay piscinas</p>
-        </div>
+        <a *ngFor="let pool of pools" [routerLink]="[pool.id]">
+            <img src={{pool.image}}>
+            <p>{{pool.name}}</p>
+        </a>
+        <p *ngIf="pools.length === 0">No hay piscinas</p>
     </section>
 
     <div *ngIf="hasMore" class="btn-cont" id="load">
