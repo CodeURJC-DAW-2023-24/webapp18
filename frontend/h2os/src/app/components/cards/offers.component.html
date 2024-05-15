@@ -7,7 +7,7 @@
 
         <div class="right-cont">
             <a class="btn" [routerLink]="['/']">
-                <i class="bi bi-map-fill"></i>
+                <i class="bi bi-map-fill"></i><tool-tip>Mapa</tool-tip>
             </a>
         </div>
     </div>
@@ -33,5 +33,7 @@
 </main>
 
 <div *ngIf="canAdd" class="btn-cont bottom-right-button">
-    <a [routerLink]="['new']" class="btn" role="btn"><i class="bi bi-plus-circle"></i></a>
+    <a [routerLink]="['new']" class="btn" role="btn">
+        <i class="bi bi-plus-circle"></i><tool-tip style="top: auto; bottom: 100%;">Añadir oferta</tool-tip>
+    </a>
 </div>

@@ -27,7 +27,7 @@
                 <div class="right-cont">
                 {{#me}}
                 <a href="/user/{{mail}}/edit" class="btn" role="button">
-                    <i class="bi bi-pencil-fill"></i><tool-tip>Editar</tool-tip>
+                    <i class="bi bi-pencil-fill"></i><tool-tip>Editar perfil</tool-tip>
                 </a>
                 <form action="/logout" method="post">
                     <input type="hidden" name="_csrf" value="{{token}}"/>
@@ -38,7 +38,7 @@
                 {{/me}}
                 {{#iamAdmin}} {{^me}}
                 <a href="/user/{{mail}}/edit" class="btn" role="button">
-                    <i class="bi bi-pencil-fill"></i><tool-tip>Editar</tool-tip>
+                    <i class="bi bi-pencil-fill"></i><tool-tip>Editar usuario</tool-tip>
                 </a>
                 <form role="form" action='/profile/delete?id={{id}}' method="post">
                     <button type="submit" class="btn btn-red">

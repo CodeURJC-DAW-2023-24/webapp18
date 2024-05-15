@@ -3,7 +3,7 @@
         <div class="top-container">
             <div class="left-cont">
                 <a [routerLink]="['/']" class="btn" role="button">
-                    <i class="bi bi-arrow-left"></i>
+                    <i class="bi bi-arrow-left"></i><tool-tip>Volver</tool-tip>
                 </a>
             </div>
 
@@ -11,17 +11,17 @@
 
             <div class="right-cont">
                 <a *ngIf="!otherUser || admin" [routerLink]="editUser" class="btn" role="button">
-                    <i class="bi bi-pencil-fill"></i>
+                    <i class="bi bi-pencil-fill"></i><tool-tip>Editar perfil</tool-tip>
                 </a>
                 <button *ngIf="!otherUser" (click)="logout()" class="btn btn-red">
-                    <i class="bi bi-box-arrow-left"></i>
+                    <i class="bi bi-box-arrow-left"></i><tool-tip>Cerrar sesión</tool-tip>
                 </button>
                 <ng-container *ngIf="admin && otherUser">
                     <button *ngIf="lifeguard" (click)="deleteLifeguard()" class="btn btn-red ">
-                        <i class="bi bi-trash-fill"></i>
+                        <i class="bi bi-trash-fill"></i><tool-tip>Borrar socorrista</tool-tip>
                     </button>
                     <button *ngIf="employer" (click)="deleteEmployer()" class="btn btn-red ">
-                        <i class="bi bi-trash-fill"></i>
+                        <i class="bi bi-trash-fill"></i><tool-tip>Borrar empleado</tool-tip>
                     </button>
                 </ng-container>
             </div>
