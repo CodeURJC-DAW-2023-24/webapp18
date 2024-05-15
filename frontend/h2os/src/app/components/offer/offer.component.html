@@ -1,5 +1,26 @@
 <div class="container">
-    <h2>Oferta en <a [routerLink]="['/pools', poolID]">{{poolName}}</a></h2>
+    <div class="top-container">
+        <div class="left-cont">
+            <a [routerLink]="['/offers']" class="btn" role="button">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+        </div>
+        <h2>Oferta en <a [routerLink]="['/pools', poolID]">{{poolName}}</a></h2>
+        <div class="right-cont">
+            <form *ngIf="canApply" role="form">
+                <input type="hidden" name="id" value="{{offer.id}}" />
+                <button class="btn" (click)="apply(offer.id)" id="applyButton">
+                    <i class="bi bi-bookmark-fill"></i>
+                </button>
+            </form>
+            <button *ngIf="edit" class="btn" [routerLink]="['edit']">
+                <i class="bi bi-pencil-fill"></i>
+            </button>
+            <button *ngIf="edit" class="btn btn-red" (click)="deleteOffer(offer.id)">
+                <i class="bi bi-trash-fill"></i>
+            </button>
+        </div>
+    </div>
 
     <div *ngIf="offerLoaded" class="row">
         <a class="col-lg-6 col-img" [routerLink]="['/pools', poolID]">
@@ -15,31 +36,10 @@
         </div>
     </div>
 
-    <div class="btn-cont">
-        <div *ngIf="canApply">
-            <form role="form">
-                <input type="hidden" name="id" value="{{offer.id}}" />
-                <button class="btn" (click)="apply(offer.id)" id="applyButton">
-                    <i class="bi bi-bookmark-fill"> Proponerse</i>
-                </button>
-            </form>
-        </div>
-
-        <div *ngIf="edit">
-            <button class="btn" (click)="showApplied(offer.id)" id="showButton">
-                <i class="bi bi-eye-fill"></i> Propuestas
-            </button>
-            <button class="btn btn-blue" [routerLink]="['edit']">
-                <i class="bi bi-pencil"></i> Editar
-            </button>
-            <button class="btn btn-red" (click)="deleteOffer(offer.id)">
-                <i class="bi bi-trash"> Eliminar</i>
-            </button>
-        </div>
-
-        <a [routerLink]="['/offers']" class="btn" role="button">
-            <i class="bi bi-box-arrow-left"></i> Volver
-        </a>
+    <div *ngIf="edit" class="btn-cont">
+        <button class="btn" (click)="showApplied(offer.id)" id="showButton">
+            <i class="bi bi-eye-fill"></i> Propuestas
+        </button>
     </div>
 
     <div id="messageContainer">

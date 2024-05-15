@@ -1,6 +1,32 @@
 <div class="data">
     <main class="container container-main">
-        <h2>{{user.name}} {{user.surname}}</h2>
+        <div class="top-container">
+            <div class="left-cont">
+                <a [routerLink]="['/']" class="btn" role="button">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+            </div>
+
+            <h2>{{user.name}} {{user.surname}}</h2>
+
+            <div class="right-cont">
+                <a *ngIf="!otherUser || admin" [routerLink]="editUser" class="btn" role="button">
+                    <i class="bi bi-pencil-fill"></i>
+                </a>
+                <button *ngIf="!otherUser" (click)="logout()" class="btn btn-red">
+                    <i class="bi bi-box-arrow-left"></i>
+                </button>
+                <ng-container *ngIf="admin && otherUser">
+                    <button *ngIf="lifeguard" (click)="deleteLifeguard()" class="btn btn-red ">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                    <button *ngIf="employer" (click)="deleteEmployer()" class="btn btn-red ">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </ng-container>
+            </div>
+        </div>
+
         <div class="row">
             <div *ngIf="user && typeUser==='lifeguard'" class="col-md-4">
                 <img *ngIf="image" id="img-user" [src]="imageUser">
@@ -35,22 +61,6 @@
                 </ng-container>
                 <li *ngIf="lifeguard.skills?.length == 0">No hay aptitudes</li>
             </ul>
-        </div>
-
-        <div class="btn-cont">
-            <ng-container *ngIf="!otherUser || admin">
-                <a [routerLink]="editUser" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-                <button *ngIf="!otherUser" (click)="logout()" class="btn btn-red">Cerrar sesión</button>
-            </ng-container>
-            <ng-container *ngIf="admin && otherUser">
-                <button *ngIf="lifeguard" (click)="deleteLifeguard()" class="btn btn-red ">
-                    <i class="bi bi-trash"></i>
-                </button>
-                <button *ngIf="employer" (click)="deleteEmployer()" class="btn btn-red ">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </ng-container>
-            <a [routerLink]="['/']" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
         </div>
     </main>
 

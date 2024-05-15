@@ -14,11 +14,13 @@
     z-index: 1;
 }
 
-:host a {
-    height: 100%;
+.logo-cont {
+    color: var(--second-color);
+    text-decoration: none;
+
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
 }
 
 #header-img {
@@ -46,6 +48,5 @@
 }
 
 .bi-person-fill {
-    font-size: 2em;  /* width = 36px */
-    margin-left: 38px; /* (64 - 36) + 10 */
+    font-size: 2em;
 }

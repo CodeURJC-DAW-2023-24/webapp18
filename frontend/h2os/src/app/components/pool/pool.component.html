@@ -1,6 +1,23 @@
 <div class="data">
     <div class="container container-main">
-        <h2>{{name}}</h2>
+        <div class="top-container">
+            <div class="left-cont">
+                <a [routerLink]="['/pools']" class="btn" role="button">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+            </div>
+
+            <h2>{{name}}</h2>
+
+            <div class="right-cont">
+                <a *ngIf="admin" [routerLink]="['edit']" class="btn" role="button">
+                    <i class="bi bi-pencil-fill"></i>
+                </a>
+                <button *ngIf="admin" class="btn btn-red" (click)="deletePool(id)">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+            </div>
+        </div>
 
         <div class="row">
             <a class="col-lg-6">
@@ -12,14 +29,6 @@
                 <p><strong>Aforo:</strong> {{capacity}} personas</p>
                 <p><strong>Descripción:</strong> {{description}}</p>
             </div>
-        </div>
-
-        <div *ngIf="admin" class="btn-cont">
-            <a [routerLink]="['edit']" class="btn" role="button"><i class="bi bi-pencil"></i> Editar</a>
-            <button class="btn btn-red" (click)="deletePool(id)">
-                <i class="bi bi-trash"></i> Eliminar
-            </button>
-            <a [routerLink]="['/pools']" class="btn" role="button"><i class="bi bi-box-arrow-left"></i> Volver</a>
         </div>
     </div>
 
