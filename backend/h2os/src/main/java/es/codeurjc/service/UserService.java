@@ -1,12 +1,15 @@
 package es.codeurjc.service;
 
 import java.security.Principal;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +46,20 @@ public class UserService {
 		lifeguardRepository.save(lifeguard);
 	}
 
-	public List<Lifeguard> findAllLifeguard(){
+	public List<Lifeguard> findAllLifeguards(){
 		return lifeguardRepository.findAll();
+	}
+
+    public Page<Lifeguard> findAllLifeguards(Pageable pageable){
+		return lifeguardRepository.findAll(pageable);
+	}
+
+    public Collection<Employer> findAllEmployers(){
+		return employerRepository.findAll();
+	}
+
+    public Page<Employer> findAllEmployers(Pageable pageable){
+		return employerRepository.findAll(pageable);
 	}
 
 	public Optional<Employer> findEmployerByEmail(String mail){

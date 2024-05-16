@@ -25,6 +25,8 @@ async function checkLoadMore(page) {
 function getCardType() {
     if (document.getElementById("offers")) return "offers";
     if (document.getElementById("pools")) return "pools";
+    if (document.getElementById("employers")) return "employers";
+    if (document.getElementById("lifeguards")) return "lifeguards";
     else return null;
 }
 

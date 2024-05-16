@@ -1,0 +1,18 @@
+{{#users}}
+<a href="/profile?mail={{mail}}">
+    {{#photo}}
+    <img id="img-user" src="/user/{{id}}/image">
+    {{/photo}}
+    {{^photo}}
+    <img id="img-user" src="/images/noPhotoUser.jpg">
+    {{/photo}}
+    <p>{{name}} <br> ({{mail}})</p>
+</a>
+{{/users}}
+{{^users}}
+<p>{{alternative}}</p>
+{{/users}}
+
+{{#hasMore}}
+<div style="display:none;" id="hasMore"></div>
+{{/hasMore}}

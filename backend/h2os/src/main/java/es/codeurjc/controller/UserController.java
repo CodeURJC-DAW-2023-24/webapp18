@@ -9,6 +9,9 @@ import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -38,6 +41,64 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    // -------------------------------------- CARDS ------------------------------------------
+    private Boolean userToggle = false;
+
+    @GetMapping("/users")
+    public String showEmployers(Model model, HttpServletRequest request, Pageable page) {
+        Boolean isAdmin = request.isUserInRole("ADMIN");
+
+        if (!isAdmin) {
+            model.addAttribute("title", "Error");
+            model.addAttribute("message", "Debes ser administrador para acceder a esta página");
+            model.addAttribute("back", "/");
+            return "feedback";
+        }
+
+        if (this.userToggle) {
+            model.addAttribute("type", "employers");
+            model.addAttribute("title", "Empleadores");
+            model.addAttribute("alternative", "Socorristas");
+        } else {
+            model.addAttribute("type", "lifeguards");
+            model.addAttribute("title", "Socorristas");
+            model.addAttribute("alternative", "Empleadores");
+        }
+
+        return "users";
+    }
+
+    @GetMapping("/users/change")
+    public String changeUsersType() {
+        this.userToggle = !this.userToggle;
+
+        return "redirect:/users";
+    }
+
+    @GetMapping("/employers/load")
+    public String loadEmployers(HttpServletRequest request, Model model, @RequestParam("page") int pageNumber,
+            @RequestParam("size") int size) {
+
+        Page<Employer> employers = userService.findAllEmployers(PageRequest.of(pageNumber, size));
+        model.addAttribute("users", employers);
+        model.addAttribute("hasMore", employers.hasNext());
+        model.addAttribute("alternative", "No hay empleados");
+
+        return "user_cards";
+    }
+
+    @GetMapping("/lifeguards/load")
+    public String loadLifeguards(HttpServletRequest request, Model model, @RequestParam("page") int pageNumber,
+            @RequestParam("size") int size) {
+
+        Page<Lifeguard> lifeguards = userService.findAllLifeguards(PageRequest.of(pageNumber, size));
+        model.addAttribute("users", lifeguards);
+        model.addAttribute("hasMore", lifeguards.hasNext());
+        model.addAttribute("alternative", "No hay socorristas");
+
+        return "user_cards";
+    }
 
     // -------------------------------------- PROFILE ------------------------------------------
     @GetMapping("/profile")

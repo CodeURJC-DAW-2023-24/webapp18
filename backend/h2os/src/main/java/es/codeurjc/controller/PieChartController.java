@@ -38,7 +38,7 @@ public class PieChartController {
         for (String skill : Lifeguard.getSkillsSet()) {
             map.put(skill, 0);
         }
-        List<Lifeguard> l = userService.findAllLifeguard();
+        List<Lifeguard> l = userService.findAllLifeguards();
         for (Lifeguard lifeguard : l) {
             for (String skill : Lifeguard.getSkillsSet()) {
                 if (lifeguard.getSkills().contains(skill)) {
