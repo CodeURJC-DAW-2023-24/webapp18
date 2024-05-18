@@ -28,12 +28,7 @@
         </div>
 
         <div class="row">
-            <div *ngIf="user && typeUser==='lifeguard'" class="col-md-4">
-                <img *ngIf="image" id="img-user" [src]="imageUser">
-                <img *ngIf="!image" id="img-user" src="/assets/images/noPhotoUser.jpg">
-            </div>
-
-            <div *ngIf="user && typeUser==='employer'" class="col-md-4">
+            <div class="col-md-4">
                 <img *ngIf="image" id="img-user" [src]="imageUser">
                 <img *ngIf="!image" id="img-user" src="/assets/images/noPhotoUser.jpg">
             </div>

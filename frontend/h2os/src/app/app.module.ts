@@ -24,6 +24,7 @@ import { StadisticsComponent } from './components/stadistics/stadistics.componen
 import { GoogleChartsModule } from 'angular-google-charts';
 import { PoolFormComponent } from './components/pools/pool-form.component';
 import { MessageComponent } from './components/message/message.component';
+import { UsersComponent } from './components/cards/users.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MessageComponent } from './components/message/message.component';
     PoolsComponent, PoolComponent,
     StadisticsComponent, PoolFormComponent,
     MapsComponent,
-    MessageComponent
+    MessageComponent,
+    UsersComponent
   ],
   imports: [
     CommonModule,

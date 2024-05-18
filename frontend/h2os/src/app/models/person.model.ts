@@ -2,6 +2,8 @@ export interface Person {
     id?: number;
     name?: string;
     surname?: string;
+    image?: string;
+    hasImage?: boolean;
     description?: string;
     dni?: string;
     mail: string;

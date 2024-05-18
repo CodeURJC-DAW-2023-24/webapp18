@@ -12,12 +12,15 @@ import { PoolsComponent } from './components/cards/pools.component';
 import { PoolComponent } from './components/pool/pool.component';
 import { StadisticsComponent } from './components/stadistics/stadistics.component';
 import { PoolFormComponent } from './components/pools/pool-form.component';
+import { UsersComponent } from './components/cards/users.component';
 
 const appRoutes: Routes = [
     { path: 'login', component: UserLoginComponent },
     { path: 'user/form', component: UserFormComponent },
     { path: 'offers', component: OffersComponent},
     { path: 'pools', component: PoolsComponent},
+    { path: 'lifeguards', component: UsersComponent },
+    { path: 'employers', component: UsersComponent },
     { path: 'offers/new', component: OfferCreateComponent },
     { path: 'pools/new', component: PoolFormComponent },
     { path: 'offers/:id', component: OfferComponent},

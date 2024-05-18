@@ -5,6 +5,7 @@ import { Lifeguard } from "../models/lifeguard.model";
 import { Employer } from "../models/employer.model";
 import { LoginResponse } from "../models/login-response.model";
 import { Offer } from "../models/offer.model";
+import { Person } from "../models/person.model";
 
 const urlLifeguard = '/api/lifeguards'
 const urlEmployer = '/api/employers'
@@ -27,12 +28,6 @@ export class UserService{
         ) as Observable<String[]>;
     }
 
-    getLifeguards(): Observable<Lifeguard[]>{
-        return this.httpClient.get<Lifeguard[]>(urlLifeguard).pipe(
-            catchError(error => this.handleError(error))
-        ) as Observable<Lifeguard[]>;
-    }
-
     getLifeguard(id: number): Observable<Lifeguard>{
         return this.httpClient.get<Lifeguard>(urlLifeguard+"/"+id).pipe(
             catchError(error => this.handleError(error))
@@ -51,12 +46,6 @@ export class UserService{
         } else{
             return this.updateLifeguard(lifeguard);
         }
-    }
-
-    getEmployers(): Observable<Employer[]>{
-        return this.httpClient.get<Employer[]>(urlEmployer).pipe(
-            catchError(error => this.handleError(error))
-        ) as Observable<Employer[]>;
     }
 
     getEmployer(id: number): Observable<Employer>{
@@ -114,6 +103,13 @@ export class UserService{
 				catchError(error => this.handleError(error))
 			);
 	}
+
+    getImage(user: Person) {
+        if (user.type == "lg")  // It must be checked with roles
+            return this.getLifeguardImage(user as Lifeguard)
+        else
+            return this.getEmployerImage(user as Employer)
+    }
 
     getLifeguardImage(lifeguard:Lifeguard) {
         return this.httpClient.get(urlLifeguard + "/" + lifeguard.id + '/photoUser', { responseType: 'arraybuffer' })
