@@ -10,7 +10,7 @@ import { MessageService } from '../../services/message.service';
 @Component({
     selector: "user-form",
     templateUrl: './user-form.component.html',
-    styleUrl: '../../styles/form.css'
+    styleUrls: ['../../styles/form.css', '../../styles/skills.css']
 })
 export class UserFormComponent{
     user: Person;
@@ -205,7 +205,7 @@ export class UserFormComponent{
     private updateSkills(){
         this.reliability = this.lifeguard.skills.includes("Confianza");
         this.effort = this.lifeguard.skills.includes("Esfuerzo");
-        this.communication = this.lifeguard.skills.includes("Comunicacion");
+        this.communication = this.lifeguard.skills.includes("Comunicación");
         this.attitude = this.lifeguard.skills.includes("Actitud positiva");
         this.problemsResolution = this.lifeguard.skills.includes("Resolución de problemas");
         this.leadership = this.lifeguard.skills.includes("Liderazgo");
