@@ -20,7 +20,12 @@ public class PieChartController {
 
     @GetMapping("/piechart")
     public String showPieChart(Model model, HttpServletRequest request) {
-        //find the lifeguards, go through their skill lists and put them on a map. Fill the model with the map
+        if (!request.isUserInRole("ADMIN")) {
+            model.addAttribute("title", "Error");
+            model.addAttribute("message", "Solo los administradores pueden acceder a esta página");
+            model.addAttribute("back", "/");
+            return "feedback";
+        }
 
         HashMap<String, Integer> mapa = fillAttitudes();
 

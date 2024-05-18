@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { StadisticsService } from '../../services/stadistics.service';
 import { ChartType } from 'angular-google-charts';
+import { UserService } from '../../services/user.service';
+import { MessageService } from '../../services/message.service';
+import { Me } from '../../models/me.model';
 
 
 
@@ -10,10 +13,16 @@ import { ChartType } from 'angular-google-charts';
 })
 export class StadisticsComponent {
 
-    constructor(private service:StadisticsService){}
+    constructor(
+        private service: StadisticsService,
+        private userService: UserService,
+        private messageService: MessageService) {
+        this.checkUser();
+    }
 
     pieChart: Map<String, number>;
     trust: number;
+    me: Me;
 
     // Atributes
     reliability: boolean;
@@ -60,6 +69,18 @@ export class StadisticsComponent {
             error => {
                 console.error(error)
             }
+        );
+    }
+
+    checkUser() {
+        this.userService.me().subscribe(
+            response => {
+                this.me = response as Me;
+                if (this.me.mail != "admin")  // The check is done by mail, not by role
+                    this.messageService.showFatalError("Solo los administradores pueden acceder a esta página")
+            },
+            _error =>
+                this.messageService.showFatalError("Solo los administradores pueden acceder a esta página")
         );
     }
 }

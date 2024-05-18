@@ -46,12 +46,10 @@ public class UserController {
     private Boolean userToggle = false;
 
     @GetMapping("/users")
-    public String showEmployers(Model model, HttpServletRequest request, Pageable page) {
-        Boolean isAdmin = request.isUserInRole("ADMIN");
-
-        if (!isAdmin) {
+    public String showUsers(Model model, HttpServletRequest request, Pageable page) {
+        if (!request.isUserInRole("ADMIN")) {
             model.addAttribute("title", "Error");
-            model.addAttribute("message", "Debes ser administrador para acceder a esta página");
+            model.addAttribute("message", "Solo los administradores pueden acceder a esta página");
             model.addAttribute("back", "/");
             return "feedback";
         }

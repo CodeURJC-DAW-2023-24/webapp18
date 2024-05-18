@@ -103,6 +103,7 @@ public class SecurityConfiguration {
 					.requestMatchers("/loginerror").permitAll()
 					.requestMatchers("/profile").permitAll()
 
+					.requestMatchers("/users").permitAll()
 					.requestMatchers("/user/form").permitAll()
 					.requestMatchers("/user/register").permitAll()
 					.requestMatchers("/user/register").permitAll()
