@@ -8,7 +8,7 @@ export class MessageService {
     constructor(private router: Router) { }
 
     showError(message: string) {
-        this.showMessage(message, "javascript:history.back()");
+        this.showMessage(message, "");
     }
 
     showFatalError(message: string): void {
