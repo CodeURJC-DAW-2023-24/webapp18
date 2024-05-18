@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,6 +12,8 @@ import java.util.stream.Collectors;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +55,30 @@ public class LifeguardRestController {
 	@Autowired OfferService offerService;
 	@Autowired
     private PasswordEncoder passwordEncoder;
+
+	@Operation(summary = "Get paged lifeguards.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lifeguards found", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = LifeguardDTO.class)) }),
+            @ApiResponse(responseCode = "204", description = "Lifeguards not found, probably high page number supplied", content = @Content)
+    })
+    @GetMapping("/api/lifeguards")
+    public ResponseEntity<List<LifeguardDTO>> getLifeguards(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        Page<Lifeguard> lifeguards = lifeguardService.findAll(PageRequest.of(page, size));
+        List<LifeguardDTO> lifeguardsDTO = new ArrayList<>();
+
+        for (Lifeguard lifeguard : lifeguards) {
+            lifeguardsDTO.add(new LifeguardDTO(lifeguard));
+        }
+
+        if (lifeguardsDTO.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(lifeguardsDTO);
+    }
 
     @Operation(summary = "Get a lifeguard by its id")
 	@ApiResponses(value = {

@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +61,30 @@ public class EmployerRestController {
 
 	@Autowired
     private PasswordEncoder passwordEncoder;
+
+	@Operation(summary = "Get paged employers.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Employers found", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = EmployerDTO.class)) }),
+            @ApiResponse(responseCode = "204", description = "Employers not found, probably high page number supplied", content = @Content)
+    })
+    @GetMapping("/api/employers")
+    public ResponseEntity<List<EmployerDTO>> getEmployers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        Page<Employer> employers = employerService.findAll(PageRequest.of(page, size));
+        List<EmployerDTO> employersDTO = new ArrayList<>();
+
+        for (Employer employer : employers) {
+            employersDTO.add(new EmployerDTO(employer));
+        }
+
+        if (employersDTO.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(employersDTO);
+    }
 
     @Operation(summary = "Get an employer by its id")
 	@ApiResponses(value = {
