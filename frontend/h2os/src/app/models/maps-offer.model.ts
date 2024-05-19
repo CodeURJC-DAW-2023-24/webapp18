@@ -11,3 +11,9 @@ export interface MapsOffer {
     salary?: string;
     start?: string;
 }
+
+export interface MapsAddress {
+    address: string;
+    offers: MapsOffer[];
+    coord: google.maps.LatLng;
+}

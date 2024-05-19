@@ -12,17 +12,37 @@
         </div>
     </div>
 
-    <div style="width: 100%; height: 750px;">
-        <google-map width="100%" height="100%" [zoom]="mapZoom" [center]="mapCenter" [options]="mapOptions">
-            <div *ngFor="let coord of coords">
-                <map-marker [position]="coord" [options]="markerOptions" (mapClick)="openInfoWindow(marker)"></map-marker>
-                <map-info-window>{{ markerInfoContent }}</map-info-window>
-            </div>
-            <map-marker #marker="mapMarker" [position]="mapCenter" [options]="markerOptions"
-                (mapClick)="openInfoWindow(marker)">
+    <section id="map">
+        <google-map width="100%" height="100%"
+            [zoom]="mapZoom"
+            [center]="mapCenter"
+            [options]="mapOptions">
+
+            <map-marker
+                [position]="mapCenter"
+                [options]="homeMarkerOptions"
+                (mapClick)="login()">
             </map-marker>
-            <map-info-window>{{ markerInfoContent }}</map-info-window>
+
+            <map-marker #marker="mapMarker" *ngFor="let address of addresses | keyvalue"
+                [position]="address.value.coord"
+                [options]="markerOptions"
+                (mapClick)="openInfoWindow(marker, infoWindow)">
+
+                <map-info-window #infoWindow="mapInfoWindow">
+                    <h3>{{ address.value.address }}</h3>
+
+                    <section class="cards" id="offers">
+                        <a *ngFor="let offer of address.value.offers" [routerLink]="['/offers', offer.id]">
+                            <p>{{ offer.type }}</p>
+                            <p>{{ offer.salary }}€</p>
+                            <p>{{ offer.start }}</p>
+                        </a>
+                    </section>
+                </map-info-window>
+
+            </map-marker>
         </google-map>
-    </div>
+    </section>
 
 </main>

@@ -107,7 +107,8 @@ function setMarker(position, title, icon) {
         position: position,
         map: map,
         title: title,
-        icon: icon
+        icon: icon,
+        animation: google.maps.Animation.DROP
     });
 }
 

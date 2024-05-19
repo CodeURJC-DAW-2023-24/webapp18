@@ -5,21 +5,25 @@ import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { ToastrService } from 'ngx-toastr';
 import { GeocoderResponse } from '../../models/geocoder-response.model';
 import { GeocodingService } from '../../services/geocoding.service';
-import { MapsOffer, MapsResponse } from '../../models/maps-offer.model';
+import { MapsAddress, MapsOffer, MapsResponse } from '../../models/maps-offer.model';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'maps',
   templateUrl: './maps.component.html',
-  styleUrls: ['./maps.component.css']
+  styleUrls: ['./maps.component.css', '../cards/cards.css']
 })
 export class MapsComponent implements OnInit {
-  offers: any;
   center: string;
-  addresses: string[] = [];
+  addresses: Map<string, MapsAddress> = new Map<string, MapsAddress>();
+  offers: MapsOffer[] = [];
 
   // Google attributes
+  geocoderWorking = false;
+  bounds = new google.maps.LatLngBounds();
+
   mapZoom = 15;
   mapCenter: google.maps.LatLng;
   mapOptions: google.maps.MapOptions = {
@@ -32,24 +36,26 @@ export class MapsComponent implements OnInit {
     minZoom: 4,
   };
 
-  coords: google.maps.LatLng[] = [];
-  markers: google.maps.Marker[] = [];
-  markerInfoContent = '';
   markerOptions: google.maps.MarkerOptions = {
     draggable: false,
-    animation: google.maps.Animation.DROP,
+    animation: google.maps.Animation.DROP
   };
 
-  geocoderWorking = false;
-  geolocationWorking = false;
-
-  formattedAddress?: string | null = null;
+  homeMarkerOptions: google.maps.MarkerOptions = {
+    icon: {
+      url: "https://cdn-icons-png.flaticon.com/512/1196/1196783.png",
+      scaledSize: new google.maps.Size(44, 44)
+    },
+    animation: google.maps.Animation.DROP
+  };
 
   @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
-  @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow;
+  @ViewChild('marker', { static: false }) marker: MapMarker;
+  @ViewChild('infoWindow', { static: false }) infoWindow: MapInfoWindow;
 
   constructor(
     private http: HttpClient,
+    private router: Router,
     private geocodingService: GeocodingService,
     private toastr: ToastrService
   ) { }
@@ -66,6 +72,10 @@ export class MapsComponent implements OnInit {
     );
   }
 
+  login() {
+    this.router.navigate(['login']);
+  }
+
   getMapsDTO() {
     return this.http.get<MapsResponse>('/api/maps');
   }
@@ -77,7 +87,12 @@ export class MapsComponent implements OnInit {
   loadOffers() {
     for (const offer of this.offers) {
       const address = offer.address as string;
-      this.loadAddress(address);
+      if (!this.addresses.has(address)) {
+        this.addresses.set(address, { address: address, offers: [], coord: new google.maps.LatLng(0, 0) })
+        this.loadAddress(address);
+      }
+      const existingAddress = this.addresses.get(address);
+      existingAddress?.offers.push(offer);
     };
   }
 
@@ -85,7 +100,7 @@ export class MapsComponent implements OnInit {
     this.findAddress(address).subscribe(
       (response: GeocoderResponse) => {
         if (response.status === 'OK' && response.results?.length)
-          this.setMarker(response);
+          this.setMarker(response, address);
         else
           this.toastr.error(response.error_message, response.status + ": " + address);
       },
@@ -105,27 +120,35 @@ export class MapsComponent implements OnInit {
     return this.geocodingService.getLocation(address)
   }
 
-  setMarker(response: GeocoderResponse) {
+  setMarker(response: GeocoderResponse, address: string) {
     const location = response.results[0];
     const loc: any = location.geometry.location;
 
     const locationCoords = new google.maps.LatLng(loc.lat, loc.lng);
-    this.coords.push(locationCoords);
+    this.fitMapBounds(locationCoords);
 
-    const marker = new google.maps.Marker({
-      position: new google.maps.LatLng(loc.lat, loc.lng),
-      map: this.map.googleMap,
-      title: location.formatted_address
-    });
+    if (address == this.center) {
+      this.mapCenter = locationCoords;
+      return;
+    }
 
-    this.markers.push(marker);
+    const mapAddress = this.addresses.get(address);
+    if (mapAddress) mapAddress.coord = locationCoords;
   }
 
-  public openInfoWindow(marker: MapMarker) {
-    this.infoWindow.open(marker);
+
+  fitMapBounds(coord: google.maps.LatLng) {
+    if (this.map && this.map.googleMap) {
+      this.bounds.extend(coord);
+      this.map.googleMap.fitBounds(this.bounds);
+    }
+  }
+
+  public openInfoWindow(marker: MapMarker, infoWindow: MapInfoWindow) {
+    infoWindow.open(marker);
   }
 
   get isWorking(): boolean {
-    return this.geolocationWorking || this.geocoderWorking;
+    return this.geocoderWorking;
   }
 }

@@ -1,1 +1,5 @@
-/* Necessary for the running of Google Maps */
+#map {
+    border: var(--border-color) 1px solid;
+    height: 750px;  /* It doesn't work With percentages */
+    width: 100%;
+}
