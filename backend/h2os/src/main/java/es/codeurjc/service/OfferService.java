@@ -50,6 +50,10 @@ public class OfferService {
         return offers.findById(id);
     }
 
+    public Collection<Offer> findByPoolDirection(String address) {
+        return offers.findByPoolDirection(address);
+    }
+
     public void save(Offer offer) {
         offers.save(offer);
     }

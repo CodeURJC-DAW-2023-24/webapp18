@@ -1,7 +1,6 @@
 package es.codeurjc.controller;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
 import es.codeurjc.model.Offer;
-import es.codeurjc.repository.OfferRepository;
 import es.codeurjc.service.OfferService;
 import es.codeurjc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,9 +23,6 @@ public class MapsController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private OfferRepository offerRepository;
 
     @GetMapping("/")
     public String maps(Model model, HttpServletRequest request) {
@@ -51,7 +46,7 @@ public class MapsController {
 
     @GetMapping("/maps/offers")
     public String loadOffers(@RequestParam("address") String address, Model model, HttpServletRequest request) {
-        List<Offer> offers = offerRepository.findByPoolDirection(address);
+        Collection<Offer> offers = offerService.findByPoolDirection(address);
 
         model.addAttribute("address", address);
         model.addAttribute("offers", offers);
