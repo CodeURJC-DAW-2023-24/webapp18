@@ -7,6 +7,7 @@
     {{> config}}
 
     <link type="text/css" rel="stylesheet" href="/css/data.css" />
+    <link type="text/css" rel="stylesheet" href="/css/profile.css" />
 </head>
 
 <body>
@@ -82,7 +83,7 @@
                 </div>
             </div>
 
-            {{#lifeguard}}
+            {{#lifeguardProfile}}
             <div class="subcontainer">
                 <h3>Aptitudes</h3>
                 <ul>
@@ -94,17 +95,17 @@
                     {{/skills}}
                 </ul>
             </div>
-            {{/lifeguard}}
+            {{/lifeguardProfile}}
 
         </main>
 
         <div class="container container-additional">
-            {{#lifeguard}}
+            {{#lifeguardProfile}}
             <h3>Ofertas aplicadas</h3>
-            {{/lifeguard}}
-            {{#employer}}
+            {{/lifeguardProfile}}
+            {{#employerProfile}}
             <h3>Ofertas publicadas</h3>
-            {{/employer}}
+            {{/employerProfile}}
 
             {{#canSeeOffers}}
                 {{#offers}}
@@ -114,9 +115,35 @@
                         <span>Tipo</span>: {{type}} <br>
                         <span>Inicio</span>: {{start}}
                     </p>
-                    {{#acceptedByProfileUser}}
-                    <i class="bi bi-check-circle-fill"></i>
-                    {{/acceptedByProfileUser}}
+
+                    <div class="infoIcons">
+                        {{#lifeguardProfile}}
+                        {{#acceptedByProfileUser}}
+                        <i class="bi bi-check-circle-fill"></i>
+                        {{/acceptedByProfileUser}}
+                        {{#me}}
+                        <form role="form" action='/offer/offered/withdraw' method="post">
+                            <input type="hidden" name="ido" value="{{id}}" />
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                            <input type="hidden" name="lg" value="{{mail}}" />
+                            <input type="hidden" name="profile" value="true" />
+                            <button id="applied" type="submit" class="btn">
+                                <i class="bi bi-bookmark-check-fill"><tool-tip>Desaplicar</tool-tip></i>
+                                <i class="bi bi-bookmark-x-fill bi-red"><tool-tip>Desaplicar</tool-tip></i>
+                            </button>
+                        </form>
+                        {{/me}}
+                        {{/lifeguardProfile}}
+                        {{#employerProfile}}
+                        <form role="form" action='/offer/delete' method="post">
+                            <input type="hidden" name="id" value="{{id}}" />
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                            <button id="delete" type="submit" class="btn">
+                                <i class="bi bi-trash-fill bi-red"><tool-tip>Eliminar</tool-tip></i>
+                            </button>
+                        </form>
+                        {{/employerProfile}}
+                    </div>
                 </div>
                 {{/offers}}
                 {{^offers}}

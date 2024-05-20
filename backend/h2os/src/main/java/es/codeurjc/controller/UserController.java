@@ -121,13 +121,13 @@ public class UserController {
         Optional<Lifeguard> lifeguardOp = lifeguardRepository.findByMail(profileMail);
         if (employerOp.isPresent()) {
             Employer employer = employerOp.get();
-            model.addAttribute("employer", request.isUserInRole("USER"));
+            model.addAttribute("employerProfile", true);
             model.addAttribute("user", employer);
             model.addAttribute("canSeeOffers", true);
         }
         else if (lifeguardOp.isPresent()) {
             Lifeguard lifeguard = lifeguardOp.get();
-            model.addAttribute("lifeguard", request.isUserInRole("USER"));
+            model.addAttribute("lifeguardProfile", true);
             model.addAttribute("user", lifeguard);
             for (Offer offer : lifeguard.getOffers()) {
                 Boolean accepted = (offer.isAccepted()) && (offer.getLifeguard().getMail().equals(profileMail));

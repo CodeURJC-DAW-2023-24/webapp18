@@ -183,7 +183,8 @@ public class OfferController {
     @PostMapping("/offer/offered/withdraw")
     public String LifeguardDessapply(Model model, HttpServletRequest request,
             @RequestParam("ido") int id,
-            @RequestParam("lg") String username) {
+            @RequestParam("lg") String username,
+            @RequestParam(name = "profile", required = false) Boolean profile) {
 
         Offer offer = offerService.findById(id).get();
         Lifeguard lifeguard = userService.findLifeguardByEmail(username).get();
@@ -198,6 +199,9 @@ public class OfferController {
         offerService.save(offer);
         userService.saveLifeguard(lifeguard);
 
+        if (profile != null) {
+            return "redirect:/login";
+        }
         return "redirect:/offer?id=" + id;
     }
 
