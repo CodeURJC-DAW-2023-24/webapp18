@@ -102,3 +102,12 @@
 .bi-plus-circle {
     font-size: 1.25em;
 }
+
+#applied .bi.bi-bookmark-x-fill,
+#applied:hover .bi.bi-bookmark-check-fill {
+    display: none;
+}
+
+#applied:hover .bi.bi-bookmark-x-fill {
+    display: inline-block;
+}

@@ -58,11 +58,11 @@ public class OfferController {
         Offer offer = offerService.findById(id).get();
         String username = request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : null;
 
+        model.addAttribute("mail", username);
         model.addAttribute("offer", offer);
         model.addAttribute("id", offer.getId());
-        model.addAttribute("lifeguard",
-                request.isUserInRole("LIFE") && !offer.isOffered(username)
-                        && !username.equals("admin"));
+        model.addAttribute("apply", request.isUserInRole("LIFE") && !offer.isOffered(username));
+        model.addAttribute("withdraw", offer.isOffered(username));
 
         boolean flag = false;
         if (offer.getEmployer() != null && request.getUserPrincipal() != null)
@@ -178,6 +178,27 @@ public class OfferController {
         userService.saveLifeguard(lifeguard);
 
         return "redirect:/offer?id=" + offer.getId();
+    }
+
+    @PostMapping("/offer/offered/withdraw")
+    public String LifeguardDessapply(Model model, HttpServletRequest request,
+            @RequestParam("ido") int id,
+            @RequestParam("lg") String username) {
+
+        Offer offer = offerService.findById(id).get();
+        Lifeguard lifeguard = userService.findLifeguardByEmail(username).get();
+
+        if (offer.getLifeguard() == lifeguard) {
+            offer.setLifeguard(null);
+            lifeguard.deleteOfferAccepted(offer);
+        }
+        offer.deleteOffered(lifeguard);
+        lifeguard.deleteOffer(offer);
+
+        offerService.save(offer);
+        userService.saveLifeguard(lifeguard);
+
+        return "redirect:/offer?id=" + id;
     }
 
     @PostMapping("/offer/offered/set")
