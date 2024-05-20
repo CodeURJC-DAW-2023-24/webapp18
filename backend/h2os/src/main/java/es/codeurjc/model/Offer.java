@@ -36,6 +36,7 @@ public class Offer {
     private String start;
     private String type;
     private String description;
+    private Boolean acceptedByProfileUser;
 
     public Offer(){}
 
@@ -45,11 +46,20 @@ public class Offer {
         this.start = builder.start;
         this.type = builder.type;
         this.description = builder.description;
+        this.acceptedByProfileUser = false;
         this.lifeguards = new ArrayList<>();
     }
 
     public boolean isAccepted() {
         return this.lifeguard != null;
+    }
+
+    public boolean isAcceptedByProfileUser() {
+        return this.acceptedByProfileUser;
+    }
+
+    public void setAcceptedByProfileUser(Boolean b) {
+        this.acceptedByProfileUser = b;
     }
 
     public void resetLifeguards() {

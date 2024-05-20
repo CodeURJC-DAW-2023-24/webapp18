@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
+import es.codeurjc.model.Offer;
 import es.codeurjc.repository.EmployerRepository;
 import es.codeurjc.repository.LifeguardRepository;
 import es.codeurjc.service.UserService;
@@ -100,7 +101,7 @@ public class UserController {
 
     // -------------------------------------- PROFILE ------------------------------------------
     @GetMapping("/profile")
-    public String profile(Model model, HttpServletRequest request, @RequestParam("mail") String mail) {
+    public String profile(Model model, HttpServletRequest request, @RequestParam("mail") String profileMail) {
 
         if (request.getUserPrincipal() == null) {
             model.addAttribute("title", "Error");
@@ -109,15 +110,15 @@ public class UserController {
             return "feedback";
         }
 
-        String userMail = request.getUserPrincipal().getName();
-        Boolean isMe = userMail.equals(mail);
+        String myMail = request.getUserPrincipal().getName();
+        Boolean isMe = myMail.equals(profileMail);
         Boolean isAdmin = request.isUserInRole("ADMIN");
         model.addAttribute("me", isMe);
         model.addAttribute("iamAdmin", isAdmin);
         model.addAttribute("canSeeOffers", isMe || isAdmin);
 
-        Optional<Employer> employerOp = employerRepository.findByMail(mail);
-        Optional<Lifeguard> lifeguardOp = lifeguardRepository.findByMail(mail);
+        Optional<Employer> employerOp = employerRepository.findByMail(profileMail);
+        Optional<Lifeguard> lifeguardOp = lifeguardRepository.findByMail(profileMail);
         if (employerOp.isPresent()) {
             Employer employer = employerOp.get();
             model.addAttribute("employer", request.isUserInRole("USER"));
@@ -128,6 +129,10 @@ public class UserController {
             Lifeguard lifeguard = lifeguardOp.get();
             model.addAttribute("lifeguard", request.isUserInRole("USER"));
             model.addAttribute("user", lifeguard);
+            for (Offer offer : lifeguard.getOffers()) {
+                Boolean accepted = (offer.isAccepted()) && (offer.getLifeguard().getMail().equals(profileMail));
+                offer.setAcceptedByProfileUser(accepted);
+            }
         }
         else {
             model.addAttribute("title", "Error");
