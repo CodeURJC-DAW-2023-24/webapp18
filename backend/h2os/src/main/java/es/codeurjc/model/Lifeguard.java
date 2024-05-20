@@ -33,7 +33,7 @@ public class Lifeguard extends Person{
     @ManyToMany(mappedBy = "lifeguards")
     private List<Offer> offers;
 
-    private Boolean offerAssigned;
+    private Boolean offerAssigned = false;
 
     public Lifeguard(){}
 
@@ -43,7 +43,6 @@ public class Lifeguard extends Person{
         this.skills = new ArrayList<String>();
         this.pools = new ArrayList<Pool>();
         this.offers = new ArrayList<Offer>();
-        this.offerAssigned = false;
     }
 
     public String getType(){
