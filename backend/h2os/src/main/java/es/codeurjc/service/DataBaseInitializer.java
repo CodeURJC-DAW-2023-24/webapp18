@@ -62,6 +62,24 @@ public class DataBaseInitializer {
         lifeguard.addSkill("Confianza");
         lifeguard.addSkill("Esfuerzo");
 
+        Lifeguard lifeguard2 = new Lifeguard(
+            "socorrista",
+            "2",
+            "Socorrista inicializado",
+            "54152452L",
+            "s2",
+            "20",
+            passwordEncoder.encode("s2"),
+            "624578423",
+            "Spain",
+            "Madrid",
+            "Madrid",
+            "Calle Amargura",
+            "Título de socorrismo A1",
+            "USER","LIFE");
+        lifeguard.addSkill("Liderazgo");
+        lifeguard.addSkill("Resolución de problemas");
+
         Employer employer = new Employer("empleador",
             "1",
             "empleador inicializado",
@@ -89,11 +107,12 @@ public class DataBaseInitializer {
             "Spain",
             "Madrid",
             "Madrid",
-            "Calle Amargura",
+            "Kuboking Moncloa",
             "Marcos Friki",
             "USER", "ADMIN", "EMP");
 
     	lifeguardRepository.save(lifeguard);
+    	lifeguardRepository.save(lifeguard2);
         employerRepository.save(employer);
 		employerRepository.save(admin);
     }
@@ -198,13 +217,18 @@ public class DataBaseInitializer {
         }
 
         Lifeguard lifeguard = lifeguardRepository.findByMail("s1").get();
+        Lifeguard lifeguard2 = lifeguardRepository.findByMail("s2").get();
         lifeguard.setOffersEmpty();
+        lifeguard2.setOffersEmpty();
 
         for (Offer offer : defaultOffersData) {
             offer.addOffered(lifeguard);
+            offer.addOffered(lifeguard2);
             lifeguard.addOffer(offer);
+            lifeguard2.addOffer(offer);
 
             lifeguardRepository.save(lifeguard);
+            lifeguardRepository.save(lifeguard2);
             offerRepository.save(offer);
         }
     }
