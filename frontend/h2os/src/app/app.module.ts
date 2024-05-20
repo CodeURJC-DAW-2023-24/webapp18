@@ -46,7 +46,7 @@ import { UsersComponent } from './components/cards/users.component';
     FormsModule,
     HttpClientModule,
     routing,
-    GoogleChartsModule,
+    GoogleChartsModule.forRoot(),
     GoogleMapsModule,
     ToastrModule.forRoot({
       preventDuplicates: false,

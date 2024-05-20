@@ -12,12 +12,15 @@
         </div>
     </div>
     <section>
-        <google-chart 
-            [data]="data"
-            [title]="title"
-            [width]="width" 
-            [height]="height"
-            [type]="type">
-        </google-chart>
+        <div id="chart-wrapper">
+            <google-chart id="custom_tooltip"
+                [data]="data"
+                [title]="title"
+                [width]="width" 
+                [height]="height"
+                [type]="type"
+                [options]="options">
+            </google-chart>
+        </div>
     </section>
 </main>

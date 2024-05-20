@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { StadisticsService } from '../../services/stadistics.service';
 import { ChartType } from 'angular-google-charts';
 import { UserService } from '../../services/user.service';
@@ -6,12 +6,12 @@ import { MessageService } from '../../services/message.service';
 import { Me } from '../../models/me.model';
 
 
-
 @Component({
     selector: "stadistics",
     templateUrl: './stadistics.component.html',
+    styleUrl: './stadistics.component.css'
 })
-export class StadisticsComponent {
+export class StadisticsComponent implements AfterViewInit{
 
     constructor(
         private service: StadisticsService,
@@ -45,6 +45,38 @@ export class StadisticsComponent {
         ['Resolucion', 0],
         ['Liderazgo', 0]
     ];
+    options = {
+        TitletextSytle: {
+            fontsize: 18
+        },
+        legend: {
+            textStyle: {
+                fontsize: 18
+            }
+        },
+        tooltip: {
+            textStyle: {
+              fontSize: 18
+            },
+            showColorCode: true,
+            isHtml: true
+        },
+        pieSliceTextStyle: {
+            fontSize: 18
+        },
+    }
+
+    ngAfterViewInit() {
+        // Escucha el evento de gráfico listo
+        const chartWrapper = document.getElementById('chart-wrapper');
+        if (chartWrapper)
+        chartWrapper.addEventListener('mouseover', () => {
+          const tooltips = document.querySelectorAll('div.google-visualization-tooltip');
+          tooltips.forEach(tooltip => {
+            tooltip.classList.add('custom-tooltip');
+          });
+        });
+      }
 
     ngOnInit(): void {
         this.service.getPieChart().subscribe(
