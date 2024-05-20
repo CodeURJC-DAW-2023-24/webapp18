@@ -124,15 +124,6 @@ export class UserFormComponent{
         }
     }
 
-    /*private setRoles(type:number,...roles: string[]): void {
-        if (type === 0){
-            this.lifeguard.roles = roles;
-        }
-        else{
-            this.employer.roles = roles;
-        }
-    }*/
-
     private uploadLifeguardImage(lifeguard: Lifeguard): void {
         const image = this.file.nativeElement.files[0];
         if (image) {
@@ -152,13 +143,30 @@ export class UserFormComponent{
                 if (!this.edit){this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })};
                 alert('Error uploading lifeguard image: ' + error)}
           );
-        } /*else if(this.removeImage){
-          this.service.deleteLifeguardImage(lifeguard).subscribe(
-            response => this.router.navigate(['/lifeguards/'+this.lifeguard.id]),
-            error => alert('Error deleting lifeguard image: ' + error)
-          );
-        }*/ else {
-            if (!this.edit){this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })};
+        } else {
+            if (!this.edit){
+                const imageUrl = '/assets/images/noPhotoUser.jpg';
+                fetch(imageUrl)
+                .then(response => response.blob())
+                .then(imageBlob => {
+                    let formData = new FormData();
+                    formData.append('imageFile', imageBlob, 'noPhotoUser.jpg');
+                    this.service.setLifeguardImage(lifeguard, formData).subscribe(
+                    response => {
+                        this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })
+                        this.file.nativeElement.value = null;
+                    },
+                    error => {
+                        this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })
+                        console.error('Error uploading lifeguard image: ' + error);
+                    }
+                    );
+                })
+                .catch(error => {
+                    this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })
+                    console.error('Error downloading image:', error);
+                });
+            };
             if (this.edit){
                 this.router.navigate(['/lifeguards/'+this.lifeguard.id])
             }else{
@@ -186,13 +194,30 @@ export class UserFormComponent{
                 if (!this.edit){this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })};
                 alert('Error uploading employer image: ' + error)}
           );
-        } /*else if(this.removeImage){
-          this.service.deleteEmployerImage(employer).subscribe(
-            response => this.router.navigate(['/employers/'+this.employer.id]),
-            error => alert('Error deleting employer image: ' + error)
-          );
-        }*/ else {
-            if (!this.edit){this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })};
+        } else {
+            if (!this.edit){
+                const imageUrl = '/assets/images/noPhotoUser.jpg';
+                fetch(imageUrl)
+                .then(response => response.blob())
+                .then(imageBlob => {
+                    let formData = new FormData();
+                    formData.append('imageFile', imageBlob, 'noPhotoUser.jpg');
+                    this.service.setEmployerImage(employer, formData).subscribe(
+                    response => {
+                        this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })
+                        this.file.nativeElement.value = null;
+                    },
+                    error => {
+                        this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })
+                        console.error('Error uploading employer image: ' + error);
+                    }
+                    );
+                })
+                .catch(error => {
+                    this.httpClient.post('/api/auth/logout', { withCredentials: true }).subscribe((resp: any) => { })
+                    console.error('Error downloading image:', error);
+                });
+            };
             if (this.edit){
                 this.router.navigate(['/employers/'+this.employer.id])
             }else{
