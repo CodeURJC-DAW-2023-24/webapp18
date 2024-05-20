@@ -170,6 +170,7 @@ public class LifeguardRestController {
 			Lifeguard lifeguard = lifeguardDTO.toLifeguard();
 			lifeguard.setPass(passwordEncoder.encode(lifeguard.getPass()));
 			lifeguard.setRoles("USER", "LIFE");
+			lifeguard.setOfferAssigned(false);
 			lifeguardService.save(lifeguard);
 			return new ResponseEntity<>(lifeguard, HttpStatus.OK);
 		}else{
