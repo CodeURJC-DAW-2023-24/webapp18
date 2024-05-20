@@ -272,7 +272,6 @@ public class OfferRestController {
             Lifeguard l = offer.getLifeguards().get(nSelected);
             offer.setLifeguard(l);
             offerService.save(offer);
-            l.setofferAssigned(true);
             l.addOfferAccepted(offer);
             userService.saveLifeguard(l);
             HashMap<String, ArrayList<String>> mapa = buildMap(offer);
@@ -327,7 +326,6 @@ public class OfferRestController {
             Lifeguard l = offer.getLifeguard();
             offer.setLifeguard(null);
             offerService.save(offer);
-            l.setofferAssigned(false);
             l.deleteOfferAccepted(offer);
             userService.saveLifeguard(l);
             HashMap<String, ArrayList<String>> mapa = buildMap(offer);

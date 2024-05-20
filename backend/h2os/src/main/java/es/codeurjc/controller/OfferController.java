@@ -156,13 +156,8 @@ public class OfferController {
     public String loadOffered(@RequestParam("id") int id, Model model, HttpServletRequest request) {
         Offer offer = offerService.findById(id).get();
         List<Lifeguard> lifeguards = offer.getLifeguards();
-        if (offer.getLifeguard() != null) {
-            for (Lifeguard lifeguard : lifeguards) {
-                if (offer.getLifeguard().getMail().equals(lifeguard.getMail())) {
-                    lifeguard.setofferAssigned(true);
-                    break;
-                }
-            }
+        for (Lifeguard lifeguard : lifeguards) {
+            lifeguard.setOfferAssigned(lifeguard.hasOfferAssigned(offer));
         }
 
         model.addAttribute("offer", offer);

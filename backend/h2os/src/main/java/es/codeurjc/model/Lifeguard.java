@@ -147,8 +147,13 @@ public class Lifeguard extends Person{
 		return this.offerAssigned;
 	}
 
-	public void setofferAssigned(boolean offerAssigned){
+	public void setOfferAssigned(boolean offerAssigned){
 		this.offerAssigned = offerAssigned;
+	}
+
+    public Boolean hasOfferAssigned(Offer offer){
+        Lifeguard lifeguardAccepted = offer.getLifeguard();
+        return lifeguardAccepted != null && lifeguardAccepted.getMail().equals(this.getMail());
 	}
 
     public List<Offer> getOffersAccepted() {
