@@ -1,0 +1,14 @@
+{{#offers}}
+<a href="/offer?id={{id}}">
+    <img src="/pool/{{pool.id}}/image" alt="{{pool.direction}}">
+    <p>{{pool.direction}}</p>
+    <p>{{salary}}€</p>
+</a>
+{{/offers}}
+{{^offers}}
+<p>{{alternative}}</p>
+{{/offers}}
+
+{{#hasMore}}
+<div style="display:none;" id="hasMore"></div>
+{{/hasMore}}

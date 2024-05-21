@@ -1,0 +1,21 @@
+{{#messages}}
+<div class="subcontainer message" id="message-{{id}}">
+    <data>
+        <a class="author" href="/profile?mail={{author}}">{{author}}:</a>
+        <p class="body"> {{body}} </p>
+    </data>
+    {{#hasOwner}}
+    <div class="btn-cont">
+        <form role="form" action='/pool/message/delete?id={{id}}' method="post">
+            <input type ="hidden" name="_csrf" value="{{token}}"/>
+            <button type="submit" class="btn btn-red "><i class="bi bi-trash"></i></button>
+        </form>
+    </div>
+    {{/hasOwner}}
+</div>
+{{/messages}}
+{{^messages}}
+<div class="subcontainer message">
+    <div class="body"> No hay comentarios </div>
+</div>
+{{/messages}}

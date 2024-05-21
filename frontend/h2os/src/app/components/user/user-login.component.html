@@ -1,0 +1,26 @@
+<div class="container">
+    <h2>Iniciar Sesión</h2>
+
+    <form role="form">
+        <div class="form-group">
+            <label for="username">E-mail</label>
+            <input #mailInput type="text" class="form-control" name="username" id="username" placeholder="example@gmail.com">
+        </div>
+        <div class="form-group">
+            <label for="pass">Contraseña</label>
+            <input #passwordInput type="password" class="form-control" name="password" id="password" placeholder="1234">
+        </div>
+
+        <div class="btn-cont">
+            <button (click) = login() class="btn">
+                <i class="bi bi-box-arrow-right"></i> Acceder
+            </button>
+            <a [routerLink]="['/']" class="btn btn-red" role="button">
+                <i class="bi bi-x-lg"></i> Cancelar
+            </a>
+        </div>
+    </form>
+
+    <hr class="horizontal-line">
+    <p>¿No tienes cuenta? <a [routerLink]="['/user/form']">Regístrate aquí</a></p>
+</div>

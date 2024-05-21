@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Oferta de trabajo</title>
+
+    {{> config}}
+
+    <link type="text/css" rel="stylesheet" href="/css/data.css" />
+    <link type="text/css" rel="stylesheet" href="/css/messages.css" />
+
+    <script src="/js/poolMessages.js"></script>
+</head>
+
+<body>
+    {{> header}}
+
+    <div class="container">
+        {{#offer}}
+        <div class="top-container">
+            <div class="left-cont">
+                <a href="/offers" class="btn" role="button">
+                    <i class="bi bi-arrow-left"></i><tool-tip>Volver</tool-tip>
+                </a>
+            </div>
+
+            <h2>Oferta en <a href="/pool?id={{pool.id}}">{{pool.name}}</a></h2>
+
+            <div class="right-cont">
+                {{#apply}}
+                <form role="form" action='/offer/offered/new' method="post">
+                    <input type="hidden" name="id" value="{{offer.id}}" />
+                    <input type="hidden" name="_csrf" value="{{token}}" />
+                    <button type="submit" class="btn">
+                        <i class="bi bi-bookmark-fill"><tool-tip>Aplicar</tool-tip></i>
+                    </button>
+                </form>
+                {{/apply}}
+                {{#withdraw}}
+                <form role="form" action='/offer/offered/withdraw' method="post">
+                    <input type="hidden" name="ido" value="{{offer.id}}" />
+                    <input type="hidden" name="_csrf" value="{{token}}" />
+                    <input type="hidden" name="lg" value="{{mail}}" />
+                    <button id="applied" type="submit" class="btn btn-red">
+                        <i class="bi bi-bookmark-check-fill"><tool-tip>Desaplicar</tool-tip></i>
+                        <i class="bi bi-bookmark-x-fill"><tool-tip>Desaplicar</tool-tip></i>
+                    </button>
+                </form>
+                {{/withdraw}}
+                {{#canEdit}}
+                <a href="/offer/edit?id={{id}}" class="btn" role="button">
+                    <i class="bi bi-pencil-fill"></i><tool-tip>Editar oferta</tool-tip>
+                </a>
+                <form role="form" action='/offer/delete' method="post">
+                    <input type="hidden" name="id" value="{{offer.id}}" />
+                    <input type="hidden" name="_csrf" value="{{token}}" />
+                    <button type="submit" class="btn btn-red">
+                        <i class="bi bi-trash-fill"></i><tool-tip>Borrar oferta</tool-tip>
+                    </button>
+                </form>
+                {{/canEdit}}
+            </div>
+        </div>
+
+        <div class="row">
+            <a class="col-lg-6 col-img" href="/pool?id={{pool.id}}">
+                <img id="img-pool" src="/pool/{{pool.id}}/image" alt="{{pool.direction}}">
+            </a>
+            <div class="col-lg-6 col-data">
+                <p><strong>Dirección:</strong> {{pool.direction}}</p>
+                <p><strong>Empleador:</strong><a href="/profile?mail={{employer.mail}}"> {{employer.mail}}</a></p>
+                <p><strong>Tipo de contrato:</strong> {{type}}</p>
+                <p><strong>Fecha de inicio:</strong> {{start}}</p>
+                <p><strong>Salario:</strong> {{salary}}€</p>
+                <p><strong>Descripción:</strong> {{description}}</p>
+            </div>
+        </div>
+        {{/offer}}
+
+        {{#canEdit}}
+        <div class="btn-cont">
+            <button class="btn" onclick="showOffered('{{offer.id}}')" id="showButton">
+                <bi class="bi bi-eye-fill"></bi> Propuestas
+            </button>
+        </div>
+        {{/canEdit}}
+
+        <div id="messageContainer"></div>
+    </div>
+</body>
+
+</html>

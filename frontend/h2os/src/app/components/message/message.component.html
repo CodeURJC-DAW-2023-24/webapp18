@@ -1,0 +1,12 @@
+<div class="container">
+    <p>{{ message }}</p>
+    <div class="btn-cont">
+        <a *ngIf="back" [routerLink]="[back]" class="btn" role="button">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+
+        <a *ngIf="!back" (click)="goBackPage()" class="btn" role="button">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+    </div>
+</div>

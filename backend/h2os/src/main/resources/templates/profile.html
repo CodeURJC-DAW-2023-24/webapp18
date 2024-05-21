@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ficha de {{user.name}}</title>
+
+    {{> config}}
+
+    <link type="text/css" rel="stylesheet" href="/css/data.css" />
+    <link type="text/css" rel="stylesheet" href="/css/profile.css" />
+</head>
+
+<body>
+    {{> header}}
+
+    {{#user}}
+    <div class="data">
+        <main class="container container-main">
+            <div class="top-container">
+                <div class="left-cont">
+                    <a href="/" class="btn" role="button">
+                        <i class="bi bi-arrow-left"></i><tool-tip>Volver</tool-tip>
+                    </a>
+                </div>
+
+                <h2>{{name}} {{surname}}</h2>
+
+                <div class="right-cont">
+                {{#me}}
+                <a href="/user/{{mail}}/edit" class="btn" role="button">
+                    <i class="bi bi-pencil-fill"></i><tool-tip>Editar perfil</tool-tip>
+                </a>
+                <form action="/logout" method="post">
+                    <input type="hidden" name="_csrf" value="{{token}}"/>
+                    <button type="submit" class="btn btn-red">
+                        <i class="bi bi-box-arrow-left"></i><tool-tip>Cerrar sesión</tool-tip>
+                    </button>
+                </form>
+                {{/me}}
+                {{#iamAdmin}} {{^me}}
+                <a href="/user/{{mail}}/edit" class="btn" role="button">
+                    <i class="bi bi-pencil-fill"></i><tool-tip>Editar usuario</tool-tip>
+                </a>
+                <form role="form" action='/profile/delete?id={{id}}' method="post">
+                    <button type="submit" class="btn btn-red">
+                        <i class="bi bi-trash-fill"></i><tool-tip>Borrar usuario</tool-tip>
+                    </button>
+                    <input type="hidden" name="_csrf" value="{{token}}" />
+                    <input type="hidden" name="id" value="{{id}}" />
+                    <input type="hidden" name="mail" value="{{mail}}" />
+                </form>
+                {{/me}} {{/iamAdmin}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    {{#photo}}
+                    <img id="img-user" src="/user/{{id}}/image">
+                    {{/photo}}
+                    {{^photo}}
+                    <img id="img-user" src="/images/noPhotoUser.jpg">
+                    {{/photo}}
+                </div>
+
+                <div class="col-md-8">
+                    <p><strong>E-Mail:</strong> {{mail}}</p>
+                    <p><strong>DNI:</strong> {{dni}}</p>
+                    <p><strong>Edad:</strong> {{age}}</p>
+                    <p><strong>Teléfono:</strong> {{phone}}</p>
+                    <p><strong>Dirección:</strong> {{direction}}</p>
+                    <p><strong>Localidad:</strong> {{locality}} ({{province}}, {{country}})</p>
+
+                    {{#document}}
+                    <p><strong>Título de socorrismo:</strong> {{document}}</p>
+                    {{/document}}
+                    {{#company}}
+                    <p><strong>Empresa:</strong> {{company}}</p>
+                    {{/company}}
+
+                    <p><strong>Descripción:</strong> {{description}}</p>
+
+                </div>
+            </div>
+
+            {{#lifeguardProfile}}
+            <div class="subcontainer">
+                <h3>Aptitudes</h3>
+                <ul>
+                    {{#skills}}
+                    <li>{{.}}</li>
+                    {{/skills}}
+                    {{^skills}}
+                    <li>No hay aptitudes</li>
+                    {{/skills}}
+                </ul>
+            </div>
+            {{/lifeguardProfile}}
+
+        </main>
+
+        <div class="container container-additional">
+            {{#lifeguardProfile}}
+            <h3>Ofertas aplicadas</h3>
+            {{/lifeguardProfile}}
+            {{#employerProfile}}
+            <h3>Ofertas publicadas</h3>
+            {{/employerProfile}}
+
+            {{#canSeeOffers}}
+                {{#offers}}
+                <div class="subcontainer offer">
+                    <p>
+                        <a href="offer?id={{id}}">{{pool.name}}</a> ({{salary}}€) <br>
+                        <span>Tipo</span>: {{type}} <br>
+                        <span>Inicio</span>: {{start}}
+                    </p>
+
+                    <div class="infoIcons">
+                        {{#lifeguardProfile}}
+                        {{#acceptedByProfileUser}}
+                        <i class="bi bi-check-circle-fill"></i>
+                        {{/acceptedByProfileUser}}
+                        {{#me}}
+                        <form role="form" action='/offer/offered/withdraw' method="post">
+                            <input type="hidden" name="ido" value="{{id}}" />
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                            <input type="hidden" name="lg" value="{{mail}}" />
+                            <input type="hidden" name="profile" value="true" />
+                            <button id="applied" type="submit" class="btn">
+                                <i class="bi bi-bookmark-check-fill"><tool-tip>Desaplicar</tool-tip></i>
+                                <i class="bi bi-bookmark-x-fill bi-red"><tool-tip>Desaplicar</tool-tip></i>
+                            </button>
+                        </form>
+                        {{/me}}
+                        {{/lifeguardProfile}}
+                        {{#employerProfile}}
+                        <form role="form" action='/offer/delete' method="post">
+                            <input type="hidden" name="id" value="{{id}}" />
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                            <button id="delete" type="submit" class="btn">
+                                <i class="bi bi-trash-fill bi-red"><tool-tip>Eliminar</tool-tip></i>
+                            </button>
+                        </form>
+                        {{/employerProfile}}
+                    </div>
+                </div>
+                {{/offers}}
+                {{^offers}}
+                <div class="subcontainer">
+                    <p>No hay ofertas</p>
+                </div>
+                {{/offers}}
+            {{/canSeeOffers}}
+            {{^canSeeOffers}}
+            <p style="text-align: center;">No puedes ver las candidaturas de otro usuario</p>
+            {{/canSeeOffers}}
+        </div>
+    </div>
+    {{/user}}
+</body>
+
+</html>

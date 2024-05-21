@@ -1,0 +1,65 @@
+<div class="container">
+    <div class="top-container">
+        <div class="left-cont">
+            <a [routerLink]="['/offers']" class="btn" role="button">
+                <i class="bi bi-arrow-left"></i><tool-tip>Volver</tool-tip>
+            </a>
+        </div>
+        <h2>Oferta en <a [routerLink]="['/pools', poolID]">{{poolName}}</a></h2>
+        <div class="right-cont">
+            <button *ngIf="canApply" class="btn" (click)="apply(offer.id)">
+                <i class="bi bi-bookmark-fill"></i><tool-tip>Aplicar</tool-tip>
+            </button>
+            <button *ngIf="canWithdraw" id="applied" type="submit" class="btn btn-red" (click)="withdraw(offer.id)">
+                <i class="bi bi-bookmark-check-fill"><tool-tip>Desaplicar</tool-tip></i>
+                <i class="bi bi-bookmark-x-fill"><tool-tip>Desaplicar</tool-tip></i>
+            </button>
+            <button *ngIf="edit" class="btn" [routerLink]="['edit']">
+                <i class="bi bi-pencil-fill"></i><tool-tip>Editar oferta</tool-tip>
+            </button>
+            <button *ngIf="edit" class="btn btn-red" (click)="deleteOffer(offer.id)">
+                <i class="bi bi-trash-fill"></i><tool-tip>Borrar oferta</tool-tip>
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="offerLoaded" class="row">
+        <a class="col-lg-6 col-img" [routerLink]="['/pools', poolID]">
+            <img id="img-pool" [src]="photoURL" alt="Photo" style="width: 100%; height: auto;">
+        </a>
+        <div *ngIf="offerLoaded"class="col-lg-6 col-data">
+            <p><strong>Dirección:</strong> {{offer.direction}}</p>
+            <p><strong>Empleador:</strong><a [routerLink]="['/employers',offer.employerID]"> {{offer.employer}}</a></p>
+            <p><strong>Tipo de contrato:</strong> {{offer.type}}</p>
+            <p><strong>Fecha de inicio:</strong> {{offer.start}}</p>
+            <p><strong>Salario:</strong> {{offer.salary}}€</p>
+            <p><strong>Descripción:</strong> {{offer.description}}</p>
+        </div>
+    </div>
+
+    <div *ngIf="edit" class="btn-cont">
+        <button class="btn" (click)="showApplied(offer.id)" id="showButton">
+            <i class="bi bi-eye-fill"></i> Propuestas
+        </button>
+    </div>
+
+    <div id="messageContainer">
+        <div *ngIf="applied && appliedLg.length !== 0" id="{{offer.id}}">
+            <div *ngFor="let lifeguard of appliedLg; let i = index" class="subcontainer message">
+                <data>
+                    <a class="author" [routerLink]="['/lifeguards/',lgIds[i]]">{{lifeguard}}:</a>
+                    <p class="body"> {{appliedLgDesc[i]}} </p>
+                </data>
+                <div *ngIf="lifeguard!==selected;" class="btn-cont">
+                    <button class="btn" (click)="setLifeguard(offer.id, i)"><i class="bi bi-person-add"></i></button>
+                </div>
+                <div *ngIf="lifeguard===selected;" class="btn-cont">
+                    <button class="btn btn-red " (click)="unselectLifeguard(offer.id)"><i class="bi bi-person-dash"></i></button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="applied && appliedLg.length === 0" class="subcontainer message" id="{{offer.id}}">
+            <div class="message">No hay propuestas</div>
+        </div>
+    </div>
+</div>

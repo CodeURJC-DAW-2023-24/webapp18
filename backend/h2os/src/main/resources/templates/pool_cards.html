@@ -1,0 +1,13 @@
+{{#pools}}
+<a href="/pool?id={{id}}">
+    <img src="/pool/{{id}}/image" alt="{{direction}}">
+    <p>{{name}}</p>
+</a>
+{{/pools}}
+{{^pools}}
+<p>{{alternative}}</p>
+{{/pools}}
+
+{{#hasMore}}
+<div style="display:none;" id="hasMore"></div>
+{{/hasMore}}

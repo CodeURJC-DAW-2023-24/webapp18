@@ -1,0 +1,50 @@
+<html>
+
+<head>
+    <title>H20S maps</title>
+
+    {{> config}}
+
+    <link type="text/css" rel="stylesheet" href="/css/cards.css" />
+    <link type="text/css" rel="stylesheet" href="/css/maps.css" />
+</head>
+
+<body>
+    {{> header}}
+
+    <main class="container">
+      <div class="top-container">
+          <div class="left-cont">
+              {{#logged}}
+              <a class="btn" onclick="filterByDistance()">
+                  <i class="bi bi-funnel-fill"></i><tool-tip>Filtrar</tool-tip>
+              </a>
+              {{/logged}}
+          </div>
+
+          <h2>Mapa de ofertas</h2>
+
+          <div class="right-cont">
+              <a class="btn" href="/offers">
+                  <i class="bi bi-grid-fill"></i><tool-tip>Ofertas</tool-tip>
+              </a>
+          </div>
+      </div>
+
+      <section id="map"></section>
+    </main>
+
+    <div id="distances" style="display:none;">
+      {{#offers}}
+      <div id="offer-{{id}}">{{pool.direction}}</div>
+      {{/offers}}
+      {{#user}}
+      <div id="user">{{address}}</div>
+      {{/user}}
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnW4ze6zMjnLrtTqHuLUgWyzRrzcshgd0&loading=async&callback=initMap" async defer></script>
+    <script src="/js/maps.js"></script>
+</body>
+
+</html>

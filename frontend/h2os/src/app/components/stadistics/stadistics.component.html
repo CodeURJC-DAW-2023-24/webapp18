@@ -1,0 +1,26 @@
+<main class="container">
+    <div class="top-container">
+        <div class="left-cont">
+        </div>
+
+        <h2>Estadísticas de los usuarios</h2>
+
+        <div class="right-cont">
+            <a class="btn" [routerLink]="['/']">
+                <i class="bi bi-map-fill"></i><tool-tip>Mapa</tool-tip>
+            </a>
+        </div>
+    </div>
+    <section>
+        <div id="chart-wrapper">
+            <google-chart id="custom_tooltip"
+                [data]="data"
+                [title]="title"
+                [width]="width" 
+                [height]="height"
+                [type]="type"
+                [options]="options">
+            </google-chart>
+        </div>
+    </section>
+</main>

@@ -1,0 +1,50 @@
+<div class="container">
+    <h2 *ngIf="edit">Editar {{pool.name}}</h2>
+    <h2 *ngIf="!edit">Nueva piscina</h2>
+
+    <form>
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" name="name" [(ngModel)]="pool.name" placeholder="Piscina municipal Las Cumbres">
+        </div>
+
+        <div class="form-group">
+            <label for="dir">Dirección</label>
+            <input type="text" class="form-control" name="dir" [(ngModel)]="pool.direction" placeholder="Móstoles, C/Rio Duero, 1">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <textarea type="text" class="form-control" name="description" [(ngModel)]="pool.description" placeholder="Detalles relevantes de la piscina"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Aforo</label>
+            <input type="number" class="form-control" name="aforo" [(ngModel)]="pool.capacity" placeholder="20" min="0" max="1000">
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6 col-sm-12">
+                <label for="start">Hora apertura</label>
+                <input type="time" class="form-control text-uppercase" name="start" [(ngModel)]="pool.scheduleStart" value="12:00">
+            </div>
+            <div class="form-group col-md-6 col-sm-12">
+                <label for="start">Hora de cierre</label>
+                <input type="time" class="form-control text-uppercase" name="close" [(ngModel)]="pool.scheduleEnd" value="21:00">
+            </div>
+            <div class="form-group">
+                <label for="photoField">Foto de la piscina</label>
+                <input #file type='file' name='imageFile' class="form-control" accept=".jpg, .jpeg" />
+            </div>
+        </div>
+
+        <div class="btn-cont">
+            <button (click)="save()" class="btn">
+                <i class="bi bi-download"></i> Guardar
+            </button>
+            <a [routerLink]="['/pools']" class="btn btn-red" role="button">
+                <i class="bi bi-x-lg"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>

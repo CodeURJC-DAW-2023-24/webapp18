@@ -1,0 +1,56 @@
+<main class="container">
+    <div class="top-container">
+        <div class="left-cont">
+            <a *ngIf="logged" class="btn" (click)="filterByDistance()">
+                <i class="bi bi-funnel-fill"></i><tool-tip>Filtrar</tool-tip>
+            </a>
+        </div>
+
+        <h2>Mapa de ofertas</h2>
+
+        <div class="right-cont">
+            <a class="btn" [routerLink]="['/offers']">
+                <i class="bi bi-grid-fill"></i><tool-tip>Ofertas</tool-tip>
+            </a>
+        </div>
+    </div>
+
+    <section id="map">
+        <google-map width="100%" height="100%"
+            [zoom]="mapZoom"
+            [center]="mapCenter"
+            [options]="mapOptions">
+
+            <map-circle
+                [center]="mapCenter"
+                [radius]="radius"
+                [options]="circleOptions" />
+
+            <map-marker
+                [position]="mapCenter"
+                [options]="homeMarkerOptions"
+                (mapClick)="login()">
+            </map-marker>
+
+            <map-marker #marker="mapMarker" *ngFor="let address of addresses | keyvalue"
+                [position]="address.value.coord"
+                [options]="markerOptions"
+                (mapClick)="openInfoWindow(marker, infoWindow)">
+
+                <map-info-window #infoWindow="mapInfoWindow">
+                    <h3>{{ address.value.address }}</h3>
+
+                    <section class="cards" id="offers">
+                        <a *ngFor="let offer of address.value.offers" [routerLink]="['/offers', offer.id]">
+                            <p>{{ offer.type }}</p>
+                            <p>{{ offer.salary }}€</p>
+                            <p>{{ offer.start }}</p>
+                        </a>
+                    </section>
+                </map-info-window>
+
+            </map-marker>
+        </google-map>
+    </section>
+
+</main>

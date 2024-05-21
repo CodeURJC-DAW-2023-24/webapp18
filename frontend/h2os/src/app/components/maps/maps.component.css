@@ -1,0 +1,5 @@
+#map {
+    border: var(--border-color) 1px solid;
+    height: 750px;  /* It doesn't work With percentages */
+    width: 100%;
+}

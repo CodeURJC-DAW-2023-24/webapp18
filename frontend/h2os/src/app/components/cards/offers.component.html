@@ -1,0 +1,35 @@
+<main class="container">
+    <div class="top-container">
+        <div class="left-cont">
+        </div>
+
+        <h2>Ofertas de trabajo</h2>
+
+        <div class="right-cont">
+            <a class="btn" [routerLink]="['/']">
+                <i class="bi bi-map-fill"></i><tool-tip>Mapa</tool-tip>
+            </a>
+        </div>
+    </div>
+
+    <section class="cards" id="offers">
+        <a *ngFor="let offer of offers" [routerLink]="[offer.id]">
+            <img src={{offer.image}}>
+            <p>{{offer.direction}}</p>
+            <p>{{offer.salary}}€</p>
+        </a>
+        <p *ngIf="offers.length === 0">No hay ofertas</p>
+    </section>
+
+    <div *ngIf="hasMore" class="btn-cont" id="load">
+        <button class="btn" (click)="loadOffers()">
+            <i class="bi bi-chevron-double-down"></i> Cargar más
+        </button>
+    </div>
+</main>
+
+<div *ngIf="canAdd" class="btn-cont bottom-right-button">
+    <a [routerLink]="['new']" class="btn" role="btn">
+        <i class="bi bi-plus-circle"></i><tool-tip style="top: auto; bottom: 100%;">Añadir oferta</tool-tip>
+    </a>
+</div>

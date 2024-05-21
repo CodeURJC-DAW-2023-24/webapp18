@@ -1,0 +1,92 @@
+<div class="data">
+    <main class="container container-main">
+        <div class="top-container">
+            <div class="left-cont">
+                <a [routerLink]="['/']" class="btn" role="button">
+                    <i class="bi bi-arrow-left"></i><tool-tip>Volver</tool-tip>
+                </a>
+            </div>
+
+            <h2>{{user.name}} {{user.surname}}</h2>
+
+            <div class="right-cont">
+                <a *ngIf="!otherUser || admin" [routerLink]="editUser" class="btn" role="button">
+                    <i class="bi bi-pencil-fill"></i><tool-tip>Editar perfil</tool-tip>
+                </a>
+                <button *ngIf="!otherUser" (click)="logout()" class="btn btn-red">
+                    <i class="bi bi-box-arrow-left"></i><tool-tip>Cerrar sesión</tool-tip>
+                </button>
+                <ng-container *ngIf="admin && otherUser">
+                    <button *ngIf="lifeguard" (click)="deleteLifeguard()" class="btn btn-red ">
+                        <i class="bi bi-trash-fill"></i><tool-tip>Borrar socorrista</tool-tip>
+                    </button>
+                    <button *ngIf="employer" (click)="deleteEmployer()" class="btn btn-red ">
+                        <i class="bi bi-trash-fill"></i><tool-tip>Borrar empleado</tool-tip>
+                    </button>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <img *ngIf="image" id="img-user" [src]="imageUser">
+                <img *ngIf="!image" id="img-user" src="/api/images/users/default">
+            </div>
+
+            <div class="col-md-8">
+                <p><strong>E-Mail:</strong> {{user.mail}}</p>
+                <p><strong>DNI:</strong> {{user.dni}}</p>
+                <p><strong>Edad:</strong> {{user.age}}</p>
+                <p><strong>Teléfono:</strong> {{user.phone}}</p>
+                <p><strong>Dirección:</strong> {{user.direction}}</p>
+                <p><strong>Localidad:</strong> {{user.locality}} ({{user.province}}, {{user.country}})</p>
+
+                <p *ngIf="typeUser==='lifeguard'"><strong>Título de socorrismo:</strong> {{lifeguard.document}}</p>
+                <p *ngIf="typeUser==='employer'"><strong>Empresa:</strong> {{employer.company}}</p>
+
+                <p><strong>Descripción:</strong> {{user.description}}</p>
+            </div>
+        </div>
+
+        <div *ngIf="typeUser==='lifeguard'" class="subcontainer">
+            <h3>Aptitudes</h3>
+            <ul>
+                <ng-container *ngFor="let skill of lifeguard.skills">
+                    <li>{{skill}}</li>
+                </ng-container>
+                <li *ngIf="lifeguard.skills?.length == 0">No hay aptitudes</li>
+            </ul>
+        </div>
+    </main>
+
+    <div class="container container-additional">
+        <h3 *ngIf="lifeguard">Ofertas aplicadas</h3>
+        <h3 *ngIf="employer">Ofertas publicadas</h3>
+
+        <div *ngIf="lifeguard && otherUser && !admin; else offers_cont">
+            <p style="text-align: center;">No puedes ver las candidaturas de otro usuario</p>
+        </div>
+        <ng-template #offers_cont>
+            <div *ngFor="let offer of offers" class="subcontainer offer">
+                <p>
+                    <a [routerLink]="'/offers/' + offer.id">{{offer.poolName}}</a> ({{offer.salary}}€) <br>
+                    <span>Tipo</span>: {{offer.type}} <br>
+                    <span>Inicio</span>: {{offer.start}}
+                </p>
+                <div class="infoIcons">
+                    <i *ngIf="lifeguard && offerAccepted(offer)" class="bi bi-check-circle-fill"></i>
+                    <button *ngIf="lifeguard && !otherUser" id="applied" (click)="withdraw(offer.id)" class="btn">
+                        <i class="bi bi-bookmark-check-fill"><tool-tip>Desaplicar</tool-tip></i>
+                        <i class="bi bi-bookmark-x-fill bi-red"><tool-tip>Desaplicar</tool-tip></i>
+                    </button>
+                    <button *ngIf="employer && !otherUser" id="delete" (click)="deleteOffer(offer.id)" class="btn">
+                        <i class="bi bi-trash-fill bi-red"><tool-tip>Eliminar</tool-tip></i>
+                    </button>
+                </div>
+            </div>
+            <div *ngIf="offers?.length === 0" class="subcontainer">
+                <p>No hay ofertas</p>
+            </div>
+        </ng-template>
+    </div>
+</div>

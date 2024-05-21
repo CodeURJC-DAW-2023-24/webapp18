@@ -1,0 +1,34 @@
+<main class="container">
+    <div class="top-container">
+        <div class="left-cont">
+        </div>
+
+        <h2>Piscinas</h2>
+
+        <div class="right-cont">
+            <a class="btn" [routerLink]="['/']">
+                <i class="bi bi-map-fill"></i><tool-tip>Mapa</tool-tip>
+            </a>
+        </div>
+    </div>
+
+    <section class="cards" id="pools">
+        <a *ngFor="let pool of pools" [routerLink]="[pool.id]">
+            <img src={{pool.image}}>
+            <p>{{pool.name}}</p>
+        </a>
+        <p *ngIf="pools.length === 0">No hay piscinas</p>
+    </section>
+
+    <div *ngIf="hasMore" class="btn-cont" id="load">
+        <button class="btn" (click)="loadPools()">
+            <i class="bi bi-chevron-double-down"></i> Cargar más
+        </button>
+    </div>
+</main>
+
+<div *ngIf="canAdd" class="btn-cont bottom-right-button">
+    <a [routerLink]="['new']" class="btn" role="btn">
+        <i class="bi bi-plus-circle"></i><tool-tip style="top: auto; bottom: 100%;">Añadir piscina</tool-tip>
+    </a>
+</div>

@@ -1,0 +1,1669 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8443
+  description: Generated server url
+paths:
+  /api/pools/{id}:
+    get:
+      tags:
+      - pool-rest-controller
+      summary: Get a pool by its ID.
+      operationId: getPool
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: "Pool not found, probably invalid id supplied"
+        "200":
+          description: Pool found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoolDTO'
+    put:
+      tags:
+      - pool-rest-controller
+      summary: Edit a pool by its ID.
+      operationId: editPool
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PoolDTO'
+        required: true
+      responses:
+        "404":
+          description: "Pool not found, probably invalid id supplied"
+        "400":
+          description: "Bad request, invalid data in changes"
+        "401":
+          description: "You are not authorized, you are not the admin"
+        "200":
+          description: Pool edited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoolDTO'
+    delete:
+      tags:
+      - pool-rest-controller
+      summary: Delete a pool by its ID.
+      operationId: deletePool
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: "Pool not found, probably invalid id supplied"
+        "401":
+          description: "You are not authorized, you are not the admin"
+        "204":
+          description: Pool deleted
+  /api/pools/{id}/messages/{messageId}:
+    put:
+      tags:
+      - pool-rest-controller
+      summary: Edit a message from a pool by its ID.
+      operationId: editMessage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: messageId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageDTO'
+        required: true
+      responses:
+        "200":
+          description: Message edited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoolDTO'
+        "400":
+          description: "Bad request, invalid data in changes"
+        "401":
+          description: "You are not authorized, you are not the owner or the admin"
+        "404":
+          description: "Message not found, probably invalid id supplied"
+    delete:
+      tags:
+      - pool-rest-controller
+      summary: Delete a message from a pool by its ID.
+      operationId: deleteMessage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: messageId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Message deleted
+        "401":
+          description: "You are not authorized, you are not the owner or the admin"
+        "404":
+          description: "Message not found, probably invalid id supplied"
+  /api/offers/{id}:
+    get:
+      tags:
+      - offer-rest-controller
+      summary: Get an offer by its ID.
+      operationId: getOffer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Offer found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDTO'
+        "404":
+          description: "Offer not found, probably invalid id supplied"
+    put:
+      tags:
+      - offer-rest-controller
+      summary: Edit an offer by its ID.
+      operationId: editOffer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferDTO'
+        required: true
+      responses:
+        "400":
+          description: "Bad request, invalid data in changes"
+        "404":
+          description: "Offer not found, probably invalid id supplied"
+        "401":
+          description: "You are not authorized, you are not the owner or the admin"
+        "200":
+          description: Offer edited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDTO'
+    delete:
+      tags:
+      - offer-rest-controller
+      summary: Delete an offer by its ID.
+      operationId: deleteOffer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: "Offer not found, probably invalid id supplied"
+        "401":
+          description: "You are not authorized, you are not the owner or the admin"
+        "200":
+          description: Offer deleted
+  /api/offers/{id}/lifeguards/{nSelected}:
+    put:
+      tags:
+      - offer-rest-controller
+      summary: Select lifeguard for an offer.
+      operationId: selectLifeguard
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: nSelected
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: "Offer not found, probably invalid id supplied"
+        "200":
+          description: Lifeguard selected
+          content:
+            application/json:
+              schema:
+                type: string
+        "401":
+          description: "You are not authorized, you are not the owner or the admin"
+    delete:
+      tags:
+      - offer-rest-controller
+      summary: Unselect lifeguard of an offer.
+      operationId: unselectLifeguard
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: nSelected
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: "Offer not found, probably invalid id supplied"
+        "401":
+          description: "You are not authorized, you are not the owner or the admin"
+        "200":
+          description: Lifeguard unselected
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/lifeguards/{id}:
+    get:
+      tags:
+      - lifeguard-rest-controller
+      summary: Get a lifeguard by its id
+      operationId: getLifeguard
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: "Lifeguard not found, probably invalid id supplied"
+        "200":
+          description: Found the lifeguard
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LifeguardDTO'
+    put:
+      tags:
+      - lifeguard-rest-controller
+      summary: Update a lifeguard fields by ID. You need to be an administrator or
+        the own lifeguard.
+      operationId: updateLifeguard
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LifeguardDTO'
+        required: true
+      responses:
+        "200":
+          description: Lifeguard updated correctly. You can update only the fields
+            you want
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerDTO'
+        "404":
+          description: "Lifeguard not found, probably invalid id supplied"
+        "400":
+          description: Data entered incorrectly.
+        "401":
+          description: You are not authorized
+    delete:
+      tags:
+      - lifeguard-rest-controller
+      summary: Delete a lifeguard by its id. You need to be an administrator or the
+        own employer.
+      operationId: deleteLifeguard
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: "Lifeguard not found, probably invalid id supplied"
+        "200":
+          description: Lifeguard deleted
+        "401":
+          description: You are not authorized
+  /api/employers/{id}:
+    get:
+      tags:
+      - employer-rest-controller
+      summary: Get an employer by its id
+      operationId: getEmployer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found the employer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerDTO'
+        "404":
+          description: "Employer not found, probably invalid id supplied"
+    put:
+      tags:
+      - employer-rest-controller
+      summary: Update an employer fields by ID. You need to be an administrator or
+        the own employer.
+      operationId: updateEmployer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployerDTO'
+        required: true
+      responses:
+        "400":
+          description: Data entered incorrectly.
+        "200":
+          description: Employer updated correctly. You can update only the fields
+            you want
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerDTO'
+        "404":
+          description: "Employer not found, probably invalid id supplied"
+        "401":
+          description: You are not authorized
+    delete:
+      tags:
+      - employer-rest-controller
+      summary: Delete an employer by its id. You need to be an administrator or the
+        own employer.
+      operationId: deleteEmployer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Employer deleted
+        "404":
+          description: "Employer not found, probably invalid id supplied"
+        "401":
+          description: You are not authorized
+  /api/pools:
+    get:
+      tags:
+      - pool-rest-controller
+      summary: Get paged pools.
+      operationId: getPools
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 5
+      responses:
+        "204":
+          description: "Pools not found, probably high page number supplied"
+        "200":
+          description: Pools found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoolDTO'
+    post:
+      tags:
+      - pool-rest-controller
+      summary: Create a new pool.
+      operationId: createPool
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PoolDTO'
+        required: true
+      responses:
+        "401":
+          description: "You are not authorized, you are not the admin"
+        "201":
+          description: Pool created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoolDTO'
+        "400":
+          description: "Bad request, invalid data in the body"
+  /api/pools/{id}/photo:
+    get:
+      tags:
+      - pool-rest-controller
+      summary: Get the photo of the pool by its ID.
+      operationId: getPoolPhoto
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: "Photo not found, probably invalid pool id supplied"
+        "200":
+          description: Photo found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoolDTO'
+    post:
+      tags:
+      - pool-rest-controller
+      summary: Post a new photo of a pool by id
+      operationId: uploadPhoto
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - imageFile
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+      responses:
+        "404":
+          description: "Data entered incorrectly, probably invalid id supplied"
+        "201":
+          description: Pool photo posted correctly
+        "401":
+          description: You are not authorized
+  /api/pools/{id}/messages:
+    get:
+      tags:
+      - pool-rest-controller
+      summary: Get all messages of a pool by its ID.
+      operationId: getMessages
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 3
+      responses:
+        "200":
+          description: Messages found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageDTO'
+        "204":
+          description: "Messages not found, probably high page number supplied"
+        "404":
+          description: "Pool not found, probably invalid id supplied"
+    post:
+      tags:
+      - pool-rest-controller
+      summary: Add a new message to a pool.
+      operationId: addMessage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageDTO'
+        required: true
+      responses:
+        "201":
+          description: Message added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageDTO'
+        "404":
+          description: "Pool not found, probably invalid id supplied"
+        "401":
+          description: "You are not authorized, you are not the admin"
+        "400":
+          description: "Bad request, invalid data in the body"
+  /api/offers:
+    get:
+      tags:
+      - offer-rest-controller
+      summary: Get paged offers.
+      operationId: getOffers
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 5
+      responses:
+        "204":
+          description: "Offers not found, probably high page number supplied"
+        "200":
+          description: Offers found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDTO'
+    post:
+      tags:
+      - offer-rest-controller
+      summary: Create an offer.
+      operationId: createOffer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferDTO'
+        required: true
+      responses:
+        "404":
+          description: "Pool not found, probably invalid id supplied"
+        "201":
+          description: Offer created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDTO'
+        "401":
+          description: "You are not authorized, you are not a an employer"
+        "400":
+          description: "Bad request, invalid data in new offer"
+  /api/offers/{id}/lifeguards:
+    get:
+      tags:
+      - offer-rest-controller
+      summary: View lifeguards who applied to an offer and the selected one.
+      operationId: getLifeguards
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Lifeguards found
+          content:
+            application/json:
+              schema:
+                type: string
+        "404":
+          description: "Offer not found, probably invalid id supplied"
+        "401":
+          description: "You are not authorized, you are not the owner or the admin"
+    post:
+      tags:
+      - offer-rest-controller
+      summary: Apply to an offer.
+      operationId: newApply
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Offer applied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDTO'
+        "401":
+          description: "You are not authorized, you are not a lifeguard"
+        "404":
+          description: "Offer not found, probably invalid id supplied"
+        "409":
+          description: "Conflict, you applied more than once"
+    delete:
+      tags:
+      - offer-rest-controller
+      summary: Withdraw the offer application.
+      operationId: withdrawApplication
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Offer withdrawn
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDTO'
+        "409":
+          description: "Conflict, you haven't applied to this offer before"
+        "401":
+          description: "You are not authorized, you are not a lifeguard"
+        "404":
+          description: "Offer not found, probably invalid id supplied"
+  /api/lifeguards:
+    get:
+      tags:
+      - lifeguard-rest-controller
+      summary: Get paged lifeguards.
+      operationId: getLifeguards_1
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 5
+      responses:
+        "204":
+          description: "Lifeguards not found, probably high page number supplied"
+        "200":
+          description: Lifeguards found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LifeguardDTO'
+    post:
+      tags:
+      - lifeguard-rest-controller
+      summary: Post a new lifeguard
+      operationId: createLifeguard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LifeguardDTO'
+        required: true
+      responses:
+        "200":
+          description: Lifeguard posted correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LifeguardDTO'
+        "400":
+          description: Data entered incorrectly.
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Lifeguard'
+  /api/lifeguards/{id}/photoUser:
+    get:
+      tags:
+      - lifeguard-rest-controller
+      summary: Get the photo of the user of a lifeguard by id
+      operationId: downloadPhotoUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found the user photo
+        "400":
+          description: "Data entered incorrectly, probably invalid id supplied"
+        "404":
+          description: That lifeguard does not have an user photo
+    post:
+      tags:
+      - lifeguard-rest-controller
+      summary: Post a new photo of the user of a lifeguard by id
+      operationId: uploadPhotoUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - imageFile
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: User photo posted correctly
+        "404":
+          description: "Data entered incorrectly, probably invalid id supplied"
+        "401":
+          description: You are not authorized
+    delete:
+      tags:
+      - lifeguard-rest-controller
+      summary: Delete the photo of the user of an lifeguard by id. You need to be
+        an admin or the own lifeguard
+      operationId: deletePhotoUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: "Data entered incorrectly, probably invalid id supplied"
+        "200":
+          description: User photo deleted correctly
+        "401":
+          description: You are not authorized
+  /api/employers:
+    get:
+      tags:
+      - employer-rest-controller
+      summary: Get paged employers.
+      operationId: getEmployers
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 5
+      responses:
+        "200":
+          description: Employers found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerDTO'
+        "204":
+          description: "Employers not found, probably high page number supplied"
+    post:
+      tags:
+      - employer-rest-controller
+      summary: Post a new employer
+      operationId: createEmployer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployerDTO'
+        required: true
+      responses:
+        "400":
+          description: Data entered incorrectly.
+        "200":
+          description: Employer posted correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerDTO'
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Employer'
+  /api/employers/{id}/photoCompany:
+    get:
+      tags:
+      - employer-rest-controller
+      summary: Get the photo of the company of an employer by id
+      operationId: downloadPhotoCompany
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found the company photo
+        "400":
+          description: "Data entered incorrectly, probably invalid id supplied"
+        "404":
+          description: That employer does not have a company photo
+    post:
+      tags:
+      - employer-rest-controller
+      summary: Post a new photo of the company of an employer by id
+      operationId: uploadPhotoCompany
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - imageFile
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Company photo posted correctly
+        "404":
+          description: "Data entered incorrectly, probably invalid id supplied"
+        "401":
+          description: You are not authorized
+    delete:
+      tags:
+      - employer-rest-controller
+      summary: Delete the photo of the company of an employer by id. You need to be
+        an admin or the own employer
+      operationId: deletePhotoCompany
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: "Data entered incorrectly, probably invalid id supplied"
+        "200":
+          description: Company photo deleted correctly
+        "401":
+          description: You are not authorized
+  /api/auth/refresh:
+    post:
+      tags:
+      - login-rest-controller
+      summary: Refresh access token
+      operationId: refreshToken
+      parameters:
+      - name: refreshToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Refresh token successful
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/auth/logout:
+    post:
+      tags:
+      - login-rest-controller
+      summary: Logout user
+      operationId: logOut
+      responses:
+        "200":
+          description: Logout successful
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/auth/login:
+    post:
+      tags:
+      - login-rest-controller
+      summary: Login user
+      operationId: login
+      parameters:
+      - name: accessToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      - name: refreshToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        "200":
+          description: Login successful
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/offers/{id}/photo:
+    get:
+      tags:
+      - offer-rest-controller
+      summary: Get the pool photo of the offer by its ID.
+      operationId: getOfferPhoto
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Photo found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDTO'
+        "404":
+          description: "Photo not found, probably invalid offer id supplied"
+  /api/maps:
+    get:
+      tags:
+      - maps-rest-controller
+      summary: Get maps elements.
+      operationId: getMaps
+      responses:
+        "204":
+          description: There's no offer
+        "200":
+          description: Offers found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDTO'
+  /api/mails:
+    get:
+      tags:
+      - employer-rest-controller
+      summary: Get a list of email addresses
+      operationId: getMails
+      responses:
+        "200":
+          description: List of email addresses retrieved successfully
+          content:
+            application/json: {}
+  /api/lifeguards/{id}/offers:
+    get:
+      tags:
+      - lifeguard-rest-controller
+      summary: Get the offers of a lifeguard by id. You need to be an admin or the
+        own lifeguard
+      operationId: getLifeguardOffers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found the offer list of the lifeguard
+        "404":
+          description: "Data entered incorrectly, probably invalid id supplied"
+        "401":
+          description: You are not authorized
+  /api/lifeguards/{id}/offersAccepted:
+    get:
+      tags:
+      - lifeguard-rest-controller
+      summary: Get the offers accepted of a lifeguard by id. You need to be an admin
+        or the own lifeguard
+      operationId: getLifeguardOffersAccepted
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found the offers accepted list of the lifeguard
+        "404":
+          description: "Data entered incorrectly, probably invalid id supplied"
+        "401":
+          description: You are not authorized
+  /api/images/users/default:
+    get:
+      tags:
+      - image-rest-controller
+      summary: Get default user image.
+      operationId: getDefaultUserImage
+      responses:
+        "404":
+          description: Image not found
+        "200":
+          description: Image found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerDTO'
+  /api/images/logo:
+    get:
+      tags:
+      - image-rest-controller
+      summary: Get logo image.
+      operationId: getLogo
+      responses:
+        "200":
+          description: Logo found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerDTO'
+        "404":
+          description: Logo not found
+  /api/employers/{id}/offers:
+    get:
+      tags:
+      - employer-rest-controller
+      summary: Get the offers of an employer by id. You need to be an admin or the
+        own employer
+      operationId: getEmployerOffers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Found the offer list of the employer
+        "404":
+          description: "Data entered incorrectly, probably invalid id supplied"
+        "401":
+          description: You are not authorized
+  /api/chart/:
+    get:
+      tags:
+      - chart-rest-controller
+      operationId: getPieChart
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: integer
+                  format: int32
+  /api/auth/me:
+    get:
+      tags:
+      - login-rest-controller
+      summary: Get user profile
+      operationId: me
+      responses:
+        "200":
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LifeguardDTO'
+        "404":
+          description: "Not Found: User not found"
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: "Bad Request: Missing or invalid authentication"
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/lifeguards/{id}/offersAccepted/{offerId}:
+    delete:
+      tags:
+      - lifeguard-rest-controller
+      summary: Remove an offer of the lifeguard's offersAccepted list by id. You need
+        to be an admin or the own lifeguard
+      operationId: deleteOfferAcceptedFromLifeguard
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: offerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: "Data entered incorrectly, probably invalid id or offerId supplied"
+        "200":
+          description: Offer removed correctly
+        "401":
+          description: You are not authorized
+  /api/lifeguards/{id}/offers/{offerId}:
+    delete:
+      tags:
+      - lifeguard-rest-controller
+      summary: Remove an offer of the lifeguard's offers list by id. You need to be
+        an admin or the own lifeguard
+      operationId: deleteOfferFromLifeguard
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: offerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: "Data entered incorrectly, probably invalid id or offerId supplied"
+        "200":
+          description: Offer removed correctly
+        "401":
+          description: You are not authorized
+  /api/employers/{id}/offers/{offerId}:
+    delete:
+      tags:
+      - employer-rest-controller
+      summary: Delete an offer of the employer by id. You need to be an admin or the
+        own employer
+      operationId: deleteOfferFromEmployer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: offerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: "Data entered incorrectly, probably invalid id or offerId supplied"
+        "200":
+          description: Offer deleted correctly
+        "401":
+          description: You are not authorized
+components:
+  schemas:
+    PoolDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        direction:
+          type: string
+        capacity:
+          type: integer
+          format: int32
+        scheduleStart:
+          type: string
+        scheduleEnd:
+          type: string
+        company:
+          type: string
+        description:
+          type: string
+    MessageDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        author:
+          type: string
+        body:
+          type: string
+    OfferDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        poolID:
+          type: integer
+          format: int64
+        poolName:
+          type: string
+        direction:
+          type: string
+        salary:
+          type: string
+        type:
+          type: string
+        start:
+          type: string
+        description:
+          type: string
+        employer:
+          type: string
+        employerID:
+          type: integer
+          format: int64
+    LifeguardDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        surname:
+          type: string
+        description:
+          type: string
+        dni:
+          type: string
+        mail:
+          type: string
+        age:
+          type: string
+        pass:
+          type: string
+        phone:
+          type: string
+        country:
+          type: string
+        locality:
+          type: string
+        province:
+          type: string
+        direction:
+          type: string
+        type:
+          type: string
+        document:
+          type: string
+        skills:
+          type: array
+          items:
+            type: string
+        imageUser:
+          type: boolean
+    EmployerDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        surname:
+          type: string
+        description:
+          type: string
+        dni:
+          type: string
+        mail:
+          type: string
+        age:
+          type: string
+        pass:
+          type: string
+        phone:
+          type: string
+        country:
+          type: string
+        locality:
+          type: string
+        province:
+          type: string
+        direction:
+          type: string
+        type:
+          type: string
+        company:
+          type: string
+        imageCompany:
+          type: boolean
+    Employer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        surname:
+          type: string
+        description:
+          type: string
+        dni:
+          type: string
+        mail:
+          type: string
+        age:
+          type: string
+        phone:
+          type: string
+        country:
+          type: string
+        locality:
+          type: string
+        province:
+          type: string
+        direction:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        imageCompany:
+          type: boolean
+        company:
+          type: string
+        offers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Offer'
+        photoCompany:
+          type: object
+          properties:
+            binaryStream:
+              type: object
+        type:
+          type: string
+        admin:
+          type: boolean
+        address:
+          type: string
+    Lifeguard:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        surname:
+          type: string
+        description:
+          type: string
+        dni:
+          type: string
+        mail:
+          type: string
+        age:
+          type: string
+        phone:
+          type: string
+        country:
+          type: string
+        locality:
+          type: string
+        province:
+          type: string
+        direction:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        imageUser:
+          type: boolean
+        document:
+          type: string
+        skills:
+          type: array
+          items:
+            type: string
+        pools:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pool'
+        offers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Offer'
+        getofferAssigned:
+          type: boolean
+        photoUser:
+          type: object
+          properties:
+            binaryStream:
+              type: object
+        offersAccepted:
+          type: array
+          items:
+            $ref: '#/components/schemas/Offer'
+        type:
+          type: string
+        admin:
+          type: boolean
+        address:
+          type: string
+    LocalTime:
+      type: object
+      properties:
+        hour:
+          type: integer
+          format: int32
+        minute:
+          type: integer
+          format: int32
+        second:
+          type: integer
+          format: int32
+        nano:
+          type: integer
+          format: int32
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        pool:
+          $ref: '#/components/schemas/Pool'
+        author:
+          type: string
+        body:
+          type: string
+        owner:
+          type: boolean
+    Offer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        pool:
+          $ref: '#/components/schemas/Pool'
+        employer:
+          $ref: '#/components/schemas/Employer'
+        lifeguard:
+          $ref: '#/components/schemas/Lifeguard'
+        lifeguards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lifeguard'
+        salary:
+          type: string
+        start:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        acceptedByProfileUser:
+          type: boolean
+        accepted:
+          type: boolean
+    Pool:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        name:
+          type: string
+        photo:
+          type: string
+        photoBlob:
+          type: object
+          properties:
+            binaryStream:
+              type: object
+        direction:
+          type: string
+        capacity:
+          type: integer
+          format: int32
+        scheduleStart:
+          $ref: '#/components/schemas/LocalTime'
+        scheduleEnd:
+          $ref: '#/components/schemas/LocalTime'
+        company:
+          type: string
+        description:
+          type: string
+        end:
+          $ref: '#/components/schemas/LocalTime'
+        start:
+          $ref: '#/components/schemas/LocalTime'
+    AuthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - SUCCESS
+          - FAILURE
+        message:
+          type: string
+        error:
+          type: string
+        type:
+          type: string
+        id:
+          type: integer
+          format: int64
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string

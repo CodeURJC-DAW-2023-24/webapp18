@@ -1,0 +1,68 @@
+<div class="data">
+    <div class="container container-main">
+        <div class="top-container">
+            <div class="left-cont">
+                <a [routerLink]="['/pools']" class="btn" role="button">
+                    <i class="bi bi-arrow-left"></i><tool-tip>Volver</tool-tip>
+                </a>
+            </div>
+
+            <h2>{{name}}</h2>
+
+            <div class="right-cont">
+                <a *ngIf="admin" [routerLink]="['edit']" class="btn" role="button">
+                    <i class="bi bi-pencil-fill"></i><tool-tip>Editar piscina</tool-tip>
+                </a>
+                <button *ngIf="admin" class="btn btn-red" (click)="deletePool(id)">
+                    <i class="bi bi-trash-fill"></i><tool-tip>Borrar piscina</tool-tip>
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <a class="col-lg-6">
+                <img id="img-pool" [src]="photoURL" alt="{{direction}}">
+            </a>
+            <div class="col-lg-6">
+                <p><strong>Dirección:</strong> {{direction}}</p>
+                <p><strong>Horario:</strong> {{scheduleStart}}-{{scheduleEnd}}</p>
+                <p><strong>Aforo:</strong> {{capacity}} personas</p>
+                <p><strong>Descripción:</strong> {{description}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-additional">
+        <h3>Comentarios</h3>
+        <div *ngIf="logged" class="subcontainer commentContainer">
+            <input #bodyMessage type="text" id="commentInput" name="commentInput" placeholder="Deja tu opinión" />
+            <div class="btn-cont">
+                <button class="btn" (click)="addComment()">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="showMessagesFlag" class="btn-cont" id="showButton">
+            <button class="btn" (click)="showMessages()">Ver comentarios</button>
+        </div>
+        <div *ngIf="!showMessagesFlag" id="messageContainer">
+            <div *ngIf="messages.length > 0">
+                <div *ngFor="let msg of messages; let i = index" class="subcontainer message" id="message-{{id}}">
+                    <data>
+                        <a class="author">{{authors[i]}}:</a>
+                        <p class="body"> {{msg}} </p>
+                    </data>
+                    <div *ngIf="owner[i] || admin" class="btn-cont">
+                        <button (click)="deleteComment(i)" class="btn btn-red "><i class="bi bi-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="messages.length == 0">
+                <div class="subcontainer message">
+                    <p class="body"> No hay comentarios </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

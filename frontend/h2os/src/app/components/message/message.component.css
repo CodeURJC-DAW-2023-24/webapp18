@@ -1,0 +1,12 @@
+.container {
+    width: fit-content;
+    min-width: 20%;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+p {
+    text-align: center;
+    font-size: 20px;
+    margin: 20px;
+}
