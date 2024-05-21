@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import es.codeurjc.model.Employer;
 import es.codeurjc.model.Lifeguard;
@@ -135,7 +136,6 @@ public class UserService {
 
     public Lifeguard createLifeguard(HttpServletRequest request) {
         Lifeguard lifeguard = new Lifeguard();
-        lifeguard.initSkills();
         lifeguard.setMail(request.getParameter("mail"));
         lifeguard.setDocument(request.getParameter("document"));
         updatePerson(lifeguard, request);
@@ -170,11 +170,23 @@ public class UserService {
         skills.put("Resolución de problemas", request.getParameter("problemsResolution"));
         skills.put("Liderazgo", request.getParameter("leadership"));
 
+        lifeguard.initSkills();
+
         for (Map.Entry<String, String> entry : skills.entrySet()) {
             if (entry.getValue() != null) {
                 lifeguard.addSkill(entry.getKey());
             }
         }
+    }
+
+    public Model loadSkills(Model model, Lifeguard lifeguard) {
+        model.addAttribute("reliability", lifeguard.hasSkill("Confianza"));
+        model.addAttribute("effort", lifeguard.hasSkill("Esfuerzo"));
+        model.addAttribute("communication", lifeguard.hasSkill("Comunicación"));
+        model.addAttribute("attitude", lifeguard.hasSkill("Actitud positiva"));
+        model.addAttribute("problemsResolution", lifeguard.hasSkill("Resolución de problemas"));
+        model.addAttribute("leadership", lifeguard.hasSkill("Liderazgo"));
+        return model;
     }
 
     public String checkForm(String mail, String age, String phone) {

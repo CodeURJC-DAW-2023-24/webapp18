@@ -86,6 +86,10 @@ public class Lifeguard extends Person{
         this.skills.add(skill);
     }
 
+    public boolean hasSkill(String skill) {
+        return this.skills.contains(skill);
+    }
+
     public List<Pool> getPools() {
         return pools;
     }
