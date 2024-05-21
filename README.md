@@ -89,8 +89,18 @@ Implementar el RestController de Pool y sus dependencias
 
 ### Adrián:
 #### Tareas:
+Dockerizar la aplicación y desplegarla en el servidor de la Universidad. Post methods de las piscinas.
 #### Commits:
+  - App image
+  - Compose the db and the web app
+  - Shell file to push the image
+  - Pool post method for posting an image
+  - Fix problems with the jar files
 #### Ficheros:
+  - Dockerfile
+  - docker-compose.yml
+  - PoolControler.java
+  - create-image.sh
      
 ## Usuarios de ejemplo (nombre de usuario y contraseña)
 ### administrador: admin, admin
