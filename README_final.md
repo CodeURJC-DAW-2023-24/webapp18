@@ -248,7 +248,7 @@ Se puede consultar pulsando [aquí](https://raw.githack.com/CodeURJC-DAW-2023-24
 1. Instalar docker.
 2. Ejecutarlo (mantener la aplicacion de escritorio abierta en windows, en linux se inicia automáticamente)
 3. Clonamos el repositorio: ```git clone https://github.com/CodeURJC-DAW-2023-24/webapp18```
-4. Vamos a la fase 3: ```git checkout fase3```
+4. Vamos a la fase 4: ```git checkout fase4```
 5. Vamos al directorio del docker: ```cd webapp18/docker```
 6. Desplegamos nuestra aplicación: ```docker-compose up```
 7.  Accedemos a ella en https://localhost:8443/
@@ -265,10 +265,10 @@ A continuación se muestra como levantar la aplicacón web desde la máquina vir
 1. Conectarnos a la vpn de la universidad. Nosotros hemos seguido los pasos indicados en el siguiente manual: https://www.urjc.es/principal-intranet/documentos/general/82-configuracion-vpn-urjc/file
 2. Obtener la clave, el usuairo y la IP. En nuestro caso eran:     - Usuario: vmuser  - IP: 10.100.139.246   - Clave Privada: prAppWeb18.key
 3. Tras descargar la clave navegamos al directorio de descarga y abrimos una cmd para ejecutar: ```ssh -i prAppWeb18.key vmuser@10.100.139.246```
-4. Es posible que al ejecutar el paso 3 obtengamos un error relacionado con los permisos de la clave. En ese caso deberemos ejecutar: ```icacls prAppWeb11.key /inheritance:r``` y ```icacls prAppWeb11.key /grant:r "%USERNAME%":F``` Volvemos a realizar el paso 3.
-5. Si el paso 3 ha ido bien esteremos dentro de la terminal de la máquina virtual. Clonamos la aplicación y vamos a la fase 3. ```git clone https://github.com/CodeURJC-DAW-2023-24/webapp18``` y ```git checkout fase3```
+4. Es posible que al ejecutar el paso 3 obtengamos un error relacionado con los permisos de la clave. En ese caso deberemos ejecutar: ```icacls prAppWeb18.key /inheritance:r``` y ```icacls prAppWeb18.key /grant:r "%USERNAME%":F``` Volvemos a realizar el paso 3.
+5. Si el paso 3 ha ido bien esteremos dentro de la terminal de la máquina virtual. Clonamos la aplicación y vamos a la fase 3. ```git clone https://github.com/CodeURJC-DAW-2023-24/webapp18.git``` y despues de movernos a la carpeta del .git (```cd webapp18```) vamos a la fase correspondiente: ```git checkout fase4```
 6. Vamos al directorio del docker ```cd webapp18/docker```
-7. Desplegamos nuestra aplicación: ```docker-compose up```
+7. Desplegamos nuestra aplicación: ```docker-compose up``` Es posible que sea necesario iniciar con sudo.
 8. Podremos acceder a ella desde: https://10.100.139.246:8443 
 
 
@@ -284,7 +284,7 @@ Si hay algún error es posible que no esté instalado Node.js. Se debe instalar 
 
 A continuación se debe ir al directorio del frontend:   ``` cd frontend/h2os```
 
-Instalamos las dependencias necesarias: ``` npm intall --force```
+Instalamos las dependencias necesarias: ``` npm install --force```
 
 Ejecutamos el frontend ``` npm start ```
 
