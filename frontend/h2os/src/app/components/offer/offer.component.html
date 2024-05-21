@@ -50,10 +50,10 @@
                     <p class="body"> {{appliedLgDesc[i]}} </p>
                 </data>
                 <div *ngIf="lifeguard!==selected;" class="btn-cont">
-                    <button class="btn" (click)="setLifeguard(offer.id,i)"><i class="bi bi-person-add"></i></button>
+                    <button class="btn" (click)="setLifeguard(offer.id, i)"><i class="bi bi-person-add"></i></button>
                 </div>
                 <div *ngIf="lifeguard===selected;" class="btn-cont">
-                    <button class="btn btn-red " (click)="unSelectLifeguard(offer.id)"><i class="bi bi-person-dash"></i></button>
+                    <button class="btn btn-red " (click)="unselectLifeguard(offer.id)"><i class="bi bi-person-dash"></i></button>
                 </div>
             </div>
         </div>

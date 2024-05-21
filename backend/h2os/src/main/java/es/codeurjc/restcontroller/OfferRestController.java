@@ -311,11 +311,11 @@ public class OfferRestController {
             @ApiResponse(responseCode = "401", description = "You are not authorized, you are not the owner or the admin", content = @Content),
             @ApiResponse(responseCode = "404", description = "Offer not found, probably invalid id supplied", content = @Content)
     })
-    @DeleteMapping("/{id}/lifeguards") // Only for admin and owner
+    @DeleteMapping("/{id}/lifeguards/{nSelected}") // Only for admin and owner (nSelect is pure decoration)
     public ResponseEntity<HashMap<String, ArrayList<String>>> unselectLifeguard(@PathVariable int id,
             Principal principal) {
         Optional<Offer> offerOptional = offerService.findById(id);
-        if (!offerOptional.isPresent()) 
+        if (!offerOptional.isPresent())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         Offer offer = offerOptional.get();
 

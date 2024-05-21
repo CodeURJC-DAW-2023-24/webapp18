@@ -134,13 +134,13 @@ export class OfferComponent {
     }
 
     setLifeguard(idOffer: number | undefined, idLg: number | undefined) {
+        this.service.unselectLifeguard(idOffer);
         this.service.setLifeguard(idOffer, idLg);
-        this.applied = this.service.unSelectLifeguard(idOffer);
         this.applied = false;
     }
 
-    unSelectLifeguard(idOffer: number | undefined) {
-        this.service.unSelectLifeguard(idOffer);
+    unselectLifeguard(idOffer: number | undefined) {
+        this.service.unselectLifeguard(idOffer);
         this.applied = false;
     }
 
