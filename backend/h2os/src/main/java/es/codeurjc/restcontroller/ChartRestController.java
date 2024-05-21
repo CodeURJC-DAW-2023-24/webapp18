@@ -18,7 +18,7 @@ public class ChartRestController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/api/pieChart/")
+    @GetMapping("/api/chart/")
     public ResponseEntity<HashMap<String,Integer>> getPieChart(){
         HashMap<String, Integer> mapa = fillAttitudes();
         return ResponseEntity.status(HttpStatus.OK).body(mapa);
