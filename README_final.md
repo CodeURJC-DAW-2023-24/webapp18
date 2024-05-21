@@ -1,5 +1,5 @@
 # webapp18
-# Nombre: Hs0s
+# Nombre: H2Os
 ## Integrantes: 
   - Pedro Cristino Moreno - PedroCristino2020 - p.cristino.2020@alumnos.urjc.es
   - Jorge Sánchez Díaz - RisiGT - j.sanchezdi.2020@alumnos.ujrc.es 
@@ -33,7 +33,7 @@
   - Google Maps
 
 ## Algoritmo de consulta avanzada
-  - Mostrara a cada socorrista ofertas personalizadas para él (basado en la distancia, aptitudes...)
+  - Mostrara a cada socorrista sus ofertas más cercanas
 
 
 # Fase 1
@@ -84,17 +84,17 @@ El reparto de tareas tenía sentido en una fase inicial. Luego hicimos una lista
 #### Tareas:
 Implementación de las ofertas, paginación, edición de usuario, google maps. Diseño de la página web. Refactorización de código.
 #### Commits: 
-  - Applied builder pattern + Pool inside Offer
-  - Refactoring services and their connections with the database
-  - Implemented Google Maps
-  - Implemented edit user
-  - Implemented offers pagination
+  - [Applied builder pattern + Pool inside Offer](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/9e65014dbef7c81b47d5604084cf508e1ef9f8c9)
+  - [Refactoring services and their connections with the database](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/4fcaa0ce4590894f8f28b4de7aec9c0926233144)
+  - [Implemented Google Maps](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/c47b5ad86f7a2199919d446627668c1ed87fd197)
+  - [Implemented edit user](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/02ee6b095e5c890bade18d524ab7ccfeb01b42de)
+  - [Implemented offers pagination](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/dc48cb26ff26bc7234f1c0b46192f90c3c3949c2)
 #### Ficheros: 
-  - maps.js
-  - offers.js
-  - user_form.html
-  - UserService.java
-  - UserController.java
+  - [maps.js](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase2/backend/helloword-vscode/src/main/resources/static/js/maps.js)
+  - [offers.js](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase2/backend/helloword-vscode/src/main/resources/static/js/offers.js)
+  - [user_form.html](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase2/backend/helloword-vscode/src/main/resources/templates/user_form.html)
+  - [UserService.java](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase2/backend/helloword-vscode/src/main/java/es/codeurjc/service/UserService.java)
+  - [UserController.java](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase2/backend/helloword-vscode/src/main/java/es/codeurjc/controller/UserController.java)
      
 ### Marcos:
 #### Tareas:
@@ -159,17 +159,17 @@ El reparto de tareas tenía sentido en una fase inicial. Luego hicimos una lista
 #### Tareas:
 Implementación de los métodos GET y PUT de ofertas, piscinas y mensajes. Refactorización de código y pulir funcionalidades.
 #### Commits: 
-  - Implemented getOffers for API REST
-  - Implemented editOffer for API REST
-  - Implemented editPool for API REST
-  - Created isAuthorized
-  - Checked authorization in delete Pool and Message
+  - [Implemented getOffers for API REST](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/232f44a05b7f2d562e561ccca046674d72c1c057)
+  - [Implemented editOffer for API REST](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/461595f9d17ac7f16a94b2a0d350c63c9ea3f8a6)
+  - [Implemented editPool for API REST](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/7b96ba1687726a44ecb2ca9ae0332701e683be2b)
+  - [Created isAuthorized](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/854945987ebd7a024aa29e4e4b7b37db3906e6bb)
+  - [Checked authorization in delete Pool and Message](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/58df58af13eb1ea261e15e5ec748a285dfedd0b4)
 #### Ficheros: 
-  - OfferRestController.java
-  - PoolRestController.java
-  - Message.java
-  - MessageRepository.java
-  - UserService.java
+  - [OfferRestController.java](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/restcontroller/OfferRestController.java)
+  - [PoolRestController.java](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/restcontroller/PoolRestController.java)
+  - [Message.java](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/model/Message.java)
+  - [MessageRepository.java](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/repository/MessageRepository.java)
+  - [UserService.java](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/service/UserService.java)
      
 ### Marcos:
 #### Tareas:
@@ -240,11 +240,11 @@ Dockerizar la aplicación y desplegarla en el servidor de la Universidad. Post m
 ### socorrista: s1, s1
 
 
-# Documentación de la API REST: 
+## Documentación de la API REST: 
 
 Se puede consultar pulsando [aquí](https://raw.githack.com/CodeURJC-DAW-2023-24/webapp18/fase4/backend/h2os/api-docs/index.html)
 
-# Instrucciones para desplegar la aplicación con docker
+## Instrucciones para desplegar la aplicación con docker
 1. Instalar docker.
 2. Ejecutarlo (mantener la aplicacion de escritorio abierta en windows, en linux se inicia automáticamente)
 3. Clonamos el repositorio: ```git clone https://github.com/CodeURJC-DAW-2023-24/webapp18```
@@ -253,13 +253,13 @@ Se puede consultar pulsando [aquí](https://raw.githack.com/CodeURJC-DAW-2023-24
 6. Desplegamos nuestra aplicación: ```docker-compose up```
 7.  Accedemos a ella en https://localhost:8443/
 
-## Publicación de la imagen
+### Publicación de la imagen
 1. Repetir los pasos del apartado anterior hasta el 4 (incluido).
 2. Ejecutar el create_image.sh que hay en la carpeta docker (es posible que previamente se necesite darle al script los permisos necesarios).
 
 Posteriormente a su publicación se podrá acceder a la imagen desde: https://hub.docker.com/r/mdelvalle2020/webapp18
 
-# Despliegue en la máquina virtual
+## Despliegue en la máquina virtual
 A continuación se muestra como levantar la aplicacón web desde la máquina virtual proporcionada:
 
 1. Conectarnos a la vpn de la universidad. Nosotros hemos seguido los pasos indicados en el siguiente manual: https://www.urjc.es/principal-intranet/documentos/general/82-configuracion-vpn-urjc/file
@@ -300,6 +300,20 @@ Ahora podemos acceder a la página desde: http://localhost:4200/
 ### socorrista: s1, s1
 ## Participación de miembros
 
+### Jorge:
+#### Tareas:
+Implementar Google Maps, manejar las secciones con paginación, mejorar el diseño de la IU e implementación de nuevas funcionalidades.
+#### Commits: 
+  - [Implemented Google Maps markers in the frontend](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/88cc4e3a383b512ddcdb18e72c47b2906e5b83c5)
+  - [Implemented user section](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/1f951da7973fa224351ebff219d681a442370bfe)
+  - [Redesigned the display of buttons](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/9f6436424c155f5539e2735b03a17fc977aa7e8c)
+  - [Implemented withdraw application](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/fe108ab22f95ea0bc9c9779854f936751b114452)
+  - [Created offers.component](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/a5bcb86cb6fc893b95b9524c6cc1520bdc23a9ba)
+#### Ficheros: 
+  - [maps.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/maps/maps.component.ts)
+  - [offers.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/cards/offers.component.ts)
+  - [users.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/cards/users.component.ts)
+  - [user-detail.component.html](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/user/user-detail.component.html)
      
 ### Marcos:
 #### Tareas:
