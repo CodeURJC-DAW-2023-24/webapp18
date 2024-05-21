@@ -273,6 +273,20 @@ A continuación se muestra como levantar la aplicacón web desde la máquina vir
 
 ## Preparación del entorno de desarrollo
 
+Tras ejecutar el backend igual que en las fases anteriores se debe proceder a iniciar el frontend.
+
+Para ello se necesita tener instalado Angular CLI. Lo podemos instalar con el siguiente comando: ``` npm install -g @angular/cli```
+
+Si hay algún error es posible que no esté instalado Node.js. Se debe instalar desde la página oficial: https://nodejs.org/en
+
+A continuación se debe ir al directorio del frontend:   ``` cd frontend/h2os```
+
+Instalamos las dependencias necesarias: ``` npm intall --force```
+
+Ejecutamos el frontend ``` npm start ```
+
+Ahora podemos acceder a la página desde: http://localhost:4200/
+
 ## Diagrama de clases y templates de la SPA
 
 ![Diagram_Classes_and_Templates_SPA](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/ae5ae1fc-c9ee-446c-8765-94738129f264)
