@@ -5,6 +5,7 @@
   - Jorge Sánchez Díaz - RisiGT - j.sanchezdi.2020@alumnos.ujrc.es 
   - Marcos del Valle Hontanar - MarcoDelValleH - m.delvalle.2020@alumnos.urjc.es
   - Cristian Kim - cristianvictorkim - cv.kim.2023@alumnos.urjc.es
+  - Adrián Morales Dato - Adri-md-1208 - a.morales.2019@alumnos.urjc.es
 
 
 ## Navegación 
@@ -84,6 +85,17 @@ Implementar lo relacionado a usuarios (employers y lifeguards), inicio de sesió
   - Lifeguard
   - Employer
   - profile
+
+### Adrián:
+#### Tareas:
+API REST de ofertas, edición y actualización.
+#### Commits: 
+  - offer updates
+  - offer edit get and post rest methods
+#### Ficheros: 
+  - offer.html
+  - offer_form.html
+  - OfferControles.java
 
 
 
