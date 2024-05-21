@@ -120,8 +120,7 @@ public class Offer {
     }
 
     public void deleteOffered(Lifeguard l){
-        int ind = this.lifeguards.indexOf(l);
-        this.lifeguards.remove(ind);
+        this.lifeguards.remove(l);
     }
 
     // Method to update offer data

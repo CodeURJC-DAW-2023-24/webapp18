@@ -108,6 +108,9 @@ public class Lifeguard extends Person{
     }
 
     public void deleteOffer(Offer offer) {
+        if (this.offers_accepted != null && this.offers_accepted.contains(offer))
+            this.deleteOfferAccepted(offer);
+
         this.offers.remove(offer);
     }
 
