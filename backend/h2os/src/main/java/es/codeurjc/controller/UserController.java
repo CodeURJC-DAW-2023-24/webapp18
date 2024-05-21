@@ -287,6 +287,7 @@ public class UserController {
             employerRepository.save(employer.get());
         } else if (lifeguard.isPresent()) {
             userService.updatePerson(lifeguard.get(), request);
+            userService.updateSkills(lifeguard.get(), request);
             lifeguard.get().setDocument(request.getParameter("document"));
             if (!photoField.isEmpty()) {
 			    lifeguard.get().setPhotoUser(BlobProxy.generateProxy(photoField.getInputStream(), photoField.getSize()));

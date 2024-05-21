@@ -460,6 +460,7 @@ public class EmployerRestController {
 		if (employerDTO.getCountry()!=null) employer.setCountry(employerDTO.getCountry());
 		if (employerDTO.getLocality()!=null) employer.setLocality(employerDTO.getLocality());
 		if (employerDTO.getProvince()!=null) employer.setProvince(employerDTO.getProvince());
+		if (employerDTO.getDirection()!=null) employer.setDirection(employerDTO.getDirection());
 		if (employerDTO.getCompany()!=null) employer.setCompany(employerDTO.getCompany());
 		employerService.save(employer);
 	}

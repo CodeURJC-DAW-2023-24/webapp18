@@ -505,6 +505,7 @@ public class LifeguardRestController {
 		if (lifeguardDTO.getCountry()!=null) lifeguard.setCountry(lifeguardDTO.getCountry());
 		if (lifeguardDTO.getLocality()!=null) lifeguard.setLocality(lifeguardDTO.getLocality());
 		if (lifeguardDTO.getProvince()!=null) lifeguard.setProvince(lifeguardDTO.getProvince());
+		if (lifeguardDTO.getDirection()!=null) lifeguard.setDirection(lifeguardDTO.getDirection());
 		if (lifeguardDTO.getDocument()!=null) lifeguard.setDocument(lifeguardDTO.getDocument());
 		if (lifeguardDTO.getSkills()!=null) lifeguard.setSkills(lifeguardDTO.getSkills());
 		lifeguardService.save(lifeguard);
