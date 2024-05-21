@@ -3,7 +3,7 @@ import { Observable, throwError, catchError } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { withInMemoryScrolling } from "@angular/router";
 
-const urlPieChart = '/api/pieChart'
+const urlPieChart = '/api/chart/'
 
 @Injectable({ providedIn: 'root' })
 export class StadisticsService {
