@@ -1,38 +1,38 @@
-# Fase 0
 # webapp18
 # Nombre: Hs0s
-# Integrantes: 
+## Integrantes: 
   - Pedro Cristino Moreno - PedroCristino2020 - p.cristino.2020@alumnos.urjc.es
   - Jorge Sánchez Díaz - RisiGT - j.sanchezdi.2020@alumnos.ujrc.es 
   - Marcos del Valle Hontanar - MarcoDelValleH - m.delvalle.2020@alumnos.urjc.es
 
+# Fase 0
 
-# Entidades
+## Entidades
   - Usuarios (empleadores y socorristas)
   - Piscinas
   - Comentarios
   - Ofertas
-# Relaciones
+## Relaciones
   - Los empleadores publican ofertas para los socorristas.
   - Las ofertas tienen una piscina asociada.
   - Las piscinas tienen comentarios de otros socorristas.
 
-# Permisos usuarios
+## Permisos usuarios
   - Socorrista: Puede ver y aceptar ofertas. Puede comentar en el foro de cada piscina.
   - Empleadores: Pueden ver y publicar ofertas. Pueden elegir un socorrista de los propuestos para la oferta.
   - Anónimo: Puede ver ofertas y los comentarios de las piscinas.
   - Admin: Además de poder hacer todo lo de los anteriores, también puede dar de alta empleadores.
 
-# Imágenes
+## Imágenes
   - Tienen imágenes asociadas los socorristas (su titulación, foto personal) y las piscinas (foto de la piscina) y los emleadores (logo de la empresa)
 
-# Gráficos
+## Gráficos
   - Mostrará el número de socorristas que reúnen cada aptitud.
 
-# Tecnología complementaria
+## Tecnología complementaria
   - Google Maps
 
-# Algoritmo de consulta avanzada
+## Algoritmo de consulta avanzada
   - Mostrara a cada socorrista ofertas personalizadas para él (basado en la distancia, aptitudes...)
 
 
@@ -243,7 +243,7 @@ Se puede consultar pulsando [aquí](https://raw.githack.com/CodeURJC-DAW-2023-24
 
 # Instrucciones para desplegar la aplicación con docker
 1. Instalar docker.
-2. Ejecutarlo (mantener la aplicacion de escritorio abierta en windows, en linux see inicia automáticamente)
+2. Ejecutarlo (mantener la aplicacion de escritorio abierta en windows, en linux se inicia automáticamente)
 3. Clonamos el repositorio: ```git clone https://github.com/CodeURJC-DAW-2023-24/webapp18```
 4. Vamos a la fase 3: ```git checkout fase3```
 5. Vamos al directorio del docker: ```cd webapp18/docker```
@@ -267,3 +267,34 @@ A continuación se muestra como levantar la aplicacón web desde la máquina vir
 6. Vamos al directorio del docker ```cd webapp18/docker```
 7. Desplegamos nuestra aplicación: ```docker-compose up```
 8. Podremos acceder a ella desde: https://10.100.139.246:8443 
+
+
+# Fase 4
+
+## Preparación del entorno de desarrollo
+
+## Diagrama de clases y templates de la SPA
+
+![Diagram_Classes_and_Templates_SPA](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/ae5ae1fc-c9ee-446c-8765-94738129f264)
+
+
+## Participación de miembros
+
+     
+### Marcos:
+#### Tareas:
+Página oferta, lo relacionado a los mensajes de las piscinas, mantener la documentación organizada y 
+#### Commits: 
+  - [Cambios en la seguridad necesarios para el soporte de las peticiones rest](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/393193c2d27e96c866d223055feb222ddd8fa195)
+  - [Implementado el rest controller de la gráfica](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/fede9006a2786aac60c26ac1527cfd10ed0bdc72)
+  - [Añadido el directorio DOT y offer DTO + implementación parcial del rest controller de offer](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/4266d87739f28db155053c1351d5dd24f5990680)
+  - [Cambios en la inicialización de la base de datos](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/c0db575823d546f954b0c4b446d2ede93c6e1904)
+  - [Documentation added, error messages added and fixed creating offer without a valid pool ID](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/960fc3a1930560410e5c48c6ae551db6f1983b6c)
+#### Ficheros: 
+  - [OfferDTO](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/DTO/OfferDTO.java)
+  - [PieChartRestController](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/restcontroller/ChartRestController.java)
+  - [OfferRestController](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/restcontroller/OfferRestController.java)
+  - [LoginRestController](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/restcontroller/LoginRestController.java)
+
+
+## Link al video de youtube
