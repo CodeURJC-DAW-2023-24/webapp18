@@ -242,7 +242,7 @@ Dockerizar la aplicación y desplegarla en el servidor de la Universidad. Post m
 
 ## Documentación de la API REST: 
 
-Se puede consultar pulsando [aquí](https://raw.githack.com/CodeURJC-DAW-2023-24/webapp18/fase4/backend/h2os/api-docs/index.html)
+Se puede consultar pulsando [aquí](https://rawcdn.githack.com/CodeURJC-DAW-2023-24/webapp18/21dd752ea4196b5d247992782c90a1807063cdab/backend/h2os/api-docs/api-docs.yaml)
 
 ## Instrucciones para desplegar la aplicación con docker
 1. Instalar docker.
