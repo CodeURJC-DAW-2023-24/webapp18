@@ -163,8 +163,6 @@ public class UserService {
     public void updateSkills(Lifeguard lifeguard, HttpServletRequest request) {
         Map<String, String> skills = new HashMap<>();
 
-        boolean newSkills = false;
-
         skills.put("Confianza", request.getParameter("reliability"));
         skills.put("Esfuerzo", request.getParameter("effort"));
         skills.put("Comunicación", request.getParameter("communication"));
@@ -176,10 +174,6 @@ public class UserService {
 
         for (Map.Entry<String, String> entry : skills.entrySet()) {
             if (entry.getValue() != null) {
-                if(!newSkills){
-                    lifeguard.initSkills();
-                    newSkills=true;
-                }
                 lifeguard.addSkill(entry.getKey());
             }
         }
