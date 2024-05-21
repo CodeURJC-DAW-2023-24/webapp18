@@ -1,6 +1,9 @@
 <main class="container">
     <div class="top-container">
         <div class="left-cont">
+            <a *ngIf="logged" class="btn" (click)="filterByDistance()">
+                <i class="bi bi-funnel-fill"></i><tool-tip>Filtrar</tool-tip>
+            </a>
         </div>
 
         <h2>Mapa de ofertas</h2>
@@ -17,6 +20,11 @@
             [zoom]="mapZoom"
             [center]="mapCenter"
             [options]="mapOptions">
+
+            <map-circle
+                [center]="mapCenter"
+                [radius]="radius"
+                [options]="circleOptions" />
 
             <map-marker
                 [position]="mapCenter"

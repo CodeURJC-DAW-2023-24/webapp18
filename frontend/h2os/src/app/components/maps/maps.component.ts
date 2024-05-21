@@ -8,6 +8,7 @@ import { GeocodingService } from '../../services/geocoding.service';
 import { MapsAddress, MapsOffer, MapsResponse } from '../../models/maps-offer.model';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 
 @Component({
@@ -19,6 +20,8 @@ export class MapsComponent implements OnInit {
   center: string;
   addresses: Map<string, MapsAddress> = new Map<string, MapsAddress>();
   offers: MapsOffer[] = [];
+  logged: boolean;
+  radius: number = 0;
 
   // Google attributes
   geocoderWorking = false;
@@ -34,6 +37,12 @@ export class MapsComponent implements OnInit {
     disableDoubleClickZoom: false,
     maxZoom: 20,
     minZoom: 4,
+  };
+
+  circleOptions: google.maps.CircleOptions = {
+    strokeWeight: 0,
+    fillColor: '#0082fe',
+    fillOpacity: 0.35,
   };
 
   markerOptions: google.maps.MarkerOptions = {
@@ -56,9 +65,19 @@ export class MapsComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private userService: UserService,
     private geocodingService: GeocodingService,
     private toastr: ToastrService
-  ) { }
+  ) {
+    this.userService.me().subscribe(
+      _response => {
+        this.logged = true;
+      },
+      _error => {
+        this.logged = false;
+      }
+    );
+  }
 
   ngOnInit() {
     this.getMapsDTO().subscribe(
@@ -78,10 +97,6 @@ export class MapsComponent implements OnInit {
 
   getMapsDTO() {
     return this.http.get<MapsResponse>('/api/maps');
-  }
-
-  filterByDistance() {
-    throw new Error('Method not implemented.');
   }
 
   loadOffers() {
@@ -150,5 +165,84 @@ export class MapsComponent implements OnInit {
 
   get isWorking(): boolean {
     return this.geocoderWorking;
+  }
+
+  // Filter methods
+  async filterByDistance() {
+    const distancesMap = new Map<string, number>();
+    const distances: number[] = [];
+
+    for (const mapAddress of this.addresses.values()) {
+      const address = mapAddress.address;
+      const distance = await this.calculateDistance(this.mapCenter, address) as number;
+      distancesMap.set(address, distance);
+
+      const insertIndex = this.binarySearchInsert(distances, distance);
+      const timesAppeared = mapAddress.offers.length || 1;
+      for (let i = 0; i < timesAppeared; i++)
+        distances.splice(insertIndex, 0, distance);
+    }
+
+    this.radius = this.getLimitDistance(distances);
+  }
+
+  async calculateDistance(origin: google.maps.LatLng, destinationAddress: string): Promise<number> {
+    try {
+      const response = await this.findAddress(destinationAddress).toPromise();
+      if (!response) throw Error("No response");
+
+      const loc: any = response.results[0].geometry.location;
+      const destination = new google.maps.LatLng(loc.lat, loc.lng);
+
+      return this.calculateEuclideanDistance(origin, destination);
+    }
+    catch (error) {
+      console.error('Error calculating distance', error);
+      return 0;
+    }
+  }
+
+  calculateEuclideanDistance(origin: google.maps.LatLng, destination: google.maps.LatLng): number {
+    const earthRadiusKm = 6371;
+
+    const dLat = (destination.lat() - origin.lat()) * (Math.PI / 180);
+    const dLon = (destination.lng() - origin.lng()) * (Math.PI / 180);
+
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(origin.lat() * (Math.PI / 180)) *
+      Math.cos(destination.lat() * (Math.PI / 180)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const distance = earthRadiusKm * c * 1000; // meters
+
+    return distance;
+  }
+
+  getLimitDistance(distances: number[]): number {
+    const n = distances.length;
+    const index = Math.ceil(n / 4) - 1;  // At least 25% of the distances will be inside the circle
+    const distance = distances[index];
+
+    return distance * 1.05;
+  }
+
+  // Algorithm
+  binarySearchInsert(array: number[], value: number): number {
+    let low = 0;
+    let high = array.length - 1;
+
+    while (low <= high) {
+      let mid = Math.floor((low + high) / 2);
+      if (array[mid] === value)
+        return mid + 1;
+      else if (array[mid] < value)
+        low = mid + 1;
+      else
+        high = mid - 1;
+    }
+
+    return low;
   }
 }
