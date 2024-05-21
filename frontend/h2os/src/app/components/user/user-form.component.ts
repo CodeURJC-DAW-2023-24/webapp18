@@ -136,7 +136,7 @@ export class UserFormComponent{
                 if (this.edit){
                     this.router.navigate(['/lifeguards/'+this.lifeguard.id])
                 }else{
-                    this.router.navigate(['/login']);
+                    this.router.navigate(['/']);
                 }
             },
             error => {
@@ -170,7 +170,7 @@ export class UserFormComponent{
             if (this.edit){
                 this.router.navigate(['/lifeguards/'+this.lifeguard.id])
             }else{
-                this.router.navigate(['/login']);
+                this.router.navigate(['/']);
             }
         }
       }

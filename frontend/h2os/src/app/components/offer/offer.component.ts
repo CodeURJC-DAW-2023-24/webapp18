@@ -156,8 +156,10 @@ export class OfferComponent {
     }
 
     unselectLifeguard(idOffer: number | undefined) {
-        this.service.unselectLifeguard(idOffer);
-        this.applied = false;
+        this.service.unselectLifeguard(idOffer).subscribe(
+            _ => this.applied = false,
+            _error => console.log("Error al deseleccionar al socorrista")
+        );
     }
 
     showApplied2(id: number | undefined) {

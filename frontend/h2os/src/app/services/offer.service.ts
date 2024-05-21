@@ -43,8 +43,7 @@ export class OfferService {
     }
 
     unselectLifeguard(id: number | undefined) {
-        this.httpClient.delete(urlOffer + "/" + id + urlLifeguards + "/n").subscribe();  // n is a dummy value
-        return true
+        return this.httpClient.delete(urlOffer + "/" + id + urlLifeguards + "/0");  // n is a dummy value
     }
 
     editOffer(id: number | undefined, offer: Offer) {
