@@ -132,11 +132,11 @@ Implementar lo relacionado a usuarios (employers y lifeguards) en el frontend
   - [upload photo completed and form improved](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/10b838f17f88c1e1d4c607748330438c2617aa9d)
   - [implemented pool form](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/00aeb8a1524f774f5d92e80a637bf2013c85d1c5)
 #### Ficheros: 
-  - user.service.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/services/user.service.ts)
-  - user-detail.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/user/user-detail.component.ts)
-  - user-form.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/user/user-form.component.ts)
-  - user-login.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/user/user-login.component.ts)
-  - pool-form.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/pools/pool-form.component.ts)
+  - [user.service.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/services/user.service.ts)
+  - [user-detail.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/user/user-detail.component.ts)
+  - [user-form.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/user/user-form.component.ts)
+  - [user-login.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/user/user-login.component.ts)
+  - [pool-form.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/pools/pool-form.component.ts)
 
 #### Tareas:
 Sección de estadísticas implementando un componente de Google Charts
