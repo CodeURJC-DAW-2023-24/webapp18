@@ -29,6 +29,10 @@ export class OfferService {
         return this.httpClient.post(urlOffer + "/" + id + urlLifeguards, "").subscribe();
     }
 
+    withdrawApplication(id: number | undefined) {
+        return this.httpClient.delete(urlOffer + "/" + id + urlLifeguards).subscribe();
+    }
+
     getApplied(id: number | undefined): Observable<Object> {
         return this.httpClient.get(urlOffer + "/" + id + urlLifeguards);
     }
