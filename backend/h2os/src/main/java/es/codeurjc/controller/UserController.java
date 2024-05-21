@@ -268,6 +268,7 @@ public class UserController {
             model.addAttribute("employer", true);
         } else if (lifeguard.isPresent()) {
             model.addAttribute("user", lifeguard.get());
+            model = userService.loadSkills(model, lifeguard.get());
             model.addAttribute("lifeguard", true);
         }
         model.addAttribute("edit", true);
