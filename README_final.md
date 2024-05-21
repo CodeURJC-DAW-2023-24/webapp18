@@ -72,7 +72,10 @@ Para iniciar la aplicación web se deben seguir los siguientes pasos:
 
 ![image](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/e28fbed3-cf45-4144-907c-b3614b940f9c)
 
-
+## Usuarios de ejemplo (nombre de usuario y contraseña)
+### administrador: admin, admin
+### empleador: e1,e1
+### socorrista: s1, s1
 ## Participación de miembros
 
 El reparto de tareas tenía sentido en una fase inicial. Luego hicimos una lista de cosas pendientes y cada uno ibamos realizando tareas sin ningun criterio de reparto en especial. 
@@ -291,7 +294,10 @@ Ahora podemos acceder a la página desde: http://localhost:4200/
 
 ![Diagram_Classes_and_Templates_SPA](https://github.com/CodeURJC-DAW-2023-24/webapp18/assets/102817772/ae5ae1fc-c9ee-446c-8765-94738129f264)
 
-
+## Usuarios de ejemplo (nombre de usuario y contraseña)
+### administrador: admin, admin
+### empleador: e1,e1
+### socorrista: s1, s1
 ## Participación de miembros
 
      
