@@ -73,7 +73,16 @@
                     <span>Tipo</span>: {{offer.type}} <br>
                     <span>Inicio</span>: {{offer.start}}
                 </p>
-                <i class="bi bi-check-circle-fill" *ngIf="offerAccepted(offer)"></i>
+                <div class="infoIcons">
+                    <i *ngIf="lifeguard && offerAccepted(offer)" class="bi bi-check-circle-fill"></i>
+                    <button *ngIf="lifeguard && !otherUser" id="applied" (click)="withdraw(offer.id)" class="btn">
+                        <i class="bi bi-bookmark-check-fill"><tool-tip>Desaplicar</tool-tip></i>
+                        <i class="bi bi-bookmark-x-fill bi-red"><tool-tip>Desaplicar</tool-tip></i>
+                    </button>
+                    <button *ngIf="employer && !otherUser" id="delete" (click)="deleteOffer(offer.id)" class="btn">
+                        <i class="bi bi-trash-fill bi-red"><tool-tip>Eliminar</tool-tip></i>
+                    </button>
+                </div>
             </div>
             <div *ngIf="offers?.length === 0" class="subcontainer">
                 <p>No hay ofertas</p>

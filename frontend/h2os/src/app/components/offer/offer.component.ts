@@ -63,23 +63,25 @@ export class OfferComponent {
                                 response => {
                                     this.me = response as Me
                                     this.edit = (this.me.mail == "admin" || this.me.mail == this.offer.employer)
-                                    this.canApply = this.me.type == "lg";
-                                    this.canWithdraw = false;
-                                    userService.getLifeguardOffers(this.me.id).subscribe(
-                                        response => {
-                                            let lista = response as Offer[];
+                                    const lifeguard = this.me.type == "lg";
+                                    if (lifeguard) {
+                                        this.canApply = true;
+                                        userService.getLifeguardOffers(this.me.id).subscribe(
+                                            response => {
+                                                let lista = response as Offer[];
 
-                                            for (let offerA of lista) {
-                                                if (offerA.id == this.offer.id) {
-                                                    this.canApply = false
-                                                    this.canWithdraw = true
+                                                for (let offerA of lista) {
+                                                    if (offerA.id == this.offer.id) {
+                                                        this.canApply = false
+                                                        this.canWithdraw = true
+                                                    }
                                                 }
+                                            },
+                                            error => {
+                                                console.log("Error al pedir las ofertas propuestas")
                                             }
-                                        },
-                                        error => {
-                                            console.log("Error al pedir las ofertas propuestas")
-                                        }
-                                    );
+                                        );
+                                    }
                                 },
                                 error => {
                                     this.me.mail = "-1"
@@ -138,9 +140,13 @@ export class OfferComponent {
     }
 
     withdraw(id: number | undefined) {
-        this.service.withdrawApplication(id);
-        this.canApply = true;
-        this.canWithdraw = false;
+        this.service.withdrawApplication(id).subscribe(
+            _ => {
+                this.canApply = true;
+                this.canWithdraw = false;
+            },
+            _error => console.log("Error al retirar la solicitud")
+        );
     }
 
     setLifeguard(idOffer: number | undefined, idLg: number | undefined) {

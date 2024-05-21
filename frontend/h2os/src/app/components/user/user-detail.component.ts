@@ -8,13 +8,14 @@ import { Me } from '../../models/me.model';
 import { catchError } from 'rxjs';
 import { Offer } from '../../models/offer.model';
 import { MessageService } from '../../services/message.service';
+import { OfferService } from '../../services/offer.service';
 
 @Component({
     selector: "user-detail",
     templateUrl: './user-detail.component.html',
-    styleUrl: '../../styles/data.css'
+    styleUrls: ['../../styles/data.css', '../../styles/profile.css']
 })
-export class UserDetailComponent{
+export class UserDetailComponent {
     me:Me;
     user: Person;
     lifeguard: Lifeguard;
@@ -29,7 +30,12 @@ export class UserDetailComponent{
     offers: Offer[] = [];
     offersAccepted: Offer[] = [];
 
-    constructor(activatedRoute: ActivatedRoute, private router:Router, private userService: UserService, private messageService: MessageService){
+    constructor(activatedRoute: ActivatedRoute,
+        private router:Router,
+        private userService: UserService,
+        private messageService: MessageService,
+        private offerService: OfferService) {
+
         let id = activatedRoute.snapshot.params['id'];
         let type : string | undefined;
         const routeSegments = activatedRoute.snapshot.url;
@@ -129,6 +135,20 @@ export class UserDetailComponent{
                 }
             }
         return check;
+    }
+
+    deleteOffer(id: number | undefined) {
+        this.offerService.deleteOffer(id).subscribe(
+            _ => this.router.navigate(['/login']),
+            _error => console.log("Error al borrar la oferta")
+        );
+    }
+
+    withdraw(id: number | undefined) {
+        this.offerService.withdrawApplication(id).subscribe(
+            _ => this.router.navigate(['/login']),
+            _error => console.log("Error al retirar la solicitud")
+        );
     }
 
     //Obsolet

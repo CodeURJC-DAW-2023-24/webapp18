@@ -30,7 +30,7 @@ export class OfferService {
     }
 
     withdrawApplication(id: number | undefined) {
-        return this.httpClient.delete(urlOffer + "/" + id + urlLifeguards).subscribe();
+        return this.httpClient.delete(urlOffer + "/" + id + urlLifeguards);
     }
 
     getApplied(id: number | undefined): Observable<Object> {
