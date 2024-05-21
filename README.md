@@ -1,9 +1,13 @@
-# webapp18
-# Nombre: H2Os
+# webapp18: H2Os
+## Vídeo explicativo
+Enlace a [YouTube](https://youtu.be/RIaUQ8ykKiM)
+
 ## Integrantes: 
-  - Pedro Cristino Moreno - PedroCristino2020 - p.cristino.2020@alumnos.urjc.es
-  - Jorge Sánchez Díaz - RisiGT - j.sanchezdi.2020@alumnos.ujrc.es 
-  - Marcos del Valle Hontanar - MarcoDelValleH - m.delvalle.2020@alumnos.urjc.es
+| Name | Email | Github |
+|-----------|-----------|-----------|
+| Pedro Cristino Moreno     | p.cristino.2020@alumnos.urjc.es  | [PedroCristino2020](https://github.com/PedroCristino2020)  |
+| Jorge Sánchez Díaz        | j.sanchezdi.2020@alumnos.urjc.es | [RisiGT](https://github.com/RisiGT)                        |
+| Marcos del Valle Hontanar | m.delvalle.2020@alumnos.urjc.es  | [MarcoDelValleH](https://github.com/MarcoDelValleH)        |          
 
 # Fase 0
 
@@ -361,5 +365,3 @@ Sección de estadísticas implementando un componente de Google Charts
   - [stadistics.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
   - [app.module.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
   - [stadistics.service.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
-
-## Link al video de youtube
