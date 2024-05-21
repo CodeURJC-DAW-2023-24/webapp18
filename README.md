@@ -59,17 +59,17 @@ RestController de la Grafica y de Offer
 #### Tareas:
 Implementar lo relacionado a usuarios (employers y lifeguards) en la API REST
 #### Commits: 
-  - Added UserRestController (to check if it works)
-  - Setting passwords in the API works and improved put and post methods. Need to check if it works with images
-  - Added Get Offers and OffersAccepted and also Delete one of your offers or offersAccepted for lifeguards. For employers get offers and delete offer permanently
-  - Post, delete, put and get user images works. Added permissions to api user
-  - Added documentation of UserRestController with Open API
+  - [Added UserRestController (to check if it works)](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/489c8d52a8e5a4e52be2a6fe04bdb741c536129f)
+  - [Setting passwords in the API works and improved put and post methods. Need to check if it works with images](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/36d2a3b67a6147f978c0ae8a873e6db294176c19)
+  - [Added Get Offers and OffersAccepted and also Delete one of your offers or offersAccepted for lifeguards. For employers get offers and delete offer permanently](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/4efcd6f9dc805fd1708282147e342d8dd025589f)
+  - [Post, delete, put and get user images works. Added permissions to api user](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/cb3ad53084086d6639f0ce157cb9e528920328ba)
+  - [Added documentation of UserRestController with Open API](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/ee30fa4730bade866f0794d72a4f3224d2b4f5ae)
 #### Ficheros: 
-  - LifeguardRestController
-  - EmployerRestController
-  - LifeguardDTO
-  - EmployerDTO
-  - LoginRestController
+  - [LifeguardRestController](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/restcontroller/LifeguardRestController.java)
+  - [EmployerRestController](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/restcontroller/EmployerRestController.java)
+  - [LifeguardDTO](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/DTO/LifeguardDTO.java)
+  - [EmployerDTO](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/DTO/EmployerDTO.java)
+  - [LoginRestController](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/restcontroller/LoginRestController.java)
 
 ### Nico:
 #### Tareas:
@@ -126,17 +126,17 @@ Dockerizar la aplicación y desplegarla en el servidor de la Universidad. Post m
 #### Tareas:
 Implementar lo relacionado a usuarios (employers y lifeguards) en el frontend
 #### Commits: 
-  - Initialized Angular web, doesnt work
-  - implemented user-detail and user-form. I haven't tried if it works
-  - profile and user_form works correctly (photo not implemented yet). You need to reload to update header
-  - upload photo completed and form improved
-  - implemented pool form
+  - [Initialized Angular web, doesnt work](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/9faa13b93e5f391c129c37e8c1b4086ccbd2dd10)
+  - [implemented user-detail and user-form. I haven't tried if it works](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/b930ae386113e419f474c9f46ab9266ede285a7d)
+  - [profile and user_form works correctly (photo not implemented yet). You need to reload to update header](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/f30ec6584c99f1fd0fac56f1d4a1656b8ac16a4f)
+  - [upload photo completed and form improved](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/10b838f17f88c1e1d4c607748330438c2617aa9d)
+  - [implemented pool form](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/00aeb8a1524f774f5d92e80a637bf2013c85d1c5)
 #### Ficheros: 
-  - user.service.ts
-  - user-detail.component.ts
-  - user-form.component.ts
-  - user-login.component.ts
-  - pool-form.component.ts
+  - user.service.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/services/user.service.ts)
+  - user-detail.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/user/user-detail.component.ts)
+  - user-form.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/user/user-form.component.ts)
+  - user-login.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/user/user-login.component.ts)
+  - pool-form.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/pools/pool-form.component.ts)
 
 #### Tareas:
 Sección de estadísticas implementando un componente de Google Charts
