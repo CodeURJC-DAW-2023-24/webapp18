@@ -283,18 +283,18 @@ A continuación se muestra como levantar la aplicacón web desde la máquina vir
      
 ### Marcos:
 #### Tareas:
-Página oferta, lo relacionado a los mensajes de las piscinas, mantener la documentación organizada y 
+Página oferta, lo relacionado a los mensajes de las piscinas, actualizar el docker para que funcione el frontend y SPA controller.
 #### Commits: 
-  - [Cambios en la seguridad necesarios para el soporte de las peticiones rest](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/393193c2d27e96c866d223055feb222ddd8fa195)
-  - [Implementado el rest controller de la gráfica](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/fede9006a2786aac60c26ac1527cfd10ed0bdc72)
-  - [Añadido el directorio DOT y offer DTO + implementación parcial del rest controller de offer](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/4266d87739f28db155053c1351d5dd24f5990680)
-  - [Cambios en la inicialización de la base de datos](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/c0db575823d546f954b0c4b446d2ede93c6e1904)
-  - [Documentation added, error messages added and fixed creating offer without a valid pool ID](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/960fc3a1930560410e5c48c6ae551db6f1983b6c)
+  - [Cambios en el docker añadidos a la rama de trabajo](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/39ef5e229ac8967919431a2e563677fb1517298b)
+  - [Mensajes de la piscina implementados](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/efa1d48ea7e3f145ae6e5f2377f2fc435cef6551)
+  - [Implementada la creación de oferta](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/c2af922a64e15c36657fab59bc1683fca6600a61)
+  - [Implementado el editar oferta](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/1c442d6a444535a756be52aad17a00c80ac10ec0)
+  - [Desarrollo de la oferta](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/a7f88e10d3e85b289195380abf0996605a0532cd).
 #### Ficheros: 
-  - [OfferDTO](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/DTO/OfferDTO.java)
-  - [PieChartRestController](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/restcontroller/ChartRestController.java)
-  - [OfferRestController](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/restcontroller/OfferRestController.java)
-  - [LoginRestController](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase3/backend/helloword-vscode/src/main/java/es/codeurjc/restcontroller/LoginRestController.java)
+  - [offer.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/offer/offer.component.ts)
+  - [offer.create.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/offer/offer.create.component.ts)
+  - [Dockerfile](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/docker/Dockerfile)
+  - [offer.service.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/services/offer.service.ts).
 
 
 ## Link al video de youtube
