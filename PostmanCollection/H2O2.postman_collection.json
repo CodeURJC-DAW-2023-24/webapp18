@@ -2,17 +2,118 @@
 	"info": {
 		"_postman_id": "3c282647-4078-400e-98ea-7f2479bda156",
 		"name": "H2O2",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33711183",
 		"_collection_link": "https://dark-star-235093.postman.co/workspace/Team-Workspace~328f1c8d-f50e-41bc-8601-0f13c0a640be/collection/33711183-3c282647-4078-400e-98ea-7f2479bda156?action=share&source=collection_link&creator=33711183"
 	},
 	"item": [
 		{
+			"name": "logo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/images/logo",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"images",
+						"logo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "defaultUserImage",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/images/users/default",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"images",
+						"users",
+						"default"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "maps",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/maps",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"maps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pool",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/offers/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"offers",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "pools",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "https://localhost:8443/api/pools"
+				"url": {
+					"raw": "https://localhost:8443/api/pools?size=-1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"pools"
+					],
+					"query": [
+						{
+							"key": "size",
+							"value": "-1"
+						}
+					]
+				}
 			},
 			"response": []
 		},
@@ -21,7 +122,71 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "https://localhost:8443/api/pools/1/messages"
+				"url": {
+					"raw": "https://localhost:8443/api/pools/1/messages",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"pools",
+						"1",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PoolImagePost*",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "photoPool*",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/lifeguards/1/photo",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"lifeguards",
+						"1",
+						"photo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/offers/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"offers",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -56,11 +221,24 @@
 			"response": []
 		},
 		{
-			"name": "offer",
+			"name": "offerImage",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "https://localhost:8443/api/offers/1"
+				"url": {
+					"raw": "https://localhost:8443/api/offers/1/photo",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"offers",
+						"1",
+						"photo"
+					]
+				}
 			},
 			"response": []
 		},
@@ -69,7 +247,40 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "https://localhost:8443/api/offers/1/lifeguards"
+				"url": {
+					"raw": "https://localhost:8443/api/offers/1/lifeguards",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"offers",
+						"1",
+						"lifeguards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mails",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/mails",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"mails"
+					]
+				}
 			},
 			"response": []
 		},
@@ -78,7 +289,39 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "https://localhost:8443/api/lifeguards/1"
+				"url": {
+					"raw": "https://localhost:8443/api/lifeguards/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"lifeguards",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lifeguards",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/lifeguards",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"lifeguards"
+					]
+				}
 			},
 			"response": []
 		},
@@ -87,17 +330,8 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "https://localhost:8443/api/lifeguards/1/offers"
-			},
-			"response": []
-		},
-		{
-			"name": "lifeguardOffersAccepted",
-			"request": {
-				"method": "GET",
-				"header": [],
 				"url": {
-					"raw": "https://localhost:8443/api/lifeguards/1/offers?type",
+					"raw": "https://localhost:8443/api/lifeguards/1/offers",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -108,23 +342,52 @@
 						"lifeguards",
 						"1",
 						"offers"
-					],
-					"query": [
-						{
-							"key": "type",
-							"value": null
-						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "photoLifeguard",
+			"name": "lifeguardOffersAccepted*",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "https://localhost:8443/api/lifeguards/1/photo"
+				"url": {
+					"raw": "https://localhost:8443/api/lifeguards/1/offersAccepted",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"lifeguards",
+						"1",
+						"offersAccepted"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "photoLifeguard*",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/lifeguards/1/photo",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"lifeguards",
+						"1",
+						"photo"
+					]
+				}
 			},
 			"response": []
 		},
@@ -133,7 +396,39 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "https://localhost:8443/api/employers/1"
+				"url": {
+					"raw": "https://localhost:8443/api/employers/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"employers",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "employers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/employers",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"employers"
+					]
+				}
 			},
 			"response": []
 		},
@@ -142,16 +437,42 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "https://localhost:8443/api/employers/1/offers"
+				"url": {
+					"raw": "https://localhost:8443/api/employers/1/offers",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"employers",
+						"1",
+						"offers"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "photoEmployer",
+			"name": "photoEmployer*",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "https://localhost:8443/api/employers/1/photoCompany"
+				"url": {
+					"raw": "https://localhost:8443/api/employers/1/photoCompany",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"employers",
+						"1",
+						"photoCompany"
+					]
+				}
 			},
 			"response": []
 		},
@@ -172,7 +493,19 @@
 						}
 					}
 				},
-				"url": "https://localhost:8443/api/pieChart/"
+				"url": {
+					"raw": "https://localhost:8443/api/chart/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"chart",
+						""
+					]
+				}
 			},
 			"response": []
 		},
@@ -181,7 +514,19 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "https://localhost:8443/api/auth/me"
+				"url": {
+					"raw": "https://localhost:8443/api/auth/me",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"auth",
+						"me"
+					]
+				}
 			},
 			"response": []
 		},
@@ -199,7 +544,19 @@
 						}
 					}
 				},
-				"url": "https://localhost:8443/api/auth/login"
+				"url": {
+					"raw": "https://localhost:8443/api/auth/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
 			},
 			"response": [
 				{
@@ -216,7 +573,52 @@
 								}
 							}
 						},
-						"url": "https://localhost:8443/api/auth/login"
+						"url": {
+							"raw": "https://localhost:8443/api/auth/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "employer",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"e1\",\r\n    \"password\": \"e1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8443/api/auth/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
 					},
 					"_postman_previewlanguage": null,
 					"header": null,
@@ -237,7 +639,19 @@
 								}
 							}
 						},
-						"url": "https://localhost:8443/api/auth/login"
+						"url": {
+							"raw": "https://localhost:8443/api/auth/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
 					},
 					"_postman_previewlanguage": null,
 					"header": null,
@@ -251,57 +665,53 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"url": "https://localhost:8443/api/auth/logout"
+				"url": {
+					"raw": "https://localhost:8443/api/auth/logout",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"auth",
+						"logout"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "offer",
+			"name": "pool",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"poolID\": 2,\r\n  \"employer\": \"e1\",\r\n  \"salary\": \"1500\",\r\n  \"start\": \"Fecha de inicio\",\r\n  \"type\": \"Tipo de oferta\",\r\n  \"description\": \"Descripción de la oferta\"\r\n}",
+					"raw": "{\r\n    \"name\": \"Pisci Diver\",\r\n    \"direction\": \"Sierra nevada\",\r\n    \"capacity\": 40,\r\n    \"scheduleStart\": \"12:00\",\r\n    \"scheduleEnd\": \"21:00\",\r\n    \"company\": \"Mistakes\",\r\n    \"description\": \"mu diver\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "https://localhost:8443/api/offers"
+				"url": {
+					"raw": "https://localhost:8443/api/pools",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"pools"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "newApply",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": "https://localhost:8443/api/offers/1/lifeguards"
-			},
-			"response": []
-		},
-		{
-			"name": "lifeguard",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"socorristaPOSTMAN\",\r\n    \"surname\": \"MODIFICADO\",\r\n    \"description\": \"Socorrista inicializado POR POSTMAN\",\r\n    \"dni\": \"54152452L\",\r\n    \"mail\": \"LifeguardPostman\",\r\n    \"age\": \"20\",\r\n    \"pass\": \"a1\",\r\n    \"phone\": \"624578423\",\r\n    \"country\": \"Spain\",\r\n    \"locality\": \"Madrid\",\r\n    \"province\": \"Madrid\",\r\n    \"direction\": \"Calle Amargura\",\r\n    \"photo\": null,\r\n    \"imageUser\": false,\r\n    \"document\": \"Título de socorrismo A1\",\r\n    \"skills\": [\r\n        \"Confianza\",\r\n        \"Esfuerzo\"\r\n    ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "https://localhost:8443/api/lifeguards"
-			},
-			"response": []
-		},
-		{
-			"name": "photoLifeguard",
+			"name": "poolPhoto*",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -315,44 +725,20 @@
 						}
 					]
 				},
-				"url": "https://localhost:8443/api/lifeguards/1/photoUser"
-			},
-			"response": []
-		},
-		{
-			"name": "employer",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"mail\": \"12\",\r\n    \"pass\": \"12\",\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "https://localhost:8443/api/employers"
-			},
-			"response": []
-		},
-		{
-			"name": "photoEmployer",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "photo",
-							"type": "file",
-							"src": "/C:/Users/pcris/Desktop/betis.jpeg"
-						}
+				"url": {
+					"raw": "https://localhost:8443/api/pools/1/photo",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"pools",
+						"1",
+						"photo"
 					]
-				},
-				"url": "https://localhost:8443/api/employers/1/photoCompany"
+				}
 			},
 			"response": []
 		},
@@ -370,7 +756,193 @@
 						}
 					}
 				},
-				"url": "https://localhost:8443/api/pools/1/messages"
+				"url": {
+					"raw": "https://localhost:8443/api/pools/1/messages",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"pools",
+						"1",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"poolID\": 2,\r\n  \"employer\": \"e1\",\r\n  \"salary\": \"1500\",\r\n  \"start\": \"Fecha de inicio\",\r\n  \"type\": \"Tipo de oferta\",\r\n  \"description\": \"Descripción de la oferta\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8443/api/offers",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"offers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "apply",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/offers/1/lifeguards",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"offers",
+						"1",
+						"lifeguards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lifeguard*",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"socorristaPOSTMAN\",\r\n    \"surname\": \"MODIFICADO\",\r\n    \"description\": \"Socorrista inicializado POR POSTMAN\",\r\n    \"dni\": \"54152452L\",\r\n    \"mail\": \"LifeguardPostman\",\r\n    \"age\": \"20\",\r\n    \"pass\": \"a1\",\r\n    \"phone\": \"624578423\",\r\n    \"country\": \"Spain\",\r\n    \"locality\": \"Madrid\",\r\n    \"province\": \"Madrid\",\r\n    \"direction\": \"Calle Amargura\",\r\n    \"photo\": null,\r\n    \"imageUser\": false,\r\n    \"document\": \"Título de socorrismo A1\",\r\n    \"skills\": [\r\n        \"Confianza\",\r\n        \"Esfuerzo\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8443/api/lifeguards",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"lifeguards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "photoLifeguard*",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "photo",
+							"type": "file",
+							"src": "/C:/Users/pcris/Desktop/betis.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:8443/api/lifeguards/1/photoUser",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"lifeguards",
+						"1",
+						"photoUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "employer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"12\",\r\n    \"pass\": \"12\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8443/api/employers",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"employers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "photoEmployer*",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "photo",
+							"type": "file",
+							"src": "/C:/Users/pcris/Desktop/betis.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:8443/api/employers/1/photoCompany",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"employers",
+						"1",
+						"photoCompany"
+					]
+				}
 			},
 			"response": []
 		},
@@ -388,7 +960,19 @@
 						}
 					}
 				},
-				"url": "https://localhost:8443/api/pools/1"
+				"url": {
+					"raw": "https://localhost:8443/api/pools/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"pools",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -406,7 +990,21 @@
 						}
 					}
 				},
-				"url": "https://localhost:8443/api/pools/1/messages/1"
+				"url": {
+					"raw": "https://localhost:8443/api/pools/0/messages/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"pools",
+						"0",
+						"messages",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -417,19 +1015,31 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"salary\": \"2000\",\r\n    \"description\": \"Piscina llena de niños\"\r\n}",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"poolName\": \"Misco Jones\",\r\n    \"poolID\": 2,\r\n    \"employer\": \"e1\",\r\n    \"salary\": \"1380\",\r\n    \"start\": \"11/11/2024\",\r\n    \"type\": \"Media jornada\",\r\n    \"description\": \"Descripcion 1hg\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "https://localhost:8443/api/offers/1"
+				"url": {
+					"raw": "https://localhost:8443/api/offers/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"offers",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "selectLifeguard",
+			"name": "selectLifeguard*",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -442,12 +1052,26 @@
 						}
 					}
 				},
-				"url": "https://localhost:8443/api/offers/1/lifeguards/0"
+				"url": {
+					"raw": "https://localhost:8443/api/offers/1/lifeguards/0",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"offers",
+						"1",
+						"lifeguards",
+						"0"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "lifeguard",
+			"name": "lifeguard*",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -460,7 +1084,49 @@
 						}
 					}
 				},
-				"url": "https://localhost:8443/api/lifeguards/0"
+				"url": {
+					"raw": "https://localhost:8443/api/lifeguards/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"lifeguards",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "employer*",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"age\": \"22\",\r\n    \"locality\": \"Móstoles\",\r\n    \"phone\": \"989899898\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8443/api/employers/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"employers",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -469,16 +1135,42 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "https://localhost:8443/api/pools/1"
+				"url": {
+					"raw": "https://localhost:8443/api/pools/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"pools",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "message",
+			"name": "message*",
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "https://localhost:8443/api/pools/0/messages/1"
+				"url": {
+					"raw": "https://localhost:8443/api/pools/0/messages/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"pools",
+						"0",
+						"messages",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -487,25 +1179,64 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "https://localhost:8443/api/offers/1"
+				"url": {
+					"raw": "https://localhost:8443/api/offers/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"offers",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "unselectLifeguard",
+			"name": "lifeguardOffer*",
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "https://localhost:8443/api/offers/1/lifeguards"
+				"url": {
+					"raw": "https://localhost:8443/api/lifeguards/1/offers/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"lifeguards",
+						"1",
+						"offers",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "lifeguard",
+			"name": "offersAcceptedLifeguard*",
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "https://localhost:8443/api/lifeguards/1"
+				"url": {
+					"raw": "https://localhost:8443/api/lifeguards/1/offersAccepted",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"lifeguards",
+						"1",
+						"offersAccepted"
+					]
+				}
 			},
 			"response": []
 		},
@@ -514,7 +1245,85 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "https://localhost:8443/api/employers/1"
+				"url": {
+					"raw": "https://localhost:8443/api/employers/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"employers",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "employerOffer",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/employers/1/offers/3",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"employers",
+						"1",
+						"offers",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "photoEmployer*",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/employers/1/photoCompany",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"employers",
+						"1",
+						"photoCompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lifeguard",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8443/api/lifeguards/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"lifeguards",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -523,85 +1332,65 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "https://localhost:8443/api/lifeguards/1/photoUser"
+				"url": {
+					"raw": "https://localhost:8443/api/lifeguards/1/photoUser",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"lifeguards",
+						"1",
+						"photoUser"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "photoEmployer",
+			"name": "unselectLifeguard",
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "https://localhost:8443/api/employers/1/photoCompany"
+				"url": {
+					"raw": "https://localhost:8443/api/offers/1/lifeguards/0",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"offers",
+						"1",
+						"lifeguards",
+						"0"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "offersAcceptedLifeguard",
+			"name": "apply",
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "https://localhost:8443/api/lifeguards/1/offersAccepted"
-			},
-			"response": []
-		},
-		{
-			"name": "offersLifeguard",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": "https://localhost:8443/api/lifeguards/1/offers"
-			},
-			"response": []
-		},
-		{
-			"name": "offersEmployer",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": "https://localhost:8443/api/employers/1/offers"
-			},
-			"response": []
-		},
-		{
-			"name": "poolMessages",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": "https://localhost:8443/api/pools/1/messages/1"
-			},
-			"response": []
-		},
-		{
-			"name": "maps",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "maps Copy",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "New Request",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "OfferImage",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": "https://localhost:8443/api/offers/1/photo"
+				"url": {
+					"raw": "https://localhost:8443/api/offers/1/lifeguards",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"api",
+						"offers",
+						"1",
+						"lifeguards"
+					]
+				}
 			},
 			"response": []
 		}
