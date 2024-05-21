@@ -45,4 +45,26 @@ public class ImageRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Operation(summary = "Get default user image.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Image found", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = EmployerDTO.class)) }),
+			@ApiResponse(responseCode = "404", description = "Image not found", content = @Content)
+	})
+	@GetMapping("/users/default")
+	public ResponseEntity<byte[]> getDefaultUserImage() {
+        try {
+            ClassPathResource imgFile = new ClassPathResource("static/images/noPhotoUser.jpg");
+            byte[] imageBytes = Files.readAllBytes(imgFile.getFile().toPath());
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_PNG);
+
+            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        }
+		catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

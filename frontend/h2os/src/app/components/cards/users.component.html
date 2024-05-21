@@ -15,7 +15,7 @@
     <section class="cards" id="users">
         <a *ngFor="let user of users" [routerLink]="[user.id]">
             <img *ngIf="user.hasImage" id="img-user" [src]="user.image">
-            <img *ngIf="!user.hasImage" id="img-user" src="/assets/images/noPhotoUser.jpg">
+            <img *ngIf="!user.hasImage" id="img-user" src="/api/images/users/default">
             <p>{{user.name}} <br> ({{user.mail}})</p>
         </a>
 
