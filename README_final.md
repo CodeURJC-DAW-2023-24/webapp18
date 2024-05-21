@@ -132,12 +132,12 @@ Implementar lo relacionado a usuarios (employers y lifeguards), inicio de sesió
 #### Tareas:
 API REST de ofertas, edición y actualización.
 #### Commits: 
-  - offer updates
-  - offer edit get and post rest methods
+  - [offer updates](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/f827badb39bbf094cf48226616ed82aedf455418)
+  - [offer edit get and post rest methods](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/c38730ef5954cc38c374e938fc2b636f13770dd3)
 #### Ficheros: 
-  - offer.html
-  - offer_form.html
-  - OfferControles.java
+  - [offer.html](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/d6bebad5c89a1afbc47cea03c52378b2fd1e23a2/backend/helloword-vscode/src/main/resources/templates/offer.html#L4)
+  - [offer_form.html](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/d6bebad5c89a1afbc47cea03c52378b2fd1e23a2/backend/helloword-vscode/src/main/resources/templates/offer_form.html#L4)
+  - [OfferControler.java](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/d6bebad5c89a1afbc47cea03c52378b2fd1e23a2/backend/helloword-vscode/src/main/java/es/codeurjc/controller/OfferController.java)
 
 # Fase 3
 ## Diagrama de los clases y templates
@@ -223,16 +223,16 @@ Implementar el RestController de Pool y sus dependencias
 #### Tareas:
 Dockerizar la aplicación y desplegarla en el servidor de la Universidad. Post methods de las piscinas.
 #### Commits:
-  - App image
-  - Compose the db and the web app
-  - Shell file to push the image
-  - Pool post method for posting an image
-  - Fix problems with the jar files
+  - [App image](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/b3ea2c11cb818e24736553e87d5a8f6c72f917a9)
+  - [Compose the db and the web app](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/22737faa486aaf41cbe1ab2bcae996cf82a915b8)
+  - [Shell file to push the image](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/93f7ad6f43b2f326eb897856b61f903df158f6e0)
+  - [Pool post method for posting an image](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/99c2a5f46aa80b55de6a42167b5d8599772d59ff)
+  - [Fix problems with the jar files](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
 #### Ficheros:
-  - Dockerfile
-  - docker-compose.yml
-  - PoolControler.java
-  - create-image.sh
+  - [Dockerfile](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
+  - [docker-compose.yml](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
+  - [PoolControler.java](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
+  - [create-image.sh](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
      
 ## Usuarios de ejemplo (nombre de usuario y contraseña)
 ### administrador: admin, admin
@@ -346,5 +346,20 @@ Implementar lo relacionado a usuarios (employers y lifeguards) en el frontend
   - [user-form.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/user/user-form.component.ts)
   - [user-login.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/user/user-login.component.ts)
   - [pool-form.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/blob/fase4/frontend/h2os/src/app/components/pools/pool-form.component.ts)
+
+### Adrián:
+#### Tareas:
+Sección de estadísticas implementando un componente de Google Charts
+#### Commits:
+  - [Stadistics component](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
+  - [Service for getting the pieChart](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
+  - [Google chart connected with pieChart component](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
+  - [pieChart component font size of the tooltip resized](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
+#### Ficheros:
+  - [stadistics.component.html](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
+  - [stadistics.component.css](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
+  - [stadistics.component.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
+  - [app.module.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
+  - [stadistics.service.ts](https://github.com/CodeURJC-DAW-2023-24/webapp18/commit/862d9fb56da069ea2ece273a161fff5c8fc0f047)
 
 ## Link al video de youtube
