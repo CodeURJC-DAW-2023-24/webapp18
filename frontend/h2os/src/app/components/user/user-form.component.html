@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div *ngIf="edit" class="row">
             <div class="form-group col-md-12">
                 <label for="direction">Calle</label>
                 <input type="text" class="form-control" name="direction" placeholder="Introduzca su calle" [(ngModel)]="user.direction">
