@@ -89,8 +89,18 @@ Implementar el RestController de Pool y sus dependencias
 
 ### Adrián:
 #### Tareas:
+Dockerizar la aplicación y desplegarla en el servidor de la Universidad. Post methods de las piscinas.
 #### Commits:
+  - App image
+  - Compose the db and the web app
+  - Shell file to push the image
+  - Pool post method for posting an image
+  - Fix problems with the jar files
 #### Ficheros:
+  - Dockerfile
+  - docker-compose.yml
+  - PoolControler.java
+  - create-image.sh
 
 
 ## Usuarios de ejemplo (nombre de usuario y contraseña)
@@ -128,10 +138,19 @@ Implementar lo relacionado a usuarios (employers y lifeguards) en el frontend
   - user-login.component.ts
   - pool-form.component.ts
 
-### Adrián:
 #### Tareas:
+Sección de estadísticas implementando un componente de Google Charts
 #### Commits:
+  - Stadistics component
+  - Service for getting the pieChart
+  - Google chart connected with pieChart component
+  - pieChart component font size of the tooltip resized
 #### Ficheros:
+  - stadistics.component.html
+  - stadistics.component.css
+  - stadistics.component.ts
+  - app.module.ts
+  - stadistics.service.ts
 
 ## Diagrama de clases y templates de la SPA:
 
