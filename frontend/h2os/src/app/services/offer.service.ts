@@ -26,20 +26,24 @@ export class OfferService {
     }
 
     applyToOffer(id: number | undefined) {
-        return this.httpClient.post(urlOffer + "/" + id + "/" + urlLifeguards, "").subscribe();
+        return this.httpClient.post(urlOffer + "/" + id + urlLifeguards, "").subscribe();
+    }
+
+    withdrawApplication(id: number | undefined) {
+        return this.httpClient.delete(urlOffer + "/" + id + urlLifeguards).subscribe();
     }
 
     getApplied(id: number | undefined): Observable<Object> {
-        return this.httpClient.get(urlOffer + "/" + id + "/lifeguards");
+        return this.httpClient.get(urlOffer + "/" + id + urlLifeguards);
     }
 
     setLifeguard(idOffer: number | undefined, idLg: number | undefined) {
-        this.httpClient.put(urlOffer + "/" + idOffer + "/lifeguards/" + idLg, "").subscribe();
+        this.httpClient.put(urlOffer + "/" + idOffer + urlLifeguards + "/" + idLg, "").subscribe();
         return true
     }
 
-    unSelectLifeguard(id: number | undefined) {
-        this.httpClient.delete(urlOffer + "/" + id + "/lifeguards").subscribe();
+    unselectLifeguard(id: number | undefined) {
+        this.httpClient.delete(urlOffer + "/" + id + urlLifeguards + "/n").subscribe();  // n is a dummy value
         return true
     }
 

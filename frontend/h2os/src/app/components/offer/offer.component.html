@@ -7,12 +7,13 @@
         </div>
         <h2>Oferta en <a [routerLink]="['/pools', poolID]">{{poolName}}</a></h2>
         <div class="right-cont">
-            <form *ngIf="canApply" role="form">
-                <input type="hidden" name="id" value="{{offer.id}}" />
-                <button class="btn" (click)="apply(offer.id)" id="applyButton">
-                    <i class="bi bi-bookmark-fill"></i><tool-tip>Aplicar</tool-tip>
-                </button>
-            </form>
+            <button *ngIf="canApply" class="btn" (click)="apply(offer.id)">
+                <i class="bi bi-bookmark-fill"></i><tool-tip>Aplicar</tool-tip>
+            </button>
+            <button *ngIf="canWithdraw" id="applied" type="submit" class="btn btn-red" (click)="withdraw(offer.id)">
+                <i class="bi bi-bookmark-check-fill"><tool-tip>Desaplicar</tool-tip></i>
+                <i class="bi bi-bookmark-x-fill"><tool-tip>Desaplicar</tool-tip></i>
+            </button>
             <button *ngIf="edit" class="btn" [routerLink]="['edit']">
                 <i class="bi bi-pencil-fill"></i><tool-tip>Editar oferta</tool-tip>
             </button>
@@ -50,10 +51,10 @@
                     <p class="body"> {{appliedLgDesc[i]}} </p>
                 </data>
                 <div *ngIf="lifeguard!==selected;" class="btn-cont">
-                    <button class="btn" (click)="setLifeguard(offer.id,i)"><i class="bi bi-person-add"></i></button>
+                    <button class="btn" (click)="setLifeguard(offer.id, i)"><i class="bi bi-person-add"></i></button>
                 </div>
                 <div *ngIf="lifeguard===selected;" class="btn-cont">
-                    <button class="btn btn-red " (click)="unSelectLifeguard(offer.id)"><i class="bi bi-person-dash"></i></button>
+                    <button class="btn btn-red " (click)="unselectLifeguard(offer.id)"><i class="bi bi-person-dash"></i></button>
                 </div>
             </div>
         </div>

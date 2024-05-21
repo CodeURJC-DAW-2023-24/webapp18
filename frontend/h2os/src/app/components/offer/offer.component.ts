@@ -28,6 +28,7 @@ export class OfferComponent {
     offer: Offer;
     pool: String;
     canApply: boolean;
+    canWithdraw: boolean;
     poolName: string | undefined;
     poolPhoto: string;
     poolID: number | undefined;
@@ -63,6 +64,7 @@ export class OfferComponent {
                                     this.me = response as Me
                                     this.edit = (this.me.mail == "admin" || this.me.mail == this.offer.employer)
                                     this.canApply = this.me.type == "lg";
+                                    this.canWithdraw = false;
                                     userService.getLifeguardOffers(this.me.id).subscribe(
                                         response => {
                                             let lista = response as Offer[];
@@ -70,6 +72,7 @@ export class OfferComponent {
                                             for (let offerA of lista) {
                                                 if (offerA.id == this.offer.id) {
                                                     this.canApply = false
+                                                    this.canWithdraw = true
                                                 }
                                             }
                                         },
@@ -131,16 +134,23 @@ export class OfferComponent {
     apply(id: number | undefined) {
         this.service.applyToOffer(id);
         this.canApply = false;
+        this.canWithdraw = true;
+    }
+
+    withdraw(id: number | undefined) {
+        this.service.withdrawApplication(id);
+        this.canApply = true;
+        this.canWithdraw = false;
     }
 
     setLifeguard(idOffer: number | undefined, idLg: number | undefined) {
+        this.service.unselectLifeguard(idOffer);
         this.service.setLifeguard(idOffer, idLg);
-        this.applied = this.service.unSelectLifeguard(idOffer);
         this.applied = false;
     }
 
-    unSelectLifeguard(idOffer: number | undefined) {
-        this.service.unSelectLifeguard(idOffer);
+    unselectLifeguard(idOffer: number | undefined) {
+        this.service.unselectLifeguard(idOffer);
         this.applied = false;
     }
 

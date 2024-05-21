@@ -304,6 +304,45 @@ public class OfferRestController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @Operation(summary = "Withdraw the offer application.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Offer withdrawn", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = OfferDTO.class)) }),
+            @ApiResponse(responseCode = "401", description = "You are not authorized, you are not a lifeguard", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Offer not found, probably invalid id supplied", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Conflict, you haven't applied to this offer before", content = @Content)
+    })
+    @DeleteMapping("/{id}/lifeguards") // Only lifeguards that already applied
+    public ResponseEntity<OfferDTO> withdrawApplication(@PathVariable int id, Principal principal) {
+        if (principal == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // not logged
+
+        Optional<Lifeguard> lifeguardOp = userService.findLifeguardByEmail(principal.getName());
+        if (!lifeguardOp.isPresent())
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // user not found
+        Lifeguard lifeguard = lifeguardOp.get();
+
+        Optional<Offer> offerOp = offerService.findById(id);
+        if (!offerOp.isPresent())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // offer not found
+        Offer offer = offerOp.get();
+
+        List<Lifeguard> lifeguards = offer.getLifeguards();
+        if (lifeguards != null && !lifeguards.contains(lifeguard)) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Error-Message", "No puedes retirarte de una oferta a la que no has aplicado antes");
+            return ResponseEntity.status(HttpStatus.CONFLICT).headers(headers).build();
+        }
+
+        lifeguard.deleteOffer(offer);
+        offer.deleteOffered(lifeguard);
+
+        offerService.save(offer);
+        userService.saveLifeguard(lifeguard);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new OfferDTO(offer));
+    }
+
     @Operation(summary = "Unselect lifeguard of an offer.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lifeguard unselected", content = {
@@ -311,11 +350,11 @@ public class OfferRestController {
             @ApiResponse(responseCode = "401", description = "You are not authorized, you are not the owner or the admin", content = @Content),
             @ApiResponse(responseCode = "404", description = "Offer not found, probably invalid id supplied", content = @Content)
     })
-    @DeleteMapping("/{id}/lifeguards") // Only for admin and owner
+    @DeleteMapping("/{id}/lifeguards/{nSelected}") // Only for admin and owner (nSelect is pure decoration)
     public ResponseEntity<HashMap<String, ArrayList<String>>> unselectLifeguard(@PathVariable int id,
             Principal principal) {
         Optional<Offer> offerOptional = offerService.findById(id);
-        if (!offerOptional.isPresent()) 
+        if (!offerOptional.isPresent())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         Offer offer = offerOptional.get();
 
