@@ -351,7 +351,7 @@ public class OfferRestController {
             @ApiResponse(responseCode = "404", description = "Offer not found, probably invalid id supplied", content = @Content)
     })
     @DeleteMapping("/{id}/lifeguards/{nSelected}") // Only for admin and owner (nSelect is pure decoration)
-    public ResponseEntity<HashMap<String, ArrayList<String>>> unselectLifeguard(@PathVariable int id,
+    public ResponseEntity<HashMap<String, ArrayList<String>>> unselectLifeguard(@PathVariable int id, @PathVariable int nSelected,
             Principal principal) {
         Optional<Offer> offerOptional = offerService.findById(id);
         if (!offerOptional.isPresent())
