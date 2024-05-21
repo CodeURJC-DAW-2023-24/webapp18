@@ -82,8 +82,8 @@ export class UserFormComponent{
         if (message !== '')
             this.messageService.showError(message);
 
-        if (this.color !== 'green')
-            this.messageService.showError("Email en uso por otro usuario.");
+        if (this.color !== 'green' && !this.edit)
+          this.messageService.showError("Email en uso por otro usuario.");
 
         if (this.typeUser === 'lifeguard') {
             this.updateLifeguard();
