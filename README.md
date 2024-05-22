@@ -7,7 +7,8 @@ Enlace a [YouTube](https://youtu.be/RIaUQ8ykKiM)
 |-----------|-----------|-----------|
 | Pedro Cristino Moreno     | p.cristino.2020@alumnos.urjc.es  | [PedroCristino2020](https://github.com/PedroCristino2020)  |
 | Jorge Sánchez Díaz        | j.sanchezdi.2020@alumnos.urjc.es | [RisiGT](https://github.com/RisiGT)                        |
-| Marcos del Valle Hontanar | m.delvalle.2020@alumnos.urjc.es  | [MarcoDelValleH](https://github.com/MarcoDelValleH)        |          
+| Marcos del Valle Hontanar | m.delvalle.2020@alumnos.urjc.es  | [MarcoDelValleH](https://github.com/MarcoDelValleH)        |    
+| Adrián Morales Dato | a.morales.2019@alumnos.urjc.es  | [Adri-md-1208](https://github.com/Adri-md-1208)        |    
 
 # Fase 0
 
